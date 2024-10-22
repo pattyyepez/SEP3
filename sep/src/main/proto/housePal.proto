@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+service HouseOwnerService {
+    rpc GetOwners (EmptyRequest) returns (HouseOwnerResponse);
+}
+
+message EmptyRequest {}
+
+message HouseOwnerResponse {
+    repeated HouseOwner owners = 1;
+}
+
+message HouseOwner {
+    string ownerId = 1;
+    string name = 2;
+    string address = 3;
+    string phone = 4;
+    string email = 5;
+    bool isVerified = 6;
+}
