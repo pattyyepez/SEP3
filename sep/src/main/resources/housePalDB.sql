@@ -1,40 +1,49 @@
+DROP DATABASE  IF EXISTS housePalBD;
 CREATE DATABASE housePalBD;
 
 DROP SCHEMA IF EXISTS housePal CASCADE;
 CREATE SCHEMA housePal;
-SET search_path TO housePal;   --ARREGLAR O PREGUNTAR
-
-CREATE TABLE HouseOwner (
-    owner_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    address VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    isVerified BOOLEAN DEFAULT FALSE
-);
-
-CREATE TABLE HouseSitter (
-    sitter_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    experience TEXT,
-    skills TEXT,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    isVerified BOOLEAN DEFAULT FALSE
-);
+SET search_path TO housePal;  --fix or ask
 
 CREATE TABLE Admin (
     admin_id SERIAL PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE Users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    profile_picture VARCHAR(255),
+    CPR VARCHAR(50) NOT NULL,
+    phone VARCHAR(20),
+    isVerified BOOLEAN DEFAULT FALSE,
+    admin_id INT DEFAULT NULL,
+    FOREIGN KEY (admin_id) REFERENCES Admin(admin_id) ON DELETE SET NULL
+);
+
+
+CREATE TABLE HouseOwner (
+    owner_id SERIAL PRIMARY KEY,
+    id INT NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    biography TEXT,
+    FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE HouseProfile (
     profile_id SERIAL PRIMARY KEY,
     owner_id INT NOT NULL,
     description TEXT,
-    chores TEXT,
-    rules TEXT,
-    amenities TEXT,
     FOREIGN KEY (owner_id) REFERENCES HouseOwner(owner_id) ON DELETE CASCADE
+);
+
+CREATE TABLE HousePictures (
+    profile_id INT NOT NULL,
+    picture VARCHAR(255),
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE
 );
 
 CREATE TABLE HouseListing (
@@ -42,107 +51,213 @@ CREATE TABLE HouseListing (
     profile_id INT NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
-    status VARCHAR(15) NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
-    CONSTRAINT listing_status_check CHECK (status IN ('Open', 'Closed', 'Unavailable'))
+    status VARCHAR(10) NOT NULL CHECK (status IN ('Open', 'Closed', 'Unavailable')),
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE
 );
+
+CREATE TABLE Chores (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Rules (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Amenities (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Skills (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE House_rules (
+    profile_id INT NOT NULL,
+    rule_id INT NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (rule_id) REFERENCES Rules(id) ON DELETE CASCADE
+);
+
+CREATE TABLE House_chores (
+    profile_id INT NOT NULL,
+    chore_id INT NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (chore_id) REFERENCES Chores(id) ON DELETE CASCADE
+);
+
+CREATE TABLE House_amenities (
+    profile_id INT NOT NULL,
+    amenity_id INT NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (amenity_id) REFERENCES Amenities(id) ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE HouseSitter (
+    sitter_id SERIAL PRIMARY KEY,
+    id INT NOT NULL,
+    past_experience TEXT,
+    biography TEXT,
+    FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE SitterPictures (
+    sitter_id INT NOT NULL,
+    picture VARCHAR(255),
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Sitter_skills (
+    sitter_id INT NOT NULL,
+    skill_id INT NOT NULL,
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE,
+    FOREIGN KEY (skill_id) REFERENCES Skills(id) ON DELETE CASCADE
+);
+
 
 CREATE TABLE Application (
     application_id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
     sitter_id INT NOT NULL,
     message TEXT,
-    status VARCHAR(10) NOT NULL,
+    status VARCHAR(10) NOT NULL CHECK (status IN ('Pending', 'Approved', 'Rejected')),
+    date DATE NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE CASCADE,
-    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE,
-    CONSTRAINT application_status_check CHECK (status IN ('Pending', 'Approved', 'Rejected'))
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Review (
-    review_id SERIAL PRIMARY KEY,
-    review_type VARCHAR(15) NOT NULL,
+CREATE TABLE HouseReview (
+    id SERIAL PRIMARY KEY,
+    listing_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comments TEXT,
-    listing_id INT DEFAULT NULL,
-    sitter_id INT DEFAULT NULL,
-    FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE SET NULL,
-    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE SET NULL
-    --CONSTRAINT review_type_check CHECK (Review.review_type IN ('SitterReview', 'OwnerReview'))
+    date DATE NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE CASCADE
+);
+
+CREATE TABLE SitterReview (
+    id SERIAL PRIMARY KEY,
+    listing_id INT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comments TEXT,
+    date DATE NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Report (
     report_id SERIAL PRIMARY KEY,
-    report_type VARCHAR(20) NOT NULL,
-    reason TEXT NOT NULL,
-    status VARCHAR(10) NOT NULL,
     listing_id INT DEFAULT NULL,
     sitter_id INT DEFAULT NULL,
     admin_id INT DEFAULT NULL,
+    comments TEXT,
+    status VARCHAR(10) DEFAULT 'Pending',
     FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE SET NULL,
     FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE SET NULL,
-    FOREIGN KEY (admin_id) REFERENCES Admin(admin_id) ON DELETE SET NULL,
-    CONSTRAINT report_status_check CHECK (status IN ('Pending', 'Resolved'))
-    --CONSTRAINT report_type_check CHECK (report_type IN ('SitterReport', 'OwnerReport'))
-
+    FOREIGN KEY (admin_id) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
+
 ---DUMMY DATA
-INSERT INTO HouseOwner (name, address, phone, email, isVerified) VALUES
-('Anders Hansen', 'Vesterbrogade 50, 1620 Copenhagen', '45-12345678', 'anders.hansen@gmail.com', TRUE),
-('Marie Jensen', 'Nørrebrogade 78, 2200 Copenhagen N', '45-87654321', 'marie.jensen@gmail.com', TRUE),
-('Mads Nielsen', 'Øster Allé 15, 2100 Copenhagen Ø', '45-23456789', 'mads.nielsen@gmail.com', FALSE),
-('Emma Christensen', 'Amagerbrogade 120, 2300 Copenhagen S', '45-11223344', 'emma.christensen@gmail.com', TRUE),
-('Søren Larsen', 'Falkoner Allé 12, 2000 Frederiksberg', '45-55667788', 'soren.larsen@gmail.com', FALSE);
 
-INSERT INTO HouseSitter (name, experience, skills, email, isVerified) VALUES
-('Emilie Larsen', '2 years of experience in pet sitting and gardening', 'Pet care, Gardening', 'emilie.larsen@gmail.com', TRUE),
-('Kasper Pedersen', '1 year of experience, focused on cleaning and pet care', 'Cleaning, Pet care', 'kasper.pedersen@gmail.com', TRUE),
-('Sofie Sørensen', 'New to house sitting, eager to learn', 'Basic cleaning, Plant care', 'sofie.sorensen@gmail.com', FALSE),
-('Frederik Rasmussen', 'Experienced with large pets and house maintenance', 'Pet care, General maintenance', 'frederik.rasmussen@gmail.com', TRUE),
-('Lise Møller', '5 years of experience with house sitting and pet care', 'Pet care, Cleaning', 'lise.moller@gmail.com', TRUE);
+INSERT INTO Admin (email, password) VALUES
+('admin1@housepal.com', '12345'),
+('admin2@housepal.com', '12345');
 
-INSERT INTO Admin (email) VALUES
-('admin1@housepal.dk'),
-('admin2@housepal.dk'),
-('admin3@housepal.dk');
+INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES
+('niels.jensen@gmail.com', '12345', 'profile1.jpg', '123456-7890', '+45 12345678', TRUE, 1),
+('karen.sorensen@gmail.com', '12345', 'profile2.jpg', '234567-8901', '+45 23456789', TRUE, 1),
+('mikkel.pedersen@gmail.com', '12345', 'profile3.jpg', '345678-9012', '+45 34567890', FALSE, NULL),
+('anne.larsen@gmail.com', '12345', 'profile4.jpg', '456789-0123', '+45 45678901', TRUE, 2);
 
-INSERT INTO HouseProfile (owner_id, description, chores, rules, amenities) VALUES
-(1, '3-bedroom house with a garden and 2 cats', 'Feed the cats, Water the plants, Clean the house', 'No smoking, No parties', 'WiFi, Garage, Garden'),
-(2, 'Modern apartment, perfect for single house sitters', 'Water the plants, Collect the mail', 'No pets, No loud noise after 10PM', 'Air conditioner, WiFi, Parking spot'),
-(3, 'Vacation house near the beach, great for summer', 'Feed the dog, Clean the pool, Water the plants', 'No pets allowed, No overnight guests', 'Swimming pool, WiFi, Garden, Garage'),
-(4, 'Cozy cottage in the countryside', 'Take care of the chickens, Water the vegetable garden', 'No smoking, No loud noise', 'Fireplace, WiFi, Large garden'),
-(5, 'Spacious house with a pool and gym', 'Clean the pool, Take care of the gym, Feed the fish', 'No pets, No parties', 'WiFi, Pool, Gym');
+INSERT INTO HouseOwner (id, address, biography) VALUES
+(1, '123 Nyhavn, Copenhagen', 'Loves traveling and pets. Looking for responsible sitters.'),
+(2, '45 Amagerbrogade, Copenhagen', 'Looking for someone to take care of plants and garden.'),
+(3, '78 Aarhusvej, Aarhus', 'We often travel, need sitters to care for our dogs.'),
+(4, '101 Odensegade, Odense', 'Cats lover, need help when on business trips.');
+
+INSERT INTO HouseProfile (owner_id, description) VALUES
+(1, 'Beautiful house with a garden in central Copenhagen.'),
+(2, 'Charming apartment near the beach with a large terrace.'),
+(3, 'Spacious villa in Aarhus with a backyard. Perfect for dog lovers.'),
+(4, 'Modern house in Odense. Cozy and perfect for cat lovers.');
+
+INSERT INTO HousePictures (profile_id, picture) VALUES
+(1, 'house1.jpg'),
+(1, 'garden1.jpg'),
+(2, 'house2.jpg'),
+(2, 'terrace.jpg'),
+(3, 'house3.jpg'),
+(3, 'backyard.jpg'),
+(4, 'house4.jpg');
 
 INSERT INTO HouseListing (profile_id, startDate, endDate, status) VALUES
-(1, '2024-06-01', '2024-06-15', 'Open'),
-(2, '2024-07-01', '2024-07-10', 'Open'),
-(3, '2024-08-01', '2024-08-20', 'Closed'),
-(4, '2024-09-01', '2024-09-30', 'Open'),
-(5, '2024-10-01', '2024-10-15', 'Unavailable');
-
-INSERT INTO HouseListing (profile_id, startDate, endDate, status) VALUES
-(1, '2024-06-01', '2024-06-15', 'Open'),
-(2, '2024-07-01', '2024-07-10', 'Open'),
-(3, '2024-08-01', '2024-08-20', 'Closed'),
-(4, '2024-09-01', '2024-09-30', 'Open'),
-(5, '2024-10-01', '2024-10-15', 'Unavailable');
-
-INSERT INTO Application (listing_id, sitter_id, message, status) VALUES
-(1, 1, 'I have experience with cats and can take care of your home.', 'Pending'),
-(2, 2, 'I can water the plants and collect the mail during your absence.', 'Approved'),
-(3, 3, 'I would love to take care of the beach house.', 'Rejected'),
-(4, 4, 'I am experienced with chickens and gardening, would love to help!', 'Pending'),
-(5, 5, 'I can maintain the pool and gym, and take care of the fish.', 'Pending');
-
-INSERT INTO Review (review_type, rating, comments, listing_id, sitter_id) VALUES
-('HouseReview', 5, 'Emilie was fantastic, took great care of the cats and the house was spotless.', 1, 1),
-('SitterReview', 4, 'The apartment was well-maintained, but some instructions were unclear.', 2, 2),
-('HouseReview', 2, 'Sofie did not follow all the rules, and the dog was not well cared for.', 3, 3),
-('SitterReview', 5, 'Frederik did an excellent job, everything was in perfect condition when I returned.', 4, 4),
-('HouseReview', 4, 'Lise took good care of the fish and maintained the gym and pool well.', 5, 5);
-
-INSERT INTO Report (report_type, reason, status, listing_id, sitter_id, admin_id) VALUES
-('HouseOwnerReport', 'The sitter did not water the plants as instructed.', 'Pending', 1, 3, 1),
-('HouseSitterReport', 'The owner did not provide clear instructions for pet care.', 'Resolved', 2, 2, 2),
-('HouseOwnerReport', 'The sitter broke the no-smoking rule.', 'Pending', 3, 5, 3),
-('HouseSitterReport', 'The house was not in a clean state upon arrival.', 'Resolved', 4, 1, 2);
+(1, '2024-11-01', '2024-11-30', 'Open'),
+(2, '2024-12-01', '2024-12-15', 'Open'),
+(3, '2024-10-01', '2024-10-15', 'Closed'),
+(4, '2024-12-20', '2025-01-05', 'Open');
+INSERT INTO Chores (type) VALUES
+('Water plants'),
+('Feed pets'),
+('Take out trash'),
+('Mow the lawn');
+INSERT INTO Rules (type) VALUES
+('No smoking'),
+('No parties'),
+('Keep noise to a minimum');
+INSERT INTO Amenities (type) VALUES
+('Wi-Fi'),
+('Washing machine'),
+('Dishwasher'),
+('Parking');
+INSERT INTO Skills (type) VALUES
+('Pet care'),
+('Gardening'),
+('Cleaning'),
+('Home maintenance');
+INSERT INTO House_rules (profile_id, rule_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 1),
+(4, 2);
+INSERT INTO House_chores (profile_id, chore_id) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(3, 2),
+(4, 3);
+INSERT INTO House_amenities (profile_id, amenity_id) VALUES
+(1, 1),
+(1, 3),
+(2, 1),
+(2, 4),
+(3, 1),
+(4, 2);
+INSERT INTO HouseSitter (id, past_experience, biography) VALUES
+(3, 'Previous experience caring for dogs and cats.', 'Animal lover, available for short-term house sits.'),
+(4, 'Skilled in plant care and pet care.', 'Looking for long-term sitting opportunities in Denmark.');
+INSERT INTO SitterPictures (sitter_id, picture) VALUES
+(1, 'sitter1.jpg'),
+(2, 'sitter2.jpg');
+INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 4);
+INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
+(1, 1, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
+(2, 2, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
+INSERT INTO HouseReview (listing_id, rating, comments, date) VALUES
+(1, 5, 'Beautiful house, great experience!', '2024-10-20'),
+(2, 4, 'Lovely home, perfect location.', '2024-10-21');
+INSERT INTO SitterReview (listing_id, rating, comments, date) VALUES
+(1, 5, 'Excellent sitter, took great care of our pets.', '2024-10-22'),
+(2, 4, 'Very reliable and responsible.', '2024-10-21');
+INSERT INTO Report (listing_id, sitter_id, admin_id, comments, status) VALUES
+(1, 1, 1, 'Sitter was not responsive.', 'Pending'),
+(2, 2, 2, 'House was left untidy.', 'Resolved');

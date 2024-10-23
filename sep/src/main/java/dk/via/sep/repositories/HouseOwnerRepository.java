@@ -29,13 +29,13 @@ public class HouseOwnerRepository {
   }
 
   public void save(HouseOwner houseOwner) {
-    String sql = "INSERT INTO HouseOwner (name, address, phone, email, isVerified) VALUES (?, ?, ?, ?, ?)";
-    jdbcTemplate.update(sql, houseOwner.getName(), houseOwner.getAddress(), houseOwner.getPhone(), houseOwner.getEmail(), houseOwner.getVerified());
+    String sql = "INSERT INTO HouseOwner (id, address, biography) VALUES (?, ?, ?)";
+    jdbcTemplate.update(sql, houseOwner.getUserId(), houseOwner.getAddress(), houseOwner.getBiography());
   }
 
   public void update(HouseOwner houseOwner) {
-    String sql = "UPDATE HouseOwner SET name = ?, address = ?, phone = ?, email = ?, isVerified = ? WHERE owner_id = ?";
-    jdbcTemplate.update(sql, houseOwner.getName(), houseOwner.getAddress(), houseOwner.getPhone(), houseOwner.getEmail(), houseOwner.getVerified(), houseOwner.getOwnerId());
+    String sql = "UPDATE HouseOwner SET address = ?, biography = ? WHERE owner_id = ?";
+    jdbcTemplate.update(sql, houseOwner.getAddress(), houseOwner.getBiography(), houseOwner.getOwnerId());
   }
 
   public void deleteById(Long id) {
@@ -48,11 +48,9 @@ public class HouseOwnerRepository {
     public HouseOwner mapRow(ResultSet rs, int rowNum) throws SQLException {
       HouseOwner owner = new HouseOwner();
       owner.setOwnerId(rs.getLong("owner_id"));
-      owner.setName(rs.getString("name"));
+      owner.setUserId(rs.getInt("id"));
       owner.setAddress(rs.getString("address"));
-      owner.setPhone(rs.getString("phone"));
-      owner.setEmail(rs.getString("email"));
-      owner.setVerified(rs.getBoolean("isVerified"));
+      owner.setBiography(rs.getString("biography"));
       return owner;
     }
   }

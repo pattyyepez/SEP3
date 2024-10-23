@@ -1,20 +1,23 @@
 syntax = "proto3";
 
 service HouseOwnerService {
-    rpc GetOwners (EmptyRequest) returns (HouseOwnerResponse);
+  rpc GetHouseOwner (HouseOwnerRequest) returns (HouseOwnerResponse);
+  rpc CreateHouseOwner (HouseOwner) returns (HouseOwnerResponse);
+  rpc UpdateHouseOwner (HouseOwner) returns (HouseOwnerResponse);
+  rpc DeleteHouseOwner (HouseOwnerRequest) returns (HouseOwnerResponse);
 }
 
-message EmptyRequest {}
+message HouseOwnerRequest {
+  int64 ownerId = 1;
+}
 
 message HouseOwnerResponse {
-    repeated HouseOwner owners = 1;
+  HouseOwner houseOwner = 1;
 }
 
 message HouseOwner {
-    string ownerId = 1;
-    string name = 2;
-    string address = 3;
-    string phone = 4;
-    string email = 5;
-    bool isVerified = 6;
+  int64 ownerId = 1;
+  int32 userId = 2;
+  string address = 3;
+  string biography = 4;
 }
