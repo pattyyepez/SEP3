@@ -1,51 +1,162 @@
-<build>
-	<extensions>
-		<extension>
-			<groupId>kr.motd.maven</groupId>
-			<artifactId>os-maven-plugin</artifactId>
-			<version>1.6.0</version>
-		</extension>
-	</extensions>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-	<plugins>
-		<!-- Spring Boot Maven Plugin -->
-		<plugin>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>dk.via</groupId>
+	<artifactId>sep</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>sep</name>
+	<description>sep</description>
+
+	<properties>
+		<os.detected.classifier>windows-x86_64</os.detected.classifier>
+		<java.version>17</java.version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<!-- Spring Boot Web Dependency -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-		</plugin>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 
-		<!-- Protobuf Maven Plugin for gRPC -->
-		<plugin>
-			<groupId>org.xolstice.maven.plugins</groupId>
-			<artifactId>protobuf-maven-plugin</artifactId>
-			<version>0.6.1</version>
-			<configuration>
-				<protocArtifact>com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}</protocArtifact>
-				<pluginId>grpc-java</pluginId>
-				<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}</pluginArtifact>
-			</configuration>
-			<executions>
-				<execution>
-					<goals>
-						<goal>compile</goal>
-						<goal>compile-custom</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
+		<!-- Spring Data JPA Dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 
-		<!-- OS Maven Plugin for OS detection -->
-		<plugin>
-			<groupId>kr.motd.maven</groupId>
-			<artifactId>os-maven-plugin</artifactId>
-			<version>1.6.0</version>
-			<executions>
-				<execution>
-					<goals>
-						<goal>attach-classifier</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-</build>
+		<!-- JDBC Dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+
+		<!-- PostgreSQL Database Dependency -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Dependencias relacionadas con gRPC -->
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-core</artifactId>
+			<version>1.49.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-netty</artifactId>
+			<version>1.49.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-protobuf</artifactId>
+			<version>1.49.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-stub</artifactId>
+			<version>1.49.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.21.7</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-common</artifactId>
+			<version>4.1.113.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-buffer</artifactId>
+			<version>4.1.113.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-transport</artifactId>
+			<version>4.1.113.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+			<version>4.1.113.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec-http2</artifactId>
+			<version>4.1.113.Final</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.6.1</version>
+			</extension>
+		</extensions>
+
+		<plugins>
+			<!-- Spring Boot Maven Plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- Protobuf Maven Plugin for gRPC -->
+			<plugin>
+				<groupId>org.xolstice.maven.plugins</groupId>
+				<artifactId>protobuf-maven-plugin</artifactId>
+				<version>0.6.1</version>
+				<configuration>
+					<protocArtifact>com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}</protocArtifact>
+					<pluginId>grpc-java</pluginId>
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}</pluginArtifact>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>compile-custom</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- OS Maven Plugin for OS detection -->
+			<plugin>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.6.1</version>
+				<executions>
+					<!-- 	<execution>
+                            <goals>
+                                <goal>attach-classifier</goal>
+                            </goals>
+                        </execution>-->
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+
+    </project>
