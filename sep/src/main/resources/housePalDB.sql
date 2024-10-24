@@ -28,14 +28,14 @@ CREATE TABLE Users (
 CREATE TABLE HouseOwner (
     owner_id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL,
-    biography TEXT,
+    biography VARCHAR(1000) NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE HouseProfile (
     profile_id SERIAL PRIMARY KEY,
     owner_id INT NOT NULL,
-    description TEXT,
+    description VARCHAR(1000) NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES HouseOwner(owner_id) ON DELETE CASCADE
 );
 
@@ -98,8 +98,8 @@ CREATE TABLE House_amenities (
 
 CREATE TABLE HouseSitter (
     sitter_id SERIAL PRIMARY KEY,
-    past_experience TEXT,
-    biography TEXT,
+    past_experience VARCHAR(1000) NOT NULL,
+    biography VARCHAR(1000) NOT NULL,
     FOREIGN KEY (sitter_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
@@ -121,7 +121,7 @@ CREATE TABLE Application (
     application_id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
     sitter_id INT NOT NULL,
-    message TEXT,
+    message VARCHAR(10000) NOT NULL,
     status VARCHAR(10) NOT NULL CHECK (status IN ('Pending', 'Approved', 'Rejected')),
     date DATE NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE CASCADE,
@@ -132,7 +132,7 @@ CREATE TABLE HouseReview (
     id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
-    comments TEXT,
+    comments VARCHAR(1000) NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE CASCADE
 );
@@ -141,7 +141,7 @@ CREATE TABLE SitterReview (
     id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
-    comments TEXT,
+    comments VARCHAR(1000) NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE CASCADE
 );
@@ -151,7 +151,7 @@ CREATE TABLE Report (
     listing_id INT DEFAULT NULL,
     sitter_id INT DEFAULT NULL,
     admin_id INT DEFAULT NULL,
-    comments TEXT,
+    comments VARCHAR(1000) NOT NULL,
     status VARCHAR(10) DEFAULT 'Pending',
     FOREIGN KEY (listing_id) REFERENCES HouseListing(listing_id) ON DELETE SET NULL,
     FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE SET NULL,
@@ -168,6 +168,8 @@ INSERT INTO Admin (email, password) VALUES
 INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES
 ('niels.jensen@gmail.com', '12345', 'profile1.jpg', '123456-7890', '+45 12345678', TRUE, 1),
 ('karen.sorensen@gmail.com', '12345', 'profile2.jpg', '234567-8901', '+45 23456789', TRUE, 1),
+('kristian.jensen@gmail.com', '12345', 'profile5.jpg', '777777-1111', '+45 34567790', FALSE, NULL),
+('lene.moller@gmail.com', '12345', 'profile6.jpg', '452229-2223', '+45 45678901', TRUE, 2),
 ('mikkel.pedersen@gmail.com', '12345', 'profile3.jpg', '345678-9012', '+45 34567890', FALSE, NULL),
 ('anne.larsen@gmail.com', '12345', 'profile4.jpg', '456789-0123', '+45 45678901', TRUE, 2);
 
@@ -185,12 +187,18 @@ INSERT INTO HouseProfile (owner_id, description) VALUES
 
 INSERT INTO HousePictures (profile_id, picture) VALUES
 (1, 'house1.jpg'),
-(1, 'garden1.jpg'),
+(1, 'house11.jpg'),
+(1, 'house111.jpg'),
 (2, 'house2.jpg'),
-(2, 'terrace.jpg'),
+(2, 'house22.jpg'),
+(2, 'house222.jpg'),
 (3, 'house3.jpg'),
-(3, 'backyard.jpg'),
-(4, 'house4.jpg');
+(3, 'house33.jpg'),
+(3, 'house333.jpg'),
+(4, 'house4.jpg'),
+(4, 'house44.jpg'),
+(4, 'house444.jpg');
+
 
 INSERT INTO HouseListing (profile_id, startDate, endDate, status) VALUES
 (1, '2024-11-01', '2024-11-30', 'Open'),
@@ -236,19 +244,25 @@ INSERT INTO House_amenities (profile_id, amenity_id) VALUES
 (3, 1),
 (4, 2);
 INSERT INTO HouseSitter (sitter_id, past_experience, biography) VALUES
-(3, 'Previous experience caring for dogs and cats.', 'Animal lover, available for short-term house sits.'),
-(4, 'Skilled in plant care and pet care.', 'Looking for long-term sitting opportunities in Denmark.');
+(5, 'Previous experience caring for dogs and cats.', 'Animal lover, available for short-term house sits.'),
+(6, 'Skilled in plant care and pet care.', 'Looking for long-term sitting opportunities in Denmark.');
 INSERT INTO SitterPictures (sitter_id, picture) VALUES
-(1, 'sitter1.jpg'),
-(2, 'sitter2.jpg');
+(5, 'sitter5.jpg'),
+(5, 'sitter55.jpg'),
+(5, 'sitter555.jpg'),
+(6, 'sitter6.jpg'),
+(6, 'sitter66.jpg'),
+(6, 'sitter666.jpg');
 INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES
-(1, 1),
-(1, 2),
-(2, 2),
-(2, 4);
+(5, 1),
+(5, 2),
+(5, 3),
+(6, 1),
+(6, 2),
+(6, 4);
 INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
-(1, 1, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
-(2, 2, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
+(1, 5, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
+(2, 6, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
 INSERT INTO HouseReview (listing_id, rating, comments, date) VALUES
 (1, 5, 'Beautiful house, great experience!', '2024-10-20'),
 (2, 4, 'Lovely home, perfect location.', '2024-10-21');
@@ -256,5 +270,5 @@ INSERT INTO SitterReview (listing_id, rating, comments, date) VALUES
 (1, 5, 'Excellent sitter, took great care of our pets.', '2024-10-22'),
 (2, 4, 'Very reliable and responsible.', '2024-10-21');
 INSERT INTO Report (listing_id, sitter_id, admin_id, comments, status) VALUES
-(1, 1, 1, 'Sitter was not responsive.', 'Pending'),
-(2, 2, 2, 'House was left untidy.', 'Resolved');
+(1, 5, 1, 'Sitter was not responsive.', 'Pending'),
+(2, 6, 2, 'House was left untidy.', 'Resolved');
