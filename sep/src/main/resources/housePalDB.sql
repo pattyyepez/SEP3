@@ -27,10 +27,9 @@ CREATE TABLE Users (
 
 CREATE TABLE HouseOwner (
     owner_id SERIAL PRIMARY KEY,
-    id INT NOT NULL,
     address VARCHAR(255) NOT NULL,
     biography TEXT,
-    FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE
+    FOREIGN KEY (owner_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE HouseProfile (
@@ -97,13 +96,11 @@ CREATE TABLE House_amenities (
 );
 
 
-
 CREATE TABLE HouseSitter (
     sitter_id SERIAL PRIMARY KEY,
-    id INT NOT NULL,
     past_experience TEXT,
     biography TEXT,
-    FOREIGN KEY (id) REFERENCES Users(id) ON DELETE CASCADE
+    FOREIGN KEY (sitter_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE SitterPictures (
@@ -174,7 +171,7 @@ INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, adm
 ('mikkel.pedersen@gmail.com', '12345', 'profile3.jpg', '345678-9012', '+45 34567890', FALSE, NULL),
 ('anne.larsen@gmail.com', '12345', 'profile4.jpg', '456789-0123', '+45 45678901', TRUE, 2);
 
-INSERT INTO HouseOwner (id, address, biography) VALUES
+INSERT INTO HouseOwner (owner_id, address, biography) VALUES
 (1, '123 Nyhavn, Copenhagen', 'Loves traveling and pets. Looking for responsible sitters.'),
 (2, '45 Amagerbrogade, Copenhagen', 'Looking for someone to take care of plants and garden.'),
 (3, '78 Aarhusvej, Aarhus', 'We often travel, need sitters to care for our dogs.'),
@@ -238,7 +235,7 @@ INSERT INTO House_amenities (profile_id, amenity_id) VALUES
 (2, 4),
 (3, 1),
 (4, 2);
-INSERT INTO HouseSitter (id, past_experience, biography) VALUES
+INSERT INTO HouseSitter (sitter_id, past_experience, biography) VALUES
 (3, 'Previous experience caring for dogs and cats.', 'Animal lover, available for short-term house sits.'),
 (4, 'Skilled in plant care and pet care.', 'Looking for long-term sitting opportunities in Denmark.');
 INSERT INTO SitterPictures (sitter_id, picture) VALUES

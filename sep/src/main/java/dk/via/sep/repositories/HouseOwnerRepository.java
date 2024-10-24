@@ -23,14 +23,14 @@ public class HouseOwnerRepository {
     return jdbcTemplate.query(sql, new HouseOwnerRowMapper());
   }
 
-  public HouseOwner findById(Long id) {
+  public HouseOwner findById(int owner_id) {
     String sql = "SELECT * FROM HouseOwner WHERE owner_id = ?";
-    return jdbcTemplate.queryForObject(sql, new HouseOwnerRowMapper(), id);
+    return jdbcTemplate.queryForObject(sql, new HouseOwnerRowMapper(), owner_id);
   }
 
   public void save(HouseOwner houseOwner) {
-    String sql = "INSERT INTO HouseOwner (id, address, biography) VALUES (?, ?, ?)";
-    jdbcTemplate.update(sql, houseOwner.getUserId(), houseOwner.getAddress(), houseOwner.getBiography());
+    String sql = "INSERT INTO HouseOwner (owner_id, address, biography) VALUES (?, ?, ?)";
+    jdbcTemplate.update(sql, houseOwner.getOwnerId(), houseOwner.getAddress(), houseOwner.getBiography());
   }
 
   public void update(HouseOwner houseOwner) {
@@ -38,17 +38,16 @@ public class HouseOwnerRepository {
     jdbcTemplate.update(sql, houseOwner.getAddress(), houseOwner.getBiography(), houseOwner.getOwnerId());
   }
 
-  public void deleteById(Long id) {
+  public void deleteById(int owner_id) {
     String sql = "DELETE FROM HouseOwner WHERE owner_id = ?";
-    jdbcTemplate.update(sql, id);
+    jdbcTemplate.update(sql, owner_id);
   }
 
   private static class HouseOwnerRowMapper implements RowMapper<HouseOwner> {
     @Override
     public HouseOwner mapRow(ResultSet rs, int rowNum) throws SQLException {
       HouseOwner owner = new HouseOwner();
-      owner.setOwnerId(rs.getLong("owner_id"));
-      owner.setUserId(rs.getInt("id"));
+      owner.setOwnerId(rs.getInt("owner_id"));
       owner.setAddress(rs.getString("address"));
       owner.setBiography(rs.getString("biography"));
       return owner;

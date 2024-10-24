@@ -1,26 +1,16 @@
 package dk.via.sep.domain;
 
 public class HouseOwner {
-  private Long ownerId;
-  private int userId;    // Foreign key to Users table
+  private int ownerId;
   private String address;
   private String biography;
 
-  // Getters and setters
-  public Long getOwnerId() {
+  public int getOwnerId() {
     return ownerId;
   }
 
-  public void setOwnerId(Long ownerId) {
+  public void setOwnerId(int ownerId) {
     this.ownerId = ownerId;
-  }
-
-  public int getUserId() {
-    return userId;
-  }
-
-  public void setUserId(int userId) {
-    this.userId = userId;
   }
 
   public String getAddress() {

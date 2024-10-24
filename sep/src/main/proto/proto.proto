@@ -1,4 +1,7 @@
 syntax = "proto3";
+package dk.via.sep;
+option java_multiple_files = true;
+
 
 service HouseOwnerService {
   rpc GetHouseOwner (HouseOwnerRequest) returns (HouseOwnerResponse);
@@ -8,7 +11,7 @@ service HouseOwnerService {
 }
 
 message HouseOwnerRequest {
-  int64 ownerId = 1;
+  int32 ownerId = 1;
 }
 
 message HouseOwnerResponse {
@@ -16,8 +19,7 @@ message HouseOwnerResponse {
 }
 
 message HouseOwner {
-  int64 ownerId = 1;
-  int32 userId = 2;
-  string address = 3;
-  string biography = 4;
+  int32 ownerId = 1;
+  string address = 2;
+  string biography = 3;
 }
