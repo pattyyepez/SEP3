@@ -1,0 +1,29 @@
+﻿@page "/HouseOwnerPage"
+@rendermode InteractiveServer
+
+@using Entities
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Components
+@using Services
+
+<h3>HouseOwnerPage</h3>
+
+<input @bind="houseOwnerId" />
+<button @onclick="GetHouseOwner">Get House Owner</button>
+
+@* <input @bind="houseOwnerAddress" /> *@
+@* <input @bind="houseOwnerBiography" /> *@
+
+<p>Gotten House Owner: @houseOwner.OwnerId, @houseOwner.Address, @houseOwner.Biography</p>
+
+@code {
+    [Inject] public IHouseOwnerService HouseOwnerService { get; set; }
+    string houseOwnerId = ""; 
+    HouseOwner houseOwner = new HouseOwner();
+    
+    async void GetHouseOwner()
+    {
+        houseOwner = await HouseOwnerService.GetHouseOwner(int.Parse(houseOwnerId));
+        Console.WriteLine($"{houseOwner.OwnerId} - {houseOwner.Address} - {houseOwner.Biography}");
+    }
+}

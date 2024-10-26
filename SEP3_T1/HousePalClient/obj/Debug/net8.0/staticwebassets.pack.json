@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\HousePalClient.bundle.scp.css",
+      "PackagePath": "staticwebassets\\HousePalClient.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.HousePalClient.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.HousePalClient.props",
+      "PackagePath": "build\\HousePalClient.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.HousePalClient.props",
+      "PackagePath": "buildMultiTargeting\\HousePalClient.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.HousePalClient.props",
+      "PackagePath": "buildTransitive\\HousePalClient.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
