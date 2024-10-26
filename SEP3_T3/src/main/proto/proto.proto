@@ -1,5 +1,5 @@
 syntax = "proto3";
-package dk.via.sep;
+package en.via.sep3_t3;
 option java_multiple_files = true;
 option csharp_namespace = "GrpcHousePalClient";
 
@@ -12,6 +12,13 @@ message HouseOwnerResponse {
   string address = 2;
   string biography = 3;
 }
+
+
+//message HouseOwner {
+//  int32 ownerId = 1;
+//  string address = 2;
+//  string biography = 3;
+//}
 
 message CreateHouseOwnerRequest {
   string address = 1;

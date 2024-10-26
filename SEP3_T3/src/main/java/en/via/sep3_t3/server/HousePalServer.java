@@ -25,18 +25,18 @@ public class HousePalServer {
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
     houseOwnerRepository = new HouseOwnerRepository(jdbcTemplate);
-//    HousePalServiceImpl housePalService = new HousePalServiceImpl(houseOwnerRepository);
+    HousePalServiceImpl housePalService = new HousePalServiceImpl(houseOwnerRepository);
 
     for (HouseOwner temp : houseOwnerRepository.findAll()){
       System.out.println(temp.getOwnerId() + " - " + temp.getAddress() + " - " + temp.getBiography());
     }
 
-//    Server server = NettyServerBuilder.forPort(8080)
-//        .addService(housePalService)
-//        .build();
+    Server server = NettyServerBuilder.forPort(9090)
+        .addService(housePalService)
+        .build();
 
-//    server.start();
-//    System.out.println("HousePal.....");
-//    server.awaitTermination();
+    server.start();
+    System.out.println("HousePal.....");
+    server.awaitTermination();
   }
 }
