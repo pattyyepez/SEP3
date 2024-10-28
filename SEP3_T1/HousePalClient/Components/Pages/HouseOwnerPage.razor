@@ -11,19 +11,62 @@
 <input @bind="houseOwnerId" />
 <button @onclick="GetHouseOwner">Get House Owner</button>
 
-@* <input @bind="houseOwnerAddress" /> *@
-@* <input @bind="houseOwnerBiography" /> *@
+<br/>
+
+<input @bind="houseOwnerAddress" />
+<input @bind="houseOwnerBiography" />
+<button @onclick="CreateHouseOwner">Create House Owner</button>
+
+<br/>
+
+<input @bind="houseOwnerId" />
+<input @bind="houseOwnerAddress" />
+<input @bind="houseOwnerBiography" />
+<button @onclick="UpdateHouseOwner">Update House Owner</button>
+
+<br/>
+
+<input @bind="houseOwnerId" />
+<button @onclick="DeleteHouseOwner">Delete House Owner</button>
 
 <p>Gotten House Owner: @houseOwner.OwnerId, @houseOwner.Address, @houseOwner.Biography</p>
 
 @code {
     [Inject] public IHouseOwnerService HouseOwnerService { get; set; }
-    string houseOwnerId = ""; 
+    string houseOwnerId = "";
+    string houseOwnerAddress = "";
+    string houseOwnerBiography = "";
     HouseOwner houseOwner = new HouseOwner();
     
     async void GetHouseOwner()
     {
-        houseOwner = await HouseOwnerService.GetHouseOwner(int.Parse(houseOwnerId));
+        houseOwner = await HouseOwnerService.GetSingleAsync(int.Parse(houseOwnerId));
         Console.WriteLine($"{houseOwner.OwnerId} - {houseOwner.Address} - {houseOwner.Biography}");
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    async void CreateHouseOwner()
+    {
+        houseOwner.Address = houseOwnerAddress;
+        houseOwner.Biography = houseOwnerBiography;
+        houseOwner = await HouseOwnerService.AddAsync(houseOwner);
+        Console.WriteLine($"{houseOwner.OwnerId} - {houseOwner.Address} - {houseOwner.Biography}");
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    async void UpdateHouseOwner()
+    {
+        houseOwner.OwnerId = int.Parse(houseOwnerId);
+        houseOwner.Address = houseOwnerAddress;
+        houseOwner.Biography = houseOwnerBiography;
+        houseOwner = await HouseOwnerService.UpdateAsync(houseOwner);
+        Console.WriteLine($"{houseOwner.OwnerId} - {houseOwner.Address} - {houseOwner.Biography}");
+        await InvokeAsync(StateHasChanged);
+    }
+    
+     async void DeleteHouseOwner()
+    {
+        await HouseOwnerService.DeleteAsync(int.Parse(houseOwnerId));
+        // await InvokeAsync(StateHasChanged);
     }
 }

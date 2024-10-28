@@ -49,3 +49,4 @@ C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Mic
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Services.dll
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Services.pdb
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.sourcelink.json
