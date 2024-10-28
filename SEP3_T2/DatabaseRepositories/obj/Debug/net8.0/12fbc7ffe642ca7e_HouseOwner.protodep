@@ -1,0 +1,2 @@
+obj\Debug\net8.0\Protos/HouseOwner.cs \
+obj\Debug\net8.0\Protos/HouseOwnerGrpc.cs: Protos/HouseOwner.proto

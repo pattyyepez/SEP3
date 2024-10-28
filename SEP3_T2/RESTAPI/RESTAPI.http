@@ -1,0 +1,6 @@
+@RESTAPI_HostAddress = http://localhost:5025
+
+GET {{RESTAPI_HostAddress}}/housepal/
+Accept: application/json
+
+###
