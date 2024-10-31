@@ -23,44 +23,104 @@ public class HouseOwnerRepository {
   }
 
   public List<HouseOwner> findAll() {
-    String sql = "SELECT * FROM HouseOwner";
+    String sql = "SELECT *\n"
+        + "FROM HouseOwner\n"
+        + "JOIN Users U on U.id = HouseOwner.owner_id";
     return jdbcTemplate.query(sql, new HouseOwnerRowMapper());
   }
 
   public HouseOwner findById(int owner_id) {
-    String sql = "SELECT * FROM HouseOwner WHERE owner_id = ?";
+    String sql = "SELECT *\n"
+        + "FROM HouseOwner\n"
+        + "JOIN Users U on U.id = HouseOwner.owner_id\n"
+        + "WHERE owner_id = ?";
     return jdbcTemplate.queryForObject(sql, new HouseOwnerRowMapper(), owner_id);
   }
 
-  public int save(HouseOwner houseOwner) {
+  public int save(HouseOwner houseOwner) {            // CHANGE THE PROFILE PICTURE CODE!!!
     KeyHolder keyHolder = new GeneratedKeyHolder();
+
     jdbcTemplate.update(connection -> {
-      PreparedStatement ps = connection.prepareStatement("INSERT INTO HouseOwner (address, biography) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
-      ps.setString(1, houseOwner.getAddress());
-      ps.setString(2, houseOwner.getBiography());
+      PreparedStatement ps = connection.prepareStatement(
+          "INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES\n"
+              + "(?, ?, ?, ?, ?, FALSE, NULL)"
+
+          , Statement.RETURN_GENERATED_KEYS);
+      ps.setString(1, houseOwner.getEmail());
+      ps.setString(2, houseOwner.getPassword());
+      ps.setString(3, houseOwner.getProfilePicture());
+      ps.setString(4, houseOwner.getCPR());
+      ps.setString(5, houseOwner.getPhone());
       return ps;
     }, keyHolder);
-    return (int) keyHolder.getKeys().get("owner_id");
+
+    int id = (int) keyHolder.getKeys().get("id");
+
+    jdbcTemplate.update(connection -> {
+      PreparedStatement ps = connection.prepareStatement(
+          "INSERT INTO HouseOwner (owner_id, address, biography) VALUES\n"
+              + "(?, ?, ?)"
+
+          , Statement.RETURN_GENERATED_KEYS);
+      ps.setInt(1, id);
+      ps.setString(2, houseOwner.getAddress());
+      ps.setString(3, houseOwner.getBiography());
+      return ps;
+    });
+
+    return id;
   }
 
   public void update(HouseOwner houseOwner) {
-    String sql = "UPDATE HouseOwner SET address = ?, biography = ? WHERE owner_id = ?";
-    jdbcTemplate.update(sql, houseOwner.getAddress(), houseOwner.getBiography(), houseOwner.getOwnerId());
+    String sql = "UPDATE Users\n"
+        + "SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
+        + "WHERE id = ?";
+
+    jdbcTemplate.update(
+        sql,
+        houseOwner.getEmail(),
+        houseOwner.getPassword(),
+        houseOwner.getProfilePicture(),
+        houseOwner.getCPR(),
+        houseOwner.getPhone(),
+        houseOwner.isVerified(),
+        houseOwner.getAdminId() != 0 ? houseOwner.getAdminId() : null,
+        houseOwner.getUserId());
+
+    sql = "UPDATE HouseOwner SET address = ?, biography = ? WHERE owner_id = ?";
+
+    jdbcTemplate.update(
+        sql,
+        houseOwner.getAddress(),
+        houseOwner.getBiography(),
+        houseOwner.getUserId());
   }
 
   public void deleteById(int owner_id) {
     String sql = "DELETE FROM HouseOwner WHERE owner_id = ?";
+    jdbcTemplate.update(sql, owner_id);
+    sql = "DELETE FROM Users WHERE id = ?";
     jdbcTemplate.update(sql, owner_id);
   }
 
   private static class HouseOwnerRowMapper implements RowMapper<HouseOwner> {
     @Override
     public HouseOwner mapRow(ResultSet rs, int rowNum) throws SQLException {
-      HouseOwner owner = new HouseOwner();
-      owner.setOwnerId(rs.getInt("owner_id"));
-      owner.setAddress(rs.getString("address"));
-      owner.setBiography(rs.getString("biography"));
-      return owner;
+      HouseOwner houseOwner = new HouseOwner();
+
+      houseOwner.setUserId(rs.getInt("owner_id"));
+      houseOwner.setEmail(rs.getString("email"));
+      houseOwner.setPassword(rs.getString("password"));
+      houseOwner.setProfilePicture(rs.getString("profile_picture"));
+      houseOwner.setCPR(rs.getString("CPR"));
+      houseOwner.setPhone(rs.getString("phone"));
+      houseOwner.setVerified(rs.getBoolean("isVerified"));
+      houseOwner.setAdminId(rs.getInt("admin_id"));
+      houseOwner.setAddress(rs.getString("address"));
+      houseOwner.setBiography(rs.getString("biography"));
+
+      return houseOwner;
+
     }
   }
 }

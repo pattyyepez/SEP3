@@ -1,6 +1,6 @@
 package en.via.sep3_t3.dto;
 
-public class HouseOwnerDTO
+public class UpdateHouseOwnerDTO
 {
   // attributes from User
   private int userId;
