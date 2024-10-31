@@ -1,9 +1,9 @@
 ﻿namespace DTOs.HouseOwner;
 
-public class HouseOwnerDTO
+public class UpdateHouseOwnerDTO
 {
     // attributes from User
-    public int UserId { get; set; }
+    // public int UserId { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
     public string ProfilePicture { get; set; }

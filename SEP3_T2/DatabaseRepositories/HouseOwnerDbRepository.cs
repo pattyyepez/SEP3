@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using DTOs;
+using DTOs.HouseOwner;
 using Grpc.Core;
 using Grpc.Net.Client;
 using RepositoryContracts;
@@ -19,34 +20,64 @@ public class HouseOwnerDbRepository : IHouseOwnerRepository
             client = new HouseOwnerService.HouseOwnerServiceClient(channel);
     }
 
-    public Task<HouseOwner> AddAsync(HouseOwner houseOwner)
+    public Task<HouseOwnerDTO> AddAsync(CreateHouseOwnerDTO houseOwner)
     {
         HouseOwnerResponse reply = client.CreateHouseOwner(new CreateHouseOwnerRequest
         {
-            Address = houseOwner.Address, 
+            Email = houseOwner.Email,
+            Password = houseOwner.Password,
+            ProfilePicture = houseOwner.ProfilePicture,
+            CPR = houseOwner.CPR,
+            Phone = houseOwner.Phone,
+            
+            Address = houseOwner.Address,
             Biography = houseOwner.Biography
         });
         
-        return Task.FromResult(new HouseOwner
+        return Task.FromResult(new HouseOwnerDTO
         {
-            OwnerId = reply.OwnerId,
+            UserId = reply.Id,
+            Email = reply.Email,
+            Password = reply.Password,
+            ProfilePicture = reply.ProfilePicture,
+            CPR = reply.CPR,
+            Phone = reply.Phone,
+            IsVerified = reply.IsVerified,
+            AdminId = reply.AdminId,
+            
             Address = reply.Address,
             Biography = reply.Biography
         });
     }
 
-    public Task<HouseOwner> UpdateAsync(HouseOwner houseOwner)
+    public Task<HouseOwnerDTO> UpdateAsync(int id, UpdateHouseOwnerDTO houseOwner)
     {
         HouseOwnerResponse reply = client.UpdateHouseOwner(new UpdateHouseOwnerRequest()
         {
-            OwnerId = houseOwner.OwnerId,
-            Address = houseOwner.Address, 
+            Id = id,
+            Email = houseOwner.Email,
+            Password = houseOwner.Password,
+            ProfilePicture = houseOwner.ProfilePicture,
+            CPR = houseOwner.CPR,
+            Phone = houseOwner.Phone,
+            IsVerified = houseOwner.IsVerified,
+            AdminId = houseOwner.AdminId,
+            
+            Address = houseOwner.Address,
             Biography = houseOwner.Biography
         });
         
-        return Task.FromResult(new HouseOwner
+        return Task.FromResult(new HouseOwnerDTO
         {
-            OwnerId = reply.OwnerId,
+            UserId = reply.Id,
+            Email = reply.Email,
+            Password = reply.Password,
+            ProfilePicture = reply.ProfilePicture,
+            CPR = reply.CPR,
+            Phone = reply.Phone,
+            IsVerified = reply.IsVerified,
+            AdminId = reply.AdminId,
+            
             Address = reply.Address,
             Biography = reply.Biography
         });
@@ -56,29 +87,37 @@ public class HouseOwnerDbRepository : IHouseOwnerRepository
     {
         client.DeleteHouseOwner(new HouseOwnerRequest()
         {
-            OwnerId = id
+            Id = id
         });
         
         return Task.CompletedTask;
     }
 
     // comment
-    public Task<HouseOwner> GetSingleAsync(int id)
+    public Task<HouseOwnerDTO> GetSingleAsync(int id)
     {
         HouseOwnerResponse reply = client.GetHouseOwner(new HouseOwnerRequest
         {
-            OwnerId = id
+            Id = id
         });
         
-        return Task.FromResult(new HouseOwner
+        return Task.FromResult(new HouseOwnerDTO
         {
-            OwnerId = reply.OwnerId,
+            UserId = reply.Id,
+            Email = reply.Email,
+            Password = reply.Password,
+            ProfilePicture = reply.ProfilePicture,
+            CPR = reply.CPR,
+            Phone = reply.Phone,
+            IsVerified = reply.IsVerified,
+            AdminId = reply.AdminId,
+            
             Address = reply.Address,
             Biography = reply.Biography
         });
     }
 
-    public IQueryable<HouseOwner> GetAll()
+    public IQueryable<HouseOwnerDTO> GetAll()
     {
         throw new NotImplementedException();
     }

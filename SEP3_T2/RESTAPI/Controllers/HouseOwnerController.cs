@@ -1,6 +1,5 @@
 ﻿using DTOs;
 using DTOs.HouseOwner;
-using Entities;
 using RepositoryContracts;
 
 namespace RESTAPI.Controllers;
@@ -27,18 +26,19 @@ using System.Threading.Tasks;
             {
                 var response = await _repo.GetSingleAsync(id);
 
-                var houseOwner = new HouseOwnerDTO
-                {
-                    OwnerId = response.OwnerId,
-                    Address = response.Address,
-                    Biography = response.Biography
-                };
+                // var houseOwner = new HouseOwnerDTO
+                // {
+                //     UserId = response.UserId,
+                //     Address = response.Address,
+                //     Biography = response.Biography
+                // };
 
-                return Ok(houseOwner);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error fetching HouseOwner: {ex.Message}");
+                return StatusCode(500, $"Error fetching HouseOwner: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+                
             }
         }
 
@@ -48,13 +48,7 @@ using System.Threading.Tasks;
         {
             try
             {
-                var request = new HouseOwner()
-                {
-                    Address = createDto.Address,
-                    Biography = createDto.Biography
-                };
-
-                var response = await _repo.AddAsync(request);
+                var response = await _repo.AddAsync(createDto);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -65,18 +59,11 @@ using System.Threading.Tasks;
 
         // PUT: api/houseowner/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHouseOwner(int id, [FromBody] CreateHouseOwnerDTO updateDto)
+        public async Task<IActionResult> UpdateHouseOwner(int id, [FromBody] UpdateHouseOwnerDTO updateDto)
         {
             try
             {
-                var request = new HouseOwner
-                {
-                    OwnerId = id,
-                    Address = updateDto.Address,
-                    Biography = updateDto.Biography
-                };
-
-                var response = await _repo.UpdateAsync(request);
+                var response = await _repo.UpdateAsync(id, updateDto);
                 return Ok(response);
             }
             catch (Exception ex)

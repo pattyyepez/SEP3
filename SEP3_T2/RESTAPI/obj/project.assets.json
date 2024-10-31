@@ -384,6 +384,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "DTOs": "1.0.0",
           "Google.Protobuf": "3.29.0-rc2",
           "Grpc.AspNetCore": "2.67.0-pre1",
           "Grpc.Net.Client": "2.67.0-pre1",
@@ -406,21 +407,11 @@
           "bin/placeholder/DTOs.dll": {}
         }
       },
-      "Entities/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "compile": {
-          "bin/placeholder/Entities.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Entities.dll": {}
-        }
-      },
       "RepositoryContracts/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Entities": "1.0.0"
+          "DTOs": "1.0.0"
         },
         "compile": {
           "bin/placeholder/RepositoryContracts.dll": {}
@@ -1205,11 +1196,6 @@
       "type": "project",
       "path": "../DTOs/DTOs.csproj",
       "msbuildProject": "../DTOs/DTOs.csproj"
-    },
-    "Entities/1.0.0": {
-      "type": "project",
-      "path": "../Entities/Entities.csproj",
-      "msbuildProject": "../Entities/Entities.csproj"
     },
     "RepositoryContracts/1.0.0": {
       "type": "project",
