@@ -28,7 +28,7 @@ public class HousePalServer {
     HousePalServiceImpl housePalService = new HousePalServiceImpl(houseOwnerRepository);
 
     for (HouseOwner temp : houseOwnerRepository.findAll()){
-      System.out.println(temp.getOwnerId() + " - " + temp.getAddress() + " - " + temp.getBiography());
+      System.out.println(temp);
     }
 
     Server server = NettyServerBuilder.forPort(9090)

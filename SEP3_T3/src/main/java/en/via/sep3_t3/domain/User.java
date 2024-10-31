@@ -1,8 +1,6 @@
-package en.via.sep3_t3.dto;
+package en.via.sep3_t3.domain;
 
-public class HouseOwnerDTO
-{
-  // attributes from User
+public abstract class User {
   private int userId;
   private String email;
   private String password;
@@ -12,9 +10,18 @@ public class HouseOwnerDTO
   private boolean isVerified;
   private int adminId;
 
-  // attributes from HouseOwner
-  private String address;
-  private String biography;
+//  public User(int userId, String email, String password, String profilePicture,
+//      String CPR, String phone, boolean isVerified, int adminId)
+//  {
+//    this.userId = userId;
+//    this.email = email;
+//    this.password = password;
+//    this.profilePicture = profilePicture;
+//    this.CPR = CPR;
+//    this.phone = phone;
+//    this.isVerified = isVerified;
+//    this.adminId = adminId;
+//  }
 
   public int getUserId()
   {
@@ -46,16 +53,6 @@ public class HouseOwnerDTO
     this.password = password;
   }
 
-  public String getProfilePicture()
-  {
-    return profilePicture;
-  }
-
-  public void setProfilePicture(String profilePicture)
-  {
-    this.profilePicture = profilePicture;
-  }
-
   public String getCPR()
   {
     return CPR;
@@ -74,6 +71,16 @@ public class HouseOwnerDTO
   public void setPhone(String phone)
   {
     this.phone = phone;
+  }
+
+  public String getProfilePicture()
+  {
+    return profilePicture;
+  }
+
+  public void setProfilePicture(String profilePicture)
+  {
+    this.profilePicture = profilePicture;
   }
 
   public boolean isVerified()
@@ -96,23 +103,11 @@ public class HouseOwnerDTO
     this.adminId = adminId;
   }
 
-  public String getAddress()
+  @Override public String toString()
   {
-    return address;
-  }
-
-  public void setAddress(String address)
-  {
-    this.address = address;
-  }
-
-  public String getBiography()
-  {
-    return biography;
-  }
-
-  public void setBiography(String biography)
-  {
-    this.biography = biography;
+    return "User{" + "userId=" + userId + ", email='" + email + '\''
+        + ", password='" + password + '\'' + ", profilePicture='"
+        + profilePicture + '\'' + ", CPR='" + CPR + '\'' + ", phone='" + phone
+        + '\'' + ", isVerified=" + isVerified + ", adminId=" + adminId + '}';
   }
 }
