@@ -24,30 +24,38 @@ namespace DatabaseRepositories {
     static HouseOwnerReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChdQcm90b3MvSG91c2VPd25lci5wcm90bxIOZW4udmlhLnNlcDNfdDMiJAoR",
-            "SG91c2VPd25lclJlcXVlc3QSDwoHb3duZXJJZBgBIAEoBSJJChJIb3VzZU93",
-            "bmVyUmVzcG9uc2USDwoHb3duZXJJZBgBIAEoBRIPCgdhZGRyZXNzGAIgASgJ",
-            "EhEKCWJpb2dyYXBoeRgDIAEoCSI9ChdDcmVhdGVIb3VzZU93bmVyUmVxdWVz",
-            "dBIPCgdhZGRyZXNzGAEgASgJEhEKCWJpb2dyYXBoeRgCIAEoCSJOChdVcGRh",
-            "dGVIb3VzZU93bmVyUmVxdWVzdBIPCgdvd25lcklkGAEgASgFEg8KB2FkZHJl",
-            "c3MYAiABKAkSEQoJYmlvZ3JhcGh5GAMgASgJMogDChFIb3VzZU93bmVyU2Vy",
-            "dmljZRJWCg1HZXRIb3VzZU93bmVyEiEuZW4udmlhLnNlcDNfdDMuSG91c2VP",
-            "d25lclJlcXVlc3QaIi5lbi52aWEuc2VwM190My5Ib3VzZU93bmVyUmVzcG9u",
-            "c2USXwoQQ3JlYXRlSG91c2VPd25lchInLmVuLnZpYS5zZXAzX3QzLkNyZWF0",
-            "ZUhvdXNlT3duZXJSZXF1ZXN0GiIuZW4udmlhLnNlcDNfdDMuSG91c2VPd25l",
-            "clJlc3BvbnNlEl8KEFVwZGF0ZUhvdXNlT3duZXISJy5lbi52aWEuc2VwM190",
-            "My5VcGRhdGVIb3VzZU93bmVyUmVxdWVzdBoiLmVuLnZpYS5zZXAzX3QzLkhv",
-            "dXNlT3duZXJSZXNwb25zZRJZChBEZWxldGVIb3VzZU93bmVyEiEuZW4udmlh",
-            "LnNlcDNfdDMuSG91c2VPd25lclJlcXVlc3QaIi5lbi52aWEuc2VwM190My5I",
-            "b3VzZU93bmVyUmVzcG9uc2VCGVABqgIURGF0YWJhc2VSZXBvc2l0b3JpZXNi",
-            "BnByb3RvMw=="));
+            "ChdQcm90b3MvSG91c2VPd25lci5wcm90bxIOZW4udmlhLnNlcDNfdDMiHwoR",
+            "SG91c2VPd25lclJlcXVlc3QSCgoCaWQYASABKAUivgEKEkhvdXNlT3duZXJS",
+            "ZXNwb25zZRIKCgJpZBgBIAEoBRINCgVlbWFpbBgCIAEoCRIQCghwYXNzd29y",
+            "ZBgDIAEoCRIWCg5wcm9maWxlUGljdHVyZRgEIAEoCRILCgNDUFIYBSABKAkS",
+            "DQoFcGhvbmUYBiABKAkSEgoKaXNWZXJpZmllZBgHIAEoCBIPCgdhZG1pbklk",
+            "GAggASgFEg8KB2FkZHJlc3MYCSABKAkSEQoJYmlvZ3JhcGh5GAogASgJIrcB",
+            "ChdDcmVhdGVIb3VzZU93bmVyUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIQCghw",
+            "YXNzd29yZBgCIAEoCRIWCg5wcm9maWxlUGljdHVyZRgDIAEoCRILCgNDUFIY",
+            "BCABKAkSDQoFcGhvbmUYBSABKAkSEgoKaXNWZXJpZmllZBgGIAEoCBIPCgdh",
+            "ZG1pbklkGAcgASgFEg8KB2FkZHJlc3MYCCABKAkSEQoJYmlvZ3JhcGh5GAkg",
+            "ASgJIsMBChdVcGRhdGVIb3VzZU93bmVyUmVxdWVzdBIKCgJpZBgBIAEoBRIN",
+            "CgVlbWFpbBgCIAEoCRIQCghwYXNzd29yZBgDIAEoCRIWCg5wcm9maWxlUGlj",
+            "dHVyZRgEIAEoCRILCgNDUFIYBSABKAkSDQoFcGhvbmUYBiABKAkSEgoKaXNW",
+            "ZXJpZmllZBgHIAEoCBIPCgdhZG1pbklkGAggASgFEg8KB2FkZHJlc3MYCSAB",
+            "KAkSEQoJYmlvZ3JhcGh5GAogASgJMogDChFIb3VzZU93bmVyU2VydmljZRJW",
+            "Cg1HZXRIb3VzZU93bmVyEiEuZW4udmlhLnNlcDNfdDMuSG91c2VPd25lclJl",
+            "cXVlc3QaIi5lbi52aWEuc2VwM190My5Ib3VzZU93bmVyUmVzcG9uc2USXwoQ",
+            "Q3JlYXRlSG91c2VPd25lchInLmVuLnZpYS5zZXAzX3QzLkNyZWF0ZUhvdXNl",
+            "T3duZXJSZXF1ZXN0GiIuZW4udmlhLnNlcDNfdDMuSG91c2VPd25lclJlc3Bv",
+            "bnNlEl8KEFVwZGF0ZUhvdXNlT3duZXISJy5lbi52aWEuc2VwM190My5VcGRh",
+            "dGVIb3VzZU93bmVyUmVxdWVzdBoiLmVuLnZpYS5zZXAzX3QzLkhvdXNlT3du",
+            "ZXJSZXNwb25zZRJZChBEZWxldGVIb3VzZU93bmVyEiEuZW4udmlhLnNlcDNf",
+            "dDMuSG91c2VPd25lclJlcXVlc3QaIi5lbi52aWEuc2VwM190My5Ib3VzZU93",
+            "bmVyUmVzcG9uc2VCGVABqgIURGF0YWJhc2VSZXBvc2l0b3JpZXNiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.HouseOwnerRequest), global::DatabaseRepositories.HouseOwnerRequest.Parser, new[]{ "OwnerId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.HouseOwnerResponse), global::DatabaseRepositories.HouseOwnerResponse.Parser, new[]{ "OwnerId", "Address", "Biography" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.CreateHouseOwnerRequest), global::DatabaseRepositories.CreateHouseOwnerRequest.Parser, new[]{ "Address", "Biography" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.UpdateHouseOwnerRequest), global::DatabaseRepositories.UpdateHouseOwnerRequest.Parser, new[]{ "OwnerId", "Address", "Biography" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.HouseOwnerRequest), global::DatabaseRepositories.HouseOwnerRequest.Parser, new[]{ "Id" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.HouseOwnerResponse), global::DatabaseRepositories.HouseOwnerResponse.Parser, new[]{ "Id", "Email", "Password", "ProfilePicture", "CPR", "Phone", "IsVerified", "AdminId", "Address", "Biography" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.CreateHouseOwnerRequest), global::DatabaseRepositories.CreateHouseOwnerRequest.Parser, new[]{ "Email", "Password", "ProfilePicture", "CPR", "Phone", "IsVerified", "AdminId", "Address", "Biography" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::DatabaseRepositories.UpdateHouseOwnerRequest), global::DatabaseRepositories.UpdateHouseOwnerRequest.Parser, new[]{ "Id", "Email", "Password", "ProfilePicture", "CPR", "Phone", "IsVerified", "AdminId", "Address", "Biography" }, null, null, null, null)
           }));
     }
     #endregion
@@ -89,7 +97,7 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public HouseOwnerRequest(HouseOwnerRequest other) : this() {
-      ownerId_ = other.ownerId_;
+      id_ = other.id_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -99,15 +107,15 @@ namespace DatabaseRepositories {
       return new HouseOwnerRequest(this);
     }
 
-    /// <summary>Field number for the "ownerId" field.</summary>
-    public const int OwnerIdFieldNumber = 1;
-    private int ownerId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private int id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int OwnerId {
-      get { return ownerId_; }
+    public int Id {
+      get { return id_; }
       set {
-        ownerId_ = value;
+        id_ = value;
       }
     }
 
@@ -126,7 +134,7 @@ namespace DatabaseRepositories {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (OwnerId != other.OwnerId) return false;
+      if (Id != other.Id) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -134,7 +142,7 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (OwnerId != 0) hash ^= OwnerId.GetHashCode();
+      if (Id != 0) hash ^= Id.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -153,9 +161,9 @@ namespace DatabaseRepositories {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (OwnerId != 0) {
+      if (Id != 0) {
         output.WriteRawTag(8);
-        output.WriteInt32(OwnerId);
+        output.WriteInt32(Id);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -167,9 +175,9 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (OwnerId != 0) {
+      if (Id != 0) {
         output.WriteRawTag(8);
-        output.WriteInt32(OwnerId);
+        output.WriteInt32(Id);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -181,8 +189,8 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (OwnerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(OwnerId);
+      if (Id != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Id);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -196,8 +204,8 @@ namespace DatabaseRepositories {
       if (other == null) {
         return;
       }
-      if (other.OwnerId != 0) {
-        OwnerId = other.OwnerId;
+      if (other.Id != 0) {
+        Id = other.Id;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -219,7 +227,7 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            OwnerId = input.ReadInt32();
+            Id = input.ReadInt32();
             break;
           }
         }
@@ -242,7 +250,7 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            OwnerId = input.ReadInt32();
+            Id = input.ReadInt32();
             break;
           }
         }
@@ -287,7 +295,14 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public HouseOwnerResponse(HouseOwnerResponse other) : this() {
-      ownerId_ = other.ownerId_;
+      id_ = other.id_;
+      email_ = other.email_;
+      password_ = other.password_;
+      profilePicture_ = other.profilePicture_;
+      cPR_ = other.cPR_;
+      phone_ = other.phone_;
+      isVerified_ = other.isVerified_;
+      adminId_ = other.adminId_;
       address_ = other.address_;
       biography_ = other.biography_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -299,20 +314,104 @@ namespace DatabaseRepositories {
       return new HouseOwnerResponse(this);
     }
 
-    /// <summary>Field number for the "ownerId" field.</summary>
-    public const int OwnerIdFieldNumber = 1;
-    private int ownerId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private int id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int OwnerId {
-      get { return ownerId_; }
+    public int Id {
+      get { return id_; }
       set {
-        ownerId_ = value;
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "email" field.</summary>
+    public const int EmailFieldNumber = 2;
+    private string email_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Email {
+      get { return email_; }
+      set {
+        email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 3;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "profilePicture" field.</summary>
+    public const int ProfilePictureFieldNumber = 4;
+    private string profilePicture_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ProfilePicture {
+      get { return profilePicture_; }
+      set {
+        profilePicture_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "CPR" field.</summary>
+    public const int CPRFieldNumber = 5;
+    private string cPR_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CPR {
+      get { return cPR_; }
+      set {
+        cPR_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "phone" field.</summary>
+    public const int PhoneFieldNumber = 6;
+    private string phone_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Phone {
+      get { return phone_; }
+      set {
+        phone_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isVerified" field.</summary>
+    public const int IsVerifiedFieldNumber = 7;
+    private bool isVerified_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsVerified {
+      get { return isVerified_; }
+      set {
+        isVerified_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "adminId" field.</summary>
+    public const int AdminIdFieldNumber = 8;
+    private int adminId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int AdminId {
+      get { return adminId_; }
+      set {
+        adminId_ = value;
       }
     }
 
     /// <summary>Field number for the "address" field.</summary>
-    public const int AddressFieldNumber = 2;
+    public const int AddressFieldNumber = 9;
     private string address_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -324,7 +423,7 @@ namespace DatabaseRepositories {
     }
 
     /// <summary>Field number for the "biography" field.</summary>
-    public const int BiographyFieldNumber = 3;
+    public const int BiographyFieldNumber = 10;
     private string biography_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -350,7 +449,14 @@ namespace DatabaseRepositories {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (OwnerId != other.OwnerId) return false;
+      if (Id != other.Id) return false;
+      if (Email != other.Email) return false;
+      if (Password != other.Password) return false;
+      if (ProfilePicture != other.ProfilePicture) return false;
+      if (CPR != other.CPR) return false;
+      if (Phone != other.Phone) return false;
+      if (IsVerified != other.IsVerified) return false;
+      if (AdminId != other.AdminId) return false;
       if (Address != other.Address) return false;
       if (Biography != other.Biography) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -360,7 +466,14 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (OwnerId != 0) hash ^= OwnerId.GetHashCode();
+      if (Id != 0) hash ^= Id.GetHashCode();
+      if (Email.Length != 0) hash ^= Email.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
+      if (ProfilePicture.Length != 0) hash ^= ProfilePicture.GetHashCode();
+      if (CPR.Length != 0) hash ^= CPR.GetHashCode();
+      if (Phone.Length != 0) hash ^= Phone.GetHashCode();
+      if (IsVerified != false) hash ^= IsVerified.GetHashCode();
+      if (AdminId != 0) hash ^= AdminId.GetHashCode();
       if (Address.Length != 0) hash ^= Address.GetHashCode();
       if (Biography.Length != 0) hash ^= Biography.GetHashCode();
       if (_unknownFields != null) {
@@ -381,16 +494,44 @@ namespace DatabaseRepositories {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (OwnerId != 0) {
+      if (Id != 0) {
         output.WriteRawTag(8);
-        output.WriteInt32(OwnerId);
+        output.WriteInt32(Id);
+      }
+      if (Email.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Email);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(CPR);
+      }
+      if (Phone.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Phone);
+      }
+      if (IsVerified != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(IsVerified);
+      }
+      if (AdminId != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(AdminId);
       }
       if (Address.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(74);
         output.WriteString(Address);
       }
       if (Biography.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(82);
         output.WriteString(Biography);
       }
       if (_unknownFields != null) {
@@ -403,16 +544,44 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (OwnerId != 0) {
+      if (Id != 0) {
         output.WriteRawTag(8);
-        output.WriteInt32(OwnerId);
+        output.WriteInt32(Id);
+      }
+      if (Email.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Email);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(CPR);
+      }
+      if (Phone.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Phone);
+      }
+      if (IsVerified != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(IsVerified);
+      }
+      if (AdminId != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(AdminId);
       }
       if (Address.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(74);
         output.WriteString(Address);
       }
       if (Biography.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(82);
         output.WriteString(Biography);
       }
       if (_unknownFields != null) {
@@ -425,8 +594,29 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (OwnerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(OwnerId);
+      if (Id != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Id);
+      }
+      if (Email.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CPR);
+      }
+      if (Phone.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Phone);
+      }
+      if (IsVerified != false) {
+        size += 1 + 1;
+      }
+      if (AdminId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AdminId);
       }
       if (Address.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
@@ -446,8 +636,29 @@ namespace DatabaseRepositories {
       if (other == null) {
         return;
       }
-      if (other.OwnerId != 0) {
-        OwnerId = other.OwnerId;
+      if (other.Id != 0) {
+        Id = other.Id;
+      }
+      if (other.Email.Length != 0) {
+        Email = other.Email;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
+      }
+      if (other.ProfilePicture.Length != 0) {
+        ProfilePicture = other.ProfilePicture;
+      }
+      if (other.CPR.Length != 0) {
+        CPR = other.CPR;
+      }
+      if (other.Phone.Length != 0) {
+        Phone = other.Phone;
+      }
+      if (other.IsVerified != false) {
+        IsVerified = other.IsVerified;
+      }
+      if (other.AdminId != 0) {
+        AdminId = other.AdminId;
       }
       if (other.Address.Length != 0) {
         Address = other.Address;
@@ -475,14 +686,42 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            OwnerId = input.ReadInt32();
+            Id = input.ReadInt32();
             break;
           }
           case 18: {
-            Address = input.ReadString();
+            Email = input.ReadString();
             break;
           }
           case 26: {
+            Password = input.ReadString();
+            break;
+          }
+          case 34: {
+            ProfilePicture = input.ReadString();
+            break;
+          }
+          case 42: {
+            CPR = input.ReadString();
+            break;
+          }
+          case 50: {
+            Phone = input.ReadString();
+            break;
+          }
+          case 56: {
+            IsVerified = input.ReadBool();
+            break;
+          }
+          case 64: {
+            AdminId = input.ReadInt32();
+            break;
+          }
+          case 74: {
+            Address = input.ReadString();
+            break;
+          }
+          case 82: {
             Biography = input.ReadString();
             break;
           }
@@ -506,14 +745,42 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            OwnerId = input.ReadInt32();
+            Id = input.ReadInt32();
             break;
           }
           case 18: {
-            Address = input.ReadString();
+            Email = input.ReadString();
             break;
           }
           case 26: {
+            Password = input.ReadString();
+            break;
+          }
+          case 34: {
+            ProfilePicture = input.ReadString();
+            break;
+          }
+          case 42: {
+            CPR = input.ReadString();
+            break;
+          }
+          case 50: {
+            Phone = input.ReadString();
+            break;
+          }
+          case 56: {
+            IsVerified = input.ReadBool();
+            break;
+          }
+          case 64: {
+            AdminId = input.ReadInt32();
+            break;
+          }
+          case 74: {
+            Address = input.ReadString();
+            break;
+          }
+          case 82: {
             Biography = input.ReadString();
             break;
           }
@@ -559,6 +826,13 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CreateHouseOwnerRequest(CreateHouseOwnerRequest other) : this() {
+      email_ = other.email_;
+      password_ = other.password_;
+      profilePicture_ = other.profilePicture_;
+      cPR_ = other.cPR_;
+      phone_ = other.phone_;
+      isVerified_ = other.isVerified_;
+      adminId_ = other.adminId_;
       address_ = other.address_;
       biography_ = other.biography_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -570,8 +844,92 @@ namespace DatabaseRepositories {
       return new CreateHouseOwnerRequest(this);
     }
 
+    /// <summary>Field number for the "email" field.</summary>
+    public const int EmailFieldNumber = 1;
+    private string email_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Email {
+      get { return email_; }
+      set {
+        email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 2;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "profilePicture" field.</summary>
+    public const int ProfilePictureFieldNumber = 3;
+    private string profilePicture_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ProfilePicture {
+      get { return profilePicture_; }
+      set {
+        profilePicture_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "CPR" field.</summary>
+    public const int CPRFieldNumber = 4;
+    private string cPR_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CPR {
+      get { return cPR_; }
+      set {
+        cPR_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "phone" field.</summary>
+    public const int PhoneFieldNumber = 5;
+    private string phone_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Phone {
+      get { return phone_; }
+      set {
+        phone_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isVerified" field.</summary>
+    public const int IsVerifiedFieldNumber = 6;
+    private bool isVerified_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsVerified {
+      get { return isVerified_; }
+      set {
+        isVerified_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "adminId" field.</summary>
+    public const int AdminIdFieldNumber = 7;
+    private int adminId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int AdminId {
+      get { return adminId_; }
+      set {
+        adminId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "address" field.</summary>
-    public const int AddressFieldNumber = 1;
+    public const int AddressFieldNumber = 8;
     private string address_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -583,7 +941,7 @@ namespace DatabaseRepositories {
     }
 
     /// <summary>Field number for the "biography" field.</summary>
-    public const int BiographyFieldNumber = 2;
+    public const int BiographyFieldNumber = 9;
     private string biography_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -609,6 +967,13 @@ namespace DatabaseRepositories {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Email != other.Email) return false;
+      if (Password != other.Password) return false;
+      if (ProfilePicture != other.ProfilePicture) return false;
+      if (CPR != other.CPR) return false;
+      if (Phone != other.Phone) return false;
+      if (IsVerified != other.IsVerified) return false;
+      if (AdminId != other.AdminId) return false;
       if (Address != other.Address) return false;
       if (Biography != other.Biography) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -618,6 +983,13 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (Email.Length != 0) hash ^= Email.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
+      if (ProfilePicture.Length != 0) hash ^= ProfilePicture.GetHashCode();
+      if (CPR.Length != 0) hash ^= CPR.GetHashCode();
+      if (Phone.Length != 0) hash ^= Phone.GetHashCode();
+      if (IsVerified != false) hash ^= IsVerified.GetHashCode();
+      if (AdminId != 0) hash ^= AdminId.GetHashCode();
       if (Address.Length != 0) hash ^= Address.GetHashCode();
       if (Biography.Length != 0) hash ^= Biography.GetHashCode();
       if (_unknownFields != null) {
@@ -638,12 +1010,40 @@ namespace DatabaseRepositories {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Address.Length != 0) {
+      if (Email.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Email);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(CPR);
+      }
+      if (Phone.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Phone);
+      }
+      if (IsVerified != false) {
+        output.WriteRawTag(48);
+        output.WriteBool(IsVerified);
+      }
+      if (AdminId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(AdminId);
+      }
+      if (Address.Length != 0) {
+        output.WriteRawTag(66);
         output.WriteString(Address);
       }
       if (Biography.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(74);
         output.WriteString(Biography);
       }
       if (_unknownFields != null) {
@@ -656,12 +1056,40 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Address.Length != 0) {
+      if (Email.Length != 0) {
         output.WriteRawTag(10);
+        output.WriteString(Email);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(CPR);
+      }
+      if (Phone.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Phone);
+      }
+      if (IsVerified != false) {
+        output.WriteRawTag(48);
+        output.WriteBool(IsVerified);
+      }
+      if (AdminId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(AdminId);
+      }
+      if (Address.Length != 0) {
+        output.WriteRawTag(66);
         output.WriteString(Address);
       }
       if (Biography.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(74);
         output.WriteString(Biography);
       }
       if (_unknownFields != null) {
@@ -674,6 +1102,27 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (Email.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CPR);
+      }
+      if (Phone.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Phone);
+      }
+      if (IsVerified != false) {
+        size += 1 + 1;
+      }
+      if (AdminId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AdminId);
+      }
       if (Address.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
       }
@@ -691,6 +1140,27 @@ namespace DatabaseRepositories {
     public void MergeFrom(CreateHouseOwnerRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.Email.Length != 0) {
+        Email = other.Email;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
+      }
+      if (other.ProfilePicture.Length != 0) {
+        ProfilePicture = other.ProfilePicture;
+      }
+      if (other.CPR.Length != 0) {
+        CPR = other.CPR;
+      }
+      if (other.Phone.Length != 0) {
+        Phone = other.Phone;
+      }
+      if (other.IsVerified != false) {
+        IsVerified = other.IsVerified;
+      }
+      if (other.AdminId != 0) {
+        AdminId = other.AdminId;
       }
       if (other.Address.Length != 0) {
         Address = other.Address;
@@ -718,10 +1188,38 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Address = input.ReadString();
+            Email = input.ReadString();
             break;
           }
           case 18: {
+            Password = input.ReadString();
+            break;
+          }
+          case 26: {
+            ProfilePicture = input.ReadString();
+            break;
+          }
+          case 34: {
+            CPR = input.ReadString();
+            break;
+          }
+          case 42: {
+            Phone = input.ReadString();
+            break;
+          }
+          case 48: {
+            IsVerified = input.ReadBool();
+            break;
+          }
+          case 56: {
+            AdminId = input.ReadInt32();
+            break;
+          }
+          case 66: {
+            Address = input.ReadString();
+            break;
+          }
+          case 74: {
             Biography = input.ReadString();
             break;
           }
@@ -745,10 +1243,38 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Address = input.ReadString();
+            Email = input.ReadString();
             break;
           }
           case 18: {
+            Password = input.ReadString();
+            break;
+          }
+          case 26: {
+            ProfilePicture = input.ReadString();
+            break;
+          }
+          case 34: {
+            CPR = input.ReadString();
+            break;
+          }
+          case 42: {
+            Phone = input.ReadString();
+            break;
+          }
+          case 48: {
+            IsVerified = input.ReadBool();
+            break;
+          }
+          case 56: {
+            AdminId = input.ReadInt32();
+            break;
+          }
+          case 66: {
+            Address = input.ReadString();
+            break;
+          }
+          case 74: {
             Biography = input.ReadString();
             break;
           }
@@ -794,7 +1320,14 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public UpdateHouseOwnerRequest(UpdateHouseOwnerRequest other) : this() {
-      ownerId_ = other.ownerId_;
+      id_ = other.id_;
+      email_ = other.email_;
+      password_ = other.password_;
+      profilePicture_ = other.profilePicture_;
+      cPR_ = other.cPR_;
+      phone_ = other.phone_;
+      isVerified_ = other.isVerified_;
+      adminId_ = other.adminId_;
       address_ = other.address_;
       biography_ = other.biography_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -806,20 +1339,104 @@ namespace DatabaseRepositories {
       return new UpdateHouseOwnerRequest(this);
     }
 
-    /// <summary>Field number for the "ownerId" field.</summary>
-    public const int OwnerIdFieldNumber = 1;
-    private int ownerId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private int id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int OwnerId {
-      get { return ownerId_; }
+    public int Id {
+      get { return id_; }
       set {
-        ownerId_ = value;
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "email" field.</summary>
+    public const int EmailFieldNumber = 2;
+    private string email_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Email {
+      get { return email_; }
+      set {
+        email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 3;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "profilePicture" field.</summary>
+    public const int ProfilePictureFieldNumber = 4;
+    private string profilePicture_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ProfilePicture {
+      get { return profilePicture_; }
+      set {
+        profilePicture_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "CPR" field.</summary>
+    public const int CPRFieldNumber = 5;
+    private string cPR_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CPR {
+      get { return cPR_; }
+      set {
+        cPR_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "phone" field.</summary>
+    public const int PhoneFieldNumber = 6;
+    private string phone_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Phone {
+      get { return phone_; }
+      set {
+        phone_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isVerified" field.</summary>
+    public const int IsVerifiedFieldNumber = 7;
+    private bool isVerified_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsVerified {
+      get { return isVerified_; }
+      set {
+        isVerified_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "adminId" field.</summary>
+    public const int AdminIdFieldNumber = 8;
+    private int adminId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int AdminId {
+      get { return adminId_; }
+      set {
+        adminId_ = value;
       }
     }
 
     /// <summary>Field number for the "address" field.</summary>
-    public const int AddressFieldNumber = 2;
+    public const int AddressFieldNumber = 9;
     private string address_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -831,7 +1448,7 @@ namespace DatabaseRepositories {
     }
 
     /// <summary>Field number for the "biography" field.</summary>
-    public const int BiographyFieldNumber = 3;
+    public const int BiographyFieldNumber = 10;
     private string biography_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -857,7 +1474,14 @@ namespace DatabaseRepositories {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (OwnerId != other.OwnerId) return false;
+      if (Id != other.Id) return false;
+      if (Email != other.Email) return false;
+      if (Password != other.Password) return false;
+      if (ProfilePicture != other.ProfilePicture) return false;
+      if (CPR != other.CPR) return false;
+      if (Phone != other.Phone) return false;
+      if (IsVerified != other.IsVerified) return false;
+      if (AdminId != other.AdminId) return false;
       if (Address != other.Address) return false;
       if (Biography != other.Biography) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -867,7 +1491,14 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (OwnerId != 0) hash ^= OwnerId.GetHashCode();
+      if (Id != 0) hash ^= Id.GetHashCode();
+      if (Email.Length != 0) hash ^= Email.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
+      if (ProfilePicture.Length != 0) hash ^= ProfilePicture.GetHashCode();
+      if (CPR.Length != 0) hash ^= CPR.GetHashCode();
+      if (Phone.Length != 0) hash ^= Phone.GetHashCode();
+      if (IsVerified != false) hash ^= IsVerified.GetHashCode();
+      if (AdminId != 0) hash ^= AdminId.GetHashCode();
       if (Address.Length != 0) hash ^= Address.GetHashCode();
       if (Biography.Length != 0) hash ^= Biography.GetHashCode();
       if (_unknownFields != null) {
@@ -888,16 +1519,44 @@ namespace DatabaseRepositories {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (OwnerId != 0) {
+      if (Id != 0) {
         output.WriteRawTag(8);
-        output.WriteInt32(OwnerId);
+        output.WriteInt32(Id);
+      }
+      if (Email.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Email);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(CPR);
+      }
+      if (Phone.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Phone);
+      }
+      if (IsVerified != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(IsVerified);
+      }
+      if (AdminId != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(AdminId);
       }
       if (Address.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(74);
         output.WriteString(Address);
       }
       if (Biography.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(82);
         output.WriteString(Biography);
       }
       if (_unknownFields != null) {
@@ -910,16 +1569,44 @@ namespace DatabaseRepositories {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (OwnerId != 0) {
+      if (Id != 0) {
         output.WriteRawTag(8);
-        output.WriteInt32(OwnerId);
+        output.WriteInt32(Id);
+      }
+      if (Email.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Email);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(CPR);
+      }
+      if (Phone.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Phone);
+      }
+      if (IsVerified != false) {
+        output.WriteRawTag(56);
+        output.WriteBool(IsVerified);
+      }
+      if (AdminId != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(AdminId);
       }
       if (Address.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(74);
         output.WriteString(Address);
       }
       if (Biography.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(82);
         output.WriteString(Biography);
       }
       if (_unknownFields != null) {
@@ -932,8 +1619,29 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (OwnerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(OwnerId);
+      if (Id != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Id);
+      }
+      if (Email.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      }
+      if (ProfilePicture.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ProfilePicture);
+      }
+      if (CPR.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CPR);
+      }
+      if (Phone.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Phone);
+      }
+      if (IsVerified != false) {
+        size += 1 + 1;
+      }
+      if (AdminId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AdminId);
       }
       if (Address.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
@@ -953,8 +1661,29 @@ namespace DatabaseRepositories {
       if (other == null) {
         return;
       }
-      if (other.OwnerId != 0) {
-        OwnerId = other.OwnerId;
+      if (other.Id != 0) {
+        Id = other.Id;
+      }
+      if (other.Email.Length != 0) {
+        Email = other.Email;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
+      }
+      if (other.ProfilePicture.Length != 0) {
+        ProfilePicture = other.ProfilePicture;
+      }
+      if (other.CPR.Length != 0) {
+        CPR = other.CPR;
+      }
+      if (other.Phone.Length != 0) {
+        Phone = other.Phone;
+      }
+      if (other.IsVerified != false) {
+        IsVerified = other.IsVerified;
+      }
+      if (other.AdminId != 0) {
+        AdminId = other.AdminId;
       }
       if (other.Address.Length != 0) {
         Address = other.Address;
@@ -982,14 +1711,42 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            OwnerId = input.ReadInt32();
+            Id = input.ReadInt32();
             break;
           }
           case 18: {
-            Address = input.ReadString();
+            Email = input.ReadString();
             break;
           }
           case 26: {
+            Password = input.ReadString();
+            break;
+          }
+          case 34: {
+            ProfilePicture = input.ReadString();
+            break;
+          }
+          case 42: {
+            CPR = input.ReadString();
+            break;
+          }
+          case 50: {
+            Phone = input.ReadString();
+            break;
+          }
+          case 56: {
+            IsVerified = input.ReadBool();
+            break;
+          }
+          case 64: {
+            AdminId = input.ReadInt32();
+            break;
+          }
+          case 74: {
+            Address = input.ReadString();
+            break;
+          }
+          case 82: {
             Biography = input.ReadString();
             break;
           }
@@ -1013,14 +1770,42 @@ namespace DatabaseRepositories {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            OwnerId = input.ReadInt32();
+            Id = input.ReadInt32();
             break;
           }
           case 18: {
-            Address = input.ReadString();
+            Email = input.ReadString();
             break;
           }
           case 26: {
+            Password = input.ReadString();
+            break;
+          }
+          case 34: {
+            ProfilePicture = input.ReadString();
+            break;
+          }
+          case 42: {
+            CPR = input.ReadString();
+            break;
+          }
+          case 50: {
+            Phone = input.ReadString();
+            break;
+          }
+          case 56: {
+            IsVerified = input.ReadBool();
+            break;
+          }
+          case 64: {
+            AdminId = input.ReadInt32();
+            break;
+          }
+          case 74: {
+            Address = input.ReadString();
+            break;
+          }
+          case 82: {
             Biography = input.ReadString();
             break;
           }

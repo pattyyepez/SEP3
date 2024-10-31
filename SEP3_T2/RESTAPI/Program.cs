@@ -11,7 +11,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IHouseOwnerRepository, HouseOwnerDbRepository>();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
