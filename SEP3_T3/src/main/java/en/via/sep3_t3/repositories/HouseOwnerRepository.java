@@ -37,7 +37,7 @@ public class HouseOwnerRepository {
     return jdbcTemplate.queryForObject(sql, new HouseOwnerRowMapper(), owner_id);
   }
 
-  public int save(HouseOwner houseOwner) {            // CHANGE THE PROFILE PICTURE CODE!!!
+  public int save(HouseOwner houseOwner) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
