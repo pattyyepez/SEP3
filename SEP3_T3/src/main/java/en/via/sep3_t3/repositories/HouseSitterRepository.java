@@ -54,7 +54,7 @@ public class HouseSitterRepository {
       PreparedStatement ps = connection.prepareStatement(
           "INSERT INTO HouseSitter (sitter_id, past_experience, biography) VALUES (?, ?, ?)");
       ps.setInt(1, id);
-      ps.setString(2, houseSitter.getExperience()); // experience is mapped to past_experience in SQL
+      ps.setString(2, houseSitter.getExperience());
       ps.setString(3, houseSitter.getBiography());
       return ps;
     });
@@ -154,7 +154,7 @@ public class HouseSitterRepository {
     }
 
     private ArrayList<String> fetchPictures(int sitterId) {
-      String sql = "SELECT picture FROM SitterPictures WHERE sitter_id = ?";
+      String sql = "SELECT picture FROM Sitter_pictures WHERE sitter_id = ?";
       return (ArrayList<String>) jdbcTemplate.query(sql, (rs, rowNum) -> {
         return rs.getString("picture");
       }, sitterId);

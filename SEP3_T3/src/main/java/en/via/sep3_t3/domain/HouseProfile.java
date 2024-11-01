@@ -1,18 +1,31 @@
 package en.via.sep3_t3.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HouseProfile
 {
+  private int id;
   private String description;
   private String city;
   private int owner_id;
   private String address;
   private String region;
-  private ArrayList<Amenity> amenities;
-  private ArrayList<Chore> chores;
-  private ArrayList<Rule> rules;
-  private ArrayList<HousePicture> pictures;
+  private List<String> amenities = new ArrayList<>();
+  private List<String> chores = new ArrayList<>();
+  private List<String> rules = new ArrayList<>();
+  private List<String> pictures = new ArrayList<>();
+
+
+  public int getId()
+  {
+    return id;
+  }
+
+  public void setId(int id)
+  {
+    this.id = id;
+  }
 
   public String getDescription()
   {
@@ -64,45 +77,46 @@ public class HouseProfile
     this.region = region;
   }
 
-  public ArrayList<Amenity> getAmenities()
-  {
-    return amenities;
-  }
-
-  public void setAmenities(ArrayList<Amenity> amenities)
-  {
-    this.amenities = amenities;
-  }
-
-  public ArrayList<Chore> getChores()
-  {
-    return chores;
-  }
-
-  public void setChores(ArrayList<Chore> chores)
-  {
-    this.chores = chores;
-  }
-
-  public ArrayList<HousePicture> getPictures()
+  public List<String> getPictures()
   {
     return pictures;
   }
 
-  public void setPictures(ArrayList<HousePicture> pictures)
+  public void setPictures(List<String> pictures)
   {
     this.pictures = pictures;
   }
 
-  public ArrayList<Rule> getRules()
+  public List<String> getRules()
   {
     return rules;
   }
 
-  public void setRules(ArrayList<Rule> rules)
+  public void setRules(List<String> rules)
   {
     this.rules = rules;
   }
+
+  public List<String> getAmenities()
+  {
+    return amenities;
+  }
+
+  public List<String> getChores()
+  {
+    return chores;
+  }
+
+  public void setChores(List<String> chores)
+  {
+    this.chores = chores;
+  }
+
+  public void setAmenities(List<String> amenities)
+  {
+    this.amenities = amenities;
+  }
+
   @Override
   public String toString() {
     return "HouseProfile{" +
