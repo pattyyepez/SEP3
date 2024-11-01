@@ -187,6 +187,7 @@
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
       "DatabaseRepositories/1.0.0": {
         "dependencies": {
+          "DTOs": "1.0.0",
           "Google.Protobuf": "3.29.0-rc2",
           "Grpc.AspNetCore": "2.67.0-pre1",
           "Grpc.Net.Client": "2.67.0-pre1",
@@ -207,17 +208,9 @@
           }
         }
       },
-      "Entities/1.0.0": {
-        "runtime": {
-          "Entities.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "RepositoryContracts/1.0.0": {
         "dependencies": {
-          "Entities": "1.0.0"
+          "DTOs": "1.0.0"
         },
         "runtime": {
           "RepositoryContracts.dll": {
@@ -401,11 +394,6 @@
       "sha512": ""
     },
     "DTOs/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Entities/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

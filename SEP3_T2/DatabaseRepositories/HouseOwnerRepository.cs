@@ -1,28 +1,27 @@
-﻿using DTOs;
-using DTOs.HouseOwner;
+﻿using DTOs.HouseOwner;
 using Grpc.Core;
 using Grpc.Net.Client;
 using RepositoryContracts;
 
 namespace DatabaseRepositories;
 
-public class HouseOwnerDbRepository : IHouseOwnerRepository
+public class HouseOwnerRepository : IHouseOwnerRepository
 {
 
-    private readonly HouseOwnerService.HouseOwnerServiceClient client;
+    private readonly HouseOwnerService.HouseOwnerServiceClient _client;
 
-    public HouseOwnerDbRepository()
+    public HouseOwnerRepository()
     {
             GrpcChannel channel = GrpcChannel.ForAddress("http://localhost:9090", new GrpcChannelOptions
             {  
                 Credentials = ChannelCredentials.Insecure,
             });
-            client = new HouseOwnerService.HouseOwnerServiceClient(channel);
+            _client = new HouseOwnerService.HouseOwnerServiceClient(channel);
     }
 
     public Task<HouseOwnerDTO> AddAsync(CreateHouseOwnerDTO houseOwner)
     {
-        HouseOwnerResponse reply = client.CreateHouseOwner(new CreateHouseOwnerRequest
+        HouseOwnerResponse reply = _client.CreateHouseOwner(new CreateHouseOwnerRequest
         {
             Email = houseOwner.Email,
             Password = houseOwner.Password,
@@ -52,7 +51,7 @@ public class HouseOwnerDbRepository : IHouseOwnerRepository
 
     public Task<HouseOwnerDTO> UpdateAsync(int id, UpdateHouseOwnerDTO houseOwner)
     {
-        HouseOwnerResponse reply = client.UpdateHouseOwner(new UpdateHouseOwnerRequest()
+        HouseOwnerResponse reply = _client.UpdateHouseOwner(new UpdateHouseOwnerRequest()
         {
             Id = id,
             Email = houseOwner.Email,
@@ -85,7 +84,7 @@ public class HouseOwnerDbRepository : IHouseOwnerRepository
 
     public Task DeleteAsync(int id)
     {
-        client.DeleteHouseOwner(new HouseOwnerRequest()
+        _client.DeleteHouseOwner(new HouseOwnerRequest()
         {
             Id = id
         });
@@ -96,7 +95,7 @@ public class HouseOwnerDbRepository : IHouseOwnerRepository
     // comment
     public Task<HouseOwnerDTO> GetSingleAsync(int id)
     {
-        HouseOwnerResponse reply = client.GetHouseOwner(new HouseOwnerRequest
+        HouseOwnerResponse reply = _client.GetHouseOwner(new HouseOwnerRequest
         {
             Id = id
         });

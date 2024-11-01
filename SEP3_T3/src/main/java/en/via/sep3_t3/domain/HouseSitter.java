@@ -1,13 +1,14 @@
 package en.via.sep3_t3.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HouseSitter extends User
 {
   private String experience;
   private String biography;
-  private ArrayList<SitterPicture> pictures;
-  private ArrayList<Skill> skills;
+  private List<String> pictures = new ArrayList<>();
+  private List<String> skills = new ArrayList<>();
 
   public String getBiography()
   {
@@ -29,22 +30,22 @@ public class HouseSitter extends User
     this.experience = experience;
   }
 
-  public ArrayList<SitterPicture> getPictures()
+  public List<String> getPictures()
   {
     return pictures;
   }
 
-  public void setPictures(ArrayList<SitterPicture> pictures)
+  public void setPictures(ArrayList<String> pictures)
   {
     this.pictures = pictures;
   }
 
-  public ArrayList<Skill> getSkills()
+  public List<String> getSkills()
   {
     return skills;
   }
 
-  public void setSkills(ArrayList<Skill> skills)
+  public void setSkills(ArrayList<String> skills)
   {
     this.skills = skills;
   }
@@ -53,8 +54,8 @@ public class HouseSitter extends User
   {
     return super.toString()+ " - House Sitter{"
         + "Biography='" + biography + '\''
-        + ", Experience='" + experience + '\'' + ", "
-        + ", Skills='" + skills + '\'' + ", "
+        + ", Experience='" + experience + '\''
+        + ", Skills='" + skills + '\''
         + ", Pictures='" + pictures + '\''
         +'}';
   }

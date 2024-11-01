@@ -1,8 +1,6 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseSitter;
-import en.via.sep3_t3.domain.Skill;
-import en.via.sep3_t3.domain.SitterPicture;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -92,11 +90,18 @@ public class HouseSitterRepository {
     jdbcTemplate.update(sql, sitter_id);
   }
 
-  private void saveSkills(List<Skill> skills, int sitterId) {
+  private void saveSkills(List<String> skills, int sitterId) {
     String sql = "INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES (?, ?)";
-    for (Skill skill : skills) {
-      jdbcTemplate.update(sql, sitterId, skill.getId());
+    for (String skill : skills) {
+      jdbcTemplate.update(sql, sitterId, getSkillId(skill));
     }
+  }
+
+  private int getSkillId(String skill){
+    String sql = "SELECT Skills.id FROM Skills WHERE type = ?";
+    return jdbcTemplate.query(sql, (rs, rowNum) -> {
+      return rs.getInt("id");
+      }, skill).get(0);
   }
 
   private void deleteSkills(int sitterId) {
@@ -104,15 +109,22 @@ public class HouseSitterRepository {
     jdbcTemplate.update(sql, sitterId);
   }
 
-  private void savePictures(List<SitterPicture> pictures, int sitterId) {
-    String sql = "INSERT INTO Sitter_pictures (sitter_id, picture) VALUES (?, ?)";
-    for (SitterPicture picture : pictures) {
-      jdbcTemplate.update(sql, sitterId, picture.getPath());
+  private void savePictures(List<String> pictures, int sitterId) {
+    String sql = "INSERT INTO SitterPictures (sitter_id, picture) VALUES (?, ?)";
+    for (String picture : pictures) {
+      jdbcTemplate.update(sql, sitterId, picture);
     }
   }
 
+  private int getPictureId(String picture){
+    String sql = "SELECT sitter_id FROM SitterPictures WHERE picture = ?";
+    return jdbcTemplate.query(sql, (rs, rowNum) -> {
+      return rs.getInt("picture");
+    }, picture).get(0);
+  }
+
   private void deletePictures(int sitterId) {
-    String sql = "DELETE FROM Sitter_pictures WHERE sitter_id = ?";
+    String sql = "DELETE FROM SitterPictures WHERE sitter_id = ?";
     jdbcTemplate.update(sql, sitterId);
   }
 
@@ -135,23 +147,18 @@ public class HouseSitterRepository {
       return houseSitter;
     }
 
-    private ArrayList<SitterPicture> fetchPictures(int sitterId) {
-      String sql = "SELECT picture AS path FROM Sitter_pictures WHERE sitter_id = ?";
-      return (ArrayList<SitterPicture>) jdbcTemplate.query(sql, (rs, rowNum) -> {
-        SitterPicture picture = new SitterPicture();
-        picture.setPath(rs.getString("path"));
-        return picture;
+    private ArrayList<String> fetchPictures(int sitterId) {
+      String sql = "SELECT picture FROM SitterPictures WHERE sitter_id = ?";
+      return (ArrayList<String>) jdbcTemplate.query(sql, (rs, rowNum) -> {
+        return rs.getString("picture");
       }, sitterId);
     }
 
 
-    private ArrayList<Skill> fetchSkills(int sitterId) {
-      String sql = "SELECT Skills.id, Skills.type FROM Sitter_skills JOIN Skills ON Skills.id = Sitter_skills.skill_id WHERE Sitter_skills.sitter_id = ?";
-      return (ArrayList<Skill>) jdbcTemplate.query(sql, (rs, rowNum) -> {
-        Skill skill = new Skill();
-        skill.setId(rs.getInt("id"));
-        skill.setType(rs.getString("type"));
-        return skill;
+    private ArrayList<String> fetchSkills(int sitterId) {
+      String sql = "SELECT Skills.type FROM Sitter_skills JOIN Skills ON Skills.id = Sitter_skills.skill_id WHERE Sitter_skills.sitter_id = ?";
+      return (ArrayList<String>) jdbcTemplate.query(sql, (rs, rowNum) -> {
+        return rs.getString("type");
       }, sitterId);
     }
   }

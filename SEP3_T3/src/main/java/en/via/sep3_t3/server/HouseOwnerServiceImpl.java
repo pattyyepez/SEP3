@@ -11,11 +11,11 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HousePalServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServiceImplBase {
+public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServiceImplBase {
 
   private final HouseOwnerRepository houseOwnerRepository;
 
-  public HousePalServiceImpl(HouseOwnerRepository houseOwnerRepository) {
+  public HouseOwnerServiceImpl(HouseOwnerRepository houseOwnerRepository) {
     this.houseOwnerRepository = houseOwnerRepository;
   }
 
@@ -100,7 +100,7 @@ public class HousePalServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerService
 
   private static HouseOwnerResponse getHouseOwnerResponse(HouseOwner houseOwner)
   {
-    HouseOwnerResponse response = HouseOwnerResponse.newBuilder()
+    return HouseOwnerResponse.newBuilder()
         .setId(houseOwner.getUserId())
         .setEmail(houseOwner.getEmail())
         .setPassword(houseOwner.getPassword())
@@ -112,6 +112,5 @@ public class HousePalServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerService
         .setAddress(houseOwner.getAddress())
         .setBiography(houseOwner.getBiography())
         .build();
-    return response;
   }
 }
