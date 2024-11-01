@@ -103,4 +103,19 @@ public class HouseProfile
   {
     this.rules = rules;
   }
+  @Override
+  public String toString() {
+    return "HouseProfile{" +
+        "description='" + description + '\'' +
+        ", city='" + city + '\'' +
+        ", owner_id=" + owner_id +
+        ", address='" + address + '\'' +
+        ", region='" + region + '\'' +
+        ", amenities=" + amenities +
+        ", chores=" + chores +
+        ", rules=" + rules +
+        ", pictures=" + pictures +
+        '}';
+  }
+
 }
