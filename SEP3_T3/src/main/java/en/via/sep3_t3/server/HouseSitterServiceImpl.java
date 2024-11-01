@@ -100,6 +100,8 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
         .setAdminId(houseSitter.getAdminId())
         .setExperience(houseSitter.getExperience())
         .setBiography(houseSitter.getBiography())
+        .addAllPictures(houseSitter.getPictures())
+        .addAllSkills(houseSitter.getSkills())
         .build();
   }
 }

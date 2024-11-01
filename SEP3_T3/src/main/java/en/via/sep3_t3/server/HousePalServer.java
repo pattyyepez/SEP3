@@ -40,14 +40,6 @@ public class HousePalServer {
     for (HouseSitter temp : houseSitterRepository.findAll()){
       System.out.println(temp);
     }
-    HouseSitter sitter = houseSitterRepository.findById(5);
-    sitter.setBiography("pooping");
-    sitter.setEmail("pooper@gmail.com");
-    houseSitterRepository.save(sitter);
-
-    for (HouseSitter temp : houseSitterRepository.findAll()){
-      System.out.println(temp);
-    }
 
     Server server = NettyServerBuilder.forPort(9090)
         .addService(houseOwnerService)

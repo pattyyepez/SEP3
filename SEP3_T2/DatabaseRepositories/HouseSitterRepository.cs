@@ -1,4 +1,5 @@
 ﻿using DTOs.HouseSitter;
+using Google.Protobuf.Collections;
 using Grpc.Core;
 using Grpc.Net.Client;
 using RepositoryContracts;
@@ -31,8 +32,8 @@ public class HouseSitterRepository : IHouseSitterRepository
             
             Biography = houseSitter.Biography,
             Experience = houseSitter.Experience, 
-            Pictures = houseSitter.Pictures.ToList(),
-            Skills = houseSitter.Skills
+            Pictures = new RepeatedField<string> { houseSitter.Pictures },
+            Skills = new RepeatedField<string> { houseSitter.Skills }
         });
         
         return Task.FromResult(new HouseSitterDTO
@@ -46,8 +47,10 @@ public class HouseSitterRepository : IHouseSitterRepository
             IsVerified = reply.IsVerified,
             AdminId = reply.AdminId,
             
-            Address = reply.Address,
-            Biography = reply.Biography
+            Biography = reply.Biography,
+            Experience = reply.Experience, 
+            Pictures = reply.Pictures.ToList(),
+            Skills = reply.Skills.ToList()
         });
     }
 
@@ -64,8 +67,10 @@ public class HouseSitterRepository : IHouseSitterRepository
             IsVerified = houseSitter.IsVerified,
             AdminId = houseSitter.AdminId,
             
-            Address = houseSitter.Address,
-            Biography = houseSitter.Biography
+            Biography = houseSitter.Biography,
+            Experience = houseSitter.Experience, 
+            Pictures = new RepeatedField<string> { houseSitter.Pictures },
+            Skills = new RepeatedField<string> { houseSitter.Skills }
         });
         
         return Task.FromResult(new HouseSitterDTO
@@ -79,8 +84,10 @@ public class HouseSitterRepository : IHouseSitterRepository
             IsVerified = reply.IsVerified,
             AdminId = reply.AdminId,
             
-            Address = reply.Address,
-            Biography = reply.Biography
+            Biography = reply.Biography,
+            Experience = reply.Experience, 
+            Pictures = reply.Pictures.ToList(),
+            Skills = reply.Skills.ToList()
         });
     }
 
@@ -101,10 +108,11 @@ public class HouseSitterRepository : IHouseSitterRepository
         {
             Id = id
         });
-        
+        Console.Write(reply.Pictures.Count);
         return Task.FromResult(new HouseSitterDTO
         {
             UserId = reply.Id,
+            
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -113,8 +121,10 @@ public class HouseSitterRepository : IHouseSitterRepository
             IsVerified = reply.IsVerified,
             AdminId = reply.AdminId,
             
-            Address = reply.Address,
-            Biography = reply.Biography
+            Biography = reply.Biography,
+            Experience = reply.Experience, 
+            Pictures = reply.Pictures.ToList(),
+            Skills = reply.Skills.ToList()
         });
     }
 

@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IHouseOwnerRepository, HouseOwnerRepository>();
+builder.Services.AddScoped<IHouseSitterRepository, HouseSitterRepository>();
 
 var app = builder.Build();
 
