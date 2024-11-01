@@ -118,6 +118,28 @@ public class HouseOwnerRepository : IHouseOwnerRepository
 
     public IQueryable<HouseOwnerDTO> GetAll()
     {
-        throw new NotImplementedException();
+        AllHouseOwnersResponse reply = _client.GetAllHouseOwners(new AllHouseOwnersRequest());
+        var houseOwnerResponses = reply.HouseOwners.ToList();
+        var houseOwners = new List<HouseOwnerDTO>();
+
+        foreach (var houseOwner in houseOwnerResponses)
+        {
+            houseOwners.Add(new HouseOwnerDTO
+            {
+                UserId = houseOwner.Id,
+                Email = houseOwner.Email,
+                Password = houseOwner.Password,
+                ProfilePicture = houseOwner.ProfilePicture,
+                CPR = houseOwner.CPR,
+                Phone = houseOwner.Phone,
+                IsVerified = houseOwner.IsVerified,
+                AdminId = houseOwner.AdminId,
+            
+                Address = houseOwner.Address,
+                Biography = houseOwner.Biography
+            });
+        }
+
+        return houseOwners.AsQueryable();
     }
 }

@@ -50,6 +50,10 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.HouseOwnerResponse> __Marshaller_en_via_sep3_t3_HouseOwnerResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.HouseOwnerResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllHouseOwnersRequest> __Marshaller_en_via_sep3_t3_AllHouseOwnersRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllHouseOwnersRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllHouseOwnersResponse> __Marshaller_en_via_sep3_t3_AllHouseOwnersResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllHouseOwnersResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.CreateHouseOwnerRequest> __Marshaller_en_via_sep3_t3_CreateHouseOwnerRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateHouseOwnerRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateHouseOwnerRequest> __Marshaller_en_via_sep3_t3_UpdateHouseOwnerRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateHouseOwnerRequest.Parser));
@@ -61,6 +65,14 @@ namespace DatabaseRepositories {
         "GetHouseOwner",
         __Marshaller_en_via_sep3_t3_HouseOwnerRequest,
         __Marshaller_en_via_sep3_t3_HouseOwnerResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllHouseOwnersRequest, global::DatabaseRepositories.AllHouseOwnersResponse> __Method_GetAllHouseOwners = new grpc::Method<global::DatabaseRepositories.AllHouseOwnersRequest, global::DatabaseRepositories.AllHouseOwnersResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllHouseOwners",
+        __Marshaller_en_via_sep3_t3_AllHouseOwnersRequest,
+        __Marshaller_en_via_sep3_t3_AllHouseOwnersResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.CreateHouseOwnerRequest, global::DatabaseRepositories.HouseOwnerResponse> __Method_CreateHouseOwner = new grpc::Method<global::DatabaseRepositories.CreateHouseOwnerRequest, global::DatabaseRepositories.HouseOwnerResponse>(
@@ -138,6 +150,26 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseOwnerResponse> GetHouseOwnerAsync(global::DatabaseRepositories.HouseOwnerRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetHouseOwner, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllHouseOwnersResponse GetAllHouseOwners(global::DatabaseRepositories.AllHouseOwnersRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllHouseOwners(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllHouseOwnersResponse GetAllHouseOwners(global::DatabaseRepositories.AllHouseOwnersRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllHouseOwners, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllHouseOwnersResponse> GetAllHouseOwnersAsync(global::DatabaseRepositories.AllHouseOwnersRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllHouseOwnersAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllHouseOwnersResponse> GetAllHouseOwnersAsync(global::DatabaseRepositories.AllHouseOwnersRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllHouseOwners, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.HouseOwnerResponse CreateHouseOwner(global::DatabaseRepositories.CreateHouseOwnerRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
@@ -250,6 +282,10 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.HouseSitterResponse> __Marshaller_en_via_sep3_t3_HouseSitterResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.HouseSitterResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllHouseSittersRequest> __Marshaller_en_via_sep3_t3_AllHouseSittersRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllHouseSittersRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllHouseSittersResponse> __Marshaller_en_via_sep3_t3_AllHouseSittersResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllHouseSittersResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.CreateHouseSitterRequest> __Marshaller_en_via_sep3_t3_CreateHouseSitterRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateHouseSitterRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateHouseSitterRequest> __Marshaller_en_via_sep3_t3_UpdateHouseSitterRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateHouseSitterRequest.Parser));
@@ -261,6 +297,14 @@ namespace DatabaseRepositories {
         "GetHouseSitter",
         __Marshaller_en_via_sep3_t3_HouseSitterRequest,
         __Marshaller_en_via_sep3_t3_HouseSitterResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllHouseSittersRequest, global::DatabaseRepositories.AllHouseSittersResponse> __Method_GetAllHouseSitters = new grpc::Method<global::DatabaseRepositories.AllHouseSittersRequest, global::DatabaseRepositories.AllHouseSittersResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllHouseSitters",
+        __Marshaller_en_via_sep3_t3_AllHouseSittersRequest,
+        __Marshaller_en_via_sep3_t3_AllHouseSittersResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.CreateHouseSitterRequest, global::DatabaseRepositories.HouseSitterResponse> __Method_CreateHouseSitter = new grpc::Method<global::DatabaseRepositories.CreateHouseSitterRequest, global::DatabaseRepositories.HouseSitterResponse>(
@@ -338,6 +382,26 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseSitterResponse> GetHouseSitterAsync(global::DatabaseRepositories.HouseSitterRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetHouseSitter, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllHouseSittersResponse GetAllHouseSitters(global::DatabaseRepositories.AllHouseSittersRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllHouseSitters(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllHouseSittersResponse GetAllHouseSitters(global::DatabaseRepositories.AllHouseSittersRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllHouseSitters, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllHouseSittersResponse> GetAllHouseSittersAsync(global::DatabaseRepositories.AllHouseSittersRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllHouseSittersAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllHouseSittersResponse> GetAllHouseSittersAsync(global::DatabaseRepositories.AllHouseSittersRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllHouseSitters, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.HouseSitterResponse CreateHouseSitter(global::DatabaseRepositories.CreateHouseSitterRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))

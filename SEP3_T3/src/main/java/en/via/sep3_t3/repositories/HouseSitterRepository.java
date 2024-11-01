@@ -67,7 +67,13 @@ public class HouseSitterRepository {
 
   public void update(HouseSitter houseSitter) {
     String sql = "UPDATE Users SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
-    jdbcTemplate.update(sql, houseSitter.getEmail(), houseSitter.getPassword(), houseSitter.getProfilePicture(), houseSitter.getCPR(), houseSitter.getPhone(), houseSitter.isVerified(), houseSitter.getAdminId() != 0 ? houseSitter.getAdminId() : null, houseSitter.getUserId());
+    jdbcTemplate.update(
+        sql,
+        houseSitter.getEmail(), houseSitter.getPassword(),
+        houseSitter.getProfilePicture(), houseSitter.getCPR(),
+        houseSitter.getPhone(), houseSitter.isVerified(),
+        houseSitter.getAdminId() != 0 ? houseSitter.getAdminId() : null, houseSitter.getUserId()
+    );
 
     sql = "UPDATE HouseSitter SET past_experience = ?, biography = ? WHERE sitter_id = ?";
     jdbcTemplate.update(sql, houseSitter.getExperience(), houseSitter.getBiography(), houseSitter.getUserId());

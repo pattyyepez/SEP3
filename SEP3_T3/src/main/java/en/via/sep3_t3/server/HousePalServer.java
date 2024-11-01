@@ -1,7 +1,5 @@
 package en.via.sep3_t3.server;
 
-import en.via.sep3_t3.domain.HouseOwner;
-import en.via.sep3_t3.domain.HouseSitter;
 import en.via.sep3_t3.repositories.HouseOwnerRepository;
 import en.via.sep3_t3.repositories.HouseProfileRepository;
 import en.via.sep3_t3.repositories.HouseSitterRepository;
@@ -36,10 +34,6 @@ public class HousePalServer {
     HouseSitterServiceImpl houseSitterService = new HouseSitterServiceImpl(houseSitterRepository);
     HouseProfileServiceImpl houseProfileService = new HouseProfileServiceImpl(houseProfileRepository);
 //    HouseOwnerServiceImpl houseOwnerService = new HouseOwnerServiceImpl(houseOwnerRepository);
-
-    for (HouseSitter temp : houseSitterRepository.findAll()){
-      System.out.println(temp);
-    }
 
     Server server = NettyServerBuilder.forPort(9090)
         .addService(houseOwnerService)

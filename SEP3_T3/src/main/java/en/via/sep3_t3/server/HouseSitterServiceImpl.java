@@ -6,6 +6,9 @@ import en.via.sep3_t3.repositories.HouseSitterRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterServiceImplBase {
 
@@ -28,11 +31,35 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   }
 
   @Override
+  public void getAllHouseSitters(AllHouseSittersRequest request, StreamObserver<AllHouseSittersResponse> responseObserver) {
+    try {
+      List<HouseSitter> houseSitters = houseSitterRepository.findAll();
+      List<HouseSitterResponse> houseSitterResponses = new ArrayList<>();
+
+      for(HouseSitter houseSitter : houseSitters ) {
+        houseSitterResponses.add(getHouseSitterResponse(houseSitter));
+      }
+
+      AllHouseSittersResponse response = AllHouseSittersResponse.newBuilder()
+          .addAllHouseSitters(houseSitterResponses)
+          .build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override
   public void createHouseSitter(CreateHouseSitterRequest request, StreamObserver<HouseSitterResponse> responseObserver) {
     try {
-      HouseSitter houseSitter = getHouseSitter(request.getEmail(), request.getPassword(), request.getProfilePicture(),
-          request.getCPR(), request.getPhone(), request.getIsVerified(), request.getAdminId(),
-          request.getExperience(), request.getBiography());
+      HouseSitter houseSitter = getHouseSitter(request.getEmail(),
+          request.getPassword(), request.getProfilePicture(), request.getCPR(),
+          request.getPhone(), request.getIsVerified(), request.getAdminId(),
+          request.getExperience(), request.getBiography(),
+          request.getSkillsList().stream().toList(),
+          request.getPicturesList().stream().toList());
       houseSitter.setUserId(houseSitterRepository.save(houseSitter));
 
       HouseSitterResponse response = getHouseSitterResponse(houseSitter);
@@ -46,9 +73,12 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   @Override
   public void updateHouseSitter(UpdateHouseSitterRequest request, StreamObserver<HouseSitterResponse> responseObserver) {
     try {
-      HouseSitter houseSitter = getHouseSitter(request.getEmail(), request.getPassword(), request.getProfilePicture(),
-          request.getCPR(), request.getPhone(), request.getIsVerified(), request.getAdminId(),
-          request.getExperience(), request.getBiography());
+      HouseSitter houseSitter = getHouseSitter(
+          request.getEmail(), request.getPassword(), request.getProfilePicture(),
+          request.getCPR(), request.getPhone(), request.getIsVerified(),
+          request.getAdminId(), request.getExperience(), request.getBiography(),
+          request.getSkillsList().stream().toList(),
+          request.getPicturesList().stream().toList());
       houseSitter.setUserId(request.getId());
 
       houseSitterRepository.update(houseSitter);
@@ -74,7 +104,7 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   }
 
   private static HouseSitter getHouseSitter(String email, String password, String profilePicture, String cpr,
-      String phone, boolean isVerified, int adminId, String experience, String biography) {
+      String phone, boolean isVerified, int adminId, String experience, String biography, List<String> skills, List<String> pictures) {
     HouseSitter houseSitter = new HouseSitter();
     houseSitter.setEmail(email);
     houseSitter.setPassword(password);
@@ -85,6 +115,8 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
     houseSitter.setAdminId(adminId);
     houseSitter.setExperience(experience);
     houseSitter.setBiography(biography);
+    houseSitter.setSkills(skills);
+    houseSitter.setPictures(pictures);
     return houseSitter;
   }
 

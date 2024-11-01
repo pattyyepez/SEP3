@@ -52,8 +52,15 @@ message UpdateHouseOwnerRequest {
   string biography = 10;
 }
 
+message AllHouseOwnersRequest{}
+
+message AllHouseOwnersResponse{
+  repeated HouseOwnerResponse houseOwners = 1;
+}
+
 service HouseOwnerService {
   rpc GetHouseOwner (HouseOwnerRequest) returns (HouseOwnerResponse);
+  rpc GetAllHouseOwners (AllHouseOwnersRequest) returns (AllHouseOwnersResponse);
   rpc CreateHouseOwner (CreateHouseOwnerRequest) returns (HouseOwnerResponse);
   rpc UpdateHouseOwner (UpdateHouseOwnerRequest) returns (HouseOwnerResponse);
   rpc DeleteHouseOwner (HouseOwnerRequest) returns (HouseOwnerResponse);
@@ -114,8 +121,15 @@ message UpdateHouseSitterRequest {
   repeated string skills = 12;
 }
 
+message AllHouseSittersRequest{}
+
+message AllHouseSittersResponse{
+  repeated HouseSitterResponse houseSitters = 1;
+}
+
 service HouseSitterService {
   rpc GetHouseSitter (HouseSitterRequest) returns (HouseSitterResponse);
+  rpc GetAllHouseSitters (AllHouseSittersRequest) returns (AllHouseSittersResponse);
   rpc CreateHouseSitter (CreateHouseSitterRequest) returns (HouseSitterResponse);
   rpc UpdateHouseSitter (UpdateHouseSitterRequest) returns (HouseSitterResponse);
   rpc DeleteHouseSitter (HouseSitterRequest) returns (HouseSitterResponse);

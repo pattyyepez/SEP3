@@ -35,7 +35,7 @@ public class HouseSitter extends User
     return pictures;
   }
 
-  public void setPictures(ArrayList<String> pictures)
+  public void setPictures(List<String> pictures)
   {
     this.pictures = pictures;
   }
@@ -45,7 +45,7 @@ public class HouseSitter extends User
     return skills;
   }
 
-  public void setSkills(ArrayList<String> skills)
+  public void setSkills(List<String> skills)
   {
     this.skills = skills;
   }

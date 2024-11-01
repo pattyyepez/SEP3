@@ -18,6 +18,22 @@ using System.Threading.Tasks;
             _repo = repo;
         }
 
+        // https://localhost:7134/api/HouseSitter
+        [HttpGet]
+        public async Task<IActionResult> GetAllHouseSitters()
+        {
+            try
+            {
+                var response = _repo.GetAll();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error fetching all HouseSitters:" +
+                                       $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+            }
+        }
+        
         // GET: api/houseowner/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHouseSitter(int id)
@@ -25,20 +41,11 @@ using System.Threading.Tasks;
             try
             {
                 var response = await _repo.GetSingleAsync(id);
-
-                // var houseSitter = new HouseSitterDTO
-                // {
-                //     UserId = response.UserId,
-                //     Address = response.Address,
-                //     Biography = response.Biography
-                // };
-
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Error fetching HouseSitter: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-                
             }
         }
 
@@ -53,7 +60,7 @@ using System.Threading.Tasks;
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error creating HouseSitter: {ex.Message}");
+                return StatusCode(500, $"Error creating HouseSitter: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
             }
         }
 
@@ -68,7 +75,7 @@ using System.Threading.Tasks;
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error updating HouseSitter: {ex.Message}");
+                return StatusCode(500, $"Error updating HouseSitter: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
             }
         }
 

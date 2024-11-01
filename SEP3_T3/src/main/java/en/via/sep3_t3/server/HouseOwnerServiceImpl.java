@@ -1,14 +1,13 @@
 package en.via.sep3_t3.server;
 
-import en.via.sep3_t3.CreateHouseOwnerRequest;
-import en.via.sep3_t3.HouseOwnerRequest;
-import en.via.sep3_t3.HouseOwnerResponse;
-import en.via.sep3_t3.HouseOwnerServiceGrpc;
-import en.via.sep3_t3.UpdateHouseOwnerRequest;
+import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.HouseOwner;
 import en.via.sep3_t3.repositories.HouseOwnerRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServiceImplBase {
@@ -24,6 +23,27 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
     try {
       HouseOwner houseOwner = houseOwnerRepository.findById(request.getId() );
       HouseOwnerResponse response = getHouseOwnerResponse(houseOwner);
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override
+  public void getAllHouseOwners(AllHouseOwnersRequest request, StreamObserver<AllHouseOwnersResponse> responseObserver) {
+    try {
+      List<HouseOwner> houseOwners = houseOwnerRepository.findAll();
+      List<HouseOwnerResponse> houseOwnerResponses = new ArrayList<>();
+
+      for(HouseOwner houseOwner : houseOwners ) {
+        houseOwnerResponses.add(getHouseOwnerResponse(houseOwner));
+      }
+
+      AllHouseOwnersResponse response = AllHouseOwnersResponse.newBuilder()
+          .addAllHouseOwners(houseOwnerResponses)
+          .build();
+
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {

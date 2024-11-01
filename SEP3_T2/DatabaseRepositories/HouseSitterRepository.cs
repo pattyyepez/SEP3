@@ -1,5 +1,4 @@
 ﻿using DTOs.HouseSitter;
-using Google.Protobuf.Collections;
 using Grpc.Core;
 using Grpc.Net.Client;
 using RepositoryContracts;
@@ -29,11 +28,11 @@ public class HouseSitterRepository : IHouseSitterRepository
             ProfilePicture = houseSitter.ProfilePicture,
             CPR = houseSitter.CPR,
             Phone = houseSitter.Phone,
+            Pictures = { houseSitter.Pictures },
+            Skills = { houseSitter.Skills },
             
             Biography = houseSitter.Biography,
-            Experience = houseSitter.Experience, 
-            Pictures = new RepeatedField<string> { houseSitter.Pictures },
-            Skills = new RepeatedField<string> { houseSitter.Skills }
+            Experience = houseSitter.Experience
         });
         
         return Task.FromResult(new HouseSitterDTO
@@ -69,8 +68,8 @@ public class HouseSitterRepository : IHouseSitterRepository
             
             Biography = houseSitter.Biography,
             Experience = houseSitter.Experience, 
-            Pictures = new RepeatedField<string> { houseSitter.Pictures },
-            Skills = new RepeatedField<string> { houseSitter.Skills }
+            Pictures = { houseSitter.Pictures },
+            Skills = { houseSitter.Skills }
         });
         
         return Task.FromResult(new HouseSitterDTO
@@ -108,7 +107,6 @@ public class HouseSitterRepository : IHouseSitterRepository
         {
             Id = id
         });
-        Console.Write(reply.Pictures.Count);
         return Task.FromResult(new HouseSitterDTO
         {
             UserId = reply.Id,
@@ -130,6 +128,31 @@ public class HouseSitterRepository : IHouseSitterRepository
 
     public IQueryable<HouseSitterDTO> GetAll()
     {
-        throw new NotImplementedException();
+        AllHouseSittersResponse reply = _client.GetAllHouseSitters(new AllHouseSittersRequest());
+        var houseSitterResponses = reply.HouseSitters.ToList();
+        var houseSitters = new List<HouseSitterDTO>();
+
+        foreach (var houseSitter in houseSitterResponses)
+        {
+            houseSitters.Add(new HouseSitterDTO
+            {
+                UserId = houseSitter.Id,
+            
+                Email = houseSitter.Email,
+                Password = houseSitter.Password,
+                ProfilePicture = houseSitter.ProfilePicture,
+                CPR = houseSitter.CPR,
+                Phone = houseSitter.Phone,
+                IsVerified = houseSitter.IsVerified,
+                AdminId = houseSitter.AdminId,
+            
+                Biography = houseSitter.Biography,
+                Experience = houseSitter.Experience, 
+                Pictures = houseSitter.Pictures.ToList(),
+                Skills = houseSitter.Skills.ToList()
+            });
+        }
+
+        return houseSitters.AsQueryable();
     }
 }
