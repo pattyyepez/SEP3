@@ -3,6 +3,7 @@ package en.via.sep3_t3.server;
 import en.via.sep3_t3.services.*;
 import io.grpc.Server;
 import io.grpc.netty.NettyServerBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PreDestroy;
@@ -13,7 +14,8 @@ public class GrpcServerConfig {
 
   private Server server;
 
-  public Server createGrpcServer(
+  @Bean
+  public Server grpcServer(
       HouseOwnerServiceImpl houseOwnerService,
       HouseSitterServiceImpl houseSitterService,
       HouseProfileServiceImpl houseProfileService,
@@ -34,6 +36,7 @@ public class GrpcServerConfig {
         .addService(reportService)
         .build()
         .start();
+
     System.out.println("gRPC Server started on port 9090...");
     return server;
   }
