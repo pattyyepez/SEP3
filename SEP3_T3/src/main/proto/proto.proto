@@ -135,7 +135,7 @@ service HouseSitterService {
   rpc DeleteHouseSitter (HouseSitterRequest) returns (HouseSitterResponse);
 }
 
-//  HouseProfile
+//house profile
 
 message HouseProfileRequest {
   int32 id = 1;
@@ -184,4 +184,208 @@ service HouseProfileService {
   rpc CreateHouseProfile (CreateHouseProfileRequest) returns (HouseProfileResponse);
   rpc UpdateHouseProfile (UpdateHouseProfileRequest) returns (HouseProfileResponse);
   rpc DeleteHouseProfile (HouseProfileRequest) returns (HouseProfileResponse);
+}
+
+//house listing
+message HouseListingRequest {
+    int32 id = 1;
+}
+
+message HouseListingResponse {
+    int32 id = 1;
+    int32 profileId = 2;
+    int64 startDate = 3;
+    int64 endDate = 4;
+    string status = 5;
+}
+
+message CreateHouseListingRequest {
+    int32 profileId = 1;
+    int64 startDate = 2;
+    int64 endDate = 3;
+    string status = 4;
+}
+
+message UpdateHouseListingRequest {
+    int32 id = 1;
+    int32 profileId = 2;
+    int64 startDate = 3;
+    int64 endDate = 4;
+    string status = 5;
+}
+
+service HouseListingService {
+    rpc GetHouseListing (HouseListingRequest) returns (HouseListingResponse);
+    rpc CreateHouseListing (CreateHouseListingRequest) returns (HouseListingResponse);
+    rpc UpdateHouseListing (UpdateHouseListingRequest) returns (HouseListingResponse);
+    rpc DeleteHouseListing (HouseListingRequest) returns (HouseListingResponse);
+}
+
+//application
+message ApplicationRequest {
+  int32 listing_id = 1;
+  int32 sitter_id = 2;
+}
+
+message ApplicationResponse {
+  int32 listing_id = 1;
+  int32 sitter_id = 2;
+  string message = 3;
+  string status = 4;
+  string date = 5;
+}
+
+message CreateApplicationRequest {
+  int32 listing_id = 1;
+  int32 sitter_id = 2;
+  string message = 3;
+  string status = 4;
+  string date = 5;
+}
+
+message UpdateApplicationRequest {
+  int32 listing_id = 1;
+  int32 sitter_id = 2;
+  string message = 3;
+  string status = 4;
+  string date = 5;
+}
+
+message DeleteApplicationRequest {
+  int32 listing_id = 1;
+  int32 sitter_id = 2;
+}
+
+service ApplicationService {
+  rpc GetApplication(ApplicationRequest) returns (ApplicationResponse);
+  rpc CreateApplication(CreateApplicationRequest) returns (ApplicationResponse);
+  rpc UpdateApplication(UpdateApplicationRequest) returns (ApplicationResponse);
+  rpc DeleteApplication(DeleteApplicationRequest) returns (ApplicationResponse);
+}
+
+//house review
+
+message HouseReviewRequest {
+  int32 id = 1;
+}
+
+message HouseReviewResponse {
+  int32 id = 1;
+  int32 profile_id = 2;
+  int32 sitter_id = 3;
+  int32 rating = 4;
+  string comment = 5;
+  string date = 6;
+}
+
+message CreateHouseReviewRequest {
+  int32 profile_id = 1;
+  int32 sitter_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+  string date = 5;
+}
+
+message UpdateHouseReviewRequest {
+  int32 id = 1;
+  int32 profile_id = 2;
+  int32 sitter_id = 3;
+  int32 rating = 4;
+  string comment = 5;
+  string date = 6;
+}
+
+message DeleteHouseReviewRequest {
+  int32 id = 1;
+}
+
+service HouseReviewService {
+  rpc GetHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
+  rpc CreateHouseReview(CreateHouseReviewRequest) returns (HouseReviewResponse);
+  rpc UpdateHouseReview(UpdateHouseReviewRequest) returns (HouseReviewResponse);
+  rpc DeleteHouseReview(DeleteHouseReviewRequest) returns (HouseReviewResponse);
+}
+
+//sitter review
+message SitterReviewRequest {
+  int32 id = 1;
+}
+
+message SitterReviewResponse {
+  int32 id = 1;
+  int32 owner_id = 2;
+  int32 sitter_id = 3;
+  int32 rating = 4;
+  string comment = 5;
+  string date = 6;
+}
+
+message CreateSitterReviewRequest {
+  int32 owner_id = 1;
+  int32 sitter_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+  string date = 5;
+}
+
+message UpdateSitterReviewRequest {
+  int32 id = 1;
+  int32 owner_id = 2;
+  int32 sitter_id = 3;
+  int32 rating = 4;
+  string comment = 5;
+  string date = 6;
+}
+
+message DeleteSitterReviewRequest {
+  int32 id = 1;
+}
+
+service SitterReviewService {
+  rpc GetSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
+  rpc CreateSitterReview(CreateSitterReviewRequest) returns (SitterReviewResponse);
+  rpc UpdateSitterReview(UpdateSitterReviewRequest) returns (SitterReviewResponse);
+  rpc DeleteSitterReview(DeleteSitterReviewRequest) returns (SitterReviewResponse);
+}
+
+//reports
+
+message ReportRequest {
+  int32 id = 1;
+}
+
+message ReportResponse {
+  int32 id = 1;
+  int32 owner_id = 2;
+  int32 sitter_id = 3;
+  int32 admin_id = 4;
+  string comment = 5;
+  string status = 6;
+  string date = 7;
+}
+
+message CreateReportRequest {
+  int32 owner_id = 1;
+  int32 sitter_id = 2;
+  int32 admin_id = 3;
+  string comment = 4;
+  string status = 5;
+  string date = 6;
+}
+
+message UpdateReportRequest {
+  int32 id = 1;
+  string comment = 2;
+  string status = 3;
+}
+
+message DeleteReportRequest {
+  int32 id = 1;
+}
+
+service ReportService {
+  rpc GetReport (ReportRequest) returns (ReportResponse);
+  rpc CreateReport (CreateReportRequest) returns (ReportResponse);
+  rpc UpdateReport (UpdateReportRequest) returns (ReportResponse);
+  rpc DeleteReport (DeleteReportRequest) returns (ReportResponse);
 }

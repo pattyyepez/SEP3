@@ -1,4 +1,4 @@
-package en.via.sep3_t3.server;
+package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.HouseOwner;
