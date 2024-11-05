@@ -23,7 +23,6 @@ CREATE TABLE Users (
     FOREIGN KEY (admin_id) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
-
 CREATE TABLE HouseOwner (
     owner_id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL,
@@ -31,28 +30,30 @@ CREATE TABLE HouseOwner (
     FOREIGN KEY (owner_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
-
-
-CREATE TABLE House_profile (
+CREATE TABLE HouseProfile (
     profile_id SERIAL PRIMARY KEY,
     owner_id INT NOT NULL,
     description VARCHAR(1000) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    region VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES houseowner(owner_id) ON DELETE CASCADE
 );
 
 CREATE TABLE House_pictures (
     profile_id INT NOT NULL,
     picture VARCHAR(255),
-    FOREIGN KEY (profile_id) REFERENCES House_profile(profile_id) ON DELETE CASCADE
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    PRIMARY KEY (profile_id, picture)
 );
 
 CREATE TABLE House_listing (
     listing_id SERIAL PRIMARY KEY,
     profile_id INT NOT NULL,
-    startDate DATE NOT NULL,
-    endDate DATE NOT NULL,
+    startDate TIMESTAMP NOT NULL,
+    endDate TIMESTAMP NOT NULL,
     status VARCHAR(10) NOT NULL CHECK (status IN ('Open', 'Closed', 'Unavailable')),
-    FOREIGN KEY (profile_id) REFERENCES House_profile(profile_id) ON DELETE CASCADE
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Chores (
@@ -78,26 +79,28 @@ CREATE TABLE Skills (
 CREATE TABLE House_rules (
     profile_id INT NOT NULL,
     rule_id INT NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES House_profile(profile_id) ON DELETE CASCADE,
-    FOREIGN KEY (rule_id) REFERENCES Rules(id) ON DELETE CASCADE
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (rule_id) REFERENCES Rules(id) ON DELETE CASCADE,
+    PRIMARY KEY (profile_id, rule_id)
 );
 
 CREATE TABLE House_chores (
     profile_id INT NOT NULL,
     chore_id INT NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES House_profile(profile_id) ON DELETE CASCADE,
-    FOREIGN KEY (chore_id) REFERENCES Chores(id) ON DELETE CASCADE
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (chore_id) REFERENCES Chores(id) ON DELETE CASCADE,
+    PRIMARY KEY (profile_id, chore_id)
 );
 
 CREATE TABLE House_amenities (
     profile_id INT NOT NULL,
     amenity_id INT NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES House_profile(profile_id) ON DELETE CASCADE,
-    FOREIGN KEY (amenity_id) REFERENCES Amenities(id) ON DELETE CASCADE
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (amenity_id) REFERENCES Amenities(id) ON DELETE CASCADE,
+    PRIMARY KEY (profile_id, amenity_id)
 );
 
-
-CREATE TABLE House_sitter (
+CREATE TABLE HouseSitter (
     sitter_id INT PRIMARY KEY,
     past_experience VARCHAR(1000) NOT NULL,
     biography VARCHAR(1000) NOT NULL,
@@ -107,58 +110,69 @@ CREATE TABLE House_sitter (
 CREATE TABLE Sitter_pictures (
     sitter_id INT NOT NULL,
     picture VARCHAR(255),
-    FOREIGN KEY (sitter_id) REFERENCES House_sitter(sitter_id) ON DELETE CASCADE
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE,
+    PRIMARY KEY (sitter_id, picture)
 );
 
 CREATE TABLE Sitter_skills (
     sitter_id INT NOT NULL,
     skill_id INT NOT NULL,
-    FOREIGN KEY (sitter_id) REFERENCES House_sitter(sitter_id) ON DELETE CASCADE,
-    FOREIGN KEY (skill_id) REFERENCES Skills(id) ON DELETE CASCADE
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE,
+    FOREIGN KEY (skill_id) REFERENCES Skills(id) ON DELETE CASCADE,
+    PRIMARY KEY (sitter_id, skill_id)
 );
 
-
 CREATE TABLE Application (
-    application_id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
     sitter_id INT NOT NULL,
     message VARCHAR(10000) NOT NULL,
     status VARCHAR(10) NOT NULL CHECK (status IN ('Pending', 'Approved', 'Rejected')),
-    date DATE NOT NULL,
+    date TIMESTAMP NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE,
-    FOREIGN KEY (sitter_id) REFERENCES House_sitter(sitter_id) ON DELETE CASCADE
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE,
+    PRIMARY KEY (listing_id, sitter_id)
 );
 
 CREATE TABLE House_review (
     id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
+    profile_id INT NOT NULL,
+    sitter_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comments VARCHAR(1000) NOT NULL,
     date DATE NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE
+    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE,
+    FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Sitter_review (
     id SERIAL PRIMARY KEY,
     listing_id INT NOT NULL,
+    owner_id INT NOT NULL,
+    sitter_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comments VARCHAR(1000) NOT NULL,
     date DATE NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE
+    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE,
+    FOREIGN KEY (owner_id) REFERENCES HouseOwner(owner_id) ON DELETE CASCADE,
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Report (
     report_id SERIAL PRIMARY KEY,
     listing_id INT DEFAULT NULL,
     sitter_id INT DEFAULT NULL,
+    owner_id INT DEFAULT NULL,
     admin_id INT DEFAULT NULL,
     comments VARCHAR(1000) NOT NULL,
     status VARCHAR(10) DEFAULT 'Pending',
+    date DATE,
     FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE SET NULL,
-    FOREIGN KEY (sitter_id) REFERENCES House_sitter(sitter_id) ON DELETE SET NULL,
+    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE SET NULL,
+    FOREIGN KEY (owner_id) REFERENCES HouseOwner(owner_id) ON DELETE SET NULL,
     FOREIGN KEY (admin_id) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
-
 
 ---DUMMY DATA
 
@@ -180,12 +194,11 @@ INSERT INTO HouseOwner (address, biography) VALUES
 ('78 Aarhusvej, Aarhus', 'We often travel, need sitters to care for our dogs.'),
 ('101 Odensegade, Odense', 'Cats lover, need help when on business trips.');
 
-
-INSERT INTO House_profile (owner_id, description) VALUES
-(1, 'Beautiful house with a garden in central Copenhagen.'),
-(2, 'Charming apartment near the beach with a large terrace.'),
-(3, 'Spacious villa in Aarhus with a backyard. Perfect for dog lovers.'),
-(4, 'Modern house in Odense. Cozy and perfect for cat lovers.');
+INSERT INTO HouseProfile (owner_id, description, address, region, city) VALUES
+(1, 'Beautiful house with a garden in central Copenhagen.', 'Skoveringe, 11', 'Midt-Jutland', 'Horsens'),
+(2, 'Charming apartment near the beach with a large terrace.', 'Skoveringe, 77', 'Nord-Jutland', 'Skage'),
+(3, 'Spacious villa in Aarhus with a backyard. Perfect for dog lovers.', 'Skoveringe, 17', 'Fyn', 'Odense'),
+(4, 'Modern house in Odense. Cozy and perfect for cat lovers.', 'Skoveringe, 11', 'Sjealland', 'Copenaguen');
 
 INSERT INTO House_pictures (profile_id, picture) VALUES
 (1, 'house1.jpg'),
@@ -200,7 +213,6 @@ INSERT INTO House_pictures (profile_id, picture) VALUES
 (4, 'house4.jpg'),
 (4, 'house44.jpg'),
 (4, 'house444.jpg');
-
 
 INSERT INTO House_listing (profile_id, startDate, endDate, status) VALUES
 (1, '2024-11-01', '2024-11-30', 'Open'),
@@ -245,7 +257,7 @@ INSERT INTO House_amenities (profile_id, amenity_id) VALUES
 (2, 4),
 (3, 1),
 (4, 2);
-INSERT INTO House_sitter (sitter_id, past_experience, biography) VALUES
+INSERT INTO HouseSitter (sitter_id, past_experience, biography) VALUES
 (5, 'Previous experience caring for dogs and cats.', 'Animal lover, available for short-term house sits.'),
 (6, 'Skilled in plant care and pet care.', 'Looking for long-term sitting opportunities in Denmark.');
 INSERT INTO Sitter_pictures (sitter_id, picture) VALUES
@@ -265,12 +277,12 @@ INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES
 INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
 (1, 5, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
 (2, 6, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
-INSERT INTO House_review (listing_id, rating, comments, date) VALUES
-(1, 5, 'Beautiful house, great experience!', '2024-10-20'),
-(2, 4, 'Lovely home, perfect location.', '2024-10-21');
-INSERT INTO Sitter_review (listing_id, rating, comments, date) VALUES
-(1, 5, 'Excellent sitter, took great care of our pets.', '2024-10-22'),
-(2, 4, 'Very reliable and responsible.', '2024-10-21');
+INSERT INTO House_review (listing_id, profile_id, sitter_id, rating, comments, date) VALUES
+(1, 3, 5, 5, 'Beautiful house, great experience!', '2024-10-20'),
+(2, 2, 6, 4, 'Lovely home, perfect location.', '2024-10-21');
+INSERT INTO Sitter_review (listing_id, owner_id, sitter_id, rating, comments, date) VALUES
+(1, 1, 5, 5, 'Excellent sitter, took great care of our pets.', '2024-10-22'),
+(2, 2, 6, 4, 'Very reliable and responsible.', '2024-10-21');
 INSERT INTO Report (listing_id, sitter_id, admin_id, comments, status) VALUES
 (1, 5, 1, 'Sitter was not responsive.', 'Pending'),
 (2, 6, 2, 'House was left untidy.', 'Resolved');
