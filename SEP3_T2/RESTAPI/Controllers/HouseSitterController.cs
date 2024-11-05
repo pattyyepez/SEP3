@@ -51,7 +51,7 @@ using System.Threading.Tasks;
 
         // POST: api/houseowner
         [HttpPost]
-        public async Task<IActionResult> CreateHouseSitter([FromBody] CreateHouseSitterDTO createDto)
+        public async Task<IActionResult> CreateHouseSitter([FromBody] CreateHouseSitterDto createDto)
         {
             try
             {
@@ -66,7 +66,7 @@ using System.Threading.Tasks;
 
         // PUT: api/houseowner/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHouseSitter(int id, [FromBody] UpdateHouseSitterDTO updateDto)
+        public async Task<IActionResult> UpdateHouseSitter(int id, [FromBody] UpdateHouseSitterDto updateDto)
         {
             try
             {

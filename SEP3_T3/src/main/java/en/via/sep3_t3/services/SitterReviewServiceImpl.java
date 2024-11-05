@@ -70,7 +70,7 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
   }
 
   @Override
-  public void deleteSitterReview(DeleteSitterReviewRequest request, StreamObserver<SitterReviewResponse> responseObserver) {
+  public void deleteSitterReview(SitterReviewRequest request, StreamObserver<SitterReviewResponse> responseObserver) {
     try {
       sitterReviewRepository.deleteById(request.getId());
       responseObserver.onNext(SitterReviewResponse.newBuilder().build());

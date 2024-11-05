@@ -69,7 +69,7 @@ public class HouseReviewServiceImpl extends HouseReviewServiceGrpc.HouseReviewSe
   }
 
   @Override
-  public void deleteHouseReview(DeleteHouseReviewRequest request, StreamObserver<HouseReviewResponse> responseObserver) {
+  public void deleteHouseReview(HouseReviewRequest request, StreamObserver<HouseReviewResponse> responseObserver) {
     try {
       houseReviewRepository.deleteById(request.getId());
       responseObserver.onNext(HouseReviewResponse.newBuilder().build());

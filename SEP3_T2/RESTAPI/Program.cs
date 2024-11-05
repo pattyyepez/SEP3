@@ -11,6 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IHouseOwnerRepository, HouseOwnerRepository>();
 builder.Services.AddScoped<IHouseSitterRepository, HouseSitterRepository>();
+builder.Services.AddScoped<IHouseProfileRepository, HouseProfileRepository>();
+builder.Services.AddScoped<IHouseListingRepository, HouseListingRepository>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
 var app = builder.Build();
 

@@ -29,7 +29,7 @@ public class HouseProfileRepository {
   }
 
   public HouseProfile findById(int id) {
-    String sql = "SELECT * FROM HouseProfile WHERE id = ?";
+    String sql = "SELECT * FROM HouseProfile WHERE profile_id = ?";
     return jdbcTemplate.queryForObject(sql, new HouseProfileRowMapper(), id);
   }
 
@@ -48,7 +48,7 @@ public class HouseProfileRepository {
       return ps;
     }, keyHolder);
 
-    int profileId = (int) keyHolder.getKeys().get("id");
+    int profileId = (int) keyHolder.getKeys().get("profile_id");
 
     saveAmenities(houseProfile.getAmenities(), profileId);
     saveChores(houseProfile.getChores(), profileId);
@@ -59,7 +59,7 @@ public class HouseProfileRepository {
   }
 
   public void update(HouseProfile houseProfile) {
-    String sql = "UPDATE HouseProfile SET description = ?, address = ?, region = ?, city = ? WHERE id = ?";
+    String sql = "UPDATE HouseProfile SET description = ?, address = ?, region = ?, city = ? WHERE profile_id = ?";
     jdbcTemplate.update(sql, houseProfile.getDescription(), houseProfile.getAddress(), houseProfile.getRegion(),
         houseProfile.getCity(), houseProfile.getId());
 
@@ -80,15 +80,19 @@ public class HouseProfileRepository {
     deleteRules(id);
     deletePictures(id);
 
-    String sql = "DELETE FROM HouseProfile WHERE id = ?";
+    String sql = "DELETE FROM HouseProfile WHERE profile_id = ?";
     jdbcTemplate.update(sql, id);
   }
 
 
   private void saveAmenities(List<String> amenities, int profileId) {
-    String sql = "INSERT INTO House_amenities (profile_id, amenity_id) VALUES (?, ?)";
-    for (String amenity : amenities) {
-      jdbcTemplate.update(sql, profileId, getAmenityId(amenity));
+    if(!(amenities.size() == 1 && amenities.contains("")))
+    {
+      String sql = "INSERT INTO House_amenities (profile_id, amenity_id) VALUES (?, ?)";
+      for (String amenity : amenities)
+      {
+        jdbcTemplate.update(sql, profileId, getAmenityId(amenity));
+      }
     }
   }
 
@@ -98,9 +102,13 @@ public class HouseProfileRepository {
   }
 
   private void saveChores(List<String> chores, int profileId) {
-    String sql = "INSERT INTO House_chores (profile_id, chore_id) VALUES (?, ?)";
-    for (String chore : chores) {
-      jdbcTemplate.update(sql, profileId, getChoreId(chore));
+    if(!(chores.size() == 1 && chores.contains("")))
+    {
+      String sql = "INSERT INTO House_chores (profile_id, chore_id) VALUES (?, ?)";
+      for (String chore : chores)
+      {
+        jdbcTemplate.update(sql, profileId, getChoreId(chore));
+      }
     }
   }
 
@@ -110,9 +118,11 @@ public class HouseProfileRepository {
   }
 
   private void saveRules(List<String> rules, int profileId) {
-    String sql = "INSERT INTO House_rules (profile_id, rule_id) VALUES (?, ?)";
-    for (String rule : rules) {
-      jdbcTemplate.update(sql, profileId, getRuleId(rule));
+    if(!(rules.size() == 1 && rules.contains(""))){
+      String sql = "INSERT INTO House_rules (profile_id, rule_id) VALUES (?, ?)";
+      for (String rule : rules) {
+        jdbcTemplate.update(sql, profileId, getRuleId(rule));
+    }
     }
   }
 

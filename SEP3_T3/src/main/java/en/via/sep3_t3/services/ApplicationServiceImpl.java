@@ -6,14 +6,15 @@ import en.via.sep3_t3.repositories.ApplicationRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationServiceImplBase {
 
   private final ApplicationRepository applicationRepository;
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
   public ApplicationServiceImpl(ApplicationRepository applicationRepository) {
     this.applicationRepository = applicationRepository;
@@ -31,6 +32,26 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
     }
   }
 
+  public void getAllApplications(AllApplicationsRequest request, StreamObserver<AllApplicationsResponse> responseObserver) {
+    try {
+      List<Application> Applications = applicationRepository.findAll();
+      List<ApplicationResponse> applicationResponses = new ArrayList<>();
+
+      for(Application application : Applications ) {
+        applicationResponses.add(buildApplicationResponse(application));
+      }
+
+      AllApplicationsResponse response = AllApplicationsResponse.newBuilder()
+          .addAllApplications(applicationResponses)
+          .build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      responseObserver.onError(e);
+    }
+  }
+
   @Override
   public void createApplication(CreateApplicationRequest request, StreamObserver<ApplicationResponse> responseObserver) {
     try {
@@ -39,12 +60,13 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       application.setSitter_id(request.getSitterId());
       application.setMessage(request.getMessage());
       application.setStatus(request.getStatus());
-      application.setDate(parseDate(request.getDate()));
+      application.setDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
 
       applicationRepository.save(application);
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -55,20 +77,19 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       Application application = new Application();
       application.setListing_id(request.getListingId());
       application.setSitter_id(request.getSitterId());
-      application.setMessage(request.getMessage());
       application.setStatus(request.getStatus());
-      application.setDate(parseDate(request.getDate()));
 
-      applicationRepository.update(application);
+      application = applicationRepository.update(application);
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
 
   @Override
-  public void deleteApplication(DeleteApplicationRequest request, StreamObserver<ApplicationResponse> responseObserver) {
+  public void deleteApplication(ApplicationRequest request, StreamObserver<ApplicationResponse> responseObserver) {
     try {
       applicationRepository.deleteById(request.getListingId(), request.getSitterId());
       responseObserver.onNext(ApplicationResponse.newBuilder().build());
@@ -84,11 +105,7 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
         .setSitterId(application.getSitter_id())
         .setMessage(application.getMessage())
         .setStatus(application.getStatus())
-        .setDate(dateFormat.format(application.getDate()))
+        .setDate(application.getDate() != null ? application.getDate().getTime() : 0)
         .build();
-  }
-
-  private Date parseDate(String dateString) throws Exception {
-    return dateFormat.parse(dateString);
   }
 }

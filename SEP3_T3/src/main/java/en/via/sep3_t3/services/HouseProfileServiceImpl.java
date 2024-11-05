@@ -6,6 +6,7 @@ import en.via.sep3_t3.repositories.HouseProfileRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,18 +26,24 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
 
   @Override
-  public void createHouseProfile(CreateHouseProfileRequest request, StreamObserver<HouseProfileResponse> responseObserver) {
+  public void getAllHouseProfiles(AllHouseProfilesRequest request, StreamObserver<AllHouseProfilesResponse> responseObserver) {
     try {
-      HouseProfile houseProfile = getHouseProfile(request.getOwnerId(), request.getDescription(),
-          request.getAddress(), request.getRegion(), request.getCity(), request.getAmenitiesList(),
-          request.getChoresList(), request.getRulesList(), request.getPicturesList());
-      houseProfile.setId(houseProfileRepository.save(houseProfile));
-      HouseProfileResponse response = getHouseProfileResponse(houseProfile);
+      List<HouseProfile> houseProfiles = houseProfileRepository.findAll();
+      List<HouseProfileResponse> houseProfileResponses = new ArrayList<>();
+
+      for(HouseProfile houseProfile : houseProfiles ) {
+        houseProfileResponses.add(getHouseProfileResponse(houseProfile));
+      }
+
+      AllHouseProfilesResponse response = AllHouseProfilesResponse.newBuilder()
+          .addAllHouseProfiles(houseProfileResponses)
+          .build();
 
       responseObserver.onNext(response);
       responseObserver.onCompleted();
@@ -46,9 +53,26 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
   }
 
   @Override
+  public void createHouseProfile(CreateHouseProfileRequest request, StreamObserver<HouseProfileResponse> responseObserver) {
+    try {
+      HouseProfile houseProfile = getHouseProfile(0, request.getOwnerId(), request.getDescription(),
+          request.getAddress(), request.getRegion(), request.getCity(), request.getAmenitiesList(),
+          request.getChoresList(), request.getRulesList(), request.getPicturesList());
+      houseProfile.setId(houseProfileRepository.save(houseProfile));
+      HouseProfileResponse response = getHouseProfileResponse(houseProfile);
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      e.printStackTrace();
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override
   public void updateHouseProfile(UpdateHouseProfileRequest request, StreamObserver<HouseProfileResponse> responseObserver) {
     try {
-      HouseProfile houseProfile = getHouseProfile(request.getOwnerId(), request.getDescription(),
+      HouseProfile houseProfile = getHouseProfile(request.getId(), request.getOwnerId(), request.getDescription(),
           request.getAddress(), request.getRegion(), request.getCity(), request.getAmenitiesList(),
           request.getChoresList(), request.getRulesList(), request.getPicturesList());
       houseProfile.setId(request.getId());
@@ -73,10 +97,11 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
     }
   }
 
-  private static HouseProfile getHouseProfile(int ownerId, String description, String address,
+  private static HouseProfile getHouseProfile(int ProfileId, int ownerId, String description, String address,
       String region, String city, List<String> amenities,
       List<String> chores, List<String> rules, List<String> pictures) {
     HouseProfile houseProfile = new HouseProfile();
+    houseProfile.setId(ProfileId);
     houseProfile.setOwner_id(ownerId);
     houseProfile.setDescription(description);
     houseProfile.setAddress(address);

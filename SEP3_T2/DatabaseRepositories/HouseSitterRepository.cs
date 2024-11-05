@@ -19,7 +19,7 @@ public class HouseSitterRepository : IHouseSitterRepository
             _client = new HouseSitterService.HouseSitterServiceClient(channel);
     }
 
-    public Task<HouseSitterDTO> AddAsync(CreateHouseSitterDTO houseSitter)
+    public Task<HouseSitterDto> AddAsync(CreateHouseSitterDto houseSitter)
     {
         HouseSitterResponse reply = _client.CreateHouseSitter(new CreateHouseSitterRequest
         {
@@ -35,7 +35,7 @@ public class HouseSitterRepository : IHouseSitterRepository
             Experience = houseSitter.Experience
         });
         
-        return Task.FromResult(new HouseSitterDTO
+        return Task.FromResult(new HouseSitterDto
         {
             UserId = reply.Id,
             Email = reply.Email,
@@ -53,7 +53,7 @@ public class HouseSitterRepository : IHouseSitterRepository
         });
     }
 
-    public Task<HouseSitterDTO> UpdateAsync(int id, UpdateHouseSitterDTO houseSitter)
+    public Task<HouseSitterDto> UpdateAsync(int id, UpdateHouseSitterDto houseSitter)
     {
         HouseSitterResponse reply = _client.UpdateHouseSitter(new UpdateHouseSitterRequest()
         {
@@ -72,7 +72,7 @@ public class HouseSitterRepository : IHouseSitterRepository
             Skills = { houseSitter.Skills }
         });
         
-        return Task.FromResult(new HouseSitterDTO
+        return Task.FromResult(new HouseSitterDto
         {
             UserId = reply.Id,
             Email = reply.Email,
@@ -101,13 +101,13 @@ public class HouseSitterRepository : IHouseSitterRepository
     }
 
     // comment
-    public Task<HouseSitterDTO> GetSingleAsync(int id)
+    public Task<HouseSitterDto> GetSingleAsync(int id)
     {
         HouseSitterResponse reply = _client.GetHouseSitter(new HouseSitterRequest
         {
             Id = id
         });
-        return Task.FromResult(new HouseSitterDTO
+        return Task.FromResult(new HouseSitterDto
         {
             UserId = reply.Id,
             
@@ -126,15 +126,15 @@ public class HouseSitterRepository : IHouseSitterRepository
         });
     }
 
-    public IQueryable<HouseSitterDTO> GetAll()
+    public IQueryable<HouseSitterDto> GetAll()
     {
         AllHouseSittersResponse reply = _client.GetAllHouseSitters(new AllHouseSittersRequest());
         var houseSitterResponses = reply.HouseSitters.ToList();
-        var houseSitters = new List<HouseSitterDTO>();
+        var houseSitters = new List<HouseSitterDto>();
 
         foreach (var houseSitter in houseSitterResponses)
         {
-            houseSitters.Add(new HouseSitterDTO
+            houseSitters.Add(new HouseSitterDto
             {
                 UserId = houseSitter.Id,
             

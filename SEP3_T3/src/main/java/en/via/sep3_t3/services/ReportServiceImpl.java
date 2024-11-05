@@ -64,7 +64,7 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
   }
 
   @Override
-  public void deleteReport(DeleteReportRequest request, StreamObserver<ReportResponse> responseObserver) {
+  public void deleteReport(ReportRequest request, StreamObserver<ReportResponse> responseObserver) {
     try {
       reportRepository.deleteById(request.getId());
       ReportResponse response = ReportResponse.newBuilder().build();

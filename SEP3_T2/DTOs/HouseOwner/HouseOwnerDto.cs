@@ -1,9 +1,9 @@
-﻿namespace DTOs.HouseSitter;
+﻿namespace DTOs.HouseOwner;
 
-public class UpdateHouseSitterDTO
+public class HouseOwnerDto
 {
     // attributes from User
-    // public int UserId { get; set; }
+    public int UserId { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
     public string? ProfilePicture { get; set; }
@@ -13,8 +13,6 @@ public class UpdateHouseSitterDTO
     public int AdminId { get; set; }
   
     // attributes from HouseOwner
-    public string? Experience { get; set; }
+    public string? Address { get; set; }
     public string? Biography { get; set; }
-    public List<string>? Pictures { get; set; }
-    public List<string>? Skills { get; set; }
 }

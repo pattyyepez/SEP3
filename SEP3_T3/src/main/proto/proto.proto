@@ -179,8 +179,15 @@ message UpdateHouseProfileRequest {
   repeated string pictures = 10;
 }
 
+message AllHouseProfilesRequest{}
+
+message AllHouseProfilesResponse{
+  repeated HouseProfileResponse houseProfiles = 1;
+}
+
 service HouseProfileService {
   rpc GetHouseProfile (HouseProfileRequest) returns (HouseProfileResponse);
+  rpc GetAllHouseProfiles (AllHouseProfilesRequest) returns (AllHouseProfilesResponse);
   rpc CreateHouseProfile (CreateHouseProfileRequest) returns (HouseProfileResponse);
   rpc UpdateHouseProfile (UpdateHouseProfileRequest) returns (HouseProfileResponse);
   rpc DeleteHouseProfile (HouseProfileRequest) returns (HouseProfileResponse);
@@ -188,37 +195,44 @@ service HouseProfileService {
 
 //house listing
 message HouseListingRequest {
-    int32 id = 1;
+  int32 id = 1;
 }
 
 message HouseListingResponse {
-    int32 id = 1;
-    int32 profileId = 2;
-    int64 startDate = 3;
-    int64 endDate = 4;
-    string status = 5;
+  int32 id = 1;
+  int32 profileId = 2;
+  int64 startDate = 3;
+  int64 endDate = 4;
+  string status = 5;
 }
 
 message CreateHouseListingRequest {
-    int32 profileId = 1;
-    int64 startDate = 2;
-    int64 endDate = 3;
-    string status = 4;
+  int32 profileId = 1;
+  int64 startDate = 2;
+  int64 endDate = 3;
+  string status = 4;
 }
 
 message UpdateHouseListingRequest {
-    int32 id = 1;
-    int32 profileId = 2;
-    int64 startDate = 3;
-    int64 endDate = 4;
-    string status = 5;
+  int32 id = 1;
+  int32 profileId = 2;
+  int64 startDate = 3;
+  int64 endDate = 4;
+  string status = 5;
+}
+
+message AllHouseListingsRequest{}
+
+message AllHouseListingsResponse{
+  repeated HouseListingResponse houseListings = 1;
 }
 
 service HouseListingService {
-    rpc GetHouseListing (HouseListingRequest) returns (HouseListingResponse);
-    rpc CreateHouseListing (CreateHouseListingRequest) returns (HouseListingResponse);
-    rpc UpdateHouseListing (UpdateHouseListingRequest) returns (HouseListingResponse);
-    rpc DeleteHouseListing (HouseListingRequest) returns (HouseListingResponse);
+  rpc GetHouseListing (HouseListingRequest) returns (HouseListingResponse);
+  rpc GetAllHouseListings (AllHouseListingsRequest) returns (AllHouseListingsResponse);
+  rpc CreateHouseListing (CreateHouseListingRequest) returns (HouseListingResponse);
+  rpc UpdateHouseListing (UpdateHouseListingRequest) returns (HouseListingResponse);
+  rpc DeleteHouseListing (HouseListingRequest) returns (HouseListingResponse);
 }
 
 //application
@@ -232,7 +246,7 @@ message ApplicationResponse {
   int32 sitter_id = 2;
   string message = 3;
   string status = 4;
-  string date = 5;
+  int64 date = 5;
 }
 
 message CreateApplicationRequest {
@@ -240,7 +254,7 @@ message CreateApplicationRequest {
   int32 sitter_id = 2;
   string message = 3;
   string status = 4;
-  string date = 5;
+  int64 date = 5;
 }
 
 message UpdateApplicationRequest {
@@ -248,19 +262,21 @@ message UpdateApplicationRequest {
   int32 sitter_id = 2;
   string message = 3;
   string status = 4;
-  string date = 5;
+  int64 date = 5;
 }
 
-message DeleteApplicationRequest {
-  int32 listing_id = 1;
-  int32 sitter_id = 2;
+message AllApplicationsRequest{}
+
+message AllApplicationsResponse{
+  repeated ApplicationResponse applications = 1;
 }
 
 service ApplicationService {
   rpc GetApplication(ApplicationRequest) returns (ApplicationResponse);
+  rpc GetAllApplications(AllApplicationsRequest) returns (AllApplicationsResponse);
   rpc CreateApplication(CreateApplicationRequest) returns (ApplicationResponse);
   rpc UpdateApplication(UpdateApplicationRequest) returns (ApplicationResponse);
-  rpc DeleteApplication(DeleteApplicationRequest) returns (ApplicationResponse);
+  rpc DeleteApplication(ApplicationRequest) returns (ApplicationResponse);
 }
 
 //house review
@@ -295,15 +311,11 @@ message UpdateHouseReviewRequest {
   string date = 6;
 }
 
-message DeleteHouseReviewRequest {
-  int32 id = 1;
-}
-
 service HouseReviewService {
   rpc GetHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
   rpc CreateHouseReview(CreateHouseReviewRequest) returns (HouseReviewResponse);
   rpc UpdateHouseReview(UpdateHouseReviewRequest) returns (HouseReviewResponse);
-  rpc DeleteHouseReview(DeleteHouseReviewRequest) returns (HouseReviewResponse);
+  rpc DeleteHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
 }
 
 //sitter review
@@ -337,15 +349,11 @@ message UpdateSitterReviewRequest {
   string date = 6;
 }
 
-message DeleteSitterReviewRequest {
-  int32 id = 1;
-}
-
 service SitterReviewService {
   rpc GetSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
   rpc CreateSitterReview(CreateSitterReviewRequest) returns (SitterReviewResponse);
   rpc UpdateSitterReview(UpdateSitterReviewRequest) returns (SitterReviewResponse);
-  rpc DeleteSitterReview(DeleteSitterReviewRequest) returns (SitterReviewResponse);
+  rpc DeleteSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
 }
 
 //reports
@@ -379,13 +387,9 @@ message UpdateReportRequest {
   string status = 3;
 }
 
-message DeleteReportRequest {
-  int32 id = 1;
-}
-
 service ReportService {
   rpc GetReport (ReportRequest) returns (ReportResponse);
   rpc CreateReport (CreateReportRequest) returns (ReportResponse);
   rpc UpdateReport (UpdateReportRequest) returns (ReportResponse);
-  rpc DeleteReport (DeleteReportRequest) returns (ReportResponse);
+  rpc DeleteReport (ReportRequest) returns (ReportResponse);
 }

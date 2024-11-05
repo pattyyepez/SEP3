@@ -1,13 +1,12 @@
-﻿using DTOs;
-using DTOs.HouseOwner;
+﻿using DTOs.HouseOwner;
 
 namespace RepositoryContracts;
 
 public interface IHouseOwnerRepository
 {
-    Task<HouseOwnerDTO> AddAsync(CreateHouseOwnerDTO houseOwner);
-    Task<HouseOwnerDTO> UpdateAsync(int id, UpdateHouseOwnerDTO houseOwner);
+    Task<HouseOwnerDto> AddAsync(CreateHouseOwnerDto houseOwner);
+    Task<HouseOwnerDto> UpdateAsync(int id, UpdateHouseOwnerDto houseOwner);
     Task DeleteAsync(int id);
-    Task<HouseOwnerDTO> GetSingleAsync(int id);
-    IQueryable<HouseOwnerDTO> GetAll();
+    Task<HouseOwnerDto> GetSingleAsync(int id);
+    IQueryable<HouseOwnerDto> GetAll();
 }

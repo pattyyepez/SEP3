@@ -7,7 +7,6 @@ namespace DatabaseRepositories;
 
 public class HouseOwnerRepository : IHouseOwnerRepository
 {
-
     private readonly HouseOwnerService.HouseOwnerServiceClient _client;
 
     public HouseOwnerRepository()
@@ -19,7 +18,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
             _client = new HouseOwnerService.HouseOwnerServiceClient(channel);
     }
 
-    public Task<HouseOwnerDTO> AddAsync(CreateHouseOwnerDTO houseOwner)
+    public Task<HouseOwnerDto> AddAsync(CreateHouseOwnerDto houseOwner)
     {
         HouseOwnerResponse reply = _client.CreateHouseOwner(new CreateHouseOwnerRequest
         {
@@ -33,7 +32,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
             Biography = houseOwner.Biography
         });
         
-        return Task.FromResult(new HouseOwnerDTO
+        return Task.FromResult(new HouseOwnerDto
         {
             UserId = reply.Id,
             Email = reply.Email,
@@ -49,7 +48,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         });
     }
 
-    public Task<HouseOwnerDTO> UpdateAsync(int id, UpdateHouseOwnerDTO houseOwner)
+    public Task<HouseOwnerDto> UpdateAsync(int id, UpdateHouseOwnerDto houseOwner)
     {
         HouseOwnerResponse reply = _client.UpdateHouseOwner(new UpdateHouseOwnerRequest()
         {
@@ -66,7 +65,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
             Biography = houseOwner.Biography
         });
         
-        return Task.FromResult(new HouseOwnerDTO
+        return Task.FromResult(new HouseOwnerDto
         {
             UserId = reply.Id,
             Email = reply.Email,
@@ -93,14 +92,14 @@ public class HouseOwnerRepository : IHouseOwnerRepository
     }
 
     // comment
-    public Task<HouseOwnerDTO> GetSingleAsync(int id)
+    public Task<HouseOwnerDto> GetSingleAsync(int id)
     {
         HouseOwnerResponse reply = _client.GetHouseOwner(new HouseOwnerRequest
         {
             Id = id
         });
         
-        return Task.FromResult(new HouseOwnerDTO
+        return Task.FromResult(new HouseOwnerDto
         {
             UserId = reply.Id,
             Email = reply.Email,
@@ -116,15 +115,15 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         });
     }
 
-    public IQueryable<HouseOwnerDTO> GetAll()
+    public IQueryable<HouseOwnerDto> GetAll()
     {
         AllHouseOwnersResponse reply = _client.GetAllHouseOwners(new AllHouseOwnersRequest());
         var houseOwnerResponses = reply.HouseOwners.ToList();
-        var houseOwners = new List<HouseOwnerDTO>();
+        var houseOwners = new List<HouseOwnerDto>();
 
         foreach (var houseOwner in houseOwnerResponses)
         {
-            houseOwners.Add(new HouseOwnerDTO
+            houseOwners.Add(new HouseOwnerDto
             {
                 UserId = houseOwner.Id,
                 Email = houseOwner.Email,
