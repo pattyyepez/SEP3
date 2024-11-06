@@ -135,42 +135,36 @@ CREATE TABLE Application (
 
 CREATE TABLE House_review (
     id SERIAL PRIMARY KEY,
-    listing_id INT NOT NULL,
     profile_id INT NOT NULL,
     sitter_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comments VARCHAR(1000) NOT NULL,
-    date DATE NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE,
+    date TIMESTAMP NOT NULL,
     FOREIGN KEY (profile_id) REFERENCES HouseProfile(profile_id) ON DELETE CASCADE,
     FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Sitter_review (
     id SERIAL PRIMARY KEY,
-    listing_id INT NOT NULL,
     owner_id INT NOT NULL,
     sitter_id INT NOT NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comments VARCHAR(1000) NOT NULL,
-    date DATE NOT NULL,
-    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE,
+    date TIMESTAMP NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES HouseOwner(owner_id) ON DELETE CASCADE,
     FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Report (
     report_id SERIAL PRIMARY KEY,
-    listing_id INT DEFAULT NULL,
-    sitter_id INT DEFAULT NULL,
-    owner_id INT DEFAULT NULL,
+    reporting_id INT DEFAULT NULL,
+    reported_id INT DEFAULT NULL,
     admin_id INT DEFAULT NULL,
     comments VARCHAR(1000) NOT NULL,
     status VARCHAR(10) DEFAULT 'Pending',
-    date DATE,
-    FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE SET NULL,
-    FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE SET NULL,
-    FOREIGN KEY (owner_id) REFERENCES HouseOwner(owner_id) ON DELETE SET NULL,
+    date TIMESTAMP,
+    FOREIGN KEY (reporting_id) REFERENCES Users(id) ON DELETE SET NULL,
+    FOREIGN KEY (reported_id) REFERENCES Users(id) ON DELETE SET NULL,
     FOREIGN KEY (admin_id) REFERENCES Admin(admin_id) ON DELETE SET NULL
 );
 
@@ -277,12 +271,15 @@ INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES
 INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
 (1, 5, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
 (2, 6, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
-INSERT INTO House_review (listing_id, profile_id, sitter_id, rating, comments, date) VALUES
-(1, 3, 5, 5, 'Beautiful house, great experience!', '2024-10-20'),
-(2, 2, 6, 4, 'Lovely home, perfect location.', '2024-10-21');
-INSERT INTO Sitter_review (listing_id, owner_id, sitter_id, rating, comments, date) VALUES
-(1, 1, 5, 5, 'Excellent sitter, took great care of our pets.', '2024-10-22'),
-(2, 2, 6, 4, 'Very reliable and responsible.', '2024-10-21');
-INSERT INTO Report (listing_id, sitter_id, admin_id, comments, status) VALUES
-(1, 5, 1, 'Sitter was not responsive.', 'Pending'),
+INSERT INTO House_review (profile_id, sitter_id, rating, comments, date) VALUES
+(3, 5, 5, 'Beautiful house, great experience!', '2024-10-20'),
+(2, 6, 4, 'Lovely home, perfect location.', '2024-10-21');
+INSERT INTO Sitter_review (owner_id, sitter_id, rating, comments, date) VALUES
+(1, 5, 5, 'Excellent sitter, took great care of our pets.', '2024-10-22'),
+(2, 6, 4, 'Very reliable and responsible.', '2024-10-21');
+INSERT INTO Report (reporting_id, reported_id, admin_id, comments, status) VALUES
+-- (1, 5, 1, 'Sitter was not responsive.', 'Pending'),
 (2, 6, 2, 'House was left untidy.', 'Resolved');
+
+INSERT INTO Report (reporting_id, reported_id, admin_id, comments) VALUES
+(1, 5, 1, 'Sitter was not responsive.');

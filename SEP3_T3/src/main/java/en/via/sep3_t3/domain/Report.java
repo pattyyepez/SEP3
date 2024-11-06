@@ -2,11 +2,11 @@ package en.via.sep3_t3.domain;
 
 import java.util.Date;
 
-public class Reports
+public class Report
 {
   private int id;
-  private int owner_id;
-  private int sitter_id;
+  private int reporting_id;
+  private int reported_id;
   private int admin_id;
   private String comment;
   private String status;
@@ -57,24 +57,24 @@ public class Reports
     this.admin_id = admin_id;
   }
 
-  public int getSitter_id()
+  public int getReported_id()
   {
-    return sitter_id;
+    return reported_id;
   }
 
-  public void setSitter_id(int sitter_id)
+  public void setReported_id(int reported_id)
   {
-    this.sitter_id = sitter_id;
+    this.reported_id = reported_id;
   }
 
-  public int getOwner_id()
+  public int getReporting_id()
   {
-    return owner_id;
+    return reporting_id;
   }
 
-  public void setOwner_id(int owner_id)
+  public void setReporting_id(int reporting_id)
   {
-    this.owner_id = owner_id;
+    this.reporting_id = reporting_id;
   }
 
   public void setId(int id)
@@ -85,8 +85,8 @@ public class Reports
   public String toString() {
     return "SitterReview{" +
         "id='" + id + '\'' +
-        ", HouseSitter id='" + sitter_id + '\'' +
-        ", HouseOwner id=" + owner_id +
+        ", HouseSitter id='" + reported_id + '\'' +
+        ", HouseOwner id=" + reporting_id +
         ", Comment='" + comment + '\'' +
         ", Status='" + status + '\'' +
         ", Admin id='" + admin_id + '\'' +

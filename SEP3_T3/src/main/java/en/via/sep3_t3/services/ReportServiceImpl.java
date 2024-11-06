@@ -1,10 +1,15 @@
 package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
-import en.via.sep3_t3.domain.Reports;
+import en.via.sep3_t3.domain.Report;
 import en.via.sep3_t3.repositories.ReportRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
@@ -18,11 +23,37 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
   @Override
   public void getReport(ReportRequest request, StreamObserver<ReportResponse> responseObserver) {
     try {
-      Reports report = reportRepository.findById(request.getId());
+      Report report = reportRepository.findById(request.getId());
       ReportResponse response = getReportResponse(report);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override
+  public void getAllReports(AllReportsRequest request,
+      StreamObserver<AllReportsResponse> responseObserver)
+  {
+    try
+    {
+      List<Report> reports = reportRepository.findAll();
+      List<ReportResponse> reportResponses = new ArrayList<>();
+
+      for (Report report : reports)
+      {
+        reportResponses.add(getReportResponse(report));
+      }
+
+      AllReportsResponse response = AllReportsResponse.newBuilder()
+          .addAllReports(reportResponses).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
       responseObserver.onError(e);
     }
   }
@@ -30,19 +61,21 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
   @Override
   public void createReport(CreateReportRequest request, StreamObserver<ReportResponse> responseObserver) {
     try {
-      Reports report = new Reports();
-      report.setOwner_id(request.getOwnerId());
-      report.setSitter_id(request.getSitterId());
+      Report report = new Report();
+      report.setReporting_id(request.getReportingId());
+      report.setReported_id(request.getReportedId());
       report.setAdmin_id(request.getAdminId());
       report.setComment(request.getComment());
-      report.setStatus(request.getStatus());
-      report.setDate(java.sql.Date.valueOf(request.getDate()));
+      report.setStatus("Pending");
+      report.setDate(Timestamp.valueOf(LocalDateTime.now()));
 
-      reportRepository.save(report);
+      int id = reportRepository.save(report);
+      report.setId(id);
       ReportResponse response = getReportResponse(report);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -50,8 +83,7 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
   @Override
   public void updateReport(UpdateReportRequest request, StreamObserver<ReportResponse> responseObserver) {
     try {
-      Reports report = reportRepository.findById(request.getId());
-      report.setComment(request.getComment());
+      Report report = reportRepository.findById(request.getId());
       report.setStatus(request.getStatus());
 
       reportRepository.update(report);
@@ -75,15 +107,15 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
     }
   }
 
-  private static ReportResponse getReportResponse(Reports report) {
+  private static ReportResponse getReportResponse(Report report) {
     return ReportResponse.newBuilder()
         .setId(report.getId())
-        .setOwnerId(report.getOwner_id())
-        .setSitterId(report.getSitter_id())
+        .setReportingId(report.getReporting_id())
+        .setReportedId(report.getReported_id())
         .setAdminId(report.getAdmin_id())
         .setComment(report.getComment())
         .setStatus(report.getStatus())
-        .setDate(report.getDate().toString())
+        .setDate(report.getDate() != null ? report.getDate().getTime() : 0)
         .build();
   }
 }

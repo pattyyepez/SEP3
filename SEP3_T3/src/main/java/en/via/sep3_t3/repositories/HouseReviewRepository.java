@@ -3,10 +3,11 @@ package en.via.sep3_t3.repositories;
 import en.via.sep3_t3.domain.HouseReview;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 @Repository
@@ -29,15 +30,20 @@ public class HouseReviewRepository {
   }
 
   public int save(HouseReview houseReview) {
+    KeyHolder keyHolder = new GeneratedKeyHolder();
     String sql = "INSERT INTO House_review (profile_id, sitter_id, rating, comments, date) VALUES (?, ?, ?, ?, ?)";
-    return jdbcTemplate.update(sql, houseReview.getProfile_id(), houseReview.getSitter_id(),
-        houseReview.getRating(), houseReview.getComment(), new java.sql.Date(houseReview.getDate().getTime()));
-  }
 
-  public void update(HouseReview houseReview) {
-    String sql = "UPDATE House_review SET profile_id = ?, sitter_id = ?, rating = ?, comments = ?, date = ? WHERE id = ?";
-    jdbcTemplate.update(sql, houseReview.getProfile_id(), houseReview.getSitter_id(),
-        houseReview.getRating(), houseReview.getComment(), new java.sql.Date(houseReview.getDate().getTime()), houseReview.getId());
+    jdbcTemplate.update(connection -> {
+      PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+      ps.setInt(1, houseReview.getProfile_id());
+      ps.setInt(2, houseReview.getSitter_id());
+      ps.setInt(3, houseReview.getRating());
+      ps.setString(4, houseReview.getComment());
+      ps.setTimestamp(5, new Timestamp(houseReview.getDate().getTime()));
+      return ps;
+    }, keyHolder);
+
+    return (int) keyHolder.getKeys().get("id");
   }
 
   public void deleteById(int id) {
@@ -54,7 +60,7 @@ public class HouseReviewRepository {
       houseReview.setSitter_id(rs.getInt("sitter_id"));
       houseReview.setRating(rs.getInt("rating"));
       houseReview.setComment(rs.getString("comments"));
-      houseReview.setDate(rs.getDate("date"));
+      houseReview.setDate(rs.getTimestamp("date"));
       return houseReview;
     }
   }

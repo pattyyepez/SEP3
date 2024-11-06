@@ -15,32 +15,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8710264d-2f24-4684-9da9-95e7a139aa77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/DTOs/Application/ApplicationDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Application/CreateApplicationDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Application/UpdateApplicationDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseListing/CreateHouseListingDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseListing/HouseListingDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseListing/UpdateHouseListingDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseProfile/CreateHouseProfileDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseProfile/HouseProfileDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseProfile/UpdateHouseProfileDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/ApplicationRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/HouseListingRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/HouseProfileRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseListingController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IApplicationRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IHouseListingRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IHouseProfileRepository.cs" afterDir="false" />
+    <list default="true" id="8710264d-2f24-4684-9da9-95e7a139aa77" name="Changes" comment="making house reviews, sitter reviews and reports accessible in the webapi">
+      <change afterPath="$PROJECT_DIR$/DTOs/HouseReview/CreateHouseReviewDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/HouseReview/HouseReviewDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/Report/CreateReportDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/Report/ReportDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/Report/UpdateReportDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/SitterReview/CreateSitterReviewDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DTOs/SitterReview/SitterReviewDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/HouseReviewRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/ReportRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/SitterReviewRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseReviewController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/ReportController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/SitterReviewController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IHouseReviewRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IReportRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RepositoryContracts/ISitterReviewRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Database/housePalDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../Database/housePalDB.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseOwner/CreateHouseOwnerDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseOwner/CreateHouseOwnerDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseOwner/HouseOwnerDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseOwner/HouseOwnerDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseOwner/UpdateHouseOwnerDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseOwner/UpdateHouseOwnerDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseSitter/CreateHouseSitterDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseSitter/CreateHouseSitterDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseSitter/HouseSitterDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseSitter/HouseSitterDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseSitter/UpdateHouseSitterDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseSitter/UpdateHouseSitterDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" afterDir="false" />
@@ -51,8 +44,6 @@
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/ref/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/ref/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/refint/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/refint/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/HouseOwnerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/HouseOwnerRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/HouseSitterRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/HouseSitterRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/Protos/proto.proto" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/Protos/proto.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
@@ -71,7 +62,6 @@
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/ProtoGrpc.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/ProtoGrpc.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/HouseOwnerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseOwnerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/HouseSitterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseSitterController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
@@ -93,8 +83,6 @@
       <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/ref/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/ref/RESTAPI.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/refint/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/refint/RESTAPI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/IHouseOwnerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/IHouseOwnerRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/IHouseSitterRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/IHouseSitterRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/RepositoryContracts.dll" afterDir="false" />
@@ -108,14 +96,12 @@
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/ref/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/ref/RepositoryContracts.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/refint/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/refint/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ApplicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ApplicationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseListingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseListingRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/DataSourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/DataSourceConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/HousePalServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/HousePalServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Report.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ReportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ReportRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/SitterReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/SitterReviewRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseListingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseListingServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseProfileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseProfileServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseReviewServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ReportServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ReportServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/SitterReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/SitterReviewServiceImpl.java" afterDir="false" />
@@ -251,7 +237,7 @@
       <workItem from="1730519510008" duration="33000" />
       <workItem from="1730548164505" duration="4881000" />
       <workItem from="1730751104108" duration="11633000" />
-      <workItem from="1730797571058" duration="885000" />
+      <workItem from="1730797571058" duration="17027000" />
     </task>
     <task id="LOCAL-00001" summary="first T2 commit">
       <option name="closed" value="true" />
@@ -277,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730513632603</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="making HouseProfile, HouseListing and Application work in T2, as well as fixing some small things in database and T3">
+      <option name="closed" value="true" />
+      <created>1730798944398</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730798944398</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,6 +290,8 @@
     <MESSAGE value="test" />
     <MESSAGE value="changing proto and making T2 work with the updated houe owner object and only relying on the DTO objects" />
     <MESSAGE value="making &quot;get all house owners&quot; or sum work idk" />
-    <option name="LAST_COMMIT_MESSAGE" value="making &quot;get all house owners&quot; or sum work idk" />
+    <MESSAGE value="making HouseProfile, HouseListing and Application work in T2, as well as fixing some small things in database and T3" />
+    <MESSAGE value="making house reviews, sitter reviews and reports accessible in the webapi" />
+    <option name="LAST_COMMIT_MESSAGE" value="making house reviews, sitter reviews and reports accessible in the webapi" />
   </component>
 </project>

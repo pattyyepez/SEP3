@@ -14,6 +14,9 @@ builder.Services.AddScoped<IHouseSitterRepository, HouseSitterRepository>();
 builder.Services.AddScoped<IHouseProfileRepository, HouseProfileRepository>();
 builder.Services.AddScoped<IHouseListingRepository, HouseListingRepository>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<IHouseReviewRepository, HouseReviewRepository>();
+builder.Services.AddScoped<ISitterReviewRepository, SitterReviewRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 var app = builder.Build();
 

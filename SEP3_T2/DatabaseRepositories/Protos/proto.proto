@@ -291,7 +291,7 @@ message HouseReviewResponse {
   int32 sitter_id = 3;
   int32 rating = 4;
   string comment = 5;
-  string date = 6;
+  int64 date = 6;
 }
 
 message CreateHouseReviewRequest {
@@ -299,22 +299,19 @@ message CreateHouseReviewRequest {
   int32 sitter_id = 2;
   int32 rating = 3;
   string comment = 4;
-  string date = 5;
+  int64 date = 5;
 }
 
-message UpdateHouseReviewRequest {
-  int32 id = 1;
-  int32 profile_id = 2;
-  int32 sitter_id = 3;
-  int32 rating = 4;
-  string comment = 5;
-  string date = 6;
+message AllHouseReviewsRequest{}
+
+message AllHouseReviewsResponse{
+  repeated HouseReviewResponse houseReviews = 1;
 }
 
 service HouseReviewService {
   rpc GetHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
+  rpc GetAllHouseReviews(AllHouseReviewsRequest) returns (AllHouseReviewsResponse);
   rpc CreateHouseReview(CreateHouseReviewRequest) returns (HouseReviewResponse);
-  rpc UpdateHouseReview(UpdateHouseReviewRequest) returns (HouseReviewResponse);
   rpc DeleteHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
 }
 
@@ -329,7 +326,7 @@ message SitterReviewResponse {
   int32 sitter_id = 3;
   int32 rating = 4;
   string comment = 5;
-  string date = 6;
+  int64 date = 6;
 }
 
 message CreateSitterReviewRequest {
@@ -337,22 +334,19 @@ message CreateSitterReviewRequest {
   int32 sitter_id = 2;
   int32 rating = 3;
   string comment = 4;
-  string date = 5;
+  int64 date = 5;
 }
 
-message UpdateSitterReviewRequest {
-  int32 id = 1;
-  int32 owner_id = 2;
-  int32 sitter_id = 3;
-  int32 rating = 4;
-  string comment = 5;
-  string date = 6;
+message AllSitterReviewsRequest{}
+
+message AllSitterReviewsResponse{
+  repeated SitterReviewResponse sitterReviews = 1;
 }
 
 service SitterReviewService {
   rpc GetSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
+  rpc GetAllSitterReviews(AllSitterReviewsRequest) returns (AllSitterReviewsResponse);
   rpc CreateSitterReview(CreateSitterReviewRequest) returns (SitterReviewResponse);
-  rpc UpdateSitterReview(UpdateSitterReviewRequest) returns (SitterReviewResponse);
   rpc DeleteSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
 }
 
@@ -364,31 +358,37 @@ message ReportRequest {
 
 message ReportResponse {
   int32 id = 1;
-  int32 owner_id = 2;
-  int32 sitter_id = 3;
+  int32 reporting_id = 2;
+  int32 reported_id = 3;
   int32 admin_id = 4;
   string comment = 5;
   string status = 6;
-  string date = 7;
+  int64 date = 7;
 }
 
 message CreateReportRequest {
-  int32 owner_id = 1;
-  int32 sitter_id = 2;
+  int32 reporting_id = 1;
+  int32 reported_id = 2;
   int32 admin_id = 3;
   string comment = 4;
   string status = 5;
-  string date = 6;
+  int64 date = 6;
 }
 
 message UpdateReportRequest {
   int32 id = 1;
-  string comment = 2;
-  string status = 3;
+  string status = 2;
+}
+
+message AllReportsRequest{}
+
+message AllReportsResponse{
+  repeated ReportResponse reports = 1;
 }
 
 service ReportService {
   rpc GetReport (ReportRequest) returns (ReportResponse);
+  rpc GetAllReports (AllReportsRequest) returns (AllReportsResponse);
   rpc CreateReport (CreateReportRequest) returns (ReportResponse);
   rpc UpdateReport (UpdateReportRequest) returns (ReportResponse);
   rpc DeleteReport (ReportRequest) returns (ReportResponse);

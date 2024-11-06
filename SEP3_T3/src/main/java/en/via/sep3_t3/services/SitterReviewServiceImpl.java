@@ -2,10 +2,15 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.SitterReview;
+import en.via.sep3_t3.domain.SitterReview;
 import en.via.sep3_t3.repositories.SitterReviewRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterReviewServiceImplBase {
@@ -29,6 +34,32 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
   }
 
   @Override
+  public void getAllSitterReviews(AllSitterReviewsRequest request,
+      StreamObserver<AllSitterReviewsResponse> responseObserver)
+  {
+    try
+    {
+      List<SitterReview> sitterReviews = sitterReviewRepository.findAll();
+      List<SitterReviewResponse> sitterReviewResponses = new ArrayList<>();
+
+      for (SitterReview sitterReview : sitterReviews)
+      {
+        sitterReviewResponses.add(buildSitterReviewResponse(sitterReview));
+      }
+
+      AllSitterReviewsResponse response = AllSitterReviewsResponse.newBuilder()
+          .addAllSitterReviews(sitterReviewResponses).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
+      responseObserver.onError(e);
+    }
+  }
+  
+  @Override
   public void createSitterReview(CreateSitterReviewRequest request, StreamObserver<SitterReviewResponse> responseObserver) {
     try {
       SitterReview sitterReview = new SitterReview();
@@ -36,30 +67,10 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
       sitterReview.setSitter_id(request.getSitterId());
       sitterReview.setRating(request.getRating());
       sitterReview.setComment(request.getComment());
-      sitterReview.setDate(java.sql.Date.valueOf(request.getDate()));
+      sitterReview.setDate(Timestamp.valueOf(LocalDateTime.now()));
 
-      sitterReviewRepository.save(sitterReview);
-
-      SitterReviewResponse response = buildSitterReviewResponse(sitterReview);
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    } catch (Exception e) {
-      responseObserver.onError(e);
-    }
-  }
-
-  @Override
-  public void updateSitterReview(UpdateSitterReviewRequest request, StreamObserver<SitterReviewResponse> responseObserver) {
-    try {
-      SitterReview sitterReview = new SitterReview();
-      sitterReview.setId(request.getId());
-      sitterReview.setOwner_id(request.getOwnerId());
-      sitterReview.setSitter_id(request.getSitterId());
-      sitterReview.setRating(request.getRating());
-      sitterReview.setComment(request.getComment());
-      sitterReview.setDate(java.sql.Date.valueOf(request.getDate()));
-
-      sitterReviewRepository.update(sitterReview);
+      int id = sitterReviewRepository.save(sitterReview);
+      sitterReview.setId(id);
 
       SitterReviewResponse response = buildSitterReviewResponse(sitterReview);
       responseObserver.onNext(response);
@@ -88,7 +99,7 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
         .setSitterId(sitterReview.getSitter_id())
         .setRating(sitterReview.getRating())
         .setComment(sitterReview.getComment())
-        .setDate(sitterReview.getDate().toString())
+        .setDate(sitterReview.getDate() != null ? sitterReview.getDate().getTime() : 0)
         .build();
   }
 }

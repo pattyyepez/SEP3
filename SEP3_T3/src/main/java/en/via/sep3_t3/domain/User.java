@@ -10,19 +10,6 @@ public abstract class User {
   private boolean isVerified;
   private int adminId;
 
-//  public User(int userId, String email, String password, String profilePicture,
-//      String CPR, String phone, boolean isVerified, int adminId)
-//  {
-//    this.userId = userId;
-//    this.email = email;
-//    this.password = password;
-//    this.profilePicture = profilePicture;
-//    this.CPR = CPR;
-//    this.phone = phone;
-//    this.isVerified = isVerified;
-//    this.adminId = adminId;
-//  }
-
   public int getUserId()
   {
     return userId;

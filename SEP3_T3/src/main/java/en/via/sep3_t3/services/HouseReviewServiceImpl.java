@@ -6,36 +6,76 @@ import en.via.sep3_t3.repositories.HouseReviewRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
-@Service
-public class HouseReviewServiceImpl extends HouseReviewServiceGrpc.HouseReviewServiceImplBase {
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service public class HouseReviewServiceImpl
+    extends HouseReviewServiceGrpc.HouseReviewServiceImplBase
+{
 
   private final HouseReviewRepository houseReviewRepository;
 
-  public HouseReviewServiceImpl(HouseReviewRepository houseReviewRepository) {
+  public HouseReviewServiceImpl(HouseReviewRepository houseReviewRepository)
+  {
     this.houseReviewRepository = houseReviewRepository;
   }
 
-  @Override
-  public void getHouseReview(HouseReviewRequest request, StreamObserver<HouseReviewResponse> responseObserver) {
-    try {
+  @Override public void getHouseReview(HouseReviewRequest request,
+      StreamObserver<HouseReviewResponse> responseObserver)
+  {
+    try
+    {
       HouseReview houseReview = houseReviewRepository.findById(request.getId());
       HouseReviewResponse response = buildHouseReviewResponse(houseReview);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
-    } catch (Exception e) {
+    }
+    catch (Exception e)
+    {
       responseObserver.onError(e);
     }
   }
 
   @Override
-  public void createHouseReview(CreateHouseReviewRequest request, StreamObserver<HouseReviewResponse> responseObserver) {
-    try {
+  public void getAllHouseReviews(AllHouseReviewsRequest request,
+      StreamObserver<AllHouseReviewsResponse> responseObserver)
+  {
+    try
+    {
+      List<HouseReview> houseReviews = houseReviewRepository.findAll();
+      List<HouseReviewResponse> houseReviewResponses = new ArrayList<>();
+
+      for (HouseReview houseReview : houseReviews)
+      {
+        houseReviewResponses.add(buildHouseReviewResponse(houseReview));
+      }
+
+      AllHouseReviewsResponse response = AllHouseReviewsResponse.newBuilder()
+          .addAllHouseReviews(houseReviewResponses).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override public void createHouseReview(CreateHouseReviewRequest request,
+      StreamObserver<HouseReviewResponse> responseObserver)
+  {
+    try
+    {
       HouseReview houseReview = new HouseReview();
       houseReview.setProfile_id(request.getProfileId());
       houseReview.setSitter_id(request.getSitterId());
       houseReview.setRating(request.getRating());
       houseReview.setComment(request.getComment());
-      houseReview.setDate(java.sql.Date.valueOf(request.getDate()));
+      houseReview.setDate(Timestamp.valueOf(LocalDateTime.now()));
 
       int id = houseReviewRepository.save(houseReview);
       houseReview.setId(id);
@@ -43,50 +83,37 @@ public class HouseReviewServiceImpl extends HouseReviewServiceGrpc.HouseReviewSe
       HouseReviewResponse response = buildHouseReviewResponse(houseReview);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
-    } catch (Exception e) {
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
 
-  @Override
-  public void updateHouseReview(UpdateHouseReviewRequest request, StreamObserver<HouseReviewResponse> responseObserver) {
-    try {
-      HouseReview houseReview = new HouseReview();
-      houseReview.setId(request.getId());
-      houseReview.setProfile_id(request.getProfileId());
-      houseReview.setSitter_id(request.getSitterId());
-      houseReview.setRating(request.getRating());
-      houseReview.setComment(request.getComment());
-      houseReview.setDate(java.sql.Date.valueOf(request.getDate()));
-
-      houseReviewRepository.update(houseReview);
-      HouseReviewResponse response = buildHouseReviewResponse(houseReview);
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    } catch (Exception e) {
-      responseObserver.onError(e);
-    }
-  }
-
-  @Override
-  public void deleteHouseReview(HouseReviewRequest request, StreamObserver<HouseReviewResponse> responseObserver) {
-    try {
+  @Override public void deleteHouseReview(HouseReviewRequest request,
+      StreamObserver<HouseReviewResponse> responseObserver)
+  {
+    try
+    {
       houseReviewRepository.deleteById(request.getId());
       responseObserver.onNext(HouseReviewResponse.newBuilder().build());
       responseObserver.onCompleted();
-    } catch (Exception e) {
+    }
+    catch (Exception e)
+    {
       responseObserver.onError(e);
     }
   }
 
-  private HouseReviewResponse buildHouseReviewResponse(HouseReview houseReview) {
-    return HouseReviewResponse.newBuilder()
-        .setId(houseReview.getId())
+  private HouseReviewResponse buildHouseReviewResponse(HouseReview houseReview)
+  {
+    return HouseReviewResponse.newBuilder().setId(houseReview.getId())
         .setProfileId(houseReview.getProfile_id())
         .setSitterId(houseReview.getSitter_id())
-        .setRating(houseReview.getRating())
-        .setComment(houseReview.getComment())
-        .setDate(houseReview.getDate().toString())
+        .setRating(houseReview.getRating()).setComment(houseReview.getComment())
+        .setDate(
+            houseReview.getDate() != null ? houseReview.getDate().getTime() : 0)
         .build();
   }
 }

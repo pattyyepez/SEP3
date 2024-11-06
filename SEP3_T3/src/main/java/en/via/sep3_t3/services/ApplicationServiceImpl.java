@@ -6,9 +6,9 @@ import en.via.sep3_t3.repositories.ApplicationRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,10 +34,10 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
 
   public void getAllApplications(AllApplicationsRequest request, StreamObserver<AllApplicationsResponse> responseObserver) {
     try {
-      List<Application> Applications = applicationRepository.findAll();
+      List<Application> applications = applicationRepository.findAll();
       List<ApplicationResponse> applicationResponses = new ArrayList<>();
 
-      for(Application application : Applications ) {
+      for(Application application : applications ) {
         applicationResponses.add(buildApplicationResponse(application));
       }
 
@@ -60,7 +60,7 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       application.setSitter_id(request.getSitterId());
       application.setMessage(request.getMessage());
       application.setStatus(request.getStatus());
-      application.setDate(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+      application.setDate(Timestamp.valueOf(LocalDateTime.now()));
 
       applicationRepository.save(application);
       responseObserver.onNext(buildApplicationResponse(application));

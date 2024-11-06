@@ -1210,9 +1210,11 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.HouseReviewResponse> __Marshaller_en_via_sep3_t3_HouseReviewResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.HouseReviewResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DatabaseRepositories.CreateHouseReviewRequest> __Marshaller_en_via_sep3_t3_CreateHouseReviewRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateHouseReviewRequest.Parser));
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllHouseReviewsRequest> __Marshaller_en_via_sep3_t3_AllHouseReviewsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllHouseReviewsRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateHouseReviewRequest> __Marshaller_en_via_sep3_t3_UpdateHouseReviewRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateHouseReviewRequest.Parser));
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllHouseReviewsResponse> __Marshaller_en_via_sep3_t3_AllHouseReviewsResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllHouseReviewsResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.CreateHouseReviewRequest> __Marshaller_en_via_sep3_t3_CreateHouseReviewRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateHouseReviewRequest.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.HouseReviewRequest, global::DatabaseRepositories.HouseReviewResponse> __Method_GetHouseReview = new grpc::Method<global::DatabaseRepositories.HouseReviewRequest, global::DatabaseRepositories.HouseReviewResponse>(
@@ -1223,19 +1225,19 @@ namespace DatabaseRepositories {
         __Marshaller_en_via_sep3_t3_HouseReviewResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllHouseReviewsRequest, global::DatabaseRepositories.AllHouseReviewsResponse> __Method_GetAllHouseReviews = new grpc::Method<global::DatabaseRepositories.AllHouseReviewsRequest, global::DatabaseRepositories.AllHouseReviewsResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllHouseReviews",
+        __Marshaller_en_via_sep3_t3_AllHouseReviewsRequest,
+        __Marshaller_en_via_sep3_t3_AllHouseReviewsResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.CreateHouseReviewRequest, global::DatabaseRepositories.HouseReviewResponse> __Method_CreateHouseReview = new grpc::Method<global::DatabaseRepositories.CreateHouseReviewRequest, global::DatabaseRepositories.HouseReviewResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
         "CreateHouseReview",
         __Marshaller_en_via_sep3_t3_CreateHouseReviewRequest,
-        __Marshaller_en_via_sep3_t3_HouseReviewResponse);
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::DatabaseRepositories.UpdateHouseReviewRequest, global::DatabaseRepositories.HouseReviewResponse> __Method_UpdateHouseReview = new grpc::Method<global::DatabaseRepositories.UpdateHouseReviewRequest, global::DatabaseRepositories.HouseReviewResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "UpdateHouseReview",
-        __Marshaller_en_via_sep3_t3_UpdateHouseReviewRequest,
         __Marshaller_en_via_sep3_t3_HouseReviewResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
@@ -1300,6 +1302,26 @@ namespace DatabaseRepositories {
         return CallInvoker.AsyncUnaryCall(__Method_GetHouseReview, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllHouseReviewsResponse GetAllHouseReviews(global::DatabaseRepositories.AllHouseReviewsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllHouseReviews(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllHouseReviewsResponse GetAllHouseReviews(global::DatabaseRepositories.AllHouseReviewsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllHouseReviews, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllHouseReviewsResponse> GetAllHouseReviewsAsync(global::DatabaseRepositories.AllHouseReviewsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllHouseReviewsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllHouseReviewsResponse> GetAllHouseReviewsAsync(global::DatabaseRepositories.AllHouseReviewsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllHouseReviews, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.HouseReviewResponse CreateHouseReview(global::DatabaseRepositories.CreateHouseReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return CreateHouseReview(request, new grpc::CallOptions(headers, deadline, cancellationToken));
@@ -1318,26 +1340,6 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseReviewResponse> CreateHouseReviewAsync(global::DatabaseRepositories.CreateHouseReviewRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_CreateHouseReview, null, options, request);
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::DatabaseRepositories.HouseReviewResponse UpdateHouseReview(global::DatabaseRepositories.UpdateHouseReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return UpdateHouseReview(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::DatabaseRepositories.HouseReviewResponse UpdateHouseReview(global::DatabaseRepositories.UpdateHouseReviewRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_UpdateHouseReview, null, options, request);
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseReviewResponse> UpdateHouseReviewAsync(global::DatabaseRepositories.UpdateHouseReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return UpdateHouseReviewAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseReviewResponse> UpdateHouseReviewAsync(global::DatabaseRepositories.UpdateHouseReviewRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_UpdateHouseReview, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.HouseReviewResponse DeleteHouseReview(global::DatabaseRepositories.HouseReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
@@ -1410,9 +1412,11 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.SitterReviewResponse> __Marshaller_en_via_sep3_t3_SitterReviewResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.SitterReviewResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DatabaseRepositories.CreateSitterReviewRequest> __Marshaller_en_via_sep3_t3_CreateSitterReviewRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateSitterReviewRequest.Parser));
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllSitterReviewsRequest> __Marshaller_en_via_sep3_t3_AllSitterReviewsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllSitterReviewsRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateSitterReviewRequest> __Marshaller_en_via_sep3_t3_UpdateSitterReviewRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateSitterReviewRequest.Parser));
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllSitterReviewsResponse> __Marshaller_en_via_sep3_t3_AllSitterReviewsResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllSitterReviewsResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.CreateSitterReviewRequest> __Marshaller_en_via_sep3_t3_CreateSitterReviewRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateSitterReviewRequest.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.SitterReviewRequest, global::DatabaseRepositories.SitterReviewResponse> __Method_GetSitterReview = new grpc::Method<global::DatabaseRepositories.SitterReviewRequest, global::DatabaseRepositories.SitterReviewResponse>(
@@ -1423,19 +1427,19 @@ namespace DatabaseRepositories {
         __Marshaller_en_via_sep3_t3_SitterReviewResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllSitterReviewsRequest, global::DatabaseRepositories.AllSitterReviewsResponse> __Method_GetAllSitterReviews = new grpc::Method<global::DatabaseRepositories.AllSitterReviewsRequest, global::DatabaseRepositories.AllSitterReviewsResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllSitterReviews",
+        __Marshaller_en_via_sep3_t3_AllSitterReviewsRequest,
+        __Marshaller_en_via_sep3_t3_AllSitterReviewsResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.CreateSitterReviewRequest, global::DatabaseRepositories.SitterReviewResponse> __Method_CreateSitterReview = new grpc::Method<global::DatabaseRepositories.CreateSitterReviewRequest, global::DatabaseRepositories.SitterReviewResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
         "CreateSitterReview",
         __Marshaller_en_via_sep3_t3_CreateSitterReviewRequest,
-        __Marshaller_en_via_sep3_t3_SitterReviewResponse);
-
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::DatabaseRepositories.UpdateSitterReviewRequest, global::DatabaseRepositories.SitterReviewResponse> __Method_UpdateSitterReview = new grpc::Method<global::DatabaseRepositories.UpdateSitterReviewRequest, global::DatabaseRepositories.SitterReviewResponse>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "UpdateSitterReview",
-        __Marshaller_en_via_sep3_t3_UpdateSitterReviewRequest,
         __Marshaller_en_via_sep3_t3_SitterReviewResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
@@ -1500,6 +1504,26 @@ namespace DatabaseRepositories {
         return CallInvoker.AsyncUnaryCall(__Method_GetSitterReview, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllSitterReviewsResponse GetAllSitterReviews(global::DatabaseRepositories.AllSitterReviewsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllSitterReviews(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllSitterReviewsResponse GetAllSitterReviews(global::DatabaseRepositories.AllSitterReviewsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllSitterReviews, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllSitterReviewsResponse> GetAllSitterReviewsAsync(global::DatabaseRepositories.AllSitterReviewsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllSitterReviewsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllSitterReviewsResponse> GetAllSitterReviewsAsync(global::DatabaseRepositories.AllSitterReviewsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllSitterReviews, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.SitterReviewResponse CreateSitterReview(global::DatabaseRepositories.CreateSitterReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return CreateSitterReview(request, new grpc::CallOptions(headers, deadline, cancellationToken));
@@ -1518,26 +1542,6 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.SitterReviewResponse> CreateSitterReviewAsync(global::DatabaseRepositories.CreateSitterReviewRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_CreateSitterReview, null, options, request);
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::DatabaseRepositories.SitterReviewResponse UpdateSitterReview(global::DatabaseRepositories.UpdateSitterReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return UpdateSitterReview(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::DatabaseRepositories.SitterReviewResponse UpdateSitterReview(global::DatabaseRepositories.UpdateSitterReviewRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.BlockingUnaryCall(__Method_UpdateSitterReview, null, options, request);
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.SitterReviewResponse> UpdateSitterReviewAsync(global::DatabaseRepositories.UpdateSitterReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return UpdateSitterReviewAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.SitterReviewResponse> UpdateSitterReviewAsync(global::DatabaseRepositories.UpdateSitterReviewRequest request, grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncUnaryCall(__Method_UpdateSitterReview, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.SitterReviewResponse DeleteSitterReview(global::DatabaseRepositories.SitterReviewRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
@@ -1610,6 +1614,10 @@ namespace DatabaseRepositories {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.ReportResponse> __Marshaller_en_via_sep3_t3_ReportResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.ReportResponse.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllReportsRequest> __Marshaller_en_via_sep3_t3_AllReportsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllReportsRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllReportsResponse> __Marshaller_en_via_sep3_t3_AllReportsResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllReportsResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.CreateReportRequest> __Marshaller_en_via_sep3_t3_CreateReportRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateReportRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateReportRequest> __Marshaller_en_via_sep3_t3_UpdateReportRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateReportRequest.Parser));
@@ -1621,6 +1629,14 @@ namespace DatabaseRepositories {
         "GetReport",
         __Marshaller_en_via_sep3_t3_ReportRequest,
         __Marshaller_en_via_sep3_t3_ReportResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllReportsRequest, global::DatabaseRepositories.AllReportsResponse> __Method_GetAllReports = new grpc::Method<global::DatabaseRepositories.AllReportsRequest, global::DatabaseRepositories.AllReportsResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllReports",
+        __Marshaller_en_via_sep3_t3_AllReportsRequest,
+        __Marshaller_en_via_sep3_t3_AllReportsResponse);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.CreateReportRequest, global::DatabaseRepositories.ReportResponse> __Method_CreateReport = new grpc::Method<global::DatabaseRepositories.CreateReportRequest, global::DatabaseRepositories.ReportResponse>(
@@ -1698,6 +1714,26 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.ReportResponse> GetReportAsync(global::DatabaseRepositories.ReportRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetReport, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllReportsResponse GetAllReports(global::DatabaseRepositories.AllReportsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllReports(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllReportsResponse GetAllReports(global::DatabaseRepositories.AllReportsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllReports, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllReportsResponse> GetAllReportsAsync(global::DatabaseRepositories.AllReportsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllReportsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllReportsResponse> GetAllReportsAsync(global::DatabaseRepositories.AllReportsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllReports, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
       public virtual global::DatabaseRepositories.ReportResponse CreateReport(global::DatabaseRepositories.CreateReportRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
