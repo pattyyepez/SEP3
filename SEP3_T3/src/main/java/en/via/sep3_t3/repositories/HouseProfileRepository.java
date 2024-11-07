@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository public class HouseProfileRepository implements IHouseProfileRepository
@@ -63,7 +62,7 @@ import java.util.List;
     return profileId;
   }
 
-  public void update(HouseProfile houseProfile)
+  public HouseProfile update(HouseProfile houseProfile)
   {
     String sql = "UPDATE HouseProfile SET description = ?, address = ?, region = ?, city = ? WHERE profile_id = ?";
     jdbcTemplate.update(sql, houseProfile.getDescription(), houseProfile.getAddress(), houseProfile.getRegion(),
@@ -78,6 +77,8 @@ import java.util.List;
     saveChores(houseProfile.getChores(), houseProfile.getId());
     saveRules(houseProfile.getRules(), houseProfile.getId());
     savePictures(houseProfile.getPictures(), houseProfile.getId());
+
+    return findById(houseProfile.getId());
   }
 
   public void deleteById(int id)

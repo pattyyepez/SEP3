@@ -56,7 +56,7 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
     try {
       HouseSitter houseSitter = getHouseSitter(request.getEmail(),
           request.getPassword(), request.getProfilePicture(), request.getCPR(),
-          request.getPhone(), request.getIsVerified(), request.getAdminId(),
+          request.getPhone(), false, 0,
           request.getExperience(), request.getBiography(),
           request.getSkillsList().stream().toList(),
           request.getPicturesList().stream().toList());

@@ -30,11 +30,9 @@ message CreateHouseOwnerRequest {
   string profilePicture = 3;
   string CPR = 4;
   string phone = 5;
-  bool isVerified = 6;
-  int32 adminId = 7;
 
-  string address = 8;
-  string biography = 9;
+  string address = 6;
+  string biography = 7;
 }
 
 message UpdateHouseOwnerRequest {
@@ -95,13 +93,11 @@ message CreateHouseSitterRequest {
   string profilePicture = 3;
   string CPR = 4;
   string phone = 5;
-  bool isVerified = 6;
-  int32 adminId = 7;
 
-  string experience = 8;
-  string biography = 9;
-  repeated string pictures = 11;
-  repeated string skills = 12;
+  string experience = 6;
+  string biography = 7;
+  repeated string pictures = 8;
+  repeated string skills = 9;
 }
 
 message UpdateHouseSitterRequest {
@@ -168,15 +164,14 @@ message CreateHouseProfileRequest {
 
 message UpdateHouseProfileRequest {
   int32 id = 1;
-  int32 ownerId = 2;
-  string description = 3;
-  string address = 4;
-  string region = 5;
-  string city = 6;
-  repeated string amenities = 7;
-  repeated string chores = 8;
-  repeated string rules = 9;
-  repeated string pictures = 10;
+  string description = 2;
+  string address = 3;
+  string region = 4;
+  string city = 5;
+  repeated string amenities = 6;
+  repeated string chores = 7;
+  repeated string rules = 8;
+  repeated string pictures = 9;
 }
 
 message AllHouseProfilesRequest{}
@@ -215,10 +210,7 @@ message CreateHouseListingRequest {
 
 message UpdateHouseListingRequest {
   int32 id = 1;
-  int32 profileId = 2;
-  int64 startDate = 3;
-  int64 endDate = 4;
-  string status = 5;
+  string status = 2;
 }
 
 message AllHouseListingsRequest{}
@@ -254,15 +246,12 @@ message CreateApplicationRequest {
   int32 sitter_id = 2;
   string message = 3;
   string status = 4;
-  int64 date = 5;
 }
 
 message UpdateApplicationRequest {
   int32 listing_id = 1;
   int32 sitter_id = 2;
-  string message = 3;
-  string status = 4;
-  int64 date = 5;
+  string status = 3;
 }
 
 message AllApplicationsRequest{}
@@ -299,7 +288,6 @@ message CreateHouseReviewRequest {
   int32 sitter_id = 2;
   int32 rating = 3;
   string comment = 4;
-  int64 date = 5;
 }
 
 message AllHouseReviewsRequest{}
@@ -334,7 +322,6 @@ message CreateSitterReviewRequest {
   int32 sitter_id = 2;
   int32 rating = 3;
   string comment = 4;
-  int64 date = 5;
 }
 
 message AllSitterReviewsRequest{}
@@ -371,8 +358,6 @@ message CreateReportRequest {
   int32 reported_id = 2;
   int32 admin_id = 3;
   string comment = 4;
-  string status = 5;
-  int64 date = 6;
 }
 
 message UpdateReportRequest {

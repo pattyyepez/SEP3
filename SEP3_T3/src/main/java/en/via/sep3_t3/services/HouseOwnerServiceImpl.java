@@ -56,7 +56,7 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
     try {
       HouseOwner houseOwner = getHouseOwner(request.getEmail(), request.getPassword(),
           request.getProfilePicture(), request.getCPR(), request.getPhone(),
-          request.getIsVerified(), request.getAdminId(), request.getAddress(),
+          false, 0, request.getAddress(),
           request.getBiography());
       houseOwner.setUserId(houseOwnerRepository.save(houseOwner));
 

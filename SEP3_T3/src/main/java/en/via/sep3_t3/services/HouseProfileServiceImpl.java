@@ -70,11 +70,11 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
   @Override
   public void updateHouseProfile(UpdateHouseProfileRequest request, StreamObserver<HouseProfileResponse> responseObserver) {
     try {
-      HouseProfile houseProfile = getHouseProfile(request.getId(), request.getOwnerId(), request.getDescription(),
+      HouseProfile houseProfile = getHouseProfile(request.getId(), 0, request.getDescription(),
           request.getAddress(), request.getRegion(), request.getCity(), request.getAmenitiesList(),
           request.getChoresList(), request.getRulesList(), request.getPicturesList());
       houseProfile.setId(request.getId());
-      houseProfileRepository.update(houseProfile);
+      houseProfile = houseProfileRepository.update(houseProfile);
       HouseProfileResponse response = getHouseProfileResponse(houseProfile);
 
       responseObserver.onNext(response);
