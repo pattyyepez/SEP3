@@ -1,5 +1,4 @@
-﻿using DTOs;
-using DTOs.HouseOwner;
+﻿using DTOs.HouseOwner;
 using RepositoryContracts;
 
 namespace RESTAPI.Controllers;
@@ -29,7 +28,7 @@ using System.Threading.Tasks;
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error fetching all HouseOwners: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+                return StatusCode(500, $"Error fetching all HouseOwners: {ex.Message}");
             }
         }
         
@@ -44,7 +43,7 @@ using System.Threading.Tasks;
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error fetching HouseOwner: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+                return StatusCode(500, $"Error fetching HouseOwner: {ex.Message}");
                 
             }
         }
