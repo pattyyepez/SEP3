@@ -18,7 +18,7 @@ public class HouseSitterController : ControllerBase
         _repo = repo;
     }
 
-    // https://localhost:7134/api/HouseSitter
+    // GET: api/HouseSitter
     [HttpGet]
     public async Task<IActionResult> GetAllHouseSitters()
     {
@@ -34,7 +34,7 @@ public class HouseSitterController : ControllerBase
         }
     }
 
-    // GET: api/houseowner/{id}
+    // GET: api/HouseSitter/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetHouseSitter(int id)
     {
@@ -50,7 +50,7 @@ public class HouseSitterController : ControllerBase
         }
     }
 
-    // POST: api/houseowner
+    // POST: api/HouseSitter
     [HttpPost]
     public async Task<IActionResult> CreateHouseSitter(
         [FromBody] CreateHouseSitterDto createDto)
@@ -67,7 +67,7 @@ public class HouseSitterController : ControllerBase
         }
     }
 
-    // PUT: api/houseowner/{id}
+    // PUT: api/HouseSitter/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateHouseSitter(int id,
         [FromBody] UpdateHouseSitterDto updateDto)
@@ -84,7 +84,7 @@ public class HouseSitterController : ControllerBase
         }
     }
 
-    // DELETE: api/houseowner/{id}
+    // DELETE: api/HouseSitter/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHouseSitter(int id)
     {

@@ -15,14 +15,25 @@ public class HouseListingController : ControllerBase
         _repo = repo;
     }
 
-    // https://localhost:7134/api/HouseListing
+    // Get: api/HouseListing?includeProfile=true
     [HttpGet]
-    public async Task<IActionResult> GetAllHouseListings()
+    public async Task<IActionResult> GetAllHouseListings(
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromQuery] bool includeProfile)
     {
         try
         {
             var response = _repo.GetAll();
-            return Ok(response);
+            if (!includeProfile) return Ok(response);
+            
+            var toReturn = new List<HouseListingDto>();
+            foreach (var listing in response)
+            {
+                listing.Profile = await profileRepo.GetSingleAsync(listing.ProfileId);
+                toReturn.Add(listing);
+            }
+            
+            return Ok(toReturn.AsQueryable());
         }
         catch (Exception ex)
         {
@@ -30,13 +41,19 @@ public class HouseListingController : ControllerBase
         }
     }
         
-    // GET: api/HouseListing/{id}
+    // GET: api/HouseListing/{id}?includeProfile=true
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetHouseListing(int id)
+    public async Task<IActionResult> GetHouseListing(int id,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromQuery] bool includeProfile)
     {
         try
         {
             var response = await _repo.GetSingleAsync(id);
+
+            if (includeProfile)
+                response.Profile = await profileRepo.GetSingleAsync(response.ProfileId);
+            
             return Ok(response);
         }
         catch (Exception ex)
@@ -46,7 +63,7 @@ public class HouseListingController : ControllerBase
         }
     }
     
-    // POST: api/houseprofile
+    // POST: api/HouseListing
     [HttpPost]
     public async Task<IActionResult> CreateHouseListing(
         [FromBody] CreateHouseListingDto createDto)
@@ -63,7 +80,7 @@ public class HouseListingController : ControllerBase
         }
     }
 
-    // PUT: api/houseowner/{id}
+    // PUT: api/HouseListing/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateHouseListing(int id,
         [FromBody] UpdateHouseListingDto updateDto)
@@ -80,7 +97,7 @@ public class HouseListingController : ControllerBase
         }
     }
 
-    // DELETE: api/houseowner/{id}
+    // DELETE: api/HouseListing/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHouseListing(int id)
     {

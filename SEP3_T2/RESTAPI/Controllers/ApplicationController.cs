@@ -15,14 +15,34 @@ public class ApplicationController : ControllerBase
         _repo = repo;
     }
     
-    // GET: api/HouseListing
+    // GET: api/Application?includeListing=true&includeSitter=true
     [HttpGet]
-    public async Task<IActionResult> GetAllApplications()
+    public async Task<IActionResult> GetAllApplications(
+        [FromServices] IHouseListingRepository listingRepo, 
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeListing,
+        [FromQuery] bool includeSitter)
     {
         try
         {
             var response = _repo.GetAll();
-            return Ok(response);
+            if(!includeSitter && !includeListing) return Ok(response);
+            
+            var toReturn = new List<ApplicationDto>();
+            foreach (var application in response)
+            {
+                if (includeListing)
+                    application.Listing =
+                        await listingRepo.GetSingleAsync(application.ListingId);
+                
+                if (includeSitter)
+                    application.Sitter =
+                        await sitterRepo.GetSingleAsync(application.SitterId);
+                
+                toReturn.Add(application);
+            }
+            
+            return Ok(toReturn.AsQueryable());
         }
         catch (Exception ex)
         {
@@ -30,13 +50,24 @@ public class ApplicationController : ControllerBase
         }
     }
     
-    // GET: api/Application/{id}
+    // GET: api/Application/{id}?includeListing=true&includeSitter=true
     [HttpGet("{listingId}/{sitterId}")]
-    public async Task<IActionResult> GetApplication(int listingId, int sitterId)
+    public async Task<IActionResult> GetApplication(int listingId, int sitterId, 
+        [FromServices] IHouseListingRepository listingRepo, 
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeListing,
+        [FromQuery] bool includeSitter) 
     {
         try
         {
             var response = await _repo.GetSingleAsync(listingId, sitterId);
+
+            if (includeListing)
+                response.Listing = await listingRepo.GetSingleAsync(listingId);
+            
+            if (includeSitter)
+                response.Sitter = await sitterRepo.GetSingleAsync(sitterId);
+            
             return Ok(response);
         }
         catch (Exception ex)

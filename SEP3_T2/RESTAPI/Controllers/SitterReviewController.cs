@@ -15,14 +15,32 @@ public class SitterReviewController : ControllerBase
         _repo = repo;
     }
     
-    // https://localhost:7134/api/SitterReview
+    // GET: api/SitterReview?includeOwner=true&includeSitter=true
     [HttpGet]
-    public async Task<IActionResult> GetAllSitterReviews()
+    public async Task<IActionResult> GetAllSitterReviews(
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeOwner,
+        [FromQuery] bool includeSitter)
     {
         try
         {
             var response = _repo.GetAll();
-            return Ok(response);
+            if(!includeOwner && !includeSitter) return Ok(response);
+
+            var toReturn = new List<SitterReviewDto>();
+            foreach (var review in response)
+            {
+                if (includeOwner) 
+                    review.Owner = await ownerRepo.GetSingleAsync(review.OwnerId);
+            
+                if(includeSitter)
+                    review.Sitter = await sitterRepo.GetSingleAsync(review.SitterId);
+                
+                toReturn.Add(review);
+            }
+            
+            return Ok(toReturn.AsQueryable());
         }
         catch (Exception ex)
         {
@@ -31,13 +49,24 @@ public class SitterReviewController : ControllerBase
         }
     }
 
-    // GET: api/sitterReview/{id}
+    // GET: api/SitterReview/{id}?includeOwner=true&includeSitter=true
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetSitterReview(int id)
+    public async Task<IActionResult> GetSitterReview(int id,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeOwner,
+        [FromQuery] bool includeSitter)
     {
         try
         {
             var response = await _repo.GetSingleAsync(id);
+
+            if (includeOwner) 
+                response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
+            
+            if(includeSitter)
+                response.Sitter = await sitterRepo.GetSingleAsync(response.SitterId);
+            
             return Ok(response);
         }
         catch (Exception ex)
@@ -47,7 +76,7 @@ public class SitterReviewController : ControllerBase
         }
     }
 
-    // POST: api/sitterReview
+    // POST: api/SitterReview
     [HttpPost]
     public async Task<IActionResult> CreateSitterProfile(
         [FromBody] CreateSitterReviewDto createDto)
@@ -64,7 +93,7 @@ public class SitterReviewController : ControllerBase
         }
     }
 
-    // DELETE: api/sitterReview/{id}
+    // DELETE: api/SitterReview/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSitterReview(int id)
     {

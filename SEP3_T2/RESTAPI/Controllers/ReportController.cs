@@ -1,4 +1,6 @@
-﻿using DTOs.Report;
+﻿using DTOs.HouseOwner;
+using DTOs.HouseSitter;
+using DTOs.Report;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
@@ -15,14 +17,43 @@ public class ReportController : ControllerBase
         _repo = repo;
     }
 
-    // https://localhost:7134/api/Report
+    // GET: api/Report?includeReporting=true&includeReported=true
     [HttpGet]
-    public async Task<IActionResult> GetAllReports()
+    public async Task<IActionResult> GetAllReports(
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeReporting,
+        [FromQuery] bool includeReported)
     {
         try
         {
             var response = _repo.GetAll();
-            return Ok(response);
+            if(!includeReporting && !includeReported) return Ok(response);
+            var owners = ownerRepo.GetAll();
+            var sitters = sitterRepo.GetAll();
+            
+            var toReturn = new List<ReportDto>();
+            foreach (var report in response)
+            {
+                if (includeReporting)
+                {
+                    if(owners.Any(o => o.UserId == report.ReportingId))
+                        report.ReportingOwner = owners.First(o => o.UserId == report.ReportingId);
+                    else
+                        report.ReportingSitter = sitters.First(s => s.UserId == report.ReportingId);
+                }
+
+                if (includeReported)
+                {
+                    if(owners.Any(o => o.UserId == report.ReportedId))
+                        report.ReportedOwner = owners.First(o => o.UserId == report.ReportedId);
+                    else
+                        report.ReportedSitter = sitters.First(s => s.UserId == report.ReportedId);
+                }
+                
+                toReturn.Add(report);
+            }
+            return Ok(toReturn.AsQueryable());
         }
         catch (Exception ex)
         {
@@ -31,13 +62,37 @@ public class ReportController : ControllerBase
         }
     }
 
-    // GET: api/Report/{id}
+    // GET: api/Report/{id}?includeReporting=true&includeReported=true
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetReport(int id)
+    public async Task<IActionResult> GetReport(int id,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeReporting,
+        [FromQuery] bool includeReported)
     {
         try
         {
             var response = await _repo.GetSingleAsync(id);
+            
+            var owners = ownerRepo.GetAll();
+            var sitters = sitterRepo.GetAll();
+
+            if (includeReporting)
+            {
+                if(owners.Any(o => o.UserId == response.ReportingId))
+                    response.ReportingOwner = owners.First(o => o.UserId == response.ReportingId);
+                else
+                    response.ReportingSitter = sitters.First(s => s.UserId == response.ReportingId);
+            }
+
+            if (includeReported)
+            {
+                if(owners.Any(o => o.UserId == response.ReportedId))
+                    response.ReportedOwner = owners.First(o => o.UserId == response.ReportedId);
+                else
+                    response.ReportedSitter = sitters.First(s => s.UserId == response.ReportedId);
+            }
+            
             return Ok(response);
         }
         catch (Exception ex)
