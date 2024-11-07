@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\HousePalClient.csproj": {}
+    "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\HousePalClient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj": {
+    "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\obj\\",
+        "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj",
+        "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -62,17 +62,17 @@
         }
       }
     },
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\HousePalClient.csproj": {
+    "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\HousePalClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
+        "projectUniqueName": "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
         "projectName": "HousePalClient",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\obj\\",
+        "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
+        "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -84,8 +84,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj"
+              "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj": {
+                "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj"
               }
             }
           }
@@ -109,6 +109,10 @@
               "target": "Package",
               "version": "[8.0.10, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "System.Net.Http.Json": {
               "target": "Package",
               "version": "[9.0.0-rc.2.24473.5, )"
@@ -129,82 +133,6 @@
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
             },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj",
-        "projectName": "Services",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        }
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Components": {
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.AspNetCore.Http.Connections.Client": {
-              "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

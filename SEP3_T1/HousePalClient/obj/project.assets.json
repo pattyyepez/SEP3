@@ -60,57 +60,6 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Connections.Abstractions/8.0.10": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Features": "8.0.10",
-          "System.IO.Pipelines": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Connections.Abstractions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http.Connections.Client/8.0.10": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNetCore.Http.Connections.Common": "8.0.10",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
-          "Microsoft.Extensions.Options": "8.0.2"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Client.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Client.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http.Connections.Common/8.0.10": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNetCore.Connections.Abstractions": "8.0.10"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Common.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Common.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "Microsoft.AspNetCore.Metadata/8.0.10": {
         "type": "package",
         "compile": {
@@ -138,19 +87,6 @@
         },
         "build": {
           "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "Microsoft.Extensions.Features/8.0.10": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Microsoft.Extensions.Features.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Features.dll": {
-            "related": ".xml"
-          }
         }
       },
       "Microsoft.Extensions.Logging.Abstractions/8.0.2": {
@@ -307,22 +243,6 @@
         "runtime": {
           "bin/placeholder/DTOs.dll": {}
         }
-      },
-      "Services/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "DTOs": "1.0.0",
-          "Microsoft.AspNetCore.Components": "8.0.10",
-          "Microsoft.AspNetCore.Http.Connections.Client": "8.0.10",
-          "Newtonsoft.Json": "13.0.3"
-        },
-        "compile": {
-          "bin/placeholder/Services.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Services.dll": {}
-        }
       }
     }
   },
@@ -392,67 +312,6 @@
         "microsoft.aspnetcore.components.authorization.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Connections.Abstractions/8.0.10": {
-      "sha512": "7fqSpSGzBRldyO1obKMPGYUdU4iwvMPsUEgdufgRZe2tBF9rKf8ffGmuObP81N4AKb5A438+5ER5t3ES0r1yDQ==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.connections.abstractions/8.0.10",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net462/Microsoft.AspNetCore.Connections.Abstractions.dll",
-        "lib/net462/Microsoft.AspNetCore.Connections.Abstractions.xml",
-        "lib/net8.0/Microsoft.AspNetCore.Connections.Abstractions.dll",
-        "lib/net8.0/Microsoft.AspNetCore.Connections.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Connections.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Connections.Abstractions.xml",
-        "lib/netstandard2.1/Microsoft.AspNetCore.Connections.Abstractions.dll",
-        "lib/netstandard2.1/Microsoft.AspNetCore.Connections.Abstractions.xml",
-        "microsoft.aspnetcore.connections.abstractions.8.0.10.nupkg.sha512",
-        "microsoft.aspnetcore.connections.abstractions.nuspec"
-      ]
-    },
-    "Microsoft.AspNetCore.Http.Connections.Client/8.0.10": {
-      "sha512": "iyeFk9Vdk8cpovPkIQe5+pRDQQ4XUhZO4MALrRrbIRe8r/qPJ3m8j2YWYuKcDNkk1iEiPKZI5Xft8gymEuYpRQ==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.http.connections.client/8.0.10",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net462/Microsoft.AspNetCore.Http.Connections.Client.dll",
-        "lib/net462/Microsoft.AspNetCore.Http.Connections.Client.xml",
-        "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Client.dll",
-        "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Client.xml",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Client.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Client.xml",
-        "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.dll",
-        "lib/netstandard2.1/Microsoft.AspNetCore.Http.Connections.Client.xml",
-        "microsoft.aspnetcore.http.connections.client.8.0.10.nupkg.sha512",
-        "microsoft.aspnetcore.http.connections.client.nuspec"
-      ]
-    },
-    "Microsoft.AspNetCore.Http.Connections.Common/8.0.10": {
-      "sha512": "/xvIm7D81n9MfYHLdyXdH6qUC08+fIFavpA7CtSbr06kDULRH8ay99nqkyzhhlGwxmIjBShA5IV3vNZufp3JrQ==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.http.connections.common/8.0.10",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net462/Microsoft.AspNetCore.Http.Connections.Common.dll",
-        "lib/net462/Microsoft.AspNetCore.Http.Connections.Common.xml",
-        "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Common.dll",
-        "lib/net8.0/Microsoft.AspNetCore.Http.Connections.Common.xml",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Common.dll",
-        "lib/netstandard2.0/Microsoft.AspNetCore.Http.Connections.Common.xml",
-        "microsoft.aspnetcore.http.connections.common.8.0.10.nupkg.sha512",
-        "microsoft.aspnetcore.http.connections.common.nuspec"
-      ]
-    },
     "Microsoft.AspNetCore.Metadata/8.0.10": {
       "sha512": "E9YwEujZjXhMLi1hqJh+7iLk2DzNxa4dB9wYY8lHYpAzZdVqoGjaFsaaIzwCvSZZxd7S7Cds01Trlye2mTqeZA==",
       "type": "package",
@@ -502,25 +361,6 @@
         "microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Extensions.Features/8.0.10": {
-      "sha512": "6SpN2/BuqUnhrw1i+vXsw7CA4ADYt7lf1G9/eDs+bY7eJoug5YQVFd4OS+37m8dSbklCdq6b7rLbCVQUZgL6oQ==",
-      "type": "package",
-      "path": "microsoft.extensions.features/8.0.10",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net462/Microsoft.Extensions.Features.dll",
-        "lib/net462/Microsoft.Extensions.Features.xml",
-        "lib/net8.0/Microsoft.Extensions.Features.dll",
-        "lib/net8.0/Microsoft.Extensions.Features.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.Features.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.Features.xml",
-        "microsoft.extensions.features.8.0.10.nupkg.sha512",
-        "microsoft.extensions.features.nuspec"
       ]
     },
     "Microsoft.Extensions.Logging.Abstractions/8.0.2": {
@@ -866,34 +706,30 @@
       "type": "project",
       "path": "../DTOs/DTOs.csproj",
       "msbuildProject": "../DTOs/DTOs.csproj"
-    },
-    "Services/1.0.0": {
-      "type": "project",
-      "path": "../Services/Services.csproj",
-      "msbuildProject": "../Services/Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "DTOs >= 1.0.0",
       "Microsoft.AspNetCore.Components.Authorization >= 8.0.10",
-      "Services >= 1.0.0",
+      "Newtonsoft.Json >= 13.0.3",
       "System.Net.Http.Json >= 9.0.0-rc.2.24473.5"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\domin\\.nuget\\packages\\": {}
+    "C:\\Users\\patty\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
+      "projectUniqueName": "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
       "projectName": "HousePalClient",
-      "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
-      "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\HousePalClient\\obj\\",
+      "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\HousePalClient.csproj",
+      "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\HousePalClient\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -905,8 +741,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj": {
-              "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Services\\Services.csproj"
+            "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj": {
+              "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj"
             }
           }
         }
@@ -929,6 +765,10 @@
           "Microsoft.AspNetCore.Components.Authorization": {
             "target": "Package",
             "version": "[8.0.10, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.3, )"
           },
           "System.Net.Http.Json": {
             "target": "Package",

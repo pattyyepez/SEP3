@@ -67,7 +67,18 @@ namespace Services
 
         public IQueryable<HouseOwnerDto> GetAll()
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseOwner").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var houseOwner = JsonConvert.DeserializeObject<List<HouseOwnerDto>>(jsonResponse);
+
+            return houseOwner.AsQueryable();
         }
+        
     }
+    
 }
