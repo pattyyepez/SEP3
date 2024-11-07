@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseProfile;
+import en.via.sep3_t3.repositoryContracts.IHouseProfileRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,26 +15,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class HouseProfileRepository {
+@Repository public class HouseProfileRepository implements IHouseProfileRepository
+{
 
   private final JdbcTemplate jdbcTemplate;
 
-  public HouseProfileRepository(JdbcTemplate jdbcTemplate) {
+  public HouseProfileRepository(JdbcTemplate jdbcTemplate)
+  {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public List<HouseProfile> findAll() {
+  public List<HouseProfile> findAll()
+  {
     String sql = "SELECT * FROM HouseProfile";
     return jdbcTemplate.query(sql, new HouseProfileRowMapper());
   }
 
-  public HouseProfile findById(int id) {
+  public HouseProfile findById(int id)
+  {
     String sql = "SELECT * FROM HouseProfile WHERE profile_id = ?";
     return jdbcTemplate.queryForObject(sql, new HouseProfileRowMapper(), id);
   }
 
-  public int save(HouseProfile houseProfile) {
+  public int save(HouseProfile houseProfile)
+  {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
@@ -58,7 +63,8 @@ public class HouseProfileRepository {
     return profileId;
   }
 
-  public void update(HouseProfile houseProfile) {
+  public void update(HouseProfile houseProfile)
+  {
     String sql = "UPDATE HouseProfile SET description = ?, address = ?, region = ?, city = ? WHERE profile_id = ?";
     jdbcTemplate.update(sql, houseProfile.getDescription(), houseProfile.getAddress(), houseProfile.getRegion(),
         houseProfile.getCity(), houseProfile.getId());
@@ -74,7 +80,8 @@ public class HouseProfileRepository {
     savePictures(houseProfile.getPictures(), houseProfile.getId());
   }
 
-  public void deleteById(int id) {
+  public void deleteById(int id)
+  {
     deleteAmenities(id);
     deleteChores(id);
     deleteRules(id);
@@ -84,9 +91,9 @@ public class HouseProfileRepository {
     jdbcTemplate.update(sql, id);
   }
 
-
-  private void saveAmenities(List<String> amenities, int profileId) {
-    if(!(amenities.size() == 1 && amenities.contains("")))
+  private void saveAmenities(List<String> amenities, int profileId)
+  {
+    if (!(amenities.size() == 1 && amenities.contains("")))
     {
       String sql = "INSERT INTO House_amenities (profile_id, amenity_id) VALUES (?, ?)";
       for (String amenity : amenities)
@@ -96,13 +103,15 @@ public class HouseProfileRepository {
     }
   }
 
-  private void deleteAmenities(int profileId) {
+  private void deleteAmenities(int profileId)
+  {
     String sql = "DELETE FROM House_amenities WHERE profile_id = ?";
     jdbcTemplate.update(sql, profileId);
   }
 
-  private void saveChores(List<String> chores, int profileId) {
-    if(!(chores.size() == 1 && chores.contains("")))
+  private void saveChores(List<String> chores, int profileId)
+  {
+    if (!(chores.size() == 1 && chores.contains("")))
     {
       String sql = "INSERT INTO House_chores (profile_id, chore_id) VALUES (?, ?)";
       for (String chore : chores)
@@ -112,55 +121,68 @@ public class HouseProfileRepository {
     }
   }
 
-  private void deleteChores(int profileId) {
+  private void deleteChores(int profileId)
+  {
     String sql = "DELETE FROM House_chores WHERE profile_id = ?";
     jdbcTemplate.update(sql, profileId);
   }
 
-  private void saveRules(List<String> rules, int profileId) {
-    if(!(rules.size() == 1 && rules.contains(""))){
+  private void saveRules(List<String> rules, int profileId)
+  {
+    if (!(rules.size() == 1 && rules.contains("")))
+    {
       String sql = "INSERT INTO House_rules (profile_id, rule_id) VALUES (?, ?)";
-      for (String rule : rules) {
+      for (String rule : rules)
+      {
         jdbcTemplate.update(sql, profileId, getRuleId(rule));
-    }
+      }
     }
   }
 
-  private void deleteRules(int profileId) {
+  private void deleteRules(int profileId)
+  {
     String sql = "DELETE FROM House_rules WHERE profile_id = ?";
     jdbcTemplate.update(sql, profileId);
   }
 
-  private void savePictures(List<String> pictures, int profileId) {
+  private void savePictures(List<String> pictures, int profileId)
+  {
     String sql = "INSERT INTO House_pictures (profile_id, picture) VALUES (?, ?)";
-    for (String picture : pictures) {
+    for (String picture : pictures)
+    {
       jdbcTemplate.update(sql, profileId, picture);
     }
   }
 
-  private void deletePictures(int profileId) {
+  private void deletePictures(int profileId)
+  {
     String sql = "DELETE FROM House_pictures WHERE profile_id = ?";
     jdbcTemplate.update(sql, profileId);
   }
 
-  private int getAmenityId(String amenity) {
+  private int getAmenityId(String amenity)
+  {
     String sql = "SELECT id FROM Amenities WHERE type = ?";
     return jdbcTemplate.queryForObject(sql, Integer.class, amenity);
   }
 
-  private int getChoreId(String chore) {
+  private int getChoreId(String chore)
+  {
     String sql = "SELECT id FROM Chores WHERE type = ?";
     return jdbcTemplate.queryForObject(sql, Integer.class, chore);
   }
 
-  private int getRuleId(String rule) {
+  private int getRuleId(String rule)
+  {
     String sql = "SELECT id FROM Rules WHERE type = ?";
     return jdbcTemplate.queryForObject(sql, Integer.class, rule);
   }
 
-  private class HouseProfileRowMapper implements RowMapper<HouseProfile> {
-    @Override
-    public HouseProfile mapRow(ResultSet rs, int rowNum) throws SQLException {
+  private class HouseProfileRowMapper implements RowMapper<HouseProfile>
+  {
+    @Override public HouseProfile mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
       HouseProfile houseProfile = new HouseProfile();
       houseProfile.setId(rs.getInt("profile_id"));  // Usa profile_id en lugar de id
       houseProfile.setDescription(rs.getString("description"));
@@ -175,22 +197,26 @@ public class HouseProfileRepository {
       return houseProfile;
     }
 
-    private List<String> fetchAmenities(int profileId) {
+    private List<String> fetchAmenities(int profileId)
+    {
       String sql = "SELECT type FROM Amenities JOIN House_amenities ON id = amenity_id WHERE profile_id = ?";
       return jdbcTemplate.queryForList(sql, String.class, profileId);
     }
 
-    private List<String> fetchChores(int profileId) {
+    private List<String> fetchChores(int profileId)
+    {
       String sql = "SELECT type FROM Chores JOIN House_chores ON id = chore_id WHERE profile_id = ?";
       return jdbcTemplate.queryForList(sql, String.class, profileId);
     }
 
-    private List<String> fetchRules(int profileId) {
+    private List<String> fetchRules(int profileId)
+    {
       String sql = "SELECT type FROM Rules JOIN House_rules ON id = rule_id WHERE profile_id = ?";
       return jdbcTemplate.queryForList(sql, String.class, profileId);
     }
 
-    private List<String> fetchPictures(int profileId) {
+    private List<String> fetchPictures(int profileId)
+    {
       String sql = "SELECT picture FROM House_pictures WHERE profile_id = ?";
       return jdbcTemplate.queryForList(sql, String.class, profileId);
     }

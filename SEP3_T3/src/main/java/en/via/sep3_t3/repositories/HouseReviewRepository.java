@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseReview;
+import en.via.sep3_t3.repositoryContracts.IHouseReviewRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,26 +11,30 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
 
-@Repository
-public class HouseReviewRepository {
+@Repository public class HouseReviewRepository implements IHouseReviewRepository
+{
 
   private final JdbcTemplate jdbcTemplate;
 
-  public HouseReviewRepository(JdbcTemplate jdbcTemplate) {
+  public HouseReviewRepository(JdbcTemplate jdbcTemplate)
+  {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public HouseReview findById(int id) {
+  public HouseReview findById(int id)
+  {
     String sql = "SELECT * FROM House_review WHERE id = ?";
     return jdbcTemplate.queryForObject(sql, new HouseReviewRowMapper(), id);
   }
 
-  public List<HouseReview> findAll() {
+  public List<HouseReview> findAll()
+  {
     String sql = "SELECT * FROM House_review";
     return jdbcTemplate.query(sql, new HouseReviewRowMapper());
   }
 
-  public int save(HouseReview houseReview) {
+  public int save(HouseReview houseReview)
+  {
     KeyHolder keyHolder = new GeneratedKeyHolder();
     String sql = "INSERT INTO House_review (profile_id, sitter_id, rating, comments, date) VALUES (?, ?, ?, ?, ?)";
 
@@ -46,14 +51,17 @@ public class HouseReviewRepository {
     return (int) keyHolder.getKeys().get("id");
   }
 
-  public void deleteById(int id) {
+  public void deleteById(int id)
+  {
     String sql = "DELETE FROM House_review WHERE id = ?";
     jdbcTemplate.update(sql, id);
   }
 
-  private static class HouseReviewRowMapper implements RowMapper<HouseReview> {
-    @Override
-    public HouseReview mapRow(ResultSet rs, int rowNum) throws SQLException {
+  private static class HouseReviewRowMapper implements RowMapper<HouseReview>
+  {
+    @Override public HouseReview mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
       HouseReview houseReview = new HouseReview();
       houseReview.setId(rs.getInt("id"));
       houseReview.setProfile_id(rs.getInt("profile_id"));

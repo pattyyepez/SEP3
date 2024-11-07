@@ -2,7 +2,7 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.HouseReview;
-import en.via.sep3_t3.repositories.HouseReviewRepository;
+import en.via.sep3_t3.repositoryContracts.IHouseReviewRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +15,9 @@ import java.util.List;
     extends HouseReviewServiceGrpc.HouseReviewServiceImplBase
 {
 
-  private final HouseReviewRepository houseReviewRepository;
+  private final IHouseReviewRepository houseReviewRepository;
 
-  public HouseReviewServiceImpl(HouseReviewRepository houseReviewRepository)
+  public HouseReviewServiceImpl(IHouseReviewRepository houseReviewRepository)
   {
     this.houseReviewRepository = houseReviewRepository;
   }
@@ -60,7 +60,6 @@ import java.util.List;
     }
     catch (Exception e)
     {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -86,7 +85,6 @@ import java.util.List;
     }
     catch (Exception e)
     {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }

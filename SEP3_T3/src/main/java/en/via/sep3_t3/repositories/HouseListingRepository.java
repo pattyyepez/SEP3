@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseListing;
+import en.via.sep3_t3.repositoryContracts.IHouseListingRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -12,7 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class HouseListingRepository {
+public class HouseListingRepository implements IHouseListingRepository
+{
 
   private final JdbcTemplate jdbcTemplate;
 

@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseSitter;
+import en.via.sep3_t3.repositoryContracts.IHouseSitterRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,26 +15,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class HouseSitterRepository {
+@Repository public class HouseSitterRepository implements IHouseSitterRepository
+{
 
   private final JdbcTemplate jdbcTemplate;
 
-  public HouseSitterRepository(JdbcTemplate jdbcTemplate) {
+  public HouseSitterRepository(JdbcTemplate jdbcTemplate)
+  {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public List<HouseSitter> findAll() {
+  public List<HouseSitter> findAll()
+  {
     String sql = "SELECT * FROM HouseSitter JOIN Users U on U.id = HouseSitter.sitter_id";
     return jdbcTemplate.query(sql, new HouseSitterRowMapper());
   }
 
-  public HouseSitter findById(int sitter_id) {
+  public HouseSitter findById(int sitter_id)
+  {
     String sql = "SELECT * FROM HouseSitter JOIN Users U on U.id = HouseSitter.sitter_id WHERE sitter_id = ?";
-    return jdbcTemplate.queryForObject(sql, new HouseSitterRowMapper(), sitter_id);
+    return jdbcTemplate.queryForObject(sql, new HouseSitterRowMapper(),
+        sitter_id);
   }
 
-  public int save(HouseSitter houseSitter) {
+  public int save(HouseSitter houseSitter)
+  {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
@@ -65,15 +71,14 @@ public class HouseSitterRepository {
     return id;
   }
 
-  public void update(HouseSitter houseSitter) {
+  public void update(HouseSitter houseSitter)
+  {
     String sql = "UPDATE Users SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
-    jdbcTemplate.update(
-        sql,
-        houseSitter.getEmail(), houseSitter.getPassword(),
+    jdbcTemplate.update(sql, houseSitter.getEmail(), houseSitter.getPassword(),
         houseSitter.getProfilePicture(), houseSitter.getCPR(),
         houseSitter.getPhone(), houseSitter.isVerified(),
-        houseSitter.getAdminId() != 0 ? houseSitter.getAdminId() : null, houseSitter.getUserId()
-    );
+        houseSitter.getAdminId() != 0 ? houseSitter.getAdminId() : null,
+        houseSitter.getUserId());
 
     sql = "UPDATE HouseSitter SET past_experience = ?, biography = ? WHERE sitter_id = ?";
     jdbcTemplate.update(sql, houseSitter.getExperience(), houseSitter.getBiography(), houseSitter.getUserId());
@@ -85,7 +90,8 @@ public class HouseSitterRepository {
     savePictures(houseSitter.getPictures(), houseSitter.getUserId());
   }
 
-  public void deleteById(int sitter_id) {
+  public void deleteById(int sitter_id)
+  {
     deleteSkills(sitter_id);
     deletePictures(sitter_id);
 
@@ -96,47 +102,57 @@ public class HouseSitterRepository {
     jdbcTemplate.update(sql, sitter_id);
   }
 
-  private void saveSkills(List<String> skills, int sitterId) {
+  private void saveSkills(List<String> skills, int sitterId)
+  {
     String sql = "INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES (?, ?)";
-    for (String skill : skills) {
+    for (String skill : skills)
+    {
       jdbcTemplate.update(sql, sitterId, getSkillId(skill));
     }
   }
 
-  private int getSkillId(String skill){
+  private int getSkillId(String skill)
+  {
     String sql = "SELECT Skills.id FROM Skills WHERE type = ?";
     return jdbcTemplate.query(sql, (rs, rowNum) -> {
       return rs.getInt("id");
-      }, skill).get(0);
+    }, skill).get(0);
   }
 
-  private void deleteSkills(int sitterId) {
+  private void deleteSkills(int sitterId)
+  {
     String sql = "DELETE FROM Sitter_skills WHERE sitter_id = ?";
     jdbcTemplate.update(sql, sitterId);
   }
 
-  private void savePictures(List<String> pictures, int sitterId) {
+  private void savePictures(List<String> pictures, int sitterId)
+  {
     String sql = "INSERT INTO SitterPictures (sitter_id, picture) VALUES (?, ?)";
-    for (String picture : pictures) {
+    for (String picture : pictures)
+    {
       jdbcTemplate.update(sql, sitterId, picture);
     }
   }
 
-  private int getPictureId(String picture){
+  private int getPictureId(String picture)
+  {
     String sql = "SELECT sitter_id FROM SitterPictures WHERE picture = ?";
     return jdbcTemplate.query(sql, (rs, rowNum) -> {
       return rs.getInt("picture");
     }, picture).get(0);
   }
 
-  private void deletePictures(int sitterId) {
+  private void deletePictures(int sitterId)
+  {
     String sql = "DELETE FROM SitterPictures WHERE sitter_id = ?";
     jdbcTemplate.update(sql, sitterId);
   }
 
-  private class HouseSitterRowMapper implements RowMapper<HouseSitter> {
-    @Override
-    public HouseSitter mapRow(ResultSet rs, int rowNum) throws SQLException {
+  private class HouseSitterRowMapper implements RowMapper<HouseSitter>
+  {
+    @Override public HouseSitter mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
       HouseSitter houseSitter = new HouseSitter();
       houseSitter.setUserId(rs.getInt("sitter_id"));
       houseSitter.setEmail(rs.getString("email"));
@@ -153,15 +169,16 @@ public class HouseSitterRepository {
       return houseSitter;
     }
 
-    private ArrayList<String> fetchPictures(int sitterId) {
+    private ArrayList<String> fetchPictures(int sitterId)
+    {
       String sql = "SELECT picture FROM Sitter_pictures WHERE sitter_id = ?";
       return (ArrayList<String>) jdbcTemplate.query(sql, (rs, rowNum) -> {
         return rs.getString("picture");
       }, sitterId);
     }
 
-
-    private ArrayList<String> fetchSkills(int sitterId) {
+    private ArrayList<String> fetchSkills(int sitterId)
+    {
       String sql = "SELECT Skills.type FROM Sitter_skills JOIN Skills ON Skills.id = Sitter_skills.skill_id WHERE Sitter_skills.sitter_id = ?";
       return (ArrayList<String>) jdbcTemplate.query(sql, (rs, rowNum) -> {
         return rs.getString("type");

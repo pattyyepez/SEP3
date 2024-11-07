@@ -2,7 +2,7 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.Report;
-import en.via.sep3_t3.repositories.ReportRepository;
+import en.via.sep3_t3.repositoryContracts.IReportRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,9 @@ import java.util.List;
 @Service
 public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
 
-  private final ReportRepository reportRepository;
+  private final IReportRepository reportRepository;
 
-  public ReportServiceImpl(ReportRepository reportRepository) {
+  public ReportServiceImpl(IReportRepository reportRepository) {
     this.reportRepository = reportRepository;
   }
 
@@ -75,7 +75,6 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }

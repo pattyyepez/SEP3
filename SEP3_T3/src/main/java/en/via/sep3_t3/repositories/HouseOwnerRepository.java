@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseOwner;
+import en.via.sep3_t3.repositoryContracts.IHouseOwnerRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,31 +14,32 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-@Repository
-public class HouseOwnerRepository {
+@Repository public class HouseOwnerRepository implements IHouseOwnerRepository
+{
 
   private final JdbcTemplate jdbcTemplate;
 
-  public HouseOwnerRepository(JdbcTemplate jdbcTemplate) {
+  public HouseOwnerRepository(JdbcTemplate jdbcTemplate)
+  {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public List<HouseOwner> findAll() {
-    String sql = "SELECT *\n"
-        + "FROM HouseOwner\n"
+  public List<HouseOwner> findAll()
+  {
+    String sql = "SELECT *\n" + "FROM HouseOwner\n"
         + "JOIN Users U on U.id = HouseOwner.owner_id";
     return jdbcTemplate.query(sql, new HouseOwnerRowMapper());
   }
 
-  public HouseOwner findById(int owner_id) {
-    String sql = "SELECT *\n"
-        + "FROM HouseOwner\n"
-        + "JOIN Users U on U.id = HouseOwner.owner_id\n"
-        + "WHERE owner_id = ?";
+  public HouseOwner findById(int owner_id)
+  {
+    String sql = "SELECT *\n" + "FROM HouseOwner\n"
+        + "JOIN Users U on U.id = HouseOwner.owner_id\n" + "WHERE owner_id = ?";
     return jdbcTemplate.queryForObject(sql, new HouseOwnerRowMapper(), owner_id);
   }
 
-  public int save(HouseOwner houseOwner) {
+  public int save(HouseOwner houseOwner)
+  {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
@@ -71,41 +73,37 @@ public class HouseOwnerRepository {
     return id;
   }
 
-  public void update(HouseOwner houseOwner) {
+  public void update(HouseOwner houseOwner)
+  {
     String sql = "UPDATE Users\n"
         + "SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
         + "WHERE id = ?";
 
-    jdbcTemplate.update(
-        sql,
-        houseOwner.getEmail(),
-        houseOwner.getPassword(),
-        houseOwner.getProfilePicture(),
-        houseOwner.getCPR(),
-        houseOwner.getPhone(),
-        houseOwner.isVerified(),
+    jdbcTemplate.update(sql, houseOwner.getEmail(), houseOwner.getPassword(),
+        houseOwner.getProfilePicture(), houseOwner.getCPR(),
+        houseOwner.getPhone(), houseOwner.isVerified(),
         houseOwner.getAdminId() != 0 ? houseOwner.getAdminId() : null,
         houseOwner.getUserId());
 
     sql = "UPDATE HouseOwner SET address = ?, biography = ? WHERE owner_id = ?";
 
-    jdbcTemplate.update(
-        sql,
-        houseOwner.getAddress(),
-        houseOwner.getBiography(),
+    jdbcTemplate.update(sql, houseOwner.getAddress(), houseOwner.getBiography(),
         houseOwner.getUserId());
   }
 
-  public void deleteById(int owner_id) {
+  public void deleteById(int owner_id)
+  {
     String sql = "DELETE FROM HouseOwner WHERE owner_id = ?";
     jdbcTemplate.update(sql, owner_id);
     sql = "DELETE FROM Users WHERE id = ?";
     jdbcTemplate.update(sql, owner_id);
   }
 
-  private static class HouseOwnerRowMapper implements RowMapper<HouseOwner> {
-    @Override
-    public HouseOwner mapRow(ResultSet rs, int rowNum) throws SQLException {
+  private static class HouseOwnerRowMapper implements RowMapper<HouseOwner>
+  {
+    @Override public HouseOwner mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
       HouseOwner houseOwner = new HouseOwner();
 
       houseOwner.setUserId(rs.getInt("owner_id"));

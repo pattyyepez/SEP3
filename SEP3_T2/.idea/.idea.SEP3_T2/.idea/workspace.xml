@@ -15,97 +15,134 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8710264d-2f24-4684-9da9-95e7a139aa77" name="Changes" comment="making house reviews, sitter reviews and reports accessible in the webapi">
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseReview/CreateHouseReviewDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/HouseReview/HouseReviewDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Report/CreateReportDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Report/ReportDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Report/UpdateReportDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/SitterReview/CreateSitterReviewDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/SitterReview/SitterReviewDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/HouseReviewRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/ReportRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseRepositories/SitterReviewRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseReviewController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/ReportController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RESTAPI/Controllers/SitterReviewController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IHouseReviewRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RepositoryContracts/IReportRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RepositoryContracts/ISitterReviewRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Database/housePalDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../Database/housePalDB.sql" afterDir="false" />
+    <list default="true" id="8710264d-2f24-4684-9da9-95e7a139aa77" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IApplicationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IHouseListingRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IHouseOwnerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IHouseProfileRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IHouseReviewRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IHouseSitterRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/IReportRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositoryContracts/ISitterReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/Class1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/DTOs.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/bin/Debug/net8.0/DTOs.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/bin/Debug/net8.0/DTOs.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/DTOs.csproj.nuget.dgspec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/DTOs.csproj.nuget.g.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/DTOs.csproj.nuget.g.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.GlobalUsings.g.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.csproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/DTOs.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/ref/DTOs.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/Debug/net8.0/refint/DTOs.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.assets.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.nuget.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.packagespec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/rider.project.model.nuget.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/rider.project.restore.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/Entities.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/HouseOwner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/bin/Debug/net8.0/Entities.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/bin/Debug/net8.0/Entities.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/bin/Debug/net8.0/Entities.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.GlobalUsings.g.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.csproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/Entities.sourcelink.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/ref/Entities.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Debug/net8.0/refint/Entities.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Entities.csproj.nuget.dgspec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Entities.csproj.nuget.g.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/Entities.csproj.nuget.g.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/project.assets.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/project.nuget.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/project.packagespec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/rider.project.model.nuget.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Entities/obj/rider.project.restore.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/HousePalClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/HousePalClient.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/HousePalClient.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/HousePalClient.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/SEP3_T1.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/SEP3_T1.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/HouseOwnerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/HouseOwnerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/IHouseOwnerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/IHouseOwnerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/Services.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/Services.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Debug/net8.0/Services.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Debug/net8.0/Services.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Debug/net8.0/Services.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Debug/net8.0/Services.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Debug/net8.0/Services.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Debug/net8.0/Services.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Services.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/Services.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/Services/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/Services/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/Application/ApplicationDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/Application/ApplicationDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/HouseListing/HouseListingDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseListing/HouseListingDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/HouseOwner/HouseOwnerDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseOwner/HouseOwnerDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/HouseProfile/HouseProfileDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseProfile/HouseProfileDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/HouseReview/HouseReviewDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseReview/HouseReviewDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/HouseSitter/HouseSitterDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseSitter/HouseSitterDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/Report/ReportDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/Report/ReportDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DTOs/SitterReview/SitterReviewDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/SitterReview/SitterReviewDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/ref/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/ref/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/refint/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/refint/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/Protos/proto.proto" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/Protos/proto.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DatabaseRepositories.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/DatabaseRepositories.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/RepositoryContracts.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/RepositoryContracts.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/Proto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/Proto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/ProtoGrpc.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/ProtoGrpc.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/HouseSitterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseSitterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.exe" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/RESTAPI.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/ref/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/ref/RESTAPI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/refint/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/obj/Debug/net8.0/refint/RESTAPI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/RepositoryContracts.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/bin/Debug/net8.0/RepositoryContracts.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/ref/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/ref/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/refint/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RepositoryContracts/obj/Debug/net8.0/refint/RepositoryContracts.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Report.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/Sep3T3Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/Sep3T3Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ApplicationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ApplicationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseListingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseListingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseOwnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseOwnerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseProfileRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseSitterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/HouseSitterRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ReportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/ReportRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/SitterReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/repositories/SitterReviewRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseListingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseListingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseOwnerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseOwnerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseProfileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseProfileServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseReviewServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseSitterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseSitterServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ReportServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ReportServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/SitterReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/SitterReviewServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/proto/proto.proto" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/proto/proto.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,26 +183,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.GrpcService1: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.GrpcService1: https.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.RESTAPI: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.RESTAPI: https.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Project.GrpcHousePalClient.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Project.testing.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T2&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.GrpcService1: http.executor": "Run",
+    ".NET Launch Settings Profile.GrpcService1: https.executor": "Run",
+    ".NET Launch Settings Profile.RESTAPI: http.executor": "Run",
+    ".NET Launch Settings Profile.RESTAPI: https.executor": "Run",
+    ".NET Project.GrpcHousePalClient.executor": "Run",
+    ".NET Project.testing.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.RESTAPI: https">
     <configuration name="RESTAPI: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/RESTAPI/RESTAPI.csproj" />
@@ -237,7 +274,9 @@
       <workItem from="1730519510008" duration="33000" />
       <workItem from="1730548164505" duration="4881000" />
       <workItem from="1730751104108" duration="11633000" />
-      <workItem from="1730797571058" duration="17027000" />
+      <workItem from="1730797571058" duration="19172000" />
+      <workItem from="1730969164982" duration="2990000" />
+      <workItem from="1730984790427" duration="841000" />
     </task>
     <task id="LOCAL-00001" summary="first T2 commit">
       <option name="closed" value="true" />
@@ -271,7 +310,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730798944398</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="making house reviews, sitter reviews and reports accessible in the webapi">
+      <option name="closed" value="true" />
+      <created>1730898741691</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1730898741691</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

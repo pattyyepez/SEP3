@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.Report;
+import en.via.sep3_t3.repositoryContracts.IReportRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,31 +11,36 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
 
-@Repository
-public class ReportRepository {
+@Repository public class ReportRepository implements IReportRepository
+{
   private final JdbcTemplate jdbcTemplate;
 
-  public ReportRepository(JdbcTemplate jdbcTemplate) {
+  public ReportRepository(JdbcTemplate jdbcTemplate)
+  {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public Report findById(int id) {
+  public Report findById(int id)
+  {
     String sql = "SELECT * FROM Report WHERE report_id = ?";
     return jdbcTemplate.queryForObject(sql, new ReportRowMapper(), id);
   }
 
-  public List<Report> findAll() {
+  public List<Report> findAll()
+  {
     String sql = "SELECT * FROM Report";
     return jdbcTemplate.query(sql, new ReportRowMapper());
   }
 
-  public int save(Report report) {
+  public int save(Report report)
+  {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
           "INSERT INTO Report (reporting_id, reported_id, admin_id, comments, date)"
-              + " VALUES (?, ?, NULL, ?, ?)" // CHANGE NULL IN ADMIN ID TO LOGIC CHOOSING AN ADMIN
+              + " VALUES (?, ?, NULL, ?, ?)"
+          // CHANGE NULL IN ADMIN ID TO LOGIC CHOOSING AN ADMIN
           , Statement.RETURN_GENERATED_KEYS);
       ps.setInt(1, report.getReporting_id());
       ps.setInt(2, report.getReported_id());
@@ -43,22 +49,25 @@ public class ReportRepository {
       return ps;
     }, keyHolder);
 
-    return  (int) keyHolder.getKeys().get("report_id");
+    return (int) keyHolder.getKeys().get("report_id");
   }
 
-  public int update(Report report) {
+  public void update(Report report)
+  {
     String sql = "UPDATE Report SET status = ? WHERE report_id = ?";
-    return jdbcTemplate.update(sql, report.getStatus(), report.getId());
+    jdbcTemplate.update(sql, report.getStatus(), report.getId());
   }
 
-  public int deleteById(int id) {
+  public void deleteById(int id)
+  {
     String sql = "DELETE FROM Report WHERE report_id = ?";
-    return jdbcTemplate.update(sql, id);
+    jdbcTemplate.update(sql, id);
   }
 
-  private static class ReportRowMapper implements RowMapper<Report> {
-    @Override
-    public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
+  private static class ReportRowMapper implements RowMapper<Report>
+  {
+    @Override public Report mapRow(ResultSet rs, int rowNum) throws SQLException
+    {
       Report report = new Report();
       report.setId(rs.getInt("report_id"));
       report.setReporting_id(rs.getInt("reporting_id"));

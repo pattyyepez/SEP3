@@ -2,7 +2,7 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.HouseListing;
-import en.via.sep3_t3.repositories.HouseListingRepository;
+import en.via.sep3_t3.repositoryContracts.IHouseListingRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @Service
 public class HouseListingServiceImpl extends HouseListingServiceGrpc.HouseListingServiceImplBase {
 
-  private final HouseListingRepository houseListingRepository;
+  private final IHouseListingRepository houseListingRepository;
 
-  public HouseListingServiceImpl(HouseListingRepository houseListingRepository) {
+  public HouseListingServiceImpl(IHouseListingRepository houseListingRepository) {
     this.houseListingRepository = houseListingRepository;
   }
 
@@ -27,7 +27,6 @@ public class HouseListingServiceImpl extends HouseListingServiceGrpc.HouseListin
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -69,7 +68,6 @@ public class HouseListingServiceImpl extends HouseListingServiceGrpc.HouseListin
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -86,7 +84,6 @@ public class HouseListingServiceImpl extends HouseListingServiceGrpc.HouseListin
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }

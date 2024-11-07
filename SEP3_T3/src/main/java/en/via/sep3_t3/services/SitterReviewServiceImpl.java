@@ -2,8 +2,7 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.SitterReview;
-import en.via.sep3_t3.domain.SitterReview;
-import en.via.sep3_t3.repositories.SitterReviewRepository;
+import en.via.sep3_t3.repositoryContracts.ISitterReviewRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +14,9 @@ import java.util.List;
 @Service
 public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterReviewServiceImplBase {
 
-  private final SitterReviewRepository sitterReviewRepository;
+  private final ISitterReviewRepository sitterReviewRepository;
 
-  public SitterReviewServiceImpl(SitterReviewRepository sitterReviewRepository) {
+  public SitterReviewServiceImpl(ISitterReviewRepository sitterReviewRepository) {
     this.sitterReviewRepository = sitterReviewRepository;
   }
 

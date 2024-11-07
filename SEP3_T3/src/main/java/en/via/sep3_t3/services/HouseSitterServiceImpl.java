@@ -2,7 +2,7 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.HouseSitter;
-import en.via.sep3_t3.repositories.HouseSitterRepository;
+import en.via.sep3_t3.repositoryContracts.IHouseSitterRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +12,9 @@ import java.util.List;
 @Service
 public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterServiceImplBase {
 
-  private final HouseSitterRepository houseSitterRepository;
+  private final IHouseSitterRepository houseSitterRepository;
 
-  public HouseSitterServiceImpl(HouseSitterRepository houseSitterRepository) {
+  public HouseSitterServiceImpl(IHouseSitterRepository houseSitterRepository) {
     this.houseSitterRepository = houseSitterRepository;
   }
 

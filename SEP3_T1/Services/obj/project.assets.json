@@ -220,14 +220,14 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Entities/1.0.0": {
+      "DTOs/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "compile": {
-          "bin/placeholder/Entities.dll": {}
+          "bin/placeholder/DTOs.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Entities.dll": {}
+          "bin/placeholder/DTOs.dll": {}
         }
       }
     }
@@ -623,15 +623,15 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Entities/1.0.0": {
+    "DTOs/1.0.0": {
       "type": "project",
-      "path": "../Entities/Entities.csproj",
-      "msbuildProject": "../Entities/Entities.csproj"
+      "path": "../DTOs/DTOs.csproj",
+      "msbuildProject": "../DTOs/DTOs.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Entities >= 1.0.0",
+      "DTOs >= 1.0.0",
       "Microsoft.AspNetCore.Components >= 8.0.10",
       "Microsoft.AspNetCore.Http.Connections.Client >= 8.0.10",
       "Newtonsoft.Json >= 13.0.3"
@@ -662,8 +662,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\Entities\\Entities.csproj"
+            "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj": {
+              "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj"
             }
           }
         }

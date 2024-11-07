@@ -2,7 +2,7 @@ package en.via.sep3_t3.services;
 
 import en.via.sep3_t3.*;
 import en.via.sep3_t3.domain.Application;
-import en.via.sep3_t3.repositories.ApplicationRepository;
+import en.via.sep3_t3.repositoryContracts.IApplicationRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,9 @@ import java.util.List;
 @Service
 public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationServiceImplBase {
 
-  private final ApplicationRepository applicationRepository;
+  private final IApplicationRepository applicationRepository;
 
-  public ApplicationServiceImpl(ApplicationRepository applicationRepository) {
+  public ApplicationServiceImpl(IApplicationRepository applicationRepository) {
     this.applicationRepository = applicationRepository;
   }
 
@@ -66,7 +66,6 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -83,7 +82,6 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }

@@ -1,11 +1,11 @@
-﻿using Entities;
+﻿using DTOs.HouseOwner;
 
 namespace Services;
 
 public interface IHouseOwnerService {
-    Task<HouseOwner> AddAsync(HouseOwner houseOwner);
-    Task<HouseOwner> UpdateAsync(HouseOwner houseOwner);
+    Task<HouseOwnerDto> AddAsync(HouseOwnerDto houseOwner);
+    Task<HouseOwnerDto> UpdateAsync(HouseOwnerDto houseOwner);
     Task DeleteAsync(int id);
-    Task<HouseOwner> GetSingleAsync(int id);
-    IQueryable<HouseOwner> GetAll();
+    Task<HouseOwnerDto> GetSingleAsync(int id);
+    IQueryable<HouseOwnerDto> GetAll();
 }

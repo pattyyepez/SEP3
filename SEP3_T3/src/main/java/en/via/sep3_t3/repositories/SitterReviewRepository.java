@@ -1,6 +1,7 @@
 package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.SitterReview;
+import en.via.sep3_t3.repositoryContracts.ISitterReviewRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,7 +12,8 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-public class SitterReviewRepository {
+public class SitterReviewRepository implements ISitterReviewRepository
+{
 
   private final JdbcTemplate jdbcTemplate;
 
@@ -44,17 +46,6 @@ public class SitterReviewRepository {
     }, keyHolder);
 
     return (int) keyHolder.getKeys().get("id");
-  }
-
-  public void update(SitterReview sitterReview) {
-    String sql = "UPDATE Sitter_review SET owner_id = ?, sitter_id = ?, rating = ?, comments = ?, date = ? WHERE id = ?";
-    jdbcTemplate.update(sql,
-        sitterReview.getOwner_id(),
-        sitterReview.getSitter_id(),
-        sitterReview.getRating(),
-        sitterReview.getComment(),
-        new java.sql.Date(sitterReview.getDate().getTime()),
-        sitterReview.getId());
   }
 
   public void deleteById(int id) {
