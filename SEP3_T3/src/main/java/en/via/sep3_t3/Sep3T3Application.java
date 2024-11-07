@@ -3,7 +3,7 @@ package en.via.sep3_t3;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-@EnableJpaRepositories(basePackages = {"en.via.sep3_t3.repositoryContracts"})
+@EnableJpaRepositories(basePackages = {"en.via.sep3_t3.repoDataValidationProxies"})
 
 @SpringBootApplication public class Sep3T3Application
 {

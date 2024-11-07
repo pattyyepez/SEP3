@@ -2,6 +2,7 @@ package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseSitter;
 import en.via.sep3_t3.repositoryContracts.IHouseSitterRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,7 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository public class HouseSitterRepository implements IHouseSitterRepository
+@Qualifier("HouseSitterBase")
+@Repository
+public class HouseSitterRepository implements IHouseSitterRepository
 {
 
   private final JdbcTemplate jdbcTemplate;
@@ -55,6 +58,7 @@ import java.util.List;
     }, keyHolder);
 
     int id = (int) keyHolder.getKeys().get("id");
+    houseSitter.setUserId (id);
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
@@ -127,7 +131,7 @@ import java.util.List;
 
   private void savePictures(List<String> pictures, int sitterId)
   {
-    String sql = "INSERT INTO SitterPictures (sitter_id, picture) VALUES (?, ?)";
+    String sql = "INSERT INTO Sitter_pictures (sitter_id, picture) VALUES (?, ?)";
     for (String picture : pictures)
     {
       jdbcTemplate.update(sql, sitterId, picture);
@@ -136,7 +140,7 @@ import java.util.List;
 
   private int getPictureId(String picture)
   {
-    String sql = "SELECT sitter_id FROM SitterPictures WHERE picture = ?";
+    String sql = "SELECT sitter_id FROM Sitter_pictures WHERE picture = ?";
     return jdbcTemplate.query(sql, (rs, rowNum) -> {
       return rs.getInt("picture");
     }, picture).get(0);
@@ -144,7 +148,7 @@ import java.util.List;
 
   private void deletePictures(int sitterId)
   {
-    String sql = "DELETE FROM SitterPictures WHERE sitter_id = ?";
+    String sql = "DELETE FROM Sitter_pictures WHERE sitter_id = ?";
     jdbcTemplate.update(sql, sitterId);
   }
 

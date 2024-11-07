@@ -2,6 +2,7 @@ package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.SitterReview;
 import en.via.sep3_t3.repositoryContracts.ISitterReviewRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
 
+@Qualifier("SitterReviewBase")
 @Repository
 public class SitterReviewRepository implements ISitterReviewRepository
 {

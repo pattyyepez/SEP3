@@ -21,11 +21,12 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
   @Override
   public void getHouseOwner(HouseOwnerRequest request, StreamObserver<HouseOwnerResponse> responseObserver) {
     try {
-      HouseOwner houseOwner = houseOwnerRepository.findById(request.getId() );
+      HouseOwner houseOwner = houseOwnerRepository.findById(request.getId());
       HouseOwnerResponse response = getHouseOwnerResponse(houseOwner);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       responseObserver.onError(e);
     }
   }
@@ -65,6 +66,7 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }

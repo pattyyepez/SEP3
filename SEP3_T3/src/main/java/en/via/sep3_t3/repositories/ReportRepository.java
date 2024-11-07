@@ -2,6 +2,7 @@ package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.Report;
 import en.via.sep3_t3.repositoryContracts.IReportRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
 
-@Repository public class ReportRepository implements IReportRepository
+@Qualifier("ReportBase")
+@Repository
+public class ReportRepository implements IReportRepository
 {
   private final JdbcTemplate jdbcTemplate;
 

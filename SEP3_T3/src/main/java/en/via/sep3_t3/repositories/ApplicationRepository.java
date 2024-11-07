@@ -2,6 +2,7 @@ package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.Application;
 import en.via.sep3_t3.repositoryContracts.IApplicationRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+@Qualifier("ApplicationBase")
 @Repository
 public class ApplicationRepository implements IApplicationRepository {
 

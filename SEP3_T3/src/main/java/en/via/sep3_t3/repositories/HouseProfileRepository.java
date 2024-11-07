@@ -2,6 +2,7 @@ package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseProfile;
 import en.via.sep3_t3.repositoryContracts.IHouseProfileRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,7 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository public class HouseProfileRepository implements IHouseProfileRepository
+@Qualifier("HouseProfileBase")
+@Repository
+public class HouseProfileRepository implements IHouseProfileRepository
 {
 
   private final JdbcTemplate jdbcTemplate;

@@ -2,6 +2,7 @@ package en.via.sep3_t3.repositories;
 
 import en.via.sep3_t3.domain.HouseOwner;
 import en.via.sep3_t3.repositoryContracts.IHouseOwnerRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,7 +15,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-@Repository public class HouseOwnerRepository implements IHouseOwnerRepository
+@Qualifier("HouseOwnerBase")
+@Repository
+public class HouseOwnerRepository implements IHouseOwnerRepository
 {
 
   private final JdbcTemplate jdbcTemplate;
@@ -79,9 +82,13 @@ import java.util.List;
         + "SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
         + "WHERE id = ?";
 
-    jdbcTemplate.update(sql, houseOwner.getEmail(), houseOwner.getPassword(),
-        houseOwner.getProfilePicture(), houseOwner.getCPR(),
-        houseOwner.getPhone(), houseOwner.isVerified(),
+    jdbcTemplate.update(sql,
+        houseOwner.getEmail(),
+        houseOwner.getPassword(),
+        houseOwner.getProfilePicture(),
+        houseOwner.getCPR(),
+        houseOwner.getPhone(),
+        houseOwner.isVerified(),
         houseOwner.getAdminId() != 0 ? houseOwner.getAdminId() : null,
         houseOwner.getUserId());
 
