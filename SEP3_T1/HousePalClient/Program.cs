@@ -5,11 +5,9 @@ using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Configura la autenticación y autorización
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 builder.Services.AddAuthorizationCore();
 
@@ -38,10 +36,8 @@ else
     });
 }
 
-// Construye la aplicación después de registrar todos los servicios
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

@@ -37,10 +37,12 @@
 
     @@font-face {
         font-family: 'LogoFont';
-        src: url('/fonts/logo-font.ttf') format('truetype');
+        src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
+        ) format('truetype');
         font-weight: normal;
         font-style: normal;
     }
+
     
     h2
     {
@@ -135,12 +137,13 @@
     }
 
     @@keyframes rotateBackground {
-        0% { background-image: url('/images/loginBackgrounds/1.jpg'); }
-        25% { background-image: url('/images/loginBackgrounds/2.jpg'); }
-        50% { background-image: url('/images/loginBackgrounds/3.jpg'); }
-        75% { background-image: url('/images/loginBackgrounds/5.jpg'); }
-        100% { background-image: url('/images/loginBackgrounds/1.jpg'); }
-    }
+    0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+    25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
+    50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
+    75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
+    100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+}
+
 </style>
 
 @code {
