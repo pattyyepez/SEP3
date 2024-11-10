@@ -1,5 +1,6 @@
 ﻿
 using DTOs.Login;
+using Microsoft.JSInterop;
 
 namespace HousePalClient.Auth;
 
@@ -13,44 +14,115 @@ using System.Threading.Tasks;
 public class SimpleAuthProvider : AuthenticationStateProvider
 {
     private readonly HttpClient _httpClient;
-    private ClaimsPrincipal _currentClaimsPrincipal = new(new ClaimsIdentity());
+    private readonly IJSRuntime _jsRuntime;
 
-    public SimpleAuthProvider(HttpClient httpClient)
+    public SimpleAuthProvider(HttpClient httpClient, IJSRuntime jsRuntime)
     {
         _httpClient = httpClient;
+        _jsRuntime = jsRuntime;
     }
 
-    public override Task<AuthenticationState> GetAuthenticationStateAsync()
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        return Task.FromResult(new AuthenticationState(_currentClaimsPrincipal));
+        string userAsJson = "";
+        try
+        {
+            userAsJson = await _jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
+        }
+        catch (InvalidOperationException e)
+        {
+            return new AuthenticationState(new());
+        }
+
+        if (string.IsNullOrEmpty(userAsJson))
+        {
+            return new AuthenticationState(new());
+        }
+
+        UserDto userDto = JsonSerializer.Deserialize<UserDto>(userAsJson)!;
+        List<Claim> claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, userDto.Email),
+            new Claim("Id", userDto.UserId.ToString()),
+            new Claim(ClaimTypes.MobilePhone, userDto.Phone),
+            new Claim("ProfilePicture", userDto.ProfilePicture),
+            new Claim("CPR", userDto.CPR),
+            new Claim("IsVerified", userDto.IsVerified.ToString()),
+            new Claim("Biography", userDto.Biography)
+        };
+
+        if (userDto.Address != null)
+            claims.Add(new Claim("Address", userDto.Address));
+        else
+        {
+            claims.Add(new Claim("Pictures", userDto.Pictures.ToString()));
+            claims.Add(new Claim("Skills", userDto.Skills.ToString()));
+        }
+        ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth");
+        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
+        return new AuthenticationState(claimsPrincipal);
+
     }
 
     public async Task Login(string email, string password)
     {
-        var response = await _httpClient.PostAsJsonAsync("auth/login", new LoginRequest { Email = email, Password = password });
+        var response = await _httpClient.PostAsJsonAsync("auth/login",
+            new LoginRequest
+            {
+                Email = email, 
+                Password = password
+            });
         
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception("Invalid login attempt");
         }
 
-        var userDto = await response.Content.ReadFromJsonAsync<UserDto>();
-
-        var claims = new List<Claim>
+        var userDto = await response.Content.ReadFromJsonAsync<UserDto>(new JsonSerializerOptions()
         {
-            new Claim(ClaimTypes.Name, userDto.Email),
-            new Claim("Id", userDto.UserId.ToString())
+            PropertyNameCaseInsensitive = true
+        });
+        
+        string serialisedData = JsonSerializer.Serialize(userDto);
+        await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
+
+        List<Claim> claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, userDto.Email),
+            new Claim("Id", userDto.UserId.ToString()),
+            new Claim(ClaimTypes.MobilePhone, userDto.Phone),
+            new Claim("ProfilePicture", userDto.ProfilePicture),
+            new Claim("CPR", userDto.CPR),
+            new Claim("IsVerified", userDto.IsVerified.ToString()),
+            new Claim("Biography", userDto.Biography)
         };
+
+        if (userDto.Address != null)
+        {
+            claims.Add(new Claim("Address", userDto.Address));
+            claims.Add(new Claim(ClaimTypes.Role, "HouseOwner"));
+        }
+
+        else
+        {
+            claims.Add(new Claim("Pictures", userDto.Pictures.ToString()));
+            claims.Add(new Claim("Skills", userDto.Skills.ToString()));
+            claims.Add(new Claim(ClaimTypes.Role, "HouseSitter"));
+        }
         
         var identity = new ClaimsIdentity(claims, "apiauth");
-        _currentClaimsPrincipal = new ClaimsPrincipal(identity);
+        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
 
-        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentClaimsPrincipal)));
+        NotifyAuthenticationStateChanged(
+            Task.FromResult(
+                new AuthenticationState(claimsPrincipal)
+                )
+            );
     }
 
-    public void Logout()
+    public async void Logout()
     {
-        _currentClaimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(_currentClaimsPrincipal)));
+        await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new())));
     }
 }

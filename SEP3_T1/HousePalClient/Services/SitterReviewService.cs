@@ -26,7 +26,7 @@ public class SitterReviewService : ISitterReviewService
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
-            return JsonConvert.DeserializeObject<SitterReviewDto>(jsonResponse);
+            return JsonConvert.DeserializeObject<SitterReviewDto>(jsonResponse)!;
         }
 
         public async Task<SitterReviewDto> UpdateAsync(SitterReviewDto sitterReview)

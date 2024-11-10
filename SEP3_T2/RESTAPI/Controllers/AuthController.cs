@@ -1,5 +1,6 @@
 ﻿using DTOs.HouseOwner;
 using DTOs.HouseSitter;
+using DTOs.Login;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
@@ -22,23 +23,48 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        HouseOwnerDto? owner = null;
-        HouseSitterDto? sitter = null;
+        HouseOwnerDto? owner;
+        HouseSitterDto? sitter;
+        UserDto user = null;
+        string password = null;
 
         if(_ownerRepo.GetAll().Any(o => o.Email == request.Email))
         {
             owner = _ownerRepo.GetAll().SingleOrDefault(o => o.Email == request.Email);
+            password = owner.Password;
+            user = new UserDto
+            {
+                UserId = owner.UserId,
+                Email = owner.Email,
+                ProfilePicture = owner.ProfilePicture,
+                CPR = owner.CPR,
+                Phone = owner.Phone,
+                IsVerified = owner.IsVerified,
+                Address = owner.Address,
+                Biography = owner.Biography
+            };
         }
-        else
+        if(_sitterRepo.GetAll().Any(s => s.Email == request.Email))
         {
             sitter = _sitterRepo.GetAll().SingleOrDefault(s => s.Email == request.Email);
+            password = sitter.Password;
+            user = new UserDto
+            {
+                UserId = sitter.UserId,
+                Email = sitter.Email,
+                ProfilePicture = sitter.ProfilePicture,
+                CPR = sitter.CPR,
+                Phone = sitter.Phone,
+                IsVerified = sitter.IsVerified,
+                Experience = sitter.Experience,
+                Biography = sitter.Biography,
+                Pictures = sitter.Pictures,
+                Skills = sitter.Skills
+            };
         }
 
-        if (owner != null && owner.Password == request.Password)
-            return Ok(owner);
-        
-        if (sitter != null && sitter.Password == request.Password)
-            return Ok (sitter);
+        if (user != null || password.Equals(request.Password))
+            return Ok(user);
         
         return Unauthorized("Invalid email or password.");
     }

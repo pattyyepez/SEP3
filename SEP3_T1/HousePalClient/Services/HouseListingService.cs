@@ -26,7 +26,7 @@ public class HouseListingService : IHouseListingService
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
-            return JsonConvert.DeserializeObject<HouseListingDto>(jsonResponse);
+            return JsonConvert.DeserializeObject<HouseListingDto>(jsonResponse)!;
         }
 
         public async Task<HouseListingDto> UpdateAsync(HouseListingDto houseListing)

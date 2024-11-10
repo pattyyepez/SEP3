@@ -26,7 +26,7 @@ namespace Services
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
-            return JsonConvert.DeserializeObject<HouseOwnerDto>(jsonResponse);
+            return JsonConvert.DeserializeObject<HouseOwnerDto>(jsonResponse)!;
             // return await httpClient.GetAsync("api/H").Result.;
         }
 

@@ -1,0 +1,89 @@
+﻿@page "/HouseProfilePage"
+@using System.Security.Claims
+@using DTOs.HouseProfile
+@using Microsoft.AspNetCore.Components
+@using Services
+@* @attribute [Authorize] *@
+<h3>HouseProfilePage</h3>
+
+<AuthorizeView Roles="HouseOwner">
+    <p>User: @context.User.Identity.Name</p>
+    <p>You have the 'Admin' role claim.</p>
+
+</AuthorizeView>
+<AuthorizeView>
+    <Authorized>
+        <p>congrats youre authorized @userId</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>you are not authorized to view this</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="HouseOwner">
+    <p>User: @context.User</p>
+    <p>You have the 'Admin' role claim.</p>
+
+</AuthorizeView>
+<AuthorizeView Roles="HouseSitter">
+    <p>User: @context.User</p>
+    <p>You have both 'Admin' and 'Superuser' role claims.</p>
+</AuthorizeView>
+
+@* @if (profiles == null) *@
+@* { *@
+@* <p> *@
+@*     <em>Loading...</em> *@
+@* </p> *@
+@* } *@
+@* else *@
+@* { *@
+@* <table class="table"> *@
+@*     <thead> *@
+@*     <tr> *@
+@*         <th>Region</th> *@
+@*         <th>City</th> *@
+@*         <th>Address</th> *@
+@*     </tr> *@
+@*     </thead> *@
+@*     <tbody> *@
+@*     @foreach (var profile in profiles) *@
+@*     { *@
+@*     <tr> *@
+@*         <td>@profile.Region</td> *@
+@*         <td>@profile.City</td> *@
+@*         <td>@profile.Address</td> *@
+@*         $1$ <td>@(profile.comments != null ? post.comments.Count : 0)</td> #1# *@
+@*     </tr> *@
+@*     } *@
+@*     </tbody> *@
+@* </table> *@
+@* } *@
+
+@code {
+    [CascadingParameter] public Task<AuthenticationState> State { get; set; }
+
+    private List<HouseProfileDto> profiles;
+
+    private int userId;
+    // [Inject] public IHouseProfileService profileService { get; set; }
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState authenticationState = await State;
+        ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
+        {
+            // the user is not logged in
+            return;
+        }
+        string? userName = claimsPrincipal.Identity?.Name;
+        IEnumerable<Claim> claims = claimsPrincipal.Claims;
+        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        userId = int.Parse(userIdAsString);
+
+        // profiles = profileService.GetAll().ToList();
+        // await InvokeAsync(StateHasChanged);
+    }
+}

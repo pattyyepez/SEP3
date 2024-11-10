@@ -8,6 +8,16 @@
 
 <h3>HouseOwnerPage</h3>
 
+<AuthorizeView>
+    <Authorized>
+        <h3>Hello, @context.User.Identity.Name</h3>
+    </Authorized>
+    <NotAuthorized>
+        lol you are not logged in!
+    </NotAuthorized>
+</AuthorizeView>
+
+
 <input @bind="_houseOwnerId" />
 <button @onclick="GetHouseOwner">Get House Owner</button>
 

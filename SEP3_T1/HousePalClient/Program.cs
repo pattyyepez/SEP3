@@ -8,33 +8,45 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddScoped(sp => new HttpClient
+    {
+        BaseAddress = new Uri("https://localhost:7134")
+    }
+);
+
+builder.Services.AddScoped<IHouseOwnerService, HouseOwnerService>();
+builder.Services.AddScoped<IHouseSitterService, HouseSitterService>();
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
-builder.Services.AddAuthorizationCore();
+// builder.Services.AddAuthenticationCore();
 
-if (builder.Environment.IsDevelopment())
-{
-    var httpClientHandler = new HttpClientHandler();
-    httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
 
-    builder.Services.AddHttpClient<IHouseOwnerService, HouseOwnerService>()
-        .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
-    builder.Services.AddHttpClient<IHouseSitterService, HouseSitterService>()
-        .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
-}
-else
-{
-    var baseAddress = builder.Configuration.GetValue<string>("ApiSettings:BaseUrl");
-    
-    builder.Services.AddHttpClient<IHouseOwnerService, HouseOwnerService>(client =>
-    {
-        client.BaseAddress = new Uri(baseAddress);
-    });
-    
-    builder.Services.AddHttpClient<IHouseSitterService, HouseSitterService>(client =>
-    {
-        client.BaseAddress = new Uri(baseAddress);
-    });
-}
+// builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
+// builder.Services.AddAuthorizationCore();
+
+// if (builder.Environment.IsDevelopment())
+// {
+//     var httpClientHandler = new HttpClientHandler();
+//     httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
+//
+//     builder.Services.AddHttpClient<IHouseOwnerService, HouseOwnerService>()
+//         .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
+//     builder.Services.AddHttpClient<IHouseSitterService, HouseSitterService>()
+//         .ConfigurePrimaryHttpMessageHandler(() => httpClientHandler);
+// }
+// else
+// {
+//     var baseAddress = builder.Configuration.GetValue<string>("ApiSettings:BaseUrl");
+//     
+//     builder.Services.AddHttpClient<IHouseOwnerService, HouseOwnerService>(client =>
+//     {
+//         client.BaseAddress = new Uri(baseAddress);
+//     });
+//     
+//     builder.Services.AddHttpClient<IHouseSitterService, HouseSitterService>(client =>
+//     {
+//         client.BaseAddress = new Uri(baseAddress);
+//     });
+// }
 
 var app = builder.Build();
 
