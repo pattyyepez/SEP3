@@ -17,8 +17,9 @@ builder.Services.AddScoped(sp => new HttpClient
 builder.Services.AddScoped<IHouseOwnerService, HouseOwnerService>();
 builder.Services.AddScoped<IHouseSitterService, HouseSitterService>();
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
-// builder.Services.AddAuthenticationCore();
 
+// builder.Services.AddAuthentication();
+// builder.Services.AddAuthenticationCore();
 
 // builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 // builder.Services.AddAuthorizationCore();

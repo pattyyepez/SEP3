@@ -1,22 +1,28 @@
-﻿@page "/HouseOwnerPage"
+﻿@page "/"
 @rendermode InteractiveServer
 
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @using DTOs.HouseOwner
 @using Microsoft.AspNetCore.Components
 @using Services
 
 <h3>HouseOwnerPage</h3>
 
-<AuthorizeView>
-    <Authorized>
-        <h3>Hello, @context.User.Identity.Name</h3>
-    </Authorized>
-    <NotAuthorized>
-        lol you are not logged in!
-    </NotAuthorized>
-</AuthorizeView>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <h3>Hello, @context.User.Claims.First().Value</h3>
+        </Authorized>
+        <NotAuthorized>
+            lol you are not logged in!
+            <br/>
+            <button @onclick="LogIn"> Log in </button>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
+<hr/>
 
 <input @bind="_houseOwnerId" />
 <button @onclick="GetHouseOwner">Get House Owner</button>
@@ -47,6 +53,11 @@
     string _houseOwnerAddress = "";
     string _houseOwnerBiography = "";
     HouseOwnerDto _houseOwner = new HouseOwnerDto();
+    
+    async void LogIn()
+    {
+        Navigation.NavigateTo("/login");
+    }
     
     async void GetHouseOwner()
     {

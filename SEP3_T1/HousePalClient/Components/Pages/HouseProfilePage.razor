@@ -6,29 +6,49 @@
 @* @attribute [Authorize] *@
 <h3>HouseProfilePage</h3>
 
-<AuthorizeView Roles="HouseOwner">
-    <p>User: @context.User.Identity.Name</p>
-    <p>You have the 'Admin' role claim.</p>
+@* <AuthorizeView Roles="HouseOwner"> *@
+@*     <p>User: @context.User.Identity.Name</p> *@
+@*     <p>You have the 'Admin' role claim.</p> *@
+@* *@
+@* </AuthorizeView> *@
+@* <AuthorizeView> *@
+@*     <Authorized> *@
+@*         <p>congrats youre authorized @userId</p> *@
+@*     </Authorized> *@
+@*     <NotAuthorized> *@
+@*         <p>you are not authorized to view this</p> *@
+@*     </NotAuthorized> *@
+@* </AuthorizeView> *@
 
-</AuthorizeView>
-<AuthorizeView>
-    <Authorized>
-        <p>congrats youre authorized @userId</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>you are not authorized to view this</p>
-    </NotAuthorized>
-</AuthorizeView>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <p>@userId, @context.User.Claims.Single(c => c.Type == "Id")</p>
+        </Authorized>
+        <NotAuthorized>
+            <p>bozo</p>
+        </NotAuthorized>
+    </AuthorizeView>
+    @* <AuthorizeView Roles="HouseOwner"> *@
+    @* <p>@context.User.Claims.Single(c => c.Type == "Id")</p> *@
+    @*     <p>User: @context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Role)).ToString()</p> *@
+    @*     <p>You have the 'Admin' role claim.</p> *@
+    @* *@
+    @* </AuthorizeView> *@
+    @* <AuthorizeView Roles="HouseSitter"> *@
+    @*     <p>User: @context.User.Claims.First().Value</p> *@
+    @*     <p>You have 'Superuser' role claims.</p> *@
+    @* </AuthorizeView> *@
+</CascadingAuthenticationState>
 
-<AuthorizeView Roles="HouseOwner">
-    <p>User: @context.User</p>
-    <p>You have the 'Admin' role claim.</p>
-
-</AuthorizeView>
-<AuthorizeView Roles="HouseSitter">
-    <p>User: @context.User</p>
-    <p>You have both 'Admin' and 'Superuser' role claims.</p>
-</AuthorizeView>
+@if (State.Result.User.Identity.IsAuthenticated)
+{
+<p>Welcome, @State.Result.User.Identity.Name!</p>
+}
+else
+{
+<p>You are not authorized to view this content.</p>
+}
 
 @* @if (profiles == null) *@
 @* { *@
@@ -72,16 +92,17 @@
     protected override async Task OnInitializedAsync()
     {
         AuthenticationState authenticationState = await State;
-        ClaimsPrincipal claimsPrincipal = authenticationState.User;
-        if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
-        {
-            // the user is not logged in
-            return;
-        }
-        string? userName = claimsPrincipal.Identity?.Name;
-        IEnumerable<Claim> claims = claimsPrincipal.Claims;
-        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        userId = int.Parse(userIdAsString);
+        // ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        // if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
+        // {
+        //     // the user is not logged in
+        //     Console.WriteLine("not logged in");
+        //     return;
+        // }
+        // string? userName = claimsPrincipal.Identity?.Name;
+        // IEnumerable<Claim> claims = claimsPrincipal.Claims;
+        // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        // userId = int.Parse(userIdAsString);
 
         // profiles = profileService.GetAll().ToList();
         // await InvokeAsync(StateHasChanged);

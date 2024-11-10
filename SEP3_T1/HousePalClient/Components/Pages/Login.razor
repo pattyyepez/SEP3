@@ -1,4 +1,4 @@
-﻿@page "/" 
+﻿@page "/login" 
 @using HousePalClient.Auth
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
@@ -7,35 +7,58 @@
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
 
-        <div class="login-container">
-            <div class="login-box">
-                <div class="login-fields">
-                    <h2>Welcome!</h2>
-                    <EditForm Model="loginModel">
-                        <DataAnnotationsValidator/>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="login-container">
+                <div class="login-box">
+                    <div class="login-fields">
+                        <h2>Welcome!</h2>
+                        @* <EditForm Model="loginModel"> *@
+                        @*     <DataAnnotationsValidator/> *@
+                        @* *@
+                        @*     <div class="form-group"> *@
+                        @*         <label for="username" >Username</label> *@
+                        @*         <InputText id="username" @bind-Value="loginModel.Username" class="form-control" placeholder="Enter username"/> *@
+                        @*     </div> *@
+                        @* *@
+                        @*     <div class="form-group"> *@
+                        @*         <label for="password">Password</label> *@
+                        @*         <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter password"/> *@
+                        @*     </div> *@
+                        @* *@
+                        @*     <div class="button-group"> *@
+                        @*         <button type="button" class="btn btn-primary" @onclick="HandleLoginClick">Login</button> *@
+                        @*         <button type="button" class="btn btn-secondary" @onclick="HandleSignUpClick">Sign Up</button> *@
+                        @*     </div> *@
+                        @* *@
+                        @* </EditForm> *@
+                        <h3>Please login</h3>
+                        <label>User name:</label>
+                        <input type="text" @bind="loginModel.Username"/>
+                        <label>Password:</label>
+                        <input type="password" @bind="loginModel.Password"/>
+                        @* @if (!string.IsNullOrEmpty(errorLabel)) *@
+                        @* { *@
+                        @* <label style="color: red"> *@
+                        @*     @errorLabel *@
+                        @* </label> *@
+                        @* } *@
+                        <button @onclick="HandleLoginClick">Log in</button>
 
-                        <div class="form-group">
-                            <label for="username" >Username</label>
-                            <InputText id="username" @bind-Value="loginModel.Username" class="form-control" placeholder="Enter username"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter password"/>
-                        </div>
-
-                        <div class="button-group">
-                            <button type="button" class="btn btn-primary" @onclick="HandleLoginClick">Login</button>
-                            <button type="button" class="btn btn-secondary" @onclick="HandleSignUpClick">Sign Up</button>
-                        </div>
-
-                    </EditForm>
-                </div>
-                <div class="welcome-message">
-                    <img src="/images/logo.png" alt="Welcome Image" class="welcome-image" />
+                    </div>
+                    <div class="welcome-message">
+                        <img src="/images/logo.png" alt="Welcome Image" class="welcome-image" />
+                    </div>
                 </div>
             </div>
-        </div>
+        </NotAuthorized>
+        <Authorized>
+            <p>@context.User.Claims.Single(c => c.Type == "Id").Value</p>
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
 
 @code {
 private LoginModel loginModel = new();
@@ -45,7 +68,7 @@ private async void HandleLoginClick()
     try
     {
         await ((SimpleAuthProvider)AuthProvider).Login(loginModel.Username, loginModel.Password);
-        Navigation.NavigateTo("/HouseOwnerPage");
+        Navigation.NavigateTo("/");
     }
     catch (Exception e)
     {
