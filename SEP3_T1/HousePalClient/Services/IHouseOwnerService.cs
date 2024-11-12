@@ -3,7 +3,7 @@
 namespace Services;
 
 public interface IHouseOwnerService {
-    Task<HouseOwnerDto> AddAsync(HouseOwnerDto houseOwner);
+    Task<HouseOwnerDto> AddAsync(CreateHouseOwnerDto houseOwner);
     Task<HouseOwnerDto> UpdateAsync(HouseOwnerDto houseOwner);
     Task DeleteAsync(int id);
     Task<HouseOwnerDto> GetSingleAsync(int id);

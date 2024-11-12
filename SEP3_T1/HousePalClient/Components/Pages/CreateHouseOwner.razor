@@ -1,24 +1,27 @@
-﻿
-@page "/house-owner-signup"
+﻿@page "/house-owner-signup"
+@using DTOs.HouseOwner
 @using HousePalClient.Components.Layout
+@using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
+@inject IHouseOwnerService HouseOwnerService
+
 <div class="page-container">
     <div class="signup-page-container">
         <h1>Create Your House Owner Account</h1>
-        <form class="house-owner-form">
+        <form class="house-owner-form" @onsubmit="CreateOwner">
             <!-- Account Information Fields -->
             <div class="form-section">
                 <h2>Account Information</h2>
 
                 <label>Email:</label>
-                <input type="email" class="form-control" placeholder="Enter your email" required />
+                <input type="email" class="form-control" placeholder="Enter your email" @bind="email" required />
 
                 <label>Password:</label>
-                <input type="password" class="form-control" placeholder="Create a password" required />
+                <input type="password" class="form-control" placeholder="Create a password" @bind="password" required />
 
                 <label>Confirm Password:</label>
-                <input type="password" class="form-control" placeholder="Confirm your password" required />
+                <input type="password" class="form-control" placeholder="Confirm your password" @bind="confirmPassword" required />
             </div>
 
             <!-- Personal Information Fields -->
@@ -26,19 +29,19 @@
                 <h2>Personal Information</h2>
 
                 <label>First Name:</label>
-                <input type="text" class="form-control" placeholder="Enter your first name" required />
+                <input type="text" class="form-control" placeholder="Enter your first name" @bind="firstName" required />
 
                 <label>Last Name:</label>
-                <input type="text" class="form-control" placeholder="Enter your last name" required />
+                <input type="text" class="form-control" placeholder="Enter your last name" @bind="lastName" required />
 
                 <label>CPR Number:</label>
-                <input type="text" class="form-control" placeholder="Enter your CPR number" required />
+                <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="cpr" required />
 
                 <label>Phone Number:</label>
-                <input type="tel" class="form-control" placeholder="Enter your phone number" required />
+                <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="phone" required />
 
                 <label>Home Address:</label>
-                <input type="text" class="form-control" placeholder="Enter your home address" required />
+                <input type="text" class="form-control" placeholder="Enter your home address" @bind="address" required />
             </div>
 
             <!-- Introduction Section -->
@@ -46,11 +49,19 @@
                 <h2>Introduce Yourself</h2>
 
                 <label>Short Introduction:</label>
-                <textarea class="form-control" rows="4" placeholder="Write a brief introduction" required></textarea>
-
+                <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="biography" required></textarea>
                 <label>Upload Profile Pictures:</label>
                 <input type="file" class="form-control" accept="image/*" multiple />
+            
+                </div>
+
+            <!-- Display Message if exists -->
+            @if (!string.IsNullOrEmpty(message))
+            {
+            <div>
+                <label>@message</label>
             </div>
+            }
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Create Account</button>
@@ -66,7 +77,7 @@
         font-weight: normal;
         font-style: normal;
     }
-    
+
     .page-container
     {
         display: flex;
@@ -75,9 +86,9 @@
         min-height: 100vh;
         min-width: 100vw;
         background: linear-gradient(150deg, #ff7e5f, #feb47b);
-        
+
     }
-    
+
     .signup-page-container {
         max-width: 800px;
         margin: 63em 0 3em 0;
@@ -93,7 +104,7 @@
         margin-bottom: 1em;
         font-family: 'LogoFont', sans-serif;
     }
-    
+
     h2 {
         text-align: center;
         color: #3d3d3d;
@@ -118,12 +129,12 @@
         border-radius: 5px;
         font-size: 1rem;
     }
-    
+
     input
     {
-       font-family: Futura; 
+        font-family: Futura;
     }
-    
+
     label
     {
         font-family: Futura;
@@ -152,3 +163,51 @@
         background-color: #feb47b;
     }
 </style>
+@code {
+    private string email = string.Empty;
+    private string password = string.Empty;
+    private string confirmPassword = string.Empty;
+    private string firstName = string.Empty;
+    private string lastName = string.Empty;
+    private string cpr = string.Empty;
+    private string phone = string.Empty;
+    private string address = string.Empty;
+    private string biography = string.Empty;
+    private string message = string.Empty;
+
+    private async Task CreateOwner()
+    {
+        message = string.Empty;
+
+        if (password != confirmPassword)
+        {
+            message = "Passwords do not match";
+            return;
+        }
+
+        var createHouseOwnerDto = new CreateHouseOwnerDto
+        {
+            Email = email,
+            Password = password,
+            //Name = firstName,
+            CPR = cpr,
+            Phone = phone,
+            Address = address,
+            Biography = biography
+        };
+
+        try
+        {
+            HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
+            message = $"House Owner created successfully!";
+
+            // message = $"House Owner {created.Name} created successfully!";
+            // Navigation.NavigateTo("/house-owner-dashboard");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            message = $"Error: {e.Message}";
+        }
+    }
+}

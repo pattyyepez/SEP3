@@ -13,7 +13,7 @@ namespace Services
             _httpClient = httpClient;
         }
 
-        public async Task<HouseOwnerDto> AddAsync(HouseOwnerDto houseOwner)
+        public async Task<HouseOwnerDto> AddAsync(CreateHouseOwnerDto houseOwner)
         {
             var convertedHouseOwner = JsonConvert.SerializeObject(houseOwner);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseOwner);

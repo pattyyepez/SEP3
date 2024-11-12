@@ -42,7 +42,7 @@
 
 <input @bind="_houseOwnerAddress" />
 <input @bind="_houseOwnerBiography" />
-<button @onclick="CreateHouseOwner">Create House Owner</button>
+@*<button @onclick="CreateHouseOwner">Create House Owner</button>*@
 
 <br/>
 
@@ -79,15 +79,15 @@
         Console.WriteLine($"{_houseOwner.UserId} - {_houseOwner.Address} - {_houseOwner.Biography}");
         await InvokeAsync(StateHasChanged);
     }
-    
+    @*
     async void CreateHouseOwner()
     {
         _houseOwner.Address = _houseOwnerAddress;
         _houseOwner.Biography = _houseOwnerBiography;
-        _houseOwner = await HouseOwnerService.AddAsync(_houseOwner);
+        _houseOwner = await HouseOwnerService.AddAsync(createHouseOwner);
         Console.WriteLine($"{_houseOwner.UserId} - {_houseOwner.Address} - {_houseOwner.Biography}");
         await InvokeAsync(StateHasChanged);
-    }
+    }*@
     
     async void UpdateHouseOwner()
     {
