@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HousePalClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+083c5664e2259a24633aea53e64852ce6f173875")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7957b86d92fb28b43c25ec7d6c19cf8b4921506c")]
 [assembly: System.Reflection.AssemblyProductAttribute("HousePalClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HousePalClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
