@@ -5,13 +5,11 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseOwnerService HouseOwnerService
-@page "/house-owner-signup"
-
 
 <div class="page-container">
     <div class="signup-page-container">
         <h1>Create Your House Owner Account</h1>
-        <form class="house-owner-form" @onsubmit="CreateOwner">
+        <form class="house-owner-form" @onsubmit="CreateHouseOwner">
             <!-- Account Information Fields -->
             <div class="form-section">
                 <h2>Account Information</h2>
@@ -54,8 +52,8 @@
                 <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="biography" required></textarea>
                 <label>Upload Profile Pictures:</label>
                 <input type="file" class="form-control" accept="image/*" multiple />
-            
-                </div>
+
+            </div>
 
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(message))
@@ -66,7 +64,7 @@
             }
 
             <!-- Submit Button -->
-            <button type="button" @onclick="CreateOwner" class="btn btn-primary">Create Account</button>
+            <button type="button" @onclick="CreateHouseOwner" class="btn btn-primary">Create Account</button>
         </form>
     </div>
 </div>
@@ -166,50 +164,49 @@
     }
 </style>
 @code {
-    private string email = string.Empty;
-    private string password = string.Empty;
-    private string confirmPassword = string.Empty;
-    private string firstName = string.Empty;
-    private string lastName = string.Empty;
-    private string cpr = string.Empty;
-    private string phone = string.Empty;
-    private string address = string.Empty;
-    private string biography = string.Empty;
-    private string message = string.Empty;
+private string email = string.Empty;
+private string password = string.Empty;
+private string confirmPassword = string.Empty;
+private string firstName = string.Empty;
+private string lastName = string.Empty;
+private string cpr = string.Empty;
+private string phone = string.Empty;
+private string address = string.Empty;
+private string biography = string.Empty;
+private string message = string.Empty;
 
-    private async Task CreateOwner()
-    {
-        message = string.Empty;
+private async Task CreateHouseOwner()
+{
+message = string.Empty;
 
-        if (password != confirmPassword)
-        {
-            message = "Passwords do not match";
-            return;
-        }
+if (password != confirmPassword)
+{
+message = "Passwords do not match";
+return;
+}
 
-        var createHouseOwnerDto = new CreateHouseOwnerDto
-        {
-            Email = email,
-            Password = password,
-            //Name = firstName,
-            CPR = cpr,
-            Phone = phone,
-            Address = address,
-            Biography = biography
-        };
+var createHouseOwnerDto = new CreateHouseOwnerDto
+{
+Email = email,
+Password = password,
+CPR = cpr,
+Phone = phone,
+Address = address,
+Biography = biography
+};
 
-        try
-        {
-            HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
-            message = $"House Owner created successfully!";
+Console.WriteLine($"Creating HouseOwner with Email: {createHouseOwnerDto.Email}");
 
-            // message = $"House Owner {created.Name} created successfully!";
-            // Navigation.NavigateTo("/house-owner-dashboard");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            message = $"Error: {e.Message}";
-        }
-    }
+try
+{
+HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
+message = $"House Owner created successfully!";
+}
+catch (Exception e)
+{
+Console.WriteLine($"Error in CreateOwner: {e.Message}");
+message = $"Error: {e.Message}";
+}
+}
+
 }

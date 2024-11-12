@@ -144,3 +144,4 @@ C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.pdb
 C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.genruntimeconfig.cache
 C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref\HousePalClient.dll
 C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\CreateHouseOwner.razor.rz.scp.css
+C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\CreateOwner.razor.rz.scp.css
