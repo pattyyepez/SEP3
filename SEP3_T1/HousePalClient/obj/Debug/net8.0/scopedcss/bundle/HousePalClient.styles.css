@@ -201,6 +201,115 @@ main[b-frtza5uyjb] {
         overflow-y: auto;
     }
 }
+/* _content/HousePalClient/Components/Pages/CreateHouseOwner.razor.rz.scp.css */
+@font-face {
+  font-family: 'LogoFont';
+  src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
+  ) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+h2[b-ps5ea9okqk]
+{
+  font-size: 3em;
+  color: #ff7e5f;
+  font-family: 'LogoFont', sans-serif;
+  align-self: center;
+  margin-bottom: 0.5em;
+}
+
+label[b-ps5ea9okqk]
+{
+  color: #222222;
+  font-family: Futura;
+  margin-bottom: 0.1em;
+}
+
+.login-container[b-ps5ea9okqk] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  animation: rotateBackground-b-ps5ea9okqk 25s infinite; /* Apply animation to the main container */
+  background-size: cover;
+  background-position: center;
+}
+
+.login-box[b-ps5ea9okqk] {
+  display: flex;
+  width: 800px;
+  height: 400px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent to see the background */
+}
+
+.login-fields[b-ps5ea9okqk] {
+  font-family: Futura;
+  color: #222222;
+  width: 50%;
+  padding: 3em;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-message[b-ps5ea9okqk] {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral/Orange Gradient */
+  color: white;
+  flex-direction: column;
+}
+
+.welcome-message h1[b-ps5ea9okqk] {
+  font-size: 2rem;
+  font-family: "Canela Text";
+  margin: 0;
+}
+
+.welcome-image[b-ps5ea9okqk] {
+  width: 250px; /* Adjust as needed */
+  height: auto;
+  /*margin-bottom: 1em;*/
+}
+
+.form-group[b-ps5ea9okqk] {
+  margin-bottom: 1.5em;
+}
+
+.form-control[b-ps5ea9okqk] {
+  font-size: 1rem;
+  padding: 0.375em 0.75em;
+}
+
+.button-group[b-ps5ea9okqk] {
+  display: flex;
+  justify-content: center;
+  gap: 1em; /* Space between buttons */
+}
+
+.btn[b-ps5ea9okqk] {
+  font-size: 1rem;
+  padding: 0.375em 0.75em;
+}
+
+@keyframes rotateBackground-b-ps5ea9okqk {
+   0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+   25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
+   50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
+   75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
+   100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+ }
 /* _content/HousePalClient/Components/Pages/Login.razor.rz.scp.css */
 @font-face {
   font-family: 'LogoFont';

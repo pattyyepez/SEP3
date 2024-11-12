@@ -1,0 +1,154 @@
+﻿
+@page "/house-owner-signup"
+@using HousePalClient.Components.Layout
+@layout LoginLayout
+@inject NavigationManager Navigation
+<div class="page-container">
+    <div class="signup-page-container">
+        <h1>Create Your House Owner Account</h1>
+        <form class="house-owner-form">
+            <!-- Account Information Fields -->
+            <div class="form-section">
+                <h2>Account Information</h2>
+
+                <label>Email:</label>
+                <input type="email" class="form-control" placeholder="Enter your email" required />
+
+                <label>Password:</label>
+                <input type="password" class="form-control" placeholder="Create a password" required />
+
+                <label>Confirm Password:</label>
+                <input type="password" class="form-control" placeholder="Confirm your password" required />
+            </div>
+
+            <!-- Personal Information Fields -->
+            <div class="form-section">
+                <h2>Personal Information</h2>
+
+                <label>First Name:</label>
+                <input type="text" class="form-control" placeholder="Enter your first name" required />
+
+                <label>Last Name:</label>
+                <input type="text" class="form-control" placeholder="Enter your last name" required />
+
+                <label>CPR Number:</label>
+                <input type="text" class="form-control" placeholder="Enter your CPR number" required />
+
+                <label>Phone Number:</label>
+                <input type="tel" class="form-control" placeholder="Enter your phone number" required />
+
+                <label>Home Address:</label>
+                <input type="text" class="form-control" placeholder="Enter your home address" required />
+            </div>
+
+            <!-- Introduction Section -->
+            <div class="form-section">
+                <h2>Introduce Yourself</h2>
+
+                <label>Short Introduction:</label>
+                <textarea class="form-control" rows="4" placeholder="Write a brief introduction" required></textarea>
+
+                <label>Upload Profile Pictures:</label>
+                <input type="file" class="form-control" accept="image/*" multiple />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+    </div>
+</div>
+
+<style>
+
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('/fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+    .page-container
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        min-width: 100vw;
+        background: linear-gradient(150deg, #ff7e5f, #feb47b);
+        
+    }
+    
+    .signup-page-container {
+        max-width: 800px;
+        margin: 63em 0 3em 0;
+        padding: 2em 2em;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #ff7e5f;
+        margin-bottom: 1em;
+        font-family: 'LogoFont', sans-serif;
+    }
+    
+    h2 {
+        text-align: center;
+        color: #3d3d3d;
+        font-family: Futura;
+        font-size: 1.7rem;
+    }
+
+    .form-section {
+        margin-bottom: 2em;
+        padding: 1em;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75em;
+        margin-top: 0.5em;
+        margin-bottom: 1.5em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    
+    input
+    {
+       font-family: Futura; 
+    }
+    
+    label
+    {
+        font-family: Futura;
+        color: #3d3d3d;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        font-family: Futura;
+    }
+
+    .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 0.75em;
+        font-size: 1.2rem;
+        background-color: #ff7e5f;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: Futura;
+    }
+
+    .btn-primary:hover {
+        background-color: #feb47b;
+    }
+</style>

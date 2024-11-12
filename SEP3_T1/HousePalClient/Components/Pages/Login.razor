@@ -1,51 +1,38 @@
-﻿@page "/login" 
+﻿@page "/"
+@layout LoginLayout
 @using HousePalClient.Auth
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
 @rendermode InteractiveServer
-@layout LoginLayout
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
 
 <CascadingAuthenticationState>
     <AuthorizeView>
-        <NotAuthorized>
+        <NotAuthorized Context="authContext">
             <div class="login-container">
                 <div class="login-box">
                     <div class="login-fields">
                         <h2>Welcome!</h2>
-                        @* <EditForm Model="loginModel"> *@
-                        @*     <DataAnnotationsValidator/> *@
-                        @* *@
-                        @*     <div class="form-group"> *@
-                        @*         <label for="username" >Username</label> *@
-                        @*         <InputText id="username" @bind-Value="loginModel.Username" class="form-control" placeholder="Enter username"/> *@
-                        @*     </div> *@
-                        @* *@
-                        @*     <div class="form-group"> *@
-                        @*         <label for="password">Password</label> *@
-                        @*         <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter password"/> *@
-                        @*     </div> *@
-                        @* *@
-                        @*     <div class="button-group"> *@
-                        @*         <button type="button" class="btn btn-primary" @onclick="HandleLoginClick">Login</button> *@
-                        @*         <button type="button" class="btn btn-secondary" @onclick="HandleSignUpClick">Sign Up</button> *@
-                        @*     </div> *@
-                        @* *@
-                        @* </EditForm> *@
                         <h3>Please login</h3>
-                        <label>User name:</label>
-                        <input type="text" @bind="loginModel.Username"/>
-                        <label>Password:</label>
-                        <input type="password" @bind="loginModel.Password"/>
-                        @* @if (!string.IsNullOrEmpty(errorLabel)) *@
-                        @* { *@
-                        @* <label style="color: red"> *@
-                        @*     @errorLabel *@
-                        @* </label> *@
-                        @* } *@
-                        <button @onclick="HandleLoginClick">Log in</button>
+                        <EditForm Model="loginModel" Context="formContext">
+                            <DataAnnotationsValidator/>
 
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <InputText id="username" @bind-Value="loginModel.Username" class="form-control" placeholder="Enter username"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <InputText id="password" @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Enter password"/>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="button" class="btn btn-primary" @onclick="HandleLoginClick">Log in</button>
+                                <button type="button" class="btn btn-secondary" @onclick="HandleSignUpClick">Sign Up</button>
+                            </div>
+                        </EditForm>
                     </div>
                     <div class="welcome-message">
                         <img src="/images/logo.png" alt="Welcome Image" class="welcome-image" />
@@ -53,38 +40,137 @@
                 </div>
             </div>
         </NotAuthorized>
-        <Authorized>
-            <p>@context.User.Claims.Single(c => c.Type == "Id").Value</p>
+        <Authorized Context="authContext">
+            <p>@authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
+<style>
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('/fonts/logo-font.ttf');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    h2 {
+        font-size: 3em;
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        align-self: center;
+        margin-bottom: 0.5em;
+    }
+
+    label {
+        color: #3d3d3d;
+        font-family: Futura;
+        margin-bottom: 0.1em;
+    }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        overflow: hidden;
+        animation: rotateBackground 25s infinite;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .login-box {
+        display: flex;
+        width: 800px;
+        height: 400px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .login-fields {
+        font-family: Futura;
+        color: #3d3d3d;
+        width: 50%;
+        padding: 3em;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .welcome-message {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: white;
+        flex-direction: column;
+    }
+
+    .welcome-image {
+        width: 250px;
+        height: auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5em;
+    }
+
+    .form-control {
+        font-size: 1rem;
+        padding: 0.375em 0.75em;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.375em 0.75em;
+    }
+
+    @@keyframes rotateBackground {
+         0% { background-image: url('/images/loginBackgrounds/1.jpg'); }
+         25% { background-image: url('/images/loginBackgrounds/2.jpg'); }
+         50% { background-image: url('/images/loginBackgrounds/3.jpg'); }
+         75% { background-image: url('/images/loginBackgrounds/5.jpg'); }
+         100% { background-image: url('/images/loginBackgrounds/1.jpg'); }
+    }
+</style>
 
 @code {
-private LoginModel loginModel = new();
+    private LoginModel loginModel = new();
 
-private async void HandleLoginClick()
-{
-    try
+    private async Task HandleLoginClick()
     {
-        await ((SimpleAuthProvider)AuthProvider).Login(loginModel.Username, loginModel.Password);
-        Navigation.NavigateTo("/");
+        try
+        {
+            await ((SimpleAuthProvider)AuthProvider).Login(loginModel.Username, loginModel.Password);
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Login failed: {e.Message}");
+        }
     }
-    catch (Exception e)
+
+    private void HandleSignUpClick()
     {
-        Console.WriteLine(e);
+        Console.WriteLine("Sign Up button clicked");
+        Navigation.NavigateTo("/signup");
     }
-}
 
-private void HandleSignUpClick()
-{
-    Console.WriteLine("Sign Up button clicked");
-    Navigation.NavigateTo("/signup");
-}
-
-private class LoginModel
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
-}
+    private class LoginModel
+    {
+        public string Username { get; set; } = "niels.jensen@gmail.com";
+        public string Password { get; set; } = "12345";
+    }
 }
