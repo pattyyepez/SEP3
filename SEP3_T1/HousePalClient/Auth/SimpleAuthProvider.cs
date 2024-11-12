@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 public class SimpleAuthProvider : AuthenticationStateProvider
 {
     private readonly HttpClient _httpClient;
-    // private ClaimsPrincipal _currentClaimsPrincipal;
     private readonly IJSRuntime _jsRuntime;
 
     public SimpleAuthProvider(HttpClient httpClient, IJSRuntime jsRuntime)
@@ -22,11 +21,7 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         _httpClient = httpClient;
         _jsRuntime = jsRuntime;
     }
-    // public SimpleAuthProvider(HttpClient httpClient)
-    // {
-    //     _httpClient = httpClient;
-    // }
-
+    
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         string userAsJson = "";
@@ -57,11 +52,16 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         };
     
         if (userDto.Address != null)
+        {
             claims.Add(new Claim("Address", userDto.Address));
+            claims.Add(new Claim(ClaimTypes.Role, "HouseOwner"));
+        }
+    
         else
         {
             claims.Add(new Claim("Pictures", userDto.Pictures.ToString()));
             claims.Add(new Claim("Skills", userDto.Skills.ToString()));
+            claims.Add(new Claim(ClaimTypes.Role, "HouseSitter"));
         }
         ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth");
         ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
@@ -69,11 +69,6 @@ public class SimpleAuthProvider : AuthenticationStateProvider
     
     }
     
-    // public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-    // {
-    //     return new AuthenticationState(_currentClaimsPrincipal ?? new ());
-    // }
-
     public async Task Login(string email, string password)
     {
         var response = await _httpClient.PostAsJsonAsync("auth/login",
@@ -129,8 +124,24 @@ public class SimpleAuthProvider : AuthenticationStateProvider
                 )
             );
     }
+
+    public async void Logout()
+    {
+        await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new())));
+    }
     
-    // public async Task Login(string email, string password)
+        // private readonly HttpClient _httpClient;
+    // private ClaimsPrincipal _currentClaimsPrincipal;
+    // public SimpleAuthProvider(HttpClient httpClient)
+    // {
+    //     _httpClient = httpClient;
+    // }
+    // public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    // {
+    //     return new AuthenticationState(_currentClaimsPrincipal ?? new ());
+    // }
+        // public async Task Login(string email, string password)
     // {
     //     HttpResponseMessage response = await _httpClient.PostAsJsonAsync(
     //         "auth/login",
@@ -184,13 +195,6 @@ public class SimpleAuthProvider : AuthenticationStateProvider
     //     );
     //
     // }
-
-    public async void Logout()
-    {
-        await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
-        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new())));
-    }
-    
     // public void Logout()
     // {
     //     _currentClaimsPrincipal = new();

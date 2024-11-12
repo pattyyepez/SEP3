@@ -16,60 +16,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8710264d-2f24-4684-9da9-95e7a139aa77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/HouseProfilePage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/Login.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Login/UserDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/Login/UserDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/Login/UserDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/TestingPage.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Auth/SimpleAuthProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Auth/SimpleAuthProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Layout/LoginLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Layout/LoginLayout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Layout/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/HouseOwnerPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/HouseOwnerPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/HouseProfilePage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/HouseProfilePage.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Entities.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Entities.pdb" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.staticwebassets.runtime.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Microsoft.AspNetCore.Connections.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Microsoft.AspNetCore.Http.Connections.Client.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Microsoft.AspNetCore.Http.Connections.Common.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Microsoft.Extensions.Features.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Services.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/Services.pdb" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.assets.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.genruntimeconfig.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/HousePalClient.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/ref/HousePalClient.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/ref/HousePalClient.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/refint/HousePalClient.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/refint/HousePalClient.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/scopedcss/bundle/HousePalClient.styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/scopedcss/bundle/HousePalClient.styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/scopedcss/projectbundle/HousePalClient.bundle.scp.css" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/scopedcss/projectbundle/HousePalClient.bundle.scp.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/staticwebassets.build.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/staticwebassets.development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/staticwebassets.pack.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/Debug/net8.0/staticwebassets.pack.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/HousePalClient.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/HousePalClient.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/HousePalClient.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/HousePalClient.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T2/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json" afterDir="false" />
@@ -89,7 +62,9 @@
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/ApplicationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/HouseListingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseListingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RESTAPI/Controllers/HouseProfileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.dll" afterDir="false" />
@@ -256,6 +231,10 @@
       <workItem from="1730969164982" duration="2990000" />
       <workItem from="1730984790427" duration="17038000" />
       <workItem from="1731061661560" duration="5279000" />
+      <workItem from="1731250159667" duration="6766000" />
+      <workItem from="1731330689288" duration="255000" />
+      <workItem from="1731397559035" duration="23000" />
+      <workItem from="1731407391742" duration="1418000" />
     </task>
     <task id="LOCAL-00001" summary="first T2 commit">
       <option name="closed" value="true" />

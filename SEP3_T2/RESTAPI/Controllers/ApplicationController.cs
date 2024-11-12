@@ -77,6 +77,28 @@ public class ApplicationController : ControllerBase
         }
     }
     
+    [HttpGet("SitterId")]
+    public async Task<IActionResult> GetApplicationsBySitter([FromQuery] int? sitterId)
+    {
+        try
+        {
+            IQueryable<ApplicationDto> applications = _repo.GetAll();
+
+            if (sitterId.HasValue)
+            {
+                applications = applications.Where(a => a.SitterId == sitterId.Value);
+            }
+
+            return Ok(applications);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                $"Error fetching Application: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
+        }
+
+    }
+    
     // POST: api/Application
     [HttpPost]
     public async Task<IActionResult> CreateApplication(

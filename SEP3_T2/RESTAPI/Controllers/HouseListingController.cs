@@ -63,6 +63,28 @@ public class HouseListingController : ControllerBase
         }
     }
     
+    [HttpGet("ProfileId")]
+    public async Task<IActionResult> GetListingsByProfile([FromQuery] int? profileId)
+    {
+        try
+        {
+            IQueryable<HouseListingDto> listings = _repo.GetAll();
+
+            if (profileId.HasValue)
+            {
+                listings = listings.Where(l => l.ProfileId == profileId.Value);
+            }
+
+            return Ok(listings);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                $"Error fetching HouseListing: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
+        }
+
+    }
+    
     // POST: api/HouseListing
     [HttpPost]
     public async Task<IActionResult> CreateHouseListing(

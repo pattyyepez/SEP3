@@ -1,0 +1,66 @@
+﻿@page "/testing"
+@rendermode InteractiveServer
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components
+
+<h3>Testing Auth</h3>
+
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseOwner">
+        <p>@context.User.Claims.Single(c => c.Type == "Id")</p>
+        @* <p>User: @context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Role)).ToString()</p> *@
+        <p>You have the 'HouseOwner' role claim.</p>
+
+    </AuthorizeView>
+    <AuthorizeView Roles="HouseSitter">
+        <p>User: @context.User.Claims.First().Value</p>
+        <p>You have 'HouseSitter' role claims.</p>
+    </AuthorizeView>
+    <AuthorizeView>
+        <Authorized>
+            <h3>Hello, @context.User.Claims.First().Value</h3>
+        </Authorized>
+        <NotAuthorized>
+            lol you are not logged in!
+            <br/>
+            <button @onclick="LogIn"> Log in </button>
+        </NotAuthorized>
+    </AuthorizeView>
+
+</CascadingAuthenticationState>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    async void LogIn()
+    {
+        Navigation.NavigateTo("/login");
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState is not null)
+        {
+            var authState = await AuthenticationState;
+            var user = authState?.User;
+
+            if (user is not null)
+            {
+                // Console.WriteLine(user.Identities.FirstOrDefault().FindFirst(c => c.Type == "Id"));
+                Console.WriteLine(user.Claims.FirstOrDefault() is null ? "its null" : user.Claims.First().Value);
+                // Console.WriteLine(user.IsInRole("HouseOwner"));
+                var claims = user.Identities;
+                // Console.WriteLine(claims.Count());
+                // foreach (var claim in )
+                // {
+                //     Console.WriteLine($"{claim.Type} - {claim.Value}");
+                // }
+            }
+                
+        }
+    }
+
+}

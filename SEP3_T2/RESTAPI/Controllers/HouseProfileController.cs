@@ -65,6 +65,28 @@ public class HouseProfileController : ControllerBase
                 $"Error fetching HouseProfile: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
         }
     }
+    
+    [HttpGet("OwnerId")]
+    public async Task<IActionResult> GetProfilesByOwner([FromQuery] int? ownerId)
+    {
+        try
+        {
+            IQueryable<HouseProfileDto> profiles = _repo.GetAll();
+
+            if (ownerId.HasValue)
+            {
+                profiles = profiles.Where(p => p.OwnerId == ownerId.Value);
+            }
+
+            return Ok(profiles);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                $"Error fetching HouseProfile: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
+        }
+
+    }
 
     // POST: api/HouseProfile
     [HttpPost]

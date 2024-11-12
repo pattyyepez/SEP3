@@ -34,12 +34,6 @@ C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.pdb
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.genruntimeconfig.cache
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref\HousePalClient.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.sourcelink.json
 C:\Users\patty\housepal\SEP3_T1\HousePalClient\bin\Debug\net8.0\appsettings.Development.json
@@ -89,7 +83,13 @@ C:\Users\patty\housepal\SEP3_T1\HousePalClient\obj\Debug\net8.0\refint\HousePalC
 C:\Users\patty\housepal\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.pdb
 C:\Users\patty\housepal\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.genruntimeconfig.cache
 C:\Users\patty\housepal\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref\HousePalClient.dll
-C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Authorization.dll
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\DTOs.dll
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\DTOs.pdb
 C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\Login.razor.rz.scp.css
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Authorization.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Microsoft.Extensions.Options.dll

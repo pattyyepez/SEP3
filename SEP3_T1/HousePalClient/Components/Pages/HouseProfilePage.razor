@@ -3,7 +3,7 @@
 @using DTOs.HouseProfile
 @using Microsoft.AspNetCore.Components
 @using Services
-@* @attribute [Authorize] *@
+@attribute [Authorize]
 <h3>HouseProfilePage</h3>
 
 @* <AuthorizeView Roles="HouseOwner"> *@
@@ -19,8 +19,8 @@
 @*         <p>you are not authorized to view this</p> *@
 @*     </NotAuthorized> *@
 @* </AuthorizeView> *@
-
 <CascadingAuthenticationState>
+
     <AuthorizeView>
         <Authorized>
             <p>@userId, @context.User.Claims.Single(c => c.Type == "Id")</p>
@@ -29,26 +29,18 @@
             <p>bozo</p>
         </NotAuthorized>
     </AuthorizeView>
-    @* <AuthorizeView Roles="HouseOwner"> *@
-    @* <p>@context.User.Claims.Single(c => c.Type == "Id")</p> *@
-    @*     <p>User: @context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Role)).ToString()</p> *@
-    @*     <p>You have the 'Admin' role claim.</p> *@
-    @* *@
-    @* </AuthorizeView> *@
-    @* <AuthorizeView Roles="HouseSitter"> *@
-    @*     <p>User: @context.User.Claims.First().Value</p> *@
-    @*     <p>You have 'Superuser' role claims.</p> *@
-    @* </AuthorizeView> *@
 </CascadingAuthenticationState>
 
-@if (State.Result.User.Identity.IsAuthenticated)
-{
-<p>Welcome, @State.Result.User.Identity.Name!</p>
-}
-else
-{
-<p>You are not authorized to view this content.</p>
-}
+@* <AuthorizeView Roles="HouseOwner"> *@
+@* <p>@context.User.Claims.Single(c => c.Type == "Id")</p> *@
+@*     <p>User: @context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Role)).ToString()</p> *@
+@*     <p>You have the 'Admin' role claim.</p> *@
+@* *@
+@* </AuthorizeView> *@
+@* <AuthorizeView Roles="HouseSitter"> *@
+@*     <p>User: @context.User.Claims.First().Value</p> *@
+@*     <p>You have 'Superuser' role claims.</p> *@
+@* </AuthorizeView> *@
 
 @* @if (profiles == null) *@
 @* { *@
@@ -81,24 +73,24 @@ else
 @* } *@
 
 @code {
-    [CascadingParameter] public Task<AuthenticationState> State { get; set; }
+    [CascadingParameter] public Task<AuthenticationState>? State { get; set; }
 
     private List<HouseProfileDto> profiles;
 
     private int userId;
     // [Inject] public IHouseProfileService profileService { get; set; }
 
-    
+
     protected override async Task OnInitializedAsync()
     {
         AuthenticationState authenticationState = await State;
-        // ClaimsPrincipal claimsPrincipal = authenticationState.User;
-        // if(claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
-        // {
-        //     // the user is not logged in
-        //     Console.WriteLine("not logged in");
-        //     return;
-        // }
+        ClaimsPrincipal claimsPrincipal = authenticationState.User;
+        if (claimsPrincipal.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
+        {
+            // the user is not logged in
+            Console.WriteLine("not logged in");
+            return;
+        }
         // string? userName = claimsPrincipal.Identity?.Name;
         // IEnumerable<Claim> claims = claimsPrincipal.Claims;
         // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
@@ -107,4 +99,5 @@ else
         // profiles = profileService.GetAll().ToList();
         // await InvokeAsync(StateHasChanged);
     }
+
 }
