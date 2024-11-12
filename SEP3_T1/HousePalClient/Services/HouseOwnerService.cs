@@ -19,16 +19,20 @@ namespace Services
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseOwner);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            
+
             using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/HouseOwner", byteContent);
-            
-            response.EnsureSuccessStatusCode();
-    
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error creating HouseOwner: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"{jsonResponse}\n");
             return JsonConvert.DeserializeObject<HouseOwnerDto>(jsonResponse)!;
-            // return await httpClient.GetAsync("api/H").Result.;
         }
+
 
         public async Task<HouseOwnerDto> UpdateAsync(HouseOwnerDto houseOwner)
         {

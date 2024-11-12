@@ -1,6 +1,7 @@
 ﻿@using DTOs.HouseOwner
 @using HousePalClient.Components.Layout
 @using Services
+@using Microsoft.AspNetCore.Components.Forms
 @layout LoginLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
@@ -52,7 +53,7 @@
                 <label>Short Introduction:</label>
                 <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="biography" required></textarea>
                 <label>Upload Profile Pictures:</label>
-                <input type="file" class="form-control" accept="image/*" multiple />
+                <InputFile OnChange="HandleFileSelected" accept="image/*" class="form-control" />
             
                 </div>
 
@@ -174,7 +175,7 @@
     private string address = string.Empty;
     private string biography = string.Empty;
     private string message = string.Empty;
-
+    private string profilePictureUrl = string.Empty;
     private async Task CreateOwner()
     {
         message = string.Empty;
@@ -189,7 +190,7 @@
         {
             Email = email,
             Password = password,
-            //Name = firstName,
+            ProfilePicture = profilePictureUrl, 
             CPR = cpr,
             Phone = phone,
             Address = address,
@@ -200,8 +201,6 @@
         {
             HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
             message = $"House Owner created successfully!";
-
-            // message = $"House Owner {created.Name} created successfully!";
             // Navigation.NavigateTo("/house-owner-dashboard");
         }
         catch (Exception e)
@@ -210,4 +209,29 @@
             message = $"Error: {e.Message}";
         }
     }
+
+
+private async Task HandleFileSelected(InputFileChangeEventArgs e)
+{
+var file = e.File;
+if (file != null)
+{
+// Asumiendo que tienes un método en tu API para guardar archivos
+var uploadedFileUrl = await UploadProfilePicture(file);
+profilePictureUrl = uploadedFileUrl;
+}
+}
+
+private async Task<string> UploadProfilePicture(IBrowserFile file)
+{
+// converting to bytes
+var buffer = new byte[file.Size];
+await file.OpenReadStream().ReadAsync(buffer);
+
+// saving
+string imageUrl = file.Name; 
+//string imageUrl = "/path/to/images/" + file.Name; 
+return imageUrl;
+}
+
 }
