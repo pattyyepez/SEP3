@@ -310,7 +310,122 @@ label[b-ps5ea9okqk]
    75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
    100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
  }
-/* _content/HousePalClient/Components/Pages/CreateOwner.razor.rz.scp.css */
+
+@font-face {
+  font-family: 'LogoFont';
+  src: url('/fonts/logo-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.page-container[b-ps5ea9okqk]
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  background: linear-gradient(150deg, #ff7e5f, #feb47b);
+
+}
+
+.signup-page-container[b-ps5ea9okqk] {
+  max-width: 800px;
+  margin: 63em 0 3em 0;
+  padding: 2em 2em;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1[b-ps5ea9okqk] {
+  text-align: center;
+  color: #ff7e5f;
+  margin-bottom: 1em;
+  font-family: 'LogoFont', sans-serif;
+}
+
+h2[b-ps5ea9okqk] {
+  text-align: center;
+  color: #3d3d3d;
+  font-family: Futura;
+  font-size: 1.7rem;
+}
+
+.form-section[b-ps5ea9okqk] {
+  margin-bottom: 2em;
+  padding: 1em;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-control[b-ps5ea9okqk] {
+  width: 100%;
+  padding: 0.75em;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[b-ps5ea9okqk]
+{
+  font-family: Futura;
+}
+
+label[b-ps5ea9okqk]
+{
+  font-family: Futura;
+  color: #3d3d3d;
+}
+
+textarea.form-control[b-ps5ea9okqk] {
+  resize: vertical;
+  font-family: Futura;
+}
+
+.btn-primary[b-ps5ea9okqk] {
+  display: block;
+  width: 100%;
+  padding: 0.75em;
+  font-size: 1.2rem;
+  background-color: #ff7e5f;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: Futura;
+}
+
+.btn-primary:hover[b-ps5ea9okqk] {
+  background-color: #feb47b;
+}
+.modal-background[b-ps5ea9okqk] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.modal-content[b-ps5ea9okqk] {
+  background-color: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+/* _content/HousePalClient/Components/Pages/CreateHouseSitter.razor.rz.scp.css */
 @font-face {
   font-family: 'LogoFont';
   src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
@@ -320,7 +435,7 @@ label[b-ps5ea9okqk]
 }
 
 
-h2[b-fx1ulg1q8a]
+h2[b-r4bce2xssv]
 {
   font-size: 3em;
   color: #ff7e5f;
@@ -329,14 +444,14 @@ h2[b-fx1ulg1q8a]
   margin-bottom: 0.5em;
 }
 
-label[b-fx1ulg1q8a]
+label[b-r4bce2xssv]
 {
   color: #222222;
   font-family: Futura;
   margin-bottom: 0.1em;
 }
 
-.login-container[b-fx1ulg1q8a] {
+.login-container[b-r4bce2xssv] {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -344,12 +459,12 @@ label[b-fx1ulg1q8a]
   width: 100vw;
   position: relative;
   overflow: hidden;
-  animation: rotateBackground-b-fx1ulg1q8a 25s infinite; /* Apply animation to the main container */
+  animation: rotateBackground-b-r4bce2xssv 25s infinite; /* Apply animation to the main container */
   background-size: cover;
   background-position: center;
 }
 
-.login-box[b-fx1ulg1q8a] {
+.login-box[b-r4bce2xssv] {
   display: flex;
   width: 800px;
   height: 400px;
@@ -359,7 +474,7 @@ label[b-fx1ulg1q8a]
   background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent to see the background */
 }
 
-.login-fields[b-fx1ulg1q8a] {
+.login-fields[b-r4bce2xssv] {
   font-family: Futura;
   color: #222222;
   width: 50%;
@@ -370,7 +485,7 @@ label[b-fx1ulg1q8a]
   justify-content: center;
 }
 
-.welcome-message[b-fx1ulg1q8a] {
+.welcome-message[b-r4bce2xssv] {
   width: 50%;
   display: flex;
   justify-content: center;
@@ -380,45 +495,160 @@ label[b-fx1ulg1q8a]
   flex-direction: column;
 }
 
-.welcome-message h1[b-fx1ulg1q8a] {
+.welcome-message h1[b-r4bce2xssv] {
   font-size: 2rem;
   font-family: "Canela Text";
   margin: 0;
 }
 
-.welcome-image[b-fx1ulg1q8a] {
+.welcome-image[b-r4bce2xssv] {
   width: 250px; /* Adjust as needed */
   height: auto;
   /*margin-bottom: 1em;*/
 }
 
-.form-group[b-fx1ulg1q8a] {
+.form-group[b-r4bce2xssv] {
   margin-bottom: 1.5em;
 }
 
-.form-control[b-fx1ulg1q8a] {
+.form-control[b-r4bce2xssv] {
   font-size: 1rem;
   padding: 0.375em 0.75em;
 }
 
-.button-group[b-fx1ulg1q8a] {
+.button-group[b-r4bce2xssv] {
   display: flex;
   justify-content: center;
   gap: 1em; /* Space between buttons */
 }
 
-.btn[b-fx1ulg1q8a] {
+.btn[b-r4bce2xssv] {
   font-size: 1rem;
   padding: 0.375em 0.75em;
 }
 
-@keyframes rotateBackground-b-fx1ulg1q8a {
-   0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
-   25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
-   50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
-   75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
-   100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
- }
+@keyframes rotateBackground-b-r4bce2xssv {
+  0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+  25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
+  50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
+  75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
+  100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+}
+
+@font-face {
+  font-family: 'LogoFont';
+  src: url('/fonts/logo-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.page-container[b-r4bce2xssv]
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  background: linear-gradient(150deg, #ff7e5f, #feb47b);
+
+}
+
+.signup-page-container[b-r4bce2xssv] {
+  max-width: 800px;
+  margin: 63em 0 3em 0;
+  padding: 2em 2em;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1[b-r4bce2xssv] {
+  text-align: center;
+  color: #ff7e5f;
+  margin-bottom: 1em;
+  font-family: 'LogoFont', sans-serif;
+}
+
+h2[b-r4bce2xssv] {
+  text-align: center;
+  color: #3d3d3d;
+  font-family: Futura;
+  font-size: 1.7rem;
+}
+
+.form-section[b-r4bce2xssv] {
+  margin-bottom: 2em;
+  padding: 1em;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-control[b-r4bce2xssv] {
+  width: 100%;
+  padding: 0.75em;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input[b-r4bce2xssv]
+{
+  font-family: Futura;
+}
+
+label[b-r4bce2xssv]
+{
+  font-family: Futura;
+  color: #3d3d3d;
+}
+
+textarea.form-control[b-r4bce2xssv] {
+  resize: vertical;
+  font-family: Futura;
+}
+
+.btn-primary[b-r4bce2xssv] {
+  display: block;
+  width: 100%;
+  padding: 0.75em;
+  font-size: 1.2rem;
+  background-color: #ff7e5f;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: Futura;
+}
+
+.btn-primary:hover[b-r4bce2xssv] {
+  background-color: #feb47b;
+}
+.modal-background[b-r4bce2xssv] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.modal-content[b-r4bce2xssv] {
+  background-color: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
 /* _content/HousePalClient/Components/Pages/Login.razor.rz.scp.css */
 @font-face {
   font-family: 'LogoFont';

@@ -289,6 +289,10 @@ namespace DatabaseRepositories {
     static readonly grpc::Marshaller<global::DatabaseRepositories.CreateHouseSitterRequest> __Marshaller_en_via_sep3_t3_CreateHouseSitterRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateHouseSitterRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateHouseSitterRequest> __Marshaller_en_via_sep3_t3_UpdateHouseSitterRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateHouseSitterRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllSkillsRequest> __Marshaller_en_via_sep3_t3_AllSkillsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllSkillsRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllSkillsResponse> __Marshaller_en_via_sep3_t3_AllSkillsResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllSkillsResponse.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.HouseSitterRequest, global::DatabaseRepositories.HouseSitterResponse> __Method_GetHouseSitter = new grpc::Method<global::DatabaseRepositories.HouseSitterRequest, global::DatabaseRepositories.HouseSitterResponse>(
@@ -329,6 +333,14 @@ namespace DatabaseRepositories {
         "DeleteHouseSitter",
         __Marshaller_en_via_sep3_t3_HouseSitterRequest,
         __Marshaller_en_via_sep3_t3_HouseSitterResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllSkillsRequest, global::DatabaseRepositories.AllSkillsResponse> __Method_GetAllSkills = new grpc::Method<global::DatabaseRepositories.AllSkillsRequest, global::DatabaseRepositories.AllSkillsResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllSkills",
+        __Marshaller_en_via_sep3_t3_AllSkillsRequest,
+        __Marshaller_en_via_sep3_t3_AllSkillsResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -462,6 +474,26 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseSitterResponse> DeleteHouseSitterAsync(global::DatabaseRepositories.HouseSitterRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_DeleteHouseSitter, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllSkillsResponse GetAllSkills(global::DatabaseRepositories.AllSkillsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllSkills(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllSkillsResponse GetAllSkills(global::DatabaseRepositories.AllSkillsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllSkills, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllSkillsResponse> GetAllSkillsAsync(global::DatabaseRepositories.AllSkillsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllSkillsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllSkillsResponse> GetAllSkillsAsync(global::DatabaseRepositories.AllSkillsRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllSkills, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]

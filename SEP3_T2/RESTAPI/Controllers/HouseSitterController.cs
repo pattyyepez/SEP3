@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class HouseSitterController : ControllerBase
 {
     private readonly IHouseSitterRepository _repo;
@@ -30,6 +30,22 @@ public class HouseSitterController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, $"Error fetching all HouseSitters:" +
+                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
+    // GET: api/HouseSitter
+    [HttpGet]
+    public async Task<IActionResult> GetAllSkills()
+    {
+        try
+        {
+            var response = _repo.GetAllSkills();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error fetching all HouseSitters Skills:" +
                                    $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
         }
     }
