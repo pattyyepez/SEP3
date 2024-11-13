@@ -37,6 +37,11 @@ public class HouseSitterValProxy implements IHouseSitterRepository
     return repo.findAll();
   }
 
+  @Override public List<String> findAllSkills()
+  {
+    return repo.findAllSkills();
+  }
+
   @Override public HouseSitter findById(int id)
   {
     try{

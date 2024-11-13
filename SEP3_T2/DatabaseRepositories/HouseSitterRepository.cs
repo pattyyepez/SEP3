@@ -162,4 +162,9 @@ public class HouseSitterRepository : IHouseSitterRepository
 
         return houseSitters.AsQueryable();
     }
+
+    public IQueryable<String> GetAllSkills()
+    {
+        return _client.GetAllSkills(new AllSkillsRequest()).Skill.AsQueryable();
+    }
 }

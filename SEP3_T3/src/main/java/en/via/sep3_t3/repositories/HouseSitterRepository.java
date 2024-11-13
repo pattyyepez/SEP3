@@ -34,6 +34,12 @@ public class HouseSitterRepository implements IHouseSitterRepository
     return jdbcTemplate.query(sql, new HouseSitterRowMapper());
   }
 
+  @Override public List<String> findAllSkills()
+  {
+    String sql = "SELECT * FROM Skills";
+    return jdbcTemplate.query(sql, new SkillRowMapper());
+  }
+
   public HouseSitter findById(int sitter_id)
   {
     String sql = "SELECT * FROM HouseSitter JOIN Users U on U.id = HouseSitter.sitter_id WHERE sitter_id = ?";
@@ -192,6 +198,15 @@ public class HouseSitterRepository implements IHouseSitterRepository
       return (ArrayList<String>) jdbcTemplate.query(sql, (rs, rowNum) -> {
         return rs.getString("type");
       }, sitterId);
+    }
+  }
+
+  private class SkillRowMapper implements RowMapper<String>
+  {
+    @Override public String mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
+      return rs.getString("type");
     }
   }
 }

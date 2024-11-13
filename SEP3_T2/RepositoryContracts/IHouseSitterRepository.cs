@@ -9,4 +9,5 @@ public interface IHouseSitterRepository
     Task DeleteAsync(int id);
     Task<HouseSitterDto> GetSingleAsync(int id);
     IQueryable<HouseSitterDto> GetAll();
+    IQueryable<String> GetAllSkills();
 }

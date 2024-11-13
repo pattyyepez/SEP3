@@ -70,9 +70,9 @@ build_metadata.AdditionalFiles.CssScope = b-zcbnheqymx
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVIb3VzZU93bmVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-ps5ea9okqk
 
-[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateOwner.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVPd25lci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = b-fx1ulg1q8a
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseSitter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVIb3VzZVNpdHRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-r4bce2xssv
 
 [C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==

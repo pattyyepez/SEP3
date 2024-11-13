@@ -129,12 +129,20 @@ message AllHouseSittersResponse{
   repeated HouseSitterResponse houseSitters = 1;
 }
 
+
+message AllSkillsRequest{}
+
+message AllSkillsResponse{
+  repeated string skill = 1;
+}
+
 service HouseSitterService {
   rpc GetHouseSitter (HouseSitterRequest) returns (HouseSitterResponse);
   rpc GetAllHouseSitters (AllHouseSittersRequest) returns (AllHouseSittersResponse);
   rpc CreateHouseSitter (CreateHouseSitterRequest) returns (HouseSitterResponse);
   rpc UpdateHouseSitter (UpdateHouseSitterRequest) returns (HouseSitterResponse);
   rpc DeleteHouseSitter (HouseSitterRequest) returns (HouseSitterResponse);
+  rpc GetAllSkills (AllSkillsRequest) returns (AllSkillsResponse);
 }
 
 //house profile

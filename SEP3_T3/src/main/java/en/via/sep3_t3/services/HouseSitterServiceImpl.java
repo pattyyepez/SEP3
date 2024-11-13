@@ -108,6 +108,20 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
     }
   }
 
+  @Override
+  public void getAllSkills(AllSkillsRequest request, StreamObserver<AllSkillsResponse> responseObserver){
+    try{
+      List<String> skills = houseSitterRepository.findAllSkills();
+      AllSkillsResponse response = AllSkillsResponse.newBuilder().addAllSkill(skills).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e){
+      responseObserver.onError(e);
+    }
+  }
+
   private static HouseSitter getHouseSitter(String name, String email, String password, String profilePicture, String cpr,
       String phone, boolean isVerified, int adminId, String experience, String biography, List<String> skills, List<String> pictures) {
     HouseSitter houseSitter = new HouseSitter();

@@ -100,12 +100,12 @@ label
 }
 
 @keyframes rotateBackground {
-   0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
-   25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
-   50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
-   75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
-   100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
- }
+  0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+  25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
+  50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
+  75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
+  100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
+}
 
 @font-face {
   font-family: 'LogoFont';

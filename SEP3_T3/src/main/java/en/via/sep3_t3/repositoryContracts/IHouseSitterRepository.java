@@ -7,6 +7,7 @@ import java.util.List;
 public interface IHouseSitterRepository
 {
   List<HouseSitter> findAll();
+  List<String> findAllSkills();
   HouseSitter findById(int id);
   int save(HouseSitter houseSitter);
   void update(HouseSitter houseSitter);

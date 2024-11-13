@@ -53,7 +53,7 @@
 
                 <label>Short Introduction:</label>
                 <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="biography" required></textarea>
-                <label>Upload Profile Pictures:</label>
+                <label>Upload a Profile Picture:</label>
                 <InputFile OnChange="HandleFileSelected" accept="image/*" class="form-control"/>
 
             </div>
@@ -81,127 +81,6 @@
         </div>
     </div>
 }
-
-
-<style>
-
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    .page-container
-    {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
-    }
-
-    .signup-page-container {
-        max-width: 800px;
-        margin: 63em 0 3em 0;
-        padding: 2em 2em;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        text-align: center;
-        color: #ff7e5f;
-        margin-bottom: 1em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    h2 {
-        text-align: center;
-        color: #3d3d3d;
-        font-family: Futura;
-        font-size: 1.7rem;
-    }
-
-    .form-section {
-        margin-bottom: 2em;
-        padding: 1em;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.75em;
-        margin-top: 0.5em;
-        margin-bottom: 1.5em;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1rem;
-    }
-
-    input
-    {
-        font-family: Futura;
-    }
-
-    label
-    {
-        font-family: Futura;
-        color: #3d3d3d;
-    }
-
-    textarea.form-control {
-        resize: vertical;
-        font-family: Futura;
-    }
-
-    .btn-primary {
-        display: block;
-        width: 100%;
-        padding: 0.75em;
-        font-size: 1.2rem;
-        background-color: #ff7e5f;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-family: Futura;
-    }
-
-    .btn-primary:hover {
-        background-color: #feb47b;
-    }
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        overflow: hidden; 
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-    }
-
-
-</style>
 
 @code {
     private string email = string.Empty;

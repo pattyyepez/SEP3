@@ -13,6 +13,7 @@ CREATE TABLE Admin (
 
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
     profile_picture VARCHAR(255),
@@ -174,13 +175,13 @@ INSERT INTO Admin (email, password) VALUES
 ('admin1@housepal.com', '12345'),
 ('admin2@housepal.com', '12345');
 
-INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES
-('niels.jensen@gmail.com', '12345', 'profile1.jpg', '123456-7890', '+45 12345678', TRUE, 1),
-('karen.sorensen@gmail.com', '12345', 'profile2.jpg', '234567-8901', '+45 23456789', TRUE, 1),
-('kristian.jensen@gmail.com', '12345', 'profile5.jpg', '777777-1111', '+45 34567790', FALSE, NULL),
-('lene.moller@gmail.com', '12345', 'profile6.jpg', '452229-2223', '+45 45678901', TRUE, 2),
-('mikkel.pedersen@gmail.com', '12345', 'profile3.jpg', '345678-9012', '+45 34567890', FALSE, NULL),
-('anne.larsen@gmail.com', '12345', 'profile4.jpg', '456789-0123', '+45 45678901', TRUE, 2);
+INSERT INTO Users (email, name, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES
+('niels.jensen@gmail.com', 'Niels Jensen', '12345', 'profile1.jpg', '123456-7890', '+45 12345678', TRUE, 1),
+('karen.sorensen@gmail.com', 'Karen Sorensen', '12345', 'profile2.jpg', '234567-8901', '+45 23456789', TRUE, 1),
+('kristian.jensen@gmail.com', 'Kristian Jensen', '12345', 'profile5.jpg', '777777-1111', '+45 34567790', FALSE, NULL),
+('lene.moller@gmail.com', 'Lene Moller', '12345', 'profile6.jpg', '452229-2223', '+45 45678901', TRUE, 2),
+('mikkel.pedersen@gmail.com', 'Mikkel Pedersen', '12345', 'profile3.jpg', '345678-9012', '+45 34567890', FALSE, NULL),
+('anne.larsen@gmail.com', 'Anne Larsen', '12345', 'profile4.jpg', '456789-0123', '+45 45678901', TRUE, 2);
 
 INSERT INTO HouseOwner (address, biography) VALUES
 ('123 Nyhavn, Copenhagen', 'Loves traveling and pets. Looking for responsible sitters.'),
