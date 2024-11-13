@@ -55,10 +55,12 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
   @Override
   public void createHouseOwner(CreateHouseOwnerRequest request, StreamObserver<HouseOwnerResponse> responseObserver) {
     try {
-      HouseOwner houseOwner = getHouseOwner(request.getEmail(), request.getPassword(),
-          request.getProfilePicture(), request.getCPR(), request.getPhone(),
-          false, 0, request.getAddress(),
-          request.getBiography());
+      HouseOwner houseOwner = getHouseOwner(
+          request.getName(), request.getEmail(),
+          request.getPassword(), request.getProfilePicture(),
+          request.getCPR(), request.getPhone(),
+          false, 0,
+          request.getAddress(), request.getBiography());
       houseOwner.setUserId(houseOwnerRepository.save(houseOwner));
 
       HouseOwnerResponse response = getHouseOwnerResponse(houseOwner);
@@ -74,10 +76,11 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
   @Override
   public void updateHouseOwner(UpdateHouseOwnerRequest request, StreamObserver<HouseOwnerResponse> responseObserver) {
     try {
-      HouseOwner houseOwner = getHouseOwner(request.getEmail(), request.getPassword(),
-          request.getProfilePicture(), request.getCPR(), request.getPhone(),
-          request.getIsVerified(), request.getAdminId(), request.getAddress(),
-          request.getBiography());
+      HouseOwner houseOwner = getHouseOwner(request.getName(), request.getEmail(),
+          request.getPassword(), request.getProfilePicture(),
+          request.getCPR(), request.getPhone(),
+          request.getIsVerified(), request.getAdminId(),
+          request.getAddress(), request.getBiography());
       houseOwner.setUserId(request.getId());
 
       houseOwnerRepository.update(houseOwner);
@@ -103,11 +106,12 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
     }
   }
 
-  private static HouseOwner getHouseOwner(String email,
+  private static HouseOwner getHouseOwner(String name, String email,
       String password, String profilePicture, String cpr, String phone,
       boolean isVerified, int adminId, String address, String biography)
   {
     HouseOwner houseOwner = new HouseOwner();
+    houseOwner.setName(name);
     houseOwner.setEmail(email);
     houseOwner.setPassword(password);
     houseOwner.setProfilePicture(profilePicture);
@@ -124,6 +128,7 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
   {
     return HouseOwnerResponse.newBuilder()
         .setId(houseOwner.getUserId())
+        .setName(houseOwner.getName())
         .setEmail(houseOwner.getEmail())
         .setPassword(houseOwner.getPassword())
         .setProfilePicture(houseOwner.getProfilePicture())

@@ -23,6 +23,7 @@ public class HouseSitterRepository : IHouseSitterRepository
     {
         HouseSitterResponse reply = _client.CreateHouseSitter(new CreateHouseSitterRequest
         {
+            Name = houseSitter.Name,
             Email = houseSitter.Email,
             Password = houseSitter.Password,
             ProfilePicture = houseSitter.ProfilePicture,
@@ -38,6 +39,7 @@ public class HouseSitterRepository : IHouseSitterRepository
         return Task.FromResult(new HouseSitterDto
         {
             UserId = reply.Id,
+            Name = reply.Name,
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -58,6 +60,7 @@ public class HouseSitterRepository : IHouseSitterRepository
         HouseSitterResponse reply = _client.UpdateHouseSitter(new UpdateHouseSitterRequest()
         {
             Id = id,
+            Name = houseSitter.Name,
             Email = houseSitter.Email,
             Password = houseSitter.Password,
             ProfilePicture = houseSitter.ProfilePicture,
@@ -75,6 +78,8 @@ public class HouseSitterRepository : IHouseSitterRepository
         return Task.FromResult(new HouseSitterDto
         {
             UserId = reply.Id,
+            
+            Name = reply.Name,
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -111,6 +116,7 @@ public class HouseSitterRepository : IHouseSitterRepository
         {
             UserId = reply.Id,
             
+            Name = reply.Name,
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -138,6 +144,7 @@ public class HouseSitterRepository : IHouseSitterRepository
             {
                 UserId = houseSitter.Id,
             
+                Name = houseSitter.Name,
                 Email = houseSitter.Email,
                 Password = houseSitter.Password,
                 ProfilePicture = houseSitter.ProfilePicture,

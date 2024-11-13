@@ -47,13 +47,15 @@ public class HouseSitterRepository implements IHouseSitterRepository
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
-          "INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES (?, ?, ?, ?, ?, FALSE, NULL)",
+          "INSERT INTO Users (name, email, password, profile_picture, CPR, phone, isVerified, admin_id)"
+              + " VALUES (?, ?, ?, ?, ?, ?, FALSE, NULL)",
           Statement.RETURN_GENERATED_KEYS);
-      ps.setString(1, houseSitter.getEmail());
-      ps.setString(2, houseSitter.getPassword());
-      ps.setString(3, houseSitter.getProfilePicture());
-      ps.setString(4, houseSitter.getCPR());
-      ps.setString(5, houseSitter.getPhone());
+      ps.setString(1, houseSitter.getName());
+      ps.setString(2, houseSitter.getEmail());
+      ps.setString(3, houseSitter.getPassword());
+      ps.setString(4, houseSitter.getProfilePicture());
+      ps.setString(5, houseSitter.getCPR());
+      ps.setString(6, houseSitter.getPhone());
       return ps;
     }, keyHolder);
 
@@ -77,10 +79,12 @@ public class HouseSitterRepository implements IHouseSitterRepository
 
   public void update(HouseSitter houseSitter)
   {
-    String sql = "UPDATE Users SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
-    jdbcTemplate.update(sql, houseSitter.getEmail(), houseSitter.getPassword(),
-        houseSitter.getProfilePicture(), houseSitter.getCPR(),
-        houseSitter.getPhone(), houseSitter.isVerified(),
+    String sql = "UPDATE Users SET name = ?, email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
+    jdbcTemplate.update(sql,
+        houseSitter.getName(), houseSitter.getEmail(),
+        houseSitter.getPassword(), houseSitter.getProfilePicture(),
+        houseSitter.getCPR(), houseSitter.getPhone(),
+        houseSitter.isVerified(),
         houseSitter.getAdminId() != 0 ? houseSitter.getAdminId() : null,
         houseSitter.getUserId());
 
@@ -159,6 +163,7 @@ public class HouseSitterRepository implements IHouseSitterRepository
     {
       HouseSitter houseSitter = new HouseSitter();
       houseSitter.setUserId(rs.getInt("sitter_id"));
+      houseSitter.setName(rs.getString("name"));
       houseSitter.setEmail(rs.getString("email"));
       houseSitter.setPassword(rs.getString("password"));
       houseSitter.setProfilePicture(rs.getString("profile_picture"));

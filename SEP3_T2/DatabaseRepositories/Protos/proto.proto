@@ -12,42 +12,45 @@ message HouseOwnerRequest {
 message HouseOwnerResponse {
   int32 id = 1;
 
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  string profilePicture = 5;
+  string CPR = 6;
+  string phone = 7;
+  bool isVerified = 8;
+  int32 adminId = 9;
+
+  string address = 10;
+  string biography = 11;
+}
+
+message CreateHouseOwnerRequest {
+  string name = 1;
   string email = 2;
   string password = 3;
   string profilePicture = 4;
   string CPR = 5;
   string phone = 6;
-  bool isVerified = 7;
-  int32 adminId = 8;
 
-  string address = 9;
-  string biography = 10;
-}
-
-message CreateHouseOwnerRequest {
-  string email = 1;
-  string password = 2;
-  string profilePicture = 3;
-  string CPR = 4;
-  string phone = 5;
-
-  string address = 6;
-  string biography = 7;
+  string address = 7;
+  string biography = 8;
 }
 
 message UpdateHouseOwnerRequest {
   int32 id = 1;
 
-  string email = 2;
-  string password = 3;
-  string profilePicture = 4;
-  string CPR = 5;
-  string phone = 6;
-  bool isVerified = 7;
-  int32 adminId = 8;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  string profilePicture = 5;
+  string CPR = 6;
+  string phone = 7;
+  bool isVerified = 8;
+  int32 adminId = 9;
 
-  string address = 9;
-  string biography = 10;
+  string address = 10;
+  string biography = 11;
 }
 
 message AllHouseOwnersRequest{}
@@ -73,48 +76,51 @@ message HouseSitterRequest {
 message HouseSitterResponse {
   int32 id = 1;
 
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  string profilePicture = 5;
+  string CPR = 6;
+  string phone = 7;
+  bool isVerified = 8;
+  int32 adminId = 9;
+
+  string experience = 10;
+  string biography = 11;
+  repeated string pictures = 12;
+  repeated string skills = 13;
+}
+
+message CreateHouseSitterRequest {
+  string name = 1;
   string email = 2;
   string password = 3;
   string profilePicture = 4;
   string CPR = 5;
   string phone = 6;
-  bool isVerified = 7;
-  int32 adminId = 8;
 
-  string experience = 9;
-  string biography = 10;
-  repeated string pictures = 11;
-  repeated string skills = 12;
-}
-
-message CreateHouseSitterRequest {
-  string email = 1;
-  string password = 2;
-  string profilePicture = 3;
-  string CPR = 4;
-  string phone = 5;
-
-  string experience = 6;
-  string biography = 7;
-  repeated string pictures = 8;
-  repeated string skills = 9;
+  string experience = 7;
+  string biography = 8;
+  repeated string pictures = 9;
+  repeated string skills = 10;
 }
 
 message UpdateHouseSitterRequest {
   int32 id = 1;
 
-  string email = 2;
-  string password = 3;
-  string profilePicture = 4;
-  string CPR = 5;
-  string phone = 6;
-  bool isVerified = 7;
-  int32 adminId = 8;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  string profilePicture = 5;
+  string CPR = 6;
+  string phone = 7;
+  bool isVerified = 8;
+  int32 adminId = 9;
 
-  string experience = 9;
-  string biography = 10;
-  repeated string pictures = 11;
-  repeated string skills = 12;
+  string experience = 10;
+  string biography = 11;
+  repeated string pictures = 12;
+  repeated string skills = 13;
 }
 
 message AllHouseSittersRequest{}

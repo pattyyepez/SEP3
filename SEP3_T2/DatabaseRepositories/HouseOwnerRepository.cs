@@ -22,6 +22,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
     {
         HouseOwnerResponse reply = _client.CreateHouseOwner(new CreateHouseOwnerRequest
         {
+            Name = houseOwner.Name,
             Email = houseOwner.Email,
             Password = houseOwner.Password,
             ProfilePicture = houseOwner.ProfilePicture,
@@ -35,6 +36,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         return Task.FromResult(new HouseOwnerDto
         {
             UserId = reply.Id,
+            Name = reply.Name,
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -53,6 +55,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         HouseOwnerResponse reply = _client.UpdateHouseOwner(new UpdateHouseOwnerRequest()
         {
             Id = id,
+            Name = houseOwner.Name,
             Email = houseOwner.Email,
             Password = houseOwner.Password,
             ProfilePicture = houseOwner.ProfilePicture,
@@ -68,6 +71,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         return Task.FromResult(new HouseOwnerDto
         {
             UserId = reply.Id,
+            Name = reply.Name,
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -102,6 +106,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         return Task.FromResult(new HouseOwnerDto
         {
             UserId = reply.Id,
+            Name = reply.Name,
             Email = reply.Email,
             Password = reply.Password,
             ProfilePicture = reply.ProfilePicture,
@@ -126,6 +131,7 @@ public class HouseOwnerRepository : IHouseOwnerRepository
             houseOwners.Add(new HouseOwnerDto
             {
                 UserId = houseOwner.Id,
+                Name = houseOwner.Name,
                 Email = houseOwner.Email,
                 Password = houseOwner.Password,
                 ProfilePicture = houseOwner.ProfilePicture,

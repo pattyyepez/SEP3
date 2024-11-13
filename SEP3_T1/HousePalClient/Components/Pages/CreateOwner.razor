@@ -1,5 +1,6 @@
 ﻿@using DTOs.HouseOwner
 @using HousePalClient.Components.Layout
+@using Microsoft.AspNetCore.Components
 @using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
@@ -187,6 +188,7 @@ return;
 
 var createHouseOwnerDto = new CreateHouseOwnerDto
 {
+    Name = firstName + " " + lastName,
 Email = email,
 Password = password,
 CPR = cpr,

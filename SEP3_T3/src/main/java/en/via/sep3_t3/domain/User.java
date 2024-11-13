@@ -2,6 +2,7 @@ package en.via.sep3_t3.domain;
 
 public abstract class User {
   private int userId;
+  private String name;
   private String email;
   private String password;
   private String profilePicture;
@@ -18,6 +19,16 @@ public abstract class User {
   public void setUserId(int userId)
   {
     this.userId = userId;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public void setName(String name)
+  {
+    this.name = name;
   }
 
   public String getEmail()
@@ -92,7 +103,7 @@ public abstract class User {
 
   @Override public String toString()
   {
-    return "User{" + "userId=" + userId + ", email='" + email + '\''
+    return "User{" + "userId=" + userId + ", name=" + name + ", email='" + email + '\''
         + ", password='" + password + '\'' + ", profilePicture='"
         + profilePicture + '\'' + ", CPR='" + CPR + '\'' + ", phone='" + phone
         + '\'' + ", isVerified=" + isVerified + ", adminId=" + adminId + '}';

@@ -47,15 +47,16 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
-          "INSERT INTO Users (email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES\n"
-              + "(?, ?, ?, ?, ?, FALSE, NULL)"
+          "INSERT INTO Users (name, email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES\n"
+              + "(?, ?, ?, ?, ?, ?, FALSE, NULL)"
 
           , Statement.RETURN_GENERATED_KEYS);
-      ps.setString(1, houseOwner.getEmail());
-      ps.setString(2, houseOwner.getPassword());
-      ps.setString(3, houseOwner.getProfilePicture());
-      ps.setString(4, houseOwner.getCPR());
-      ps.setString(5, houseOwner.getPhone());
+      ps.setString(1, houseOwner.getName());
+      ps.setString(2, houseOwner.getEmail());
+      ps.setString(3, houseOwner.getPassword());
+      ps.setString(4, houseOwner.getProfilePicture());
+      ps.setString(5, houseOwner.getCPR());
+      ps.setString(6, houseOwner.getPhone());
       return ps;
     }, keyHolder);
 
@@ -79,10 +80,11 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
   public void update(HouseOwner houseOwner)
   {
     String sql = "UPDATE Users\n"
-        + "SET email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
+        + "SET name = ?, email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
         + "WHERE id = ?";
 
     jdbcTemplate.update(sql,
+        houseOwner.getName(),
         houseOwner.getEmail(),
         houseOwner.getPassword(),
         houseOwner.getProfilePicture(),
@@ -114,6 +116,7 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
       HouseOwner houseOwner = new HouseOwner();
 
       houseOwner.setUserId(rs.getInt("owner_id"));
+      houseOwner.setName(rs.getString("name"));
       houseOwner.setEmail(rs.getString("email"));
       houseOwner.setPassword(rs.getString("password"));
       houseOwner.setProfilePicture(rs.getString("profile_picture"));

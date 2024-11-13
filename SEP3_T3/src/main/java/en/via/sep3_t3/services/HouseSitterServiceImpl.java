@@ -54,9 +54,11 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   @Override
   public void createHouseSitter(CreateHouseSitterRequest request, StreamObserver<HouseSitterResponse> responseObserver) {
     try {
-      HouseSitter houseSitter = getHouseSitter(request.getEmail(),
-          request.getPassword(), request.getProfilePicture(), request.getCPR(),
-          request.getPhone(), false, 0,
+      HouseSitter houseSitter = getHouseSitter(
+          request.getName(), request.getEmail(),
+          request.getPassword(), request.getProfilePicture(),
+          request.getCPR(), request.getPhone(),
+          false, 0,
           request.getExperience(), request.getBiography(),
           request.getSkillsList().stream().toList(),
           request.getPicturesList().stream().toList());
@@ -75,9 +77,11 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   public void updateHouseSitter(UpdateHouseSitterRequest request, StreamObserver<HouseSitterResponse> responseObserver) {
     try {
       HouseSitter houseSitter = getHouseSitter(
-          request.getEmail(), request.getPassword(), request.getProfilePicture(),
-          request.getCPR(), request.getPhone(), request.getIsVerified(),
-          request.getAdminId(), request.getExperience(), request.getBiography(),
+          request.getName(), request.getEmail(),
+          request.getPassword(), request.getProfilePicture(),
+          request.getCPR(), request.getPhone(),
+          request.getIsVerified(), request.getAdminId(),
+          request.getExperience(), request.getBiography(),
           request.getSkillsList().stream().toList(),
           request.getPicturesList().stream().toList());
       houseSitter.setUserId(request.getId());
@@ -104,9 +108,10 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
     }
   }
 
-  private static HouseSitter getHouseSitter(String email, String password, String profilePicture, String cpr,
+  private static HouseSitter getHouseSitter(String name, String email, String password, String profilePicture, String cpr,
       String phone, boolean isVerified, int adminId, String experience, String biography, List<String> skills, List<String> pictures) {
     HouseSitter houseSitter = new HouseSitter();
+    houseSitter.setName(name);
     houseSitter.setEmail(email);
     houseSitter.setPassword(password);
     houseSitter.setProfilePicture(profilePicture);
@@ -124,6 +129,7 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   private static HouseSitterResponse getHouseSitterResponse(HouseSitter houseSitter) {
     return HouseSitterResponse.newBuilder()
         .setId(houseSitter.getUserId())
+        .setName(houseSitter.getName())
         .setEmail(houseSitter.getEmail())
         .setPassword(houseSitter.getPassword())
         .setProfilePicture(houseSitter.getProfilePicture())

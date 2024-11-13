@@ -145,3 +145,7 @@ C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.genr
 C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref\HousePalClient.dll
 C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\CreateHouseOwner.razor.rz.scp.css
 C:\Users\patty\third\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\CreateOwner.razor.rz.scp.css
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\Radzen.Blazor.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\CreateHouseOwner.razor.rz.scp.css
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\CreateOwner.razor.rz.scp.css
