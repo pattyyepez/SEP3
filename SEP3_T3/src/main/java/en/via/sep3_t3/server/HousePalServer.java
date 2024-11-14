@@ -24,9 +24,9 @@ public class HousePalServer {
   }
 
   private void run() throws Exception {
-    DataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/postgres?currentSchema=housePal",
+    DataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/housepaldb?currentSchema=housePal",
         "postgres",
-        "ViaViaVia");
+        "calculadora11");
 
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 

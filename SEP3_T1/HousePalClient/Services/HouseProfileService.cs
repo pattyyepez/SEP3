@@ -13,7 +13,7 @@ public class HouseProfileService : IHouseProfileService
             _httpClient = httpClient;
         }
 
-        public async Task<HouseProfileDto> AddAsync(HouseProfileDto houseProfile)
+        public async Task<HouseProfileDto> AddAsync(CreateHouseProfileDto houseProfile)
         {
             var convertedHouseProfile = JsonConvert.SerializeObject(houseProfile);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseProfile);

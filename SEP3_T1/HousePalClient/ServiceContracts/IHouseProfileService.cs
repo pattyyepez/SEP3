@@ -4,7 +4,7 @@ namespace Services;
 
 public interface IHouseProfileService
 {
-    Task<HouseProfileDto> AddAsync(HouseProfileDto houseProfile);
+    Task<HouseProfileDto> AddAsync(CreateHouseProfileDto houseProfile);
     Task<HouseProfileDto> UpdateAsync(HouseProfileDto houseProfile);
     Task DeleteAsync(int id);
     Task<HouseProfileDto> GetSingleAsync(int id);

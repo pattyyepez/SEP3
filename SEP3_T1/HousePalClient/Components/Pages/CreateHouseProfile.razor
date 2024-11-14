@@ -1,0 +1,350 @@
+﻿@page "/create-house-profile"
+@using System.Security.Claims
+@using DTOs.HouseProfile
+@using HousePalClient.Components.Layout
+@using Services
+@using Microsoft.AspNetCore.Components.Forms
+@layout LoginLayout
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@inject IHouseProfileService HouseProfileService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<div class="page-container">
+    <div class="signup-page-container">
+        <p>Hello, @username!</p>
+        <h1>Create Your House Profile</h1>
+
+        <form class="house-profile-form" @onsubmit="CreateProfile">
+            <!-- House Profile Information Fields -->
+            <div class="form-section">
+                <h2>House Information</h2>
+
+                <label>Description:</label>
+                <textarea class="form-control" rows="4" placeholder="Describe your house" @bind="description" required></textarea>
+
+                <label>City:</label>
+                <input type="text" class="form-control" placeholder="Enter city" @bind="city" required/>
+
+                <label>Region:</label>
+                <input type="text" class="form-control" placeholder="Enter region" @bind="region" required/>
+
+                <label>Address:</label>
+                <input type="text" class="form-control" placeholder="Enter address" @bind="address" required/>
+            </div>
+
+            <!-- Amenities, Chores, and Rules Section -->
+            <div class="form-section">
+                <h2>Details</h2>
+
+                <label>Amenities:</label>
+                <div>
+                    @foreach (var amenity in availableAmenities)
+                    {
+                    <div>
+                        <input type="checkbox" checked="@amenitiesSelected.Contains(amenity)" @onchange="(e) => ToggleAmenitySelection(amenity, (bool)e.Value)" />
+                        <label>@amenity</label>
+                    </div>
+                    }
+                </div>
+
+                <label>Chores:</label>
+                <div>
+                    @foreach (var chore in availableChores)
+                    {
+                    <div>
+                        <input type="checkbox" checked="@choresSelected.Contains(chore)" @onchange="(e) => ToggleChoreSelection(chore, (bool)e.Value)" />
+                        <label>@chore</label>
+                    </div>
+                    }
+                </div>
+
+                <label>Rules:</label>
+                <div>
+                    @foreach (var rule in availableRules)
+                    {
+                    <div>
+                        <input type="checkbox" checked="@rulesSelected.Contains(rule)" @onchange="(e) => ToggleRuleSelection(rule, (bool)e.Value)" />
+                        <label>@rule</label>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Upload Pictures Section -->
+            <div class="form-section">
+                <h2>Upload Pictures</h2>
+
+                <label>Upload House Pictures:</label>
+                <InputFile OnChange="HandleFileSelected" accept="image/*" class="form-control" multiple/>
+            </div>
+
+            <!-- Display Message if exists -->
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div>
+                    <label>@message</label>
+                </div>
+            }
+
+            <!-- Submit Button -->
+            <button type="button" @onclick="CreateProfile" class="btn btn-primary">Create House Profile</button>
+        </form>
+    </div>
+</div>
+
+@if (showSuccessMessage)
+{
+<div class="modal-background">
+    <div class="modal-content">
+        <h2>Profile Created!</h2>
+        <p> @username your house profile has been created successfully.</p>
+        <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
+    </div>
+</div>
+}
+ 
+
+<style>
+
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('/fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .page-container
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        min-width: 100vw;
+        background: linear-gradient(150deg, #ff7e5f, #feb47b);
+
+    }
+
+    .signup-page-container {
+        max-width: 800px;
+        margin: 63em 0 3em 0;
+        padding: 2em 2em;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #ff7e5f;
+        margin-bottom: 1em;
+        font-family: 'LogoFont', sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #3d3d3d;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 1.7rem;
+    }
+
+    .form-section {
+        margin-bottom: 2em;
+        padding: 1em;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75em;
+        margin-top: 0.5em;
+        margin-bottom: 1.5em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    input
+    {
+        font-family: Futura;
+    }
+
+    label
+    {
+        font-family: Futura;
+        color: #3d3d3d;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        font-family: Futura;
+    }
+
+    .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 0.75em;
+        font-size: 1.2rem;
+        background-color: #ff7e5f;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: Futura;
+    }
+
+    .btn-primary:hover {
+        background-color: #feb47b;
+    }
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        overflow: hidden; 
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
+
+
+</style>
+@code {
+private string description = string.Empty;
+private string city = string.Empty;
+private string region = string.Empty;
+private string address = string.Empty;
+private List<string> pictures = new List<string>();
+private string message = string.Empty;
+private bool showSuccessMessage = false;
+private string username = "";
+private int houseOwnerId = 0;
+private List<string> availableAmenities = new List<string> { "WiFi", "Pool", "Parking", "Gym", "Air Conditioner" };
+private List<string> availableChores = new List<string> { "Water Plants", "Cut grass", " Water Gardering" };
+private List<string> availableRules = new List<string> { "No Smoking", "No Pets", "No Loud Music" };
+
+private List<string> amenitiesSelected = new List<string>();
+private List<string> choresSelected = new List<string>();
+private List<string> rulesSelected = new List<string>();
+
+private void ToggleAmenitySelection(string amenity, bool isSelected)
+{
+    if (isSelected)
+        amenitiesSelected.Add(amenity);
+    else
+        amenitiesSelected.Remove(amenity);
+}
+
+private void ToggleChoreSelection(string chore, bool isSelected)
+{
+    if (isSelected)
+        choresSelected.Add(chore);
+    else
+        choresSelected.Remove(chore);
+}
+
+private void ToggleRuleSelection(string rule, bool isSelected)
+{
+    if (isSelected)
+        rulesSelected.Add(rule);
+    else
+        rulesSelected.Remove(rule);
+}
+private void RedirectToHome()
+{
+Navigation.NavigateTo("/");
+}
+
+private async Task CreateProfile()
+    {
+        message = string.Empty;
+
+        var createHouseProfileDto = new CreateHouseProfileDto
+        { 
+            OwnerId = houseOwnerId,
+            Description = description,
+            City = city,
+            Region = region,
+            Address = address,
+            Amenities = amenitiesSelected,
+            Chores = choresSelected,
+            Rules = rulesSelected,
+            Pictures = pictures
+        };
+
+        try
+        {
+            HouseProfileDto created = await HouseProfileService.AddAsync(createHouseProfileDto);
+            showSuccessMessage = true;
+            message = "House Profile created successfully!";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            message = $"Error: {e.Message}";
+        }
+    }
+
+
+private async Task HandleFileSelected(InputFileChangeEventArgs e)
+{
+foreach (var file in e.GetMultipleFiles())
+{
+if (file != null)
+{
+var uploadedFileUrl = await UploadPicture(file);
+pictures.Add(uploadedFileUrl);
+}
+}
+}
+
+private async Task<string> UploadPicture(IBrowserFile file)
+{
+var buffer = new byte[file.Size];
+await file.OpenReadStream().ReadAsync(buffer);
+
+string imageUrl = file.Name;
+return imageUrl;
+}
+protected override async Task OnInitializedAsync()
+{
+    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    var user = authState?.User;
+
+    if (user?.Identity != null && user.Identity.IsAuthenticated)
+    {
+        var houseOwnerIdClaim = user.FindFirst(c => c.Type == "Id");
+        if (houseOwnerIdClaim != null)
+        {
+            houseOwnerId = int.Parse(houseOwnerIdClaim.Value);
+        }
+
+        var nameClaim = user.FindFirst(ClaimTypes.Name);
+        if (nameClaim != null)
+        {
+            username = nameClaim.Value;
+        }
+    }
+    else
+    {
+        message = "User not authenticated.";
+    }
+}
+
+}

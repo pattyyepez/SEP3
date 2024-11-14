@@ -43,6 +43,7 @@
         </NotAuthorized>
         <Authorized Context="authContext">
             <p>@authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
+            <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
@@ -149,7 +150,10 @@
 
 @code {
     private LoginModel loginModel = new();
-
+    private void HandleCreateHouseProfile()
+    {
+        Navigation.NavigateTo("/create-house-profile");
+    }
     private async Task HandleLoginClick()
     {
         try
