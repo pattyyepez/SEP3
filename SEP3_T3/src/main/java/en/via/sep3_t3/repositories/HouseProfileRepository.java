@@ -33,6 +33,24 @@ public class HouseProfileRepository implements IHouseProfileRepository
     return jdbcTemplate.query(sql, new HouseProfileRowMapper());
   }
 
+  @Override public List<String> findAllRules()
+  {
+    String sql = "SELECT * FROM Rules";
+    return jdbcTemplate.query(sql, new RulesRowMapper());
+  }
+
+  @Override public List<String> findAllChores()
+  {
+    String sql = "SELECT * FROM Chores";
+    return jdbcTemplate.query(sql, new ChoresRowMapper());
+  }
+
+  @Override public List<String> findAllAmenities()
+  {
+    String sql = "SELECT * FROM Amenities";
+    return jdbcTemplate.query(sql, new AmenitiesRowMapper());
+  }
+
   public HouseProfile findById(int id)
   {
     String sql = "SELECT * FROM HouseProfile WHERE profile_id = ?";
@@ -45,13 +63,14 @@ public class HouseProfileRepository implements IHouseProfileRepository
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
-          "INSERT INTO HouseProfile (owner_id, description, address, region, city) VALUES (?, ?, ?, ?, ?)",
+          "INSERT INTO HouseProfile (owner_id, title, description, address, region, city) VALUES (?, ?, ?, ?, ?, ?)",
           Statement.RETURN_GENERATED_KEYS);
       ps.setInt(1, houseProfile.getOwner_id());
-      ps.setString(2, houseProfile.getDescription());
-      ps.setString(3, houseProfile.getAddress());
-      ps.setString(4, houseProfile.getRegion());
-      ps.setString(5, houseProfile.getCity());
+      ps.setString(2, houseProfile.getTitle());
+      ps.setString(3, houseProfile.getDescription());
+      ps.setString(4, houseProfile.getAddress());
+      ps.setString(5, houseProfile.getRegion());
+      ps.setString(6, houseProfile.getCity());
       return ps;
     }, keyHolder);
 
@@ -67,8 +86,10 @@ public class HouseProfileRepository implements IHouseProfileRepository
 
   public HouseProfile update(HouseProfile houseProfile)
   {
-    String sql = "UPDATE HouseProfile SET description = ?, address = ?, region = ?, city = ? WHERE profile_id = ?";
-    jdbcTemplate.update(sql, houseProfile.getDescription(), houseProfile.getAddress(), houseProfile.getRegion(),
+    String sql = "UPDATE HouseProfile SET title = ?, description = ?, address = ?, region = ?, city = ? WHERE profile_id = ?";
+    jdbcTemplate.update(sql,
+        houseProfile.getTitle(), houseProfile.getDescription(),
+        houseProfile.getAddress(), houseProfile.getRegion(),
         houseProfile.getCity(), houseProfile.getId());
 
     deleteAmenities(houseProfile.getId());
@@ -189,6 +210,7 @@ public class HouseProfileRepository implements IHouseProfileRepository
     {
       HouseProfile houseProfile = new HouseProfile();
       houseProfile.setId(rs.getInt("profile_id"));  // Usa profile_id en lugar de id
+      houseProfile.setTitle(rs.getString("title"));
       houseProfile.setDescription(rs.getString("description"));
       houseProfile.setCity(rs.getString("city"));
       houseProfile.setOwner_id(rs.getInt("owner_id"));
@@ -223,6 +245,33 @@ public class HouseProfileRepository implements IHouseProfileRepository
     {
       String sql = "SELECT picture FROM House_pictures WHERE profile_id = ?";
       return jdbcTemplate.queryForList(sql, String.class, profileId);
+    }
+  }
+
+  private class AmenitiesRowMapper implements RowMapper<String>
+  {
+    @Override public String mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
+      return rs.getString("type");
+    }
+  }
+
+  private class ChoresRowMapper implements RowMapper<String>
+  {
+    @Override public String mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
+      return rs.getString("type");
+    }
+  }
+
+  private class RulesRowMapper implements RowMapper<String>
+  {
+    @Override public String mapRow(ResultSet rs, int rowNum)
+        throws SQLException
+    {
+      return rs.getString("type");
     }
   }
 }

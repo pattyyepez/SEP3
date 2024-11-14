@@ -553,6 +553,18 @@ namespace DatabaseRepositories {
     static readonly grpc::Marshaller<global::DatabaseRepositories.CreateHouseProfileRequest> __Marshaller_en_via_sep3_t3_CreateHouseProfileRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.CreateHouseProfileRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::DatabaseRepositories.UpdateHouseProfileRequest> __Marshaller_en_via_sep3_t3_UpdateHouseProfileRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.UpdateHouseProfileRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllChoresRequest> __Marshaller_en_via_sep3_t3_AllChoresRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllChoresRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllChoresResponse> __Marshaller_en_via_sep3_t3_AllChoresResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllChoresResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllAmenitiesRequest> __Marshaller_en_via_sep3_t3_AllAmenitiesRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllAmenitiesRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllAmenitiesResponse> __Marshaller_en_via_sep3_t3_AllAmenitiesResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllAmenitiesResponse.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllRulesRequest> __Marshaller_en_via_sep3_t3_AllRulesRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllRulesRequest.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::DatabaseRepositories.AllRulesResponse> __Marshaller_en_via_sep3_t3_AllRulesResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DatabaseRepositories.AllRulesResponse.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DatabaseRepositories.HouseProfileRequest, global::DatabaseRepositories.HouseProfileResponse> __Method_GetHouseProfile = new grpc::Method<global::DatabaseRepositories.HouseProfileRequest, global::DatabaseRepositories.HouseProfileResponse>(
@@ -593,6 +605,30 @@ namespace DatabaseRepositories {
         "DeleteHouseProfile",
         __Marshaller_en_via_sep3_t3_HouseProfileRequest,
         __Marshaller_en_via_sep3_t3_HouseProfileResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllChoresRequest, global::DatabaseRepositories.AllChoresResponse> __Method_GetAllChores = new grpc::Method<global::DatabaseRepositories.AllChoresRequest, global::DatabaseRepositories.AllChoresResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllChores",
+        __Marshaller_en_via_sep3_t3_AllChoresRequest,
+        __Marshaller_en_via_sep3_t3_AllChoresResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllAmenitiesRequest, global::DatabaseRepositories.AllAmenitiesResponse> __Method_GetAllAmenities = new grpc::Method<global::DatabaseRepositories.AllAmenitiesRequest, global::DatabaseRepositories.AllAmenitiesResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllAmenities",
+        __Marshaller_en_via_sep3_t3_AllAmenitiesRequest,
+        __Marshaller_en_via_sep3_t3_AllAmenitiesResponse);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::DatabaseRepositories.AllRulesRequest, global::DatabaseRepositories.AllRulesResponse> __Method_GetAllRules = new grpc::Method<global::DatabaseRepositories.AllRulesRequest, global::DatabaseRepositories.AllRulesResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetAllRules",
+        __Marshaller_en_via_sep3_t3_AllRulesRequest,
+        __Marshaller_en_via_sep3_t3_AllRulesResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -726,6 +762,66 @@ namespace DatabaseRepositories {
       public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.HouseProfileResponse> DeleteHouseProfileAsync(global::DatabaseRepositories.HouseProfileRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_DeleteHouseProfile, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllChoresResponse GetAllChores(global::DatabaseRepositories.AllChoresRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllChores(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllChoresResponse GetAllChores(global::DatabaseRepositories.AllChoresRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllChores, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllChoresResponse> GetAllChoresAsync(global::DatabaseRepositories.AllChoresRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllChoresAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllChoresResponse> GetAllChoresAsync(global::DatabaseRepositories.AllChoresRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllChores, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllAmenitiesResponse GetAllAmenities(global::DatabaseRepositories.AllAmenitiesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllAmenities(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllAmenitiesResponse GetAllAmenities(global::DatabaseRepositories.AllAmenitiesRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllAmenities, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllAmenitiesResponse> GetAllAmenitiesAsync(global::DatabaseRepositories.AllAmenitiesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllAmenitiesAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllAmenitiesResponse> GetAllAmenitiesAsync(global::DatabaseRepositories.AllAmenitiesRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllAmenities, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllRulesResponse GetAllRules(global::DatabaseRepositories.AllRulesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllRules(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::DatabaseRepositories.AllRulesResponse GetAllRules(global::DatabaseRepositories.AllRulesRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_GetAllRules, null, options, request);
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllRulesResponse> GetAllRulesAsync(global::DatabaseRepositories.AllRulesRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetAllRulesAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual grpc::AsyncUnaryCall<global::DatabaseRepositories.AllRulesResponse> GetAllRulesAsync(global::DatabaseRepositories.AllRulesRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_GetAllRules, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]

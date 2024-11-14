@@ -22,6 +22,7 @@ public class HouseProfileRepository : IHouseProfileRepository
     {
         HouseProfileResponse reply = _client.CreateHouseProfile(new CreateHouseProfileRequest
         {
+            Title = houseProfile.Title,
             Description = houseProfile.Description,
             City = houseProfile.City,
             OwnerId = houseProfile.OwnerId,
@@ -37,6 +38,7 @@ public class HouseProfileRepository : IHouseProfileRepository
         return Task.FromResult(new HouseProfileDto
         {
             Id = reply.Id,
+            Title = reply.Title,
             Description = reply.Description,
             City = reply.City,
             OwnerId = reply.OwnerId,
@@ -55,6 +57,7 @@ public class HouseProfileRepository : IHouseProfileRepository
         HouseProfileResponse reply = _client.UpdateHouseProfile(new UpdateHouseProfileRequest()
         {
             Id = id,
+            Title = houseProfile.Title,
             Description = houseProfile.Description,
             City = houseProfile.City,
             Address = houseProfile.Address,
@@ -69,6 +72,7 @@ public class HouseProfileRepository : IHouseProfileRepository
         return Task.FromResult(new HouseProfileDto
         {
             Id = reply.Id,
+            Title = reply.Title,
             Description = reply.Description,
             City = reply.City,
             OwnerId = reply.OwnerId,
@@ -101,6 +105,7 @@ public class HouseProfileRepository : IHouseProfileRepository
         return Task.FromResult(new HouseProfileDto
         {
             Id = reply.Id,
+            Title = reply.Title,
             Description = reply.Description,
             City = reply.City,
             OwnerId = reply.OwnerId,
@@ -125,6 +130,7 @@ public class HouseProfileRepository : IHouseProfileRepository
             houseProfiles.Add(new HouseProfileDto
             {
                 Id = houseProfile.Id,
+                Title = houseProfile.Title,
                 Description = houseProfile.Description,
                 City = houseProfile.City,
                 OwnerId = houseProfile.OwnerId,
@@ -139,5 +145,20 @@ public class HouseProfileRepository : IHouseProfileRepository
         }
 
         return houseProfiles.AsQueryable();
+    }
+
+    public IQueryable<string> GetAllChores()
+    {
+        return _client.GetAllChores(new AllChoresRequest()).Chores.AsQueryable();
+    }
+
+    public IQueryable<string> GetAllRules()
+    {
+        return _client.GetAllRules(new AllRulesRequest()).Rules.AsQueryable();
+    }
+
+    public IQueryable<string> GetAllAmenities()
+    {
+        return _client.GetAllAmenities(new AllAmenitiesRequest()).Amenities.AsQueryable();
     }
 }

@@ -34,6 +34,7 @@ CREATE TABLE HouseOwner (
 CREATE TABLE HouseProfile (
     profile_id SERIAL PRIMARY KEY,
     owner_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
     description VARCHAR(1000) NOT NULL,
     address VARCHAR(255) NOT NULL,
     region VARCHAR(255) NOT NULL,
@@ -189,11 +190,11 @@ INSERT INTO HouseOwner (address, biography) VALUES
 ('78 Aarhusvej, Aarhus', 'We often travel, need sitters to care for our dogs.'),
 ('101 Odensegade, Odense', 'Cats lover, need help when on business trips.');
 
-INSERT INTO HouseProfile (owner_id, description, address, region, city) VALUES
-(1, 'Beautiful house with a garden in central Copenhagen.', 'Skoveringe, 11', 'Midt-Jutland', 'Horsens'),
-(2, 'Charming apartment near the beach with a large terrace.', 'Skoveringe, 77', 'Nord-Jutland', 'Skage'),
-(3, 'Spacious villa in Aarhus with a backyard. Perfect for dog lovers.', 'Skoveringe, 17', 'Fyn', 'Odense'),
-(4, 'Modern house in Odense. Cozy and perfect for cat lovers.', 'Skoveringe, 11', 'Sjealland', 'Copenaguen');
+INSERT INTO HouseProfile (owner_id, title, description, address, region, city) VALUES
+(1, 'a lil huset', 'Beautiful house with a garden in central Copenhagen.', 'Skoveringe, 11', 'Midt-Jutland', 'Horsens'),
+(2, 'a lil lejlighed', 'Charming apartment near the beach with a large terrace.', 'Skoveringe, 77', 'Nord-Jutland', 'Skage'),
+(3, 'en doghus', 'Spacious villa in Aarhus with a backyard. Perfect for dog lovers.', 'Skoveringe, 17', 'Fyn', 'Odense'),
+(4, 'flooded.', 'Modern house in Odense. Cozy and perfect for cat lovers.', 'Skoveringe, 11', 'Sjealland', 'Copenaguen');
 
 INSERT INTO House_pictures (profile_id, picture) VALUES
 (1, 'house1.jpg'),

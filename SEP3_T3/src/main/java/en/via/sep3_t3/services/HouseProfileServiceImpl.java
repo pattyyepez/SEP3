@@ -54,8 +54,11 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
   @Override
   public void createHouseProfile(CreateHouseProfileRequest request, StreamObserver<HouseProfileResponse> responseObserver) {
     try {
-      HouseProfile houseProfile = getHouseProfile(0, request.getOwnerId(), request.getDescription(),
-          request.getAddress(), request.getRegion(), request.getCity(), request.getAmenitiesList(),
+      HouseProfile houseProfile = getHouseProfile(
+          0, request.getOwnerId(),
+          request.getTitle(), request.getDescription(),
+          request.getAddress(), request.getRegion(),
+          request.getCity(), request.getAmenitiesList(),
           request.getChoresList(), request.getRulesList(), request.getPicturesList());
       houseProfile.setId(houseProfileRepository.save(houseProfile));
       HouseProfileResponse response = getHouseProfileResponse(houseProfile);
@@ -63,6 +66,7 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -70,8 +74,10 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
   @Override
   public void updateHouseProfile(UpdateHouseProfileRequest request, StreamObserver<HouseProfileResponse> responseObserver) {
     try {
-      HouseProfile houseProfile = getHouseProfile(request.getId(), 0, request.getDescription(),
-          request.getAddress(), request.getRegion(), request.getCity(), request.getAmenitiesList(),
+      HouseProfile houseProfile = getHouseProfile(request.getId(), 0,
+          request.getTitle(), request.getDescription(),
+          request.getAddress(), request.getRegion(),
+          request.getCity(), request.getAmenitiesList(),
           request.getChoresList(), request.getRulesList(), request.getPicturesList());
       houseProfile.setId(request.getId());
       houseProfile = houseProfileRepository.update(houseProfile);
@@ -95,12 +101,58 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
     }
   }
 
-  private static HouseProfile getHouseProfile(int ProfileId, int ownerId, String description, String address,
+  @Override
+  public void getAllRules(AllRulesRequest request, StreamObserver<AllRulesResponse> responseObserver)
+  {
+    try{
+      List<String> rules = houseProfileRepository.findAllRules();
+      AllRulesResponse response = AllRulesResponse.newBuilder().addAllRules(rules).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e){
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override
+  public void getAllChores(AllChoresRequest request, StreamObserver<AllChoresResponse> responseObserver)
+  {
+    try{
+      List<String> chores = houseProfileRepository.findAllChores();
+      AllChoresResponse response = AllChoresResponse.newBuilder().addAllChores(chores).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e){
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override
+  public void getAllAmenities(AllAmenitiesRequest request, StreamObserver<AllAmenitiesResponse> responseObserver)
+  {
+    try{
+      List<String> amenities = houseProfileRepository.findAllAmenities();
+      AllAmenitiesResponse response = AllAmenitiesResponse.newBuilder().addAllAmenities(amenities).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e){
+      responseObserver.onError(e);
+    }
+  }
+
+  private static HouseProfile getHouseProfile(int ProfileId, int ownerId, String title, String description, String address,
       String region, String city, List<String> amenities,
       List<String> chores, List<String> rules, List<String> pictures) {
     HouseProfile houseProfile = new HouseProfile();
     houseProfile.setId(ProfileId);
     houseProfile.setOwner_id(ownerId);
+    houseProfile.setTitle(title);
     houseProfile.setDescription(description);
     houseProfile.setAddress(address);
     houseProfile.setRegion(region);
@@ -116,6 +168,7 @@ public class HouseProfileServiceImpl extends HouseProfileServiceGrpc.HouseProfil
     return HouseProfileResponse.newBuilder()
         .setId(houseProfile.getId())
         .setOwnerId(houseProfile.getOwner_id())
+        .setTitle(houseProfile.getTitle())
         .setDescription(houseProfile.getDescription())
         .setAddress(houseProfile.getAddress())
         .setRegion(houseProfile.getRegion())

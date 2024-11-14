@@ -5,7 +5,7 @@ using RepositoryContracts;
 namespace RESTAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class HouseProfileController : ControllerBase
 {
     private readonly IHouseProfileRepository _repo;
@@ -40,6 +40,51 @@ public class HouseProfileController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, $"Error fetching all HouseProfiles:" +
+                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllChores()
+    {
+        try
+        {
+            var response = _repo.GetAllChores();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error fetching all HouseProfile Chores:" +
+                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllRules()
+    {
+        try
+        {
+            var response = _repo.GetAllRules();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error fetching all HouseProfile Rules:" +
+                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllAmenities()
+    {
+        try
+        {
+            var response = _repo.GetAllAmenities();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error fetching all HouseProfile Amenities:" +
                                    $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
         }
     }

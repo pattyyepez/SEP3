@@ -86,7 +86,7 @@ public class HouseSitterService : IHouseSitterService
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
 
-            var skills = JsonConvert.DeserializeObject<List<String>>(jsonResponse);
+            var skills = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
 
             return skills.AsQueryable();
         }

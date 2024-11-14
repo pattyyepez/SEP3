@@ -2,18 +2,20 @@
 @using System.Security.Claims
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
+@using Microsoft.AspNetCore.Components
 @using Services
-@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Mvc.Rendering
 @layout LoginLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseProfileService HouseProfileService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+@* @attribute [Authorize] *@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <p>Hello, @username!</p>
+        <p>Hello, @_name!</p>
         <h1>Create Your House Profile</h1>
 
         <form class="house-profile-form" @onsubmit="CreateProfile">
@@ -21,55 +23,68 @@
             <div class="form-section">
                 <h2>House Information</h2>
 
+                <label>Title:</label>
+                <input type="text" class="form-control" placeholder="Enter title" @bind="_title" required/>
+                
                 <label>Description:</label>
-                <textarea class="form-control" rows="4" placeholder="Describe your house" @bind="description" required></textarea>
+                <textarea class="form-control" rows="4" placeholder="Describe your house" @bind="_description" required></textarea>
 
                 <label>City:</label>
-                <input type="text" class="form-control" placeholder="Enter city" @bind="city" required/>
+                <input type="text" class="form-control" placeholder="Enter city" @bind="_city" required/>
 
                 <label>Region:</label>
-                <input type="text" class="form-control" placeholder="Enter region" @bind="region" required/>
+                <input type="text" class="form-control" placeholder="Enter region" @bind="_region" required/>
 
                 <label>Address:</label>
-                <input type="text" class="form-control" placeholder="Enter address" @bind="address" required/>
+                <input type="text" class="form-control" placeholder="Enter address" @bind="_address" required/>
             </div>
 
             <!-- Amenities, Chores, and Rules Section -->
             <div class="form-section">
                 <h2>Details</h2>
 
-                <label>Amenities:</label>
-                <div>
-                    @foreach (var amenity in availableAmenities)
-                    {
-                    <div>
-                        <input type="checkbox" checked="@amenitiesSelected.Contains(amenity)" @onchange="(e) => ToggleAmenitySelection(amenity, (bool)e.Value)" />
-                        <label>@amenity</label>
-                    </div>
-                    }
-                </div>
+                <h3>Amenities:</h3>
+                @if (_amenities is not null)
+                {
+                    <ul>
+                        @foreach (var amenity in _amenities)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="amenity.Selected"/>
+                                <label>@amenity.Text</label>
+                            </li>
+                        }
+                    </ul>
+                }
 
-                <label>Chores:</label>
-                <div>
-                    @foreach (var chore in availableChores)
-                    {
-                    <div>
-                        <input type="checkbox" checked="@choresSelected.Contains(chore)" @onchange="(e) => ToggleChoreSelection(chore, (bool)e.Value)" />
-                        <label>@chore</label>
-                    </div>
-                    }
-                </div>
 
-                <label>Rules:</label>
-                <div>
-                    @foreach (var rule in availableRules)
-                    {
-                    <div>
-                        <input type="checkbox" checked="@rulesSelected.Contains(rule)" @onchange="(e) => ToggleRuleSelection(rule, (bool)e.Value)" />
-                        <label>@rule</label>
-                    </div>
-                    }
-                </div>
+                <h3>Chores:</h3>
+                @if (_chores is not null)
+                {
+                    <ul>
+                        @foreach (var chore in _chores)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="chore.Selected"/>
+                                <label>@chore.Text</label>
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <h3>Rules:</h3>
+                @if (_rules is not null)
+                {
+                    <ul>
+                        @foreach (var rule in _rules)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="rule.Selected"/>
+                                <label>@rule.Text</label>
+                            </li>
+                        }
+                    </ul>
+                }
             </div>
 
             <!-- Upload Pictures Section -->
@@ -81,10 +96,10 @@
             </div>
 
             <!-- Display Message if exists -->
-            @if (!string.IsNullOrEmpty(message))
+            @if (!string.IsNullOrEmpty(_message))
             {
                 <div>
-                    <label>@message</label>
+                    <label>@_message</label>
                 </div>
             }
 
@@ -94,17 +109,17 @@
     </div>
 </div>
 
-@if (showSuccessMessage)
+@if (_showSuccessMessage)
 {
-<div class="modal-background">
-    <div class="modal-content">
-        <h2>Profile Created!</h2>
-        <p> @username your house profile has been created successfully.</p>
-        <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
+    <div class="modal-background">
+        <div class="modal-content">
+            <h2>Profile Created!</h2>
+            <p> @_name, your house profile has been created successfully.</p>
+            <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
+        </div>
     </div>
-</div>
 }
- 
+
 
 <style>
 
@@ -225,127 +240,127 @@
 
 
 </style>
+
 @code {
-private string description = string.Empty;
-private string city = string.Empty;
-private string region = string.Empty;
-private string address = string.Empty;
-private List<string> pictures = new List<string>();
-private string message = string.Empty;
-private bool showSuccessMessage = false;
-private string username = "";
-private int houseOwnerId = 0;
-private List<string> availableAmenities = new List<string> { "WiFi", "Pool", "Parking", "Gym", "Air Conditioner" };
-private List<string> availableChores = new List<string> { "Water Plants", "Cut grass", " Water Gardering" };
-private List<string> availableRules = new List<string> { "No Smoking", "No Pets", "No Loud Music" };
+    private string _title = "poop"; //string.Empty;
+    private string _description = "poop"; //string.Empty;
+    private string _city = "poop"; //string.Empty;
+    private string _region = "poop"; //string.Empty;
+    private string _address = "poop"; //string.Empty;
+    private List<string> pictures = [];
+    private string _message = string.Empty;
+    private bool _showSuccessMessage = false;
+    private string _name = "";
+    private int _houseOwnerId = 0;
+    private MultiSelectList? _amenities = null;
+    private MultiSelectList? _chores = null;
+    private MultiSelectList? _rules = null;
 
-private List<string> amenitiesSelected = new List<string>();
-private List<string> choresSelected = new List<string>();
-private List<string> rulesSelected = new List<string>();
-
-private void ToggleAmenitySelection(string amenity, bool isSelected)
-{
-    if (isSelected)
-        amenitiesSelected.Add(amenity);
-    else
-        amenitiesSelected.Remove(amenity);
-}
-
-private void ToggleChoreSelection(string chore, bool isSelected)
-{
-    if (isSelected)
-        choresSelected.Add(chore);
-    else
-        choresSelected.Remove(chore);
-}
-
-private void ToggleRuleSelection(string rule, bool isSelected)
-{
-    if (isSelected)
-        rulesSelected.Add(rule);
-    else
-        rulesSelected.Remove(rule);
-}
-private void RedirectToHome()
-{
-Navigation.NavigateTo("/");
-}
-
-private async Task CreateProfile()
+    private void RedirectToHome()
     {
-        message = string.Empty;
+        Navigation.NavigateTo("/");
+    }
+
+    private async Task CreateProfile()
+    {
+        _message = string.Empty;
 
         var createHouseProfileDto = new CreateHouseProfileDto
-        { 
-            OwnerId = houseOwnerId,
-            Description = description,
-            City = city,
-            Region = region,
-            Address = address,
-            Amenities = amenitiesSelected,
-            Chores = choresSelected,
-            Rules = rulesSelected,
+        {
+            OwnerId = _houseOwnerId,
+            Title = _title,
+            Description = _description,
+            City = _city,
+            Region = _region,
+            Address = _address,
             Pictures = pictures
         };
-
+        
+        createHouseProfileDto.Chores = [];
+        foreach (var chore in _chores){
+            if (chore.Selected)
+            { 
+                createHouseProfileDto.Chores.Add(chore.Text);
+            }
+        }
+        
+        createHouseProfileDto.Rules = [];
+        foreach (var rule in _rules){
+            if (rule.Selected)
+            { 
+                createHouseProfileDto.Rules.Add(rule.Text);
+            }
+        }
+        
+        createHouseProfileDto.Amenities = [];
+        foreach (var amenity in _amenities){
+            if (amenity.Selected)
+            { 
+                createHouseProfileDto.Amenities.Add(amenity.Text);
+            }
+        }
+        
         try
         {
-            HouseProfileDto created = await HouseProfileService.AddAsync(createHouseProfileDto);
-            showSuccessMessage = true;
-            message = "House Profile created successfully!";
+            await HouseProfileService.AddAsync(createHouseProfileDto);
+            _showSuccessMessage = true;
+            _message = "House Profile created successfully!";
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            message = $"Error: {e.Message}";
+            _message = $"Error: {e.Message}";
         }
     }
 
 
-private async Task HandleFileSelected(InputFileChangeEventArgs e)
-{
-foreach (var file in e.GetMultipleFiles())
-{
-if (file != null)
-{
-var uploadedFileUrl = await UploadPicture(file);
-pictures.Add(uploadedFileUrl);
-}
-}
-}
-
-private async Task<string> UploadPicture(IBrowserFile file)
-{
-var buffer = new byte[file.Size];
-await file.OpenReadStream().ReadAsync(buffer);
-
-string imageUrl = file.Name;
-return imageUrl;
-}
-protected override async Task OnInitializedAsync()
-{
-    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    var user = authState?.User;
-
-    if (user?.Identity != null && user.Identity.IsAuthenticated)
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        var houseOwnerIdClaim = user.FindFirst(c => c.Type == "Id");
-        if (houseOwnerIdClaim != null)
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
         {
-            houseOwnerId = int.Parse(houseOwnerIdClaim.Value);
-        }
-
-        var nameClaim = user.FindFirst(ClaimTypes.Name);
-        Console.WriteLine(ClaimTypes.Name);
-        if (nameClaim != null)
-        {
-            username = nameClaim.Value;
+            if (file != null)
+            {
+                // var uploadedFileUrl = await UploadPicture(file);
+                pictures.Add(file.Name);
+            }
         }
     }
-    else
+
+    private async Task<string> UploadPicture(IBrowserFile file)
     {
-        message = "User not authenticated.";
-    }
-}
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream().ReadAsync(buffer);
 
+        string imageUrl = file.Name;
+        return imageUrl;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState?.User;
+        
+        if (user?.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var houseOwnerIdClaim = user.FindFirst(c => c.Type == "Id");
+            if (houseOwnerIdClaim != null)
+            {
+                _houseOwnerId = int.Parse(houseOwnerIdClaim.Value);
+            }
+        
+            var nameClaim = user.FindFirst(ClaimTypes.Name);
+            if (nameClaim != null)
+            {
+                _name = nameClaim.Value;
+            }
+        }
+        else
+        {
+            _message = "User not authenticated.";
+        }
+        
+        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
+        _rules = new MultiSelectList(HouseProfileService.GetAllRules());
+        await InvokeAsync(StateHasChanged);
+    }
 }

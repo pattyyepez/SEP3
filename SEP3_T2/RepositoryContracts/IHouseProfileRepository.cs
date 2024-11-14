@@ -9,4 +9,7 @@ public interface IHouseProfileRepository
     Task DeleteAsync(int id);
     Task<HouseProfileDto> GetSingleAsync(int id);
     IQueryable<HouseProfileDto> GetAll();
+    IQueryable<String> GetAllChores();
+    IQueryable<String> GetAllRules();
+    IQueryable<String> GetAllAmenities();
 }

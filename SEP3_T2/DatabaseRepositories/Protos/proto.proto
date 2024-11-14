@@ -154,6 +154,20 @@ message HouseProfileRequest {
 message HouseProfileResponse {
   int32 id = 1;
   int32 ownerId = 2;
+  string title = 3;
+  string description = 4;
+  string address = 5;
+  string region = 6;
+  string city = 7;
+  repeated string amenities = 8;
+  repeated string chores = 9;
+  repeated string rules = 10;
+  repeated string pictures = 11;
+}
+
+message CreateHouseProfileRequest {
+  int32 ownerId = 1;
+  string title = 2;
   string description = 3;
   string address = 4;
   string region = 5;
@@ -164,28 +178,17 @@ message HouseProfileResponse {
   repeated string pictures = 10;
 }
 
-message CreateHouseProfileRequest {
-  int32 ownerId = 1;
-  string description = 2;
-  string address = 3;
-  string region = 4;
-  string city = 5;
-  repeated string amenities = 6;
-  repeated string chores = 7;
-  repeated string rules = 8;
-  repeated string pictures = 9;
-}
-
 message UpdateHouseProfileRequest {
   int32 id = 1;
-  string description = 2;
-  string address = 3;
-  string region = 4;
-  string city = 5;
-  repeated string amenities = 6;
-  repeated string chores = 7;
-  repeated string rules = 8;
-  repeated string pictures = 9;
+  string title = 2;
+  string description = 3;
+  string address = 4;
+  string region = 5;
+  string city = 6;
+  repeated string amenities = 7;
+  repeated string chores = 8;
+  repeated string rules = 9;
+  repeated string pictures = 10;
 }
 
 message AllHouseProfilesRequest{}
@@ -194,12 +197,33 @@ message AllHouseProfilesResponse{
   repeated HouseProfileResponse houseProfiles = 1;
 }
 
+message AllAmenitiesRequest{}
+
+message AllAmenitiesResponse{
+  repeated string amenities = 1;
+}
+
+message AllChoresRequest{}
+
+message AllChoresResponse{
+  repeated string chores = 1;
+}
+
+message AllRulesRequest{}
+
+message AllRulesResponse{
+  repeated string rules = 1;
+}
+
 service HouseProfileService {
   rpc GetHouseProfile (HouseProfileRequest) returns (HouseProfileResponse);
   rpc GetAllHouseProfiles (AllHouseProfilesRequest) returns (AllHouseProfilesResponse);
   rpc CreateHouseProfile (CreateHouseProfileRequest) returns (HouseProfileResponse);
   rpc UpdateHouseProfile (UpdateHouseProfileRequest) returns (HouseProfileResponse);
   rpc DeleteHouseProfile (HouseProfileRequest) returns (HouseProfileResponse);
+  rpc GetAllChores (AllChoresRequest) returns (AllChoresResponse);
+  rpc GetAllAmenities (AllAmenitiesRequest) returns (AllAmenitiesResponse);
+  rpc GetAllRules (AllRulesRequest) returns (AllRulesResponse);
 }
 
 //house listing
