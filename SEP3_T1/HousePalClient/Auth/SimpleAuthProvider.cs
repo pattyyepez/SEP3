@@ -42,6 +42,7 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         UserDto userDto = JsonSerializer.Deserialize<UserDto>(userAsJson)!;
         List<Claim> claims = new List<Claim>
         {
+            new Claim(ClaimTypes.Name, userDto.Name),
             new Claim(ClaimTypes.Email, userDto.Email),
             new Claim("Id", userDto.UserId.ToString()),
             new Claim(ClaimTypes.MobilePhone, userDto.Phone),

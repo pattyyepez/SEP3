@@ -35,6 +35,7 @@ public class AuthController : ControllerBase
             user = new UserDto
             {
                 UserId = owner.UserId,
+                Name = owner.Name,
                 Email = owner.Email,
                 ProfilePicture = owner.ProfilePicture,
                 CPR = owner.CPR,
@@ -51,6 +52,7 @@ public class AuthController : ControllerBase
             user = new UserDto
             {
                 UserId = sitter.UserId,
+                Name = sitter.Name,
                 Email = sitter.Email,
                 ProfilePicture = sitter.ProfilePicture,
                 CPR = sitter.CPR,

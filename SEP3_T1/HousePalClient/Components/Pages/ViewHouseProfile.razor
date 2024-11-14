@@ -1,5 +1,4 @@
-﻿@page "/create-house-profile"
-@using System.Security.Claims
+﻿@using System.Security.Claims
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
 @using Services
@@ -336,7 +335,6 @@ protected override async Task OnInitializedAsync()
         }
 
         var nameClaim = user.FindFirst(ClaimTypes.Name);
-        Console.WriteLine(ClaimTypes.Name);
         if (nameClaim != null)
         {
             username = nameClaim.Value;

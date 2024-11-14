@@ -54,6 +54,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZXN0aW5nUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/patty/SEP3/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewHouseProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWaWV3SG91c2VQcm9maWxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/patty/SEP3/SEP3/SEP3_T1/HousePalClient/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
