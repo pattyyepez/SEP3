@@ -44,6 +44,8 @@
         <Authorized Context="authContext">
             <p>@authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
             <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button>
+            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button>
+            <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
@@ -153,6 +155,14 @@
     private void HandleCreateHouseProfile()
     {
         Navigation.NavigateTo("/create-house-profile");
+    }
+    private void HandleAllViewHouseProfiles()
+    {
+        Navigation.NavigateTo("/view-all-house-profiles");
+    }
+    private void HandleViewMyAccount()
+    {
+        Navigation.NavigateTo("/view-my-account");
     }
     private async Task HandleLoginClick()
     {

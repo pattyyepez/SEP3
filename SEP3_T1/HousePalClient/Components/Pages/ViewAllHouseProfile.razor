@@ -1,0 +1,177 @@
+﻿@page "/view-all-house-profiles"
+@using DTOs.HouseProfile
+@using HousePalClient.Components.Layout
+@using Services
+@layout LoginLayout
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@inject IHouseProfileService HouseProfileService
+
+<div class="page-container">
+    <div class="signup-page-container">
+        <h1>All House Profiles</h1>
+
+        @if (houseProfiles == null || !houseProfiles.Any())
+        {
+            <p>No house profiles found.</p>
+        }
+        else
+        {
+            <div class="house-profile-list">
+                @foreach (var profile in houseProfiles)
+                {
+                    <div class="house-profile-item">
+                        @if (profile.Pictures != null && profile.Pictures.Any())
+                        {
+                            <img src="@profile.Pictures.First()" alt="House Picture" class="house-profile-img" />
+                        }
+                        <p>@profile.Description</p>
+                        <button class="btn btn-details" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    h2
+    {
+        font-size: 3em;
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        align-self: center;
+        margin-bottom: 0.5em;
+    }
+
+    label
+    {
+        color: #222222;
+        font-family: Futura;
+        margin-bottom: 0.1em;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    .welcome-message h1 {
+        font-size: 2rem;
+        font-family: "Canela Text";
+        margin: 0;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5em;
+    }
+
+    .form-control {
+        font-size: 1rem;
+        padding: 0.375em 0.75em;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 1em; 
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.375em 0.75em;
+    }
+
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        min-width: 100vw;
+        background: linear-gradient(150deg, #ff7e5f, #feb47b);
+    }
+
+    .signup-page-container {
+        max-width: 800px;
+        margin: 3em 0;
+        padding: 2em 2em;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #ff7e5f;
+        margin-bottom: 1em;
+        font-family: 'LogoFont', sans-serif;
+    }
+
+    .house-profile-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5em;
+        justify-content: center;
+    }
+
+    .house-profile-item {
+        width: 200px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 1em;
+    }
+
+    .house-profile-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    p {
+        font-family: Futura;
+        color: #3d3d3d;
+    }
+
+    .btn-details {
+        margin-top: 0.5em;
+        padding: 0.5em 1em;
+        font-size: 1rem;
+        color: #ffffff;
+        background-color: #ff7e5f;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: Futura;
+    }
+
+    .btn-details:hover {
+        background-color: #feb47b;
+    }
+</style>
+
+@code {
+    private List<HouseProfileDto> houseProfiles = new List<HouseProfileDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAllHouseProfiles();
+    }
+
+    private async Task LoadAllHouseProfiles()
+    {
+        houseProfiles = await Task.Run(() => HouseProfileService.GetAll().ToList());
+    }
+
+    private void NavigateToDetails(int profileId)
+    {
+        Navigation.NavigateTo($"/view-house-profile/{profileId}");
+    }
+}
