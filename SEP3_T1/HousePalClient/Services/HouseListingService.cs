@@ -65,7 +65,7 @@ public class HouseListingService : IHouseListingService
 
         public IQueryable<HouseListingDto> GetAll()
         {
-            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseListing").Result;
+            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseListing?includeProfile=true").Result;
 
             response.EnsureSuccessStatusCode();
 
