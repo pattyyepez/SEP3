@@ -34,14 +34,14 @@ namespace Services
         }
 
 
-        public async Task<HouseOwnerDto> UpdateAsync(HouseOwnerDto houseOwner)
+        public async Task<HouseOwnerDto> UpdateAsync(UpdateHouseOwnerDto houseOwner)
         {
             var convertedHouseOwner = JsonConvert.SerializeObject(houseOwner);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseOwner);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseOwner/{houseOwner.UserId}", byteContent);
+            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseOwner/{houseOwner}", byteContent);
             
             response.EnsureSuccessStatusCode();
     

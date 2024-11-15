@@ -1,0 +1,164 @@
+﻿@page "/view-my-account"
+@layout LoginLayout
+@using System.Security.Claims
+@using DTOs.HouseOwner
+@using DTOs.HouseSitter
+@using HousePalClient.Components.Layout
+@using Microsoft.AspNetCore.Components.Authorization
+@using Services
+@rendermode InteractiveServer
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IHouseOwnerService HouseOwnerService
+@inject IHouseSitterService HouseSitterService
+
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseOwner">
+        <h2>Welcome, @context.User.Identity?.Name!</h2>
+        @if (houseOwnerProfile != null)
+        {
+            <div class="profile-container">
+                <h2>House Owner Profile</h2>
+                <p><strong>Name:</strong> @houseOwnerProfile.Name</p>
+                <p><strong>Email:</strong> @houseOwnerProfile.Email</p>
+                <p><strong>Phone:</strong> @houseOwnerProfile.Phone</p>
+                <p><strong>Address:</strong> @houseOwnerProfile.Address</p>
+                <p><strong>Biography:</strong> @houseOwnerProfile.Biography</p>
+                <img src="@houseOwnerProfile.ProfilePicture" alt="Profile Picture" class="profile-img" />
+                <button class="btn-edit" @onclick="EditAccountHouseOwner">Edit Account</button>
+                <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
+            </div>
+            
+        }
+        else
+        {
+            <p>Loading house owner profile...</p>
+        }
+    </AuthorizeView>
+
+    <AuthorizeView Roles="HouseSitter">
+        <h4>Hello, @context.User.Identity?.Name!</h4>
+        
+        @if (houseSitterProfile != null)
+        {
+            <div class="profile-container">
+                <h2>House Sitter Profile</h2>
+                <p><strong>Name:</strong> @houseSitterProfile.Name</p>
+                <p><strong>Email:</strong> @houseSitterProfile.Email</p>
+                <p><strong>Phone:</strong> @houseSitterProfile.Phone</p>
+                <p><strong>Biography:</strong> @houseSitterProfile.Biography</p>
+                <p><strong>Experience:</strong> @houseSitterProfile.Experience</p>
+                <p><strong>Skills:</strong> @string.Join(", ", houseSitterProfile.Skills)</p>
+                
+                @if (houseSitterProfile.Pictures != null && houseSitterProfile.Pictures.Any())
+                {
+                    <div>
+                        <h4>Pictures:</h4>
+                        @foreach (var picture in houseSitterProfile.Pictures)
+                        {
+                            <img src="@picture" alt="House Sitter Picture" class="profile-img" />
+                        }
+                    </div>
+                }
+                <button class="btn-edit" @onclick="EditAccountHouseSitter">Edit Account</button>
+                <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
+            </div>
+        }
+        else
+        {
+            <p>Loading house sitter profile...</p>
+        }
+    </AuthorizeView>
+    
+</CascadingAuthenticationState>
+
+<style>
+    .profile-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 2em;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+    }
+
+    .profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 1em;
+    }
+
+    p {
+        font-family: Futura;
+        color: #3d3d3d;
+        margin: 0.5em 0;
+    }
+</style>
+
+@code {
+    private HouseOwnerDto houseOwnerProfile;
+    private HouseSitterDto houseSitterProfile;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState?.User;
+
+        if (user?.Identity != null && user.Identity.IsAuthenticated)
+        {
+            if (user.IsInRole("HouseOwner"))
+            {
+                var ownerIdClaim = user.FindFirst("Id")?.Value;
+                if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
+                {
+                    houseOwnerProfile = await HouseOwnerService.GetSingleAsync(ownerId);
+                }
+            }
+            else if (user.IsInRole("HouseSitter"))
+            {
+                var sitterIdClaim = user.FindFirst("Id")?.Value;
+                if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
+                {
+                    houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("User is NOT authenticated.");
+        }
+    }
+    private void EditAccountHouseOwner()
+    {
+        Navigation.NavigateTo("/edit-account-owner");
+    }
+    private void EditAccountHouseSitter()
+    {
+        Navigation.NavigateTo("/edit-account-sitter");
+    }
+
+    private async Task DeleteAccount()
+    {
+        if (houseOwnerProfile != null)
+        {
+            await HouseOwnerService.DeleteAsync(houseOwnerProfile.UserId);
+        }
+        else if (houseSitterProfile != null)
+        {
+            await HouseSitterService.DeleteAsync(houseSitterProfile.UserId);
+        }
+        Navigation.NavigateTo("/"); 
+        
+    }
+
+
+}

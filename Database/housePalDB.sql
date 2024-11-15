@@ -273,6 +273,7 @@ INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
 (1, 5, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
 (2, 6, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
 INSERT INTO House_review (profile_id, sitter_id, rating, comments, date) VALUES
+
 (3, 5, 5, 'Beautiful house, great experience!', '2024-10-20'),
 (2, 6, 4, 'Lovely home, perfect location.', '2024-10-21');
 INSERT INTO Sitter_review (owner_id, sitter_id, rating, comments, date) VALUES

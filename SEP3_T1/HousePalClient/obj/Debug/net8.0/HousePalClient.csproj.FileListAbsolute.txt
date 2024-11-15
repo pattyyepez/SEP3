@@ -201,3 +201,5 @@ C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\refint\HousePal
 C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.pdb
 C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.genruntimeconfig.cache
 C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref\HousePalClient.dll
+C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\EditHouseOwner.razor.rz.scp.css
+C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\EditHouseSitter.razor.rz.scp.css

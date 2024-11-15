@@ -19,8 +19,7 @@ builder.Services.AddScoped<IHouseSitterService, HouseSitterService>();
 builder.Services.AddScoped<IHouseProfileService, HouseProfileService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
-
-// builder.Services.AddAuthentication();
+builder.Services.AddAuthentication();
 // builder.Services.AddAuthenticationCore();
 
 // builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
