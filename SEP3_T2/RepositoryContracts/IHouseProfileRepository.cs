@@ -12,4 +12,5 @@ public interface IHouseProfileRepository
     IQueryable<String> GetAllChores();
     IQueryable<String> GetAllRules();
     IQueryable<String> GetAllAmenities();
+    // Task UploadPictures(List<IFormFile> files);
 }
