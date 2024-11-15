@@ -9,99 +9,95 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = HousePalClient
 build_property.RootNamespace = HousePalClient
-build_property.ProjectDir = C:\Users\patty\housepal\SEP3_T1\HousePalClient\
+build_property.ProjectDir = C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\patty\housepal\SEP3_T1\HousePalClient
+build_property.MSBuildProjectDirectory = C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/App.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Layout/LoginLayout.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Layout/LoginLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTG9naW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/CreateHouseProfile.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseProfile.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVIb3VzZVByb2ZpbGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/Error.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/Home.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/HouseOwnerPage.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/HouseOwnerPage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb3VzZU93bmVyUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/HouseProfilePage.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/HouseProfilePage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb3VzZVByb2ZpbGVQYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/SignUp.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/SignUp.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaWduVXAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/TestingPage.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/TestingPage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZXN0aW5nUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/ViewAllHouseListings.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWaWV3QWxsSG91c2VMaXN0aW5ncy5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/ViewAllHouseProfile.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewAllHouseProfile.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWaWV3QWxsSG91c2VQcm9maWxlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/ViewHouseProfile.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewHouseProfile.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWaWV3SG91c2VQcm9maWxlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/ViewMyAccount.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewMyAccount.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWaWV3TXlBY2NvdW50LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Routes.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/_Imports.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Layout/MainLayout.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-frtza5uyjb
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Layout/NavMenu.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-zcbnheqymx
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVIb3VzZU93bmVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-ps5ea9okqk
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/CreateHouseSitter.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseSitter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVIb3VzZVNpdHRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-r4bce2xssv
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/EditHouseOwner.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/EditHouseOwner.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFZGl0SG91c2VPd25lci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-6uftezk3i4
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/EditHouseSitter.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/EditHouseSitter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFZGl0SG91c2VTaXR0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-e9ch80cjth
 
-[C:/Users/patty/housepal/SEP3_T1/HousePalClient/Components/Pages/Login.razor]
+[C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-17iqmw81vz

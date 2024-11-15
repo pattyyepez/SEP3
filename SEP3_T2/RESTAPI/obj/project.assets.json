@@ -1211,19 +1211,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\patty\\.nuget\\packages\\": {}
+    "C:\\Users\\domin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\patty\\housepal\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
+      "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
       "projectName": "RESTAPI",
-      "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
-      "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\patty\\housepal\\SEP3_T2\\RESTAPI\\obj\\",
+      "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
+      "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1235,11 +1235,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\patty\\housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj": {
-              "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj"
+            "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj": {
+              "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj"
             },
-            "C:\\Users\\patty\\housepal\\SEP3_T2\\DTOs\\DTOs.csproj": {
-              "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T2\\DTOs\\DTOs.csproj"
+            "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj": {
+              "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj"
             }
           }
         }

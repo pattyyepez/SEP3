@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\patty\\.nuget\\packages\\": {}
+    "C:\\Users\\domin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj",
+      "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj",
       "projectName": "DTOs",
-      "projectPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\DTOs.csproj",
-      "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\patty\\housepal\\SEP3_T1\\DTOs\\obj\\",
+      "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\DTOs.csproj",
+      "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T1\\DTOs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

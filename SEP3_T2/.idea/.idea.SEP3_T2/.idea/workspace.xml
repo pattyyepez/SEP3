@@ -16,7 +16,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8710264d-2f24-4684-9da9-95e7a139aa77" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/ViewAllHouseListings.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/.idea/.idea.SEP3_T1/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/.idea/.idea.SEP3_T1/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/.idea/.idea.SEP3_T1/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/.idea/.idea.SEP3_T1/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
@@ -36,9 +35,12 @@
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.assets.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.nuget.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/DTOs/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Components/Pages/ViewAllHouseListings.razor" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Services/HouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/Services/HouseListingService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/DTOs.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/DTOs.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/DTOs.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/DTOs.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T1/HousePalClient/bin/Debug/net8.0/HousePalClient.dll" afterDir="false" />
@@ -98,7 +100,6 @@
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/RepositoryContracts.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/bin/Debug/net8.0/RepositoryContracts.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/DatabaseRepositories.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/DatabaseRepositories.csproj.nuget.dgspec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/DatabaseRepositories.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/DatabaseRepositories.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/12fbc7ffe642ca7e_proto.protodep" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/12fbc7ffe642ca7e_proto.protodep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
@@ -109,8 +110,6 @@
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/Proto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/Proto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/ProtoGrpc.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/Protos/ProtoGrpc.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/ref/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/Debug/net8.0/refint/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseRepositories/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseRepositories/obj/project.assets.json" afterDir="false" />
@@ -123,7 +122,6 @@
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/DatabaseRepositories.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.exe" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RESTAPI.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/RESTAPI/bin/Debug/net8.0/RepositoryContracts.pdb" afterDir="false" />
@@ -177,6 +175,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="autoShow" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -188,8 +189,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/pattyyepez/SEP3.git&quot;,
-    &quot;accountId&quot;: &quot;1352df1c-bf5d-4827-b124-3d43404b0a38&quot;
+    &quot;url&quot;: &quot;https://github.com/pattyyepez/SEP3_T1.git&quot;,
+    &quot;accountId&quot;: &quot;ec3bbf66-4ee3-4a2f-bb67-db82a75d42e9&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -209,26 +210,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.GrpcService1: http.executor": "Run",
-    ".NET Launch Settings Profile.GrpcService1: https.executor": "Run",
-    ".NET Launch Settings Profile.RESTAPI: http.executor": "Run",
-    ".NET Launch Settings Profile.RESTAPI: https.executor": "Run",
-    ".NET Project.GrpcHousePalClient.executor": "Run",
-    ".NET Project.testing.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/patty/housepal/SEP3_T2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.GrpcService1: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.GrpcService1: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.RESTAPI: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.RESTAPI: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.GrpcHousePalClient.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.testing.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.RESTAPI: https">
     <configuration name="RESTAPI: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/RESTAPI/RESTAPI.csproj" />
@@ -312,8 +313,7 @@
       <workItem from="1731568979778" duration="1490000" />
       <workItem from="1731592518603" duration="3079000" />
       <workItem from="1731659511613" duration="418000" />
-      <workItem from="1731662997755" duration="1747000" />
-      <workItem from="1731668947700" duration="849000" />
+      <workItem from="1731671955684" duration="273000" />
     </task>
     <task id="LOCAL-00001" summary="first T2 commit">
       <option name="closed" value="true" />
@@ -387,7 +387,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731010857937</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="kok">
+      <option name="closed" value="true" />
+      <created>1731672215241</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1731672215241</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -395,6 +403,17 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <ignored-roots>
@@ -412,6 +431,7 @@
     <MESSAGE value="Adding booleans to all web api methods so that now you can retrieve an expanded DTO with more info from the api" />
     <MESSAGE value="Optimizing Proto by getting rid of attributes that weren't being used, mostly in update requests" />
     <MESSAGE value="AuthController for you maria" />
-    <option name="LAST_COMMIT_MESSAGE" value="AuthController for you maria" />
+    <MESSAGE value="kok" />
+    <option name="LAST_COMMIT_MESSAGE" value="kok" />
   </component>
 </project>

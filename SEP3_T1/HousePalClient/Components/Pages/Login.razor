@@ -41,26 +41,11 @@
                 </div>
             </div>
         </NotAuthorized>
-        @* <Authorized Context="authContext"> *@
-        @*     <p>@authContext.User.Claims.Single(c => c.Type == "Id").Value</p> *@
-        @*     <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button> *@
-        @*     <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button> *@
-        @*     <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button> *@
-        @* </Authorized> *@
-    </AuthorizeView>
-    <AuthorizeView Roles="HouseOwner">
         <Authorized Context="authContext">
             <p>@authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
             <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button>
             <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button>
             <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
-        </Authorized>
-    </AuthorizeView>
-    <AuthorizeView Roles="HouseSitter">
-        <Authorized Context="authContext">
-        <p>@authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
-        <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</button>
-        <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
@@ -174,10 +159,6 @@
     private void HandleAllViewHouseProfiles()
     {
         Navigation.NavigateTo("/view-all-house-profiles");
-    }
-    private void HandleAllViewHouseListings()
-    {
-        Navigation.NavigateTo("/view-all-house-listings");
     }
     private void HandleViewMyAccount()
     {
