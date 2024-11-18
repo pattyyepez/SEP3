@@ -1,0 +1,313 @@
+﻿@page "/create-house-listing"
+@using DTOs.HouseListing
+@using DTOs.HouseProfile
+@using HousePalClient.Components.Layout
+@using Microsoft.AspNetCore.Components
+@using Services
+@layout LoginLayout
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@inject IHouseListingService HouseListingService
+@inject IHouseProfileService HouseProfileService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@* @attribute [Authorize] *@
+
+<div class="page-container">
+    <div class="signup-page-container">
+        @* <p>Hello, @_name!</p> *@
+        <h1>Create New House Listing</h1>
+
+        <form class="house-profile-form" @onsubmit="CreateListing">
+
+            <div class="form-section">
+                <h2><label for="house-profiles">Select House Profile for the Listing:</label></h2>
+                
+                <select @bind="_gottenProfile.Title" name="house-profiles" id="house-profiles">
+                    <option disabled selected>Select an option</option>
+                    @foreach (var profile in _houseProfiles)
+                    {
+                        <option value="@profile.Title">@profile.Title</option>
+                    }
+                </select>
+                
+            </div>
+
+            <div class="form-section">
+                <h2><label for="house-profiles">Select dates:</label></h2>
+
+                <label for="start">Start date:</label>
+                <input 
+                    type="date" 
+                    id="start" 
+                    name="listing-start"
+                    @bind-value="@StartDate"
+                    min="@_minDateStart.ToString("yyyy-MM-dd")" 
+                    max="@_maxDateStart.ToString("yyyy-MM-dd")" 
+                    />
+
+                <label for="end">End date:</label>
+                <input 
+                    type="date" 
+                    id="end" 
+                    name="listing-start" 
+                    @bind-value="@EndDate" 
+                    min="@_minDateEnd.Value.ToString("yyyy-MM-dd")" 
+                    max="@_maxDateEnd.Value.ToString("yyyy-MM-dd")" 
+                    />
+            </div>
+
+            <!-- Display Message if exists -->
+            @if (!string.IsNullOrEmpty(_message))
+            {
+                <div>
+                    <label>@_message</label>
+                </div>
+            }
+
+            <!-- Submit Button -->
+            <button type="button" @onclick="CreateListing" class="btn btn-primary">Create House Listing</button>
+        </form>
+    </div>
+</div>
+
+@if (_showSuccessMessage)
+{
+    <div class="modal-background">
+        <div class="modal-content">
+            <h2>Listing Created!</h2>
+            @* <p> @_name, your house profile has been created successfully.</p> *@
+            <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
+        </div>
+    </div>
+}
+
+
+<style>
+
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .page-container
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        min-width: 100vw;
+        background: linear-gradient(150deg, #ff7e5f, #feb47b);
+
+    }
+
+    .signup-page-container {
+        max-width: 800px;
+        margin: 63em 0 3em 0;
+        padding: 2em 2em;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #ff7e5f;
+        margin-bottom: 1em;
+        font-family: 'LogoFont', sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #3d3d3d;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 1.7rem;
+    }
+
+    .form-section {
+        margin-bottom: 2em;
+        padding: 1em;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75em;
+        margin-top: 0.5em;
+        margin-bottom: 1.5em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    input
+    {
+        font-family: Futura;
+    }
+
+    label
+    {
+        font-family: Futura;
+        color: #3d3d3d;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        font-family: Futura;
+    }
+
+    .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 0.75em;
+        font-size: 1.2rem;
+        background-color: #ff7e5f;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: Futura;
+    }
+
+    .btn-primary:hover {
+        background-color: #feb47b;
+    }
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        overflow: hidden; 
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
+
+
+</style>
+
+@code {
+    private List<HouseProfileDto> _houseProfiles = [];
+    private readonly DateTime _minDateStart = DateTime.Today;
+    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
+    
+    private DateTime? _minDateEnd = DateTime.Today;
+    private DateTime? _maxDateEnd = DateTime.Today.AddYears(5);
+
+    private DateTime? _gottenStart = DateTime.Today;
+    private DateTime? _gottenEnd = DateTime.Today;
+    
+    // Property for Start Date
+    private DateTime? StartDate
+    {
+        get => _gottenStart;
+        set
+        {
+            _gottenStart = value;
+            _minDateEnd = _gottenStart;
+
+            if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
+            {
+                _gottenEnd = _gottenStart;
+            }
+        }
+    }
+
+    // Property for End Date
+    private DateTime? EndDate
+    {
+        get => _gottenEnd;
+        set => _gottenEnd = value;
+    }
+    
+    private HouseProfileDto _gottenProfile = new HouseProfileDto();
+    
+    private string _message = String.Empty;
+    private bool _showSuccessMessage = false;
+
+    private void RedirectToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    private async Task StartDateChanged()
+    {
+        _minDateEnd = _gottenStart;
+        _maxDateEnd = _minDateEnd.Value.AddYears(5);
+    }
+
+    private async Task CreateListing()
+    {
+        Console.WriteLine(_gottenStart);
+        Console.WriteLine(_gottenEnd);
+        Console.WriteLine(_gottenProfile.Title);
+        CreateHouseListingDto listing = new CreateHouseListingDto();
+        if (_gottenStart.HasValue && _gottenEnd.HasValue)
+        {
+            listing = new CreateHouseListingDto()
+            {
+                ProfileId = _houseProfiles.Single(p => p.Title == _gottenProfile.Title).Id,
+                StartDate = _gottenStart.Value,
+                EndDate = _gottenEnd.Value
+            };
+        }
+        else
+        {
+            _message = "You must set the dates before creating a listing.";
+            return;
+        }
+        
+        try
+        {
+            await HouseListingService.AddAsync(listing);
+            _showSuccessMessage = true;
+            _message = $"House Listing created successfully!";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            _message = $"Error: {e.Message}";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _minDateEnd = _gottenStart;
+        _maxDateEnd = _minDateEnd.Value.AddYears(5);
+        
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState?.User;
+        
+        if (user?.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var houseOwnerIdClaim = user.FindFirst(c => c.Type == "Id");
+            if (houseOwnerIdClaim != null)
+            {
+                _houseProfiles = HouseProfileService.GetAllByOwner(int.Parse(houseOwnerIdClaim.Value)).ToList();
+            }
+        }
+        else
+        {
+            _message = "User not authenticated.";
+        }
+        
+        await InvokeAsync(StateHasChanged);
+    }
+}

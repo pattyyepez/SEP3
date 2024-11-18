@@ -17,34 +17,34 @@
 
         <form class="house-owner-form" @onsubmit="CreateOwner">
             <!-- Account Information Fields -->
-            <div class="form-section">
-                <h2>Account Information</h2>
-
-                <label>Email:</label>
-                <input type="email" class="form-control" placeholder="email" @bind="email" required/>
-
-                <label>Password:</label>
-                <input type="password" class="form-control" placeholder="@password" @bind="password" required/>
-
-                <label>Confirm Password:</label>
-                <input type="password" class="form-control" placeholder="@password" @bind="confirmPassword" required/>
-            </div>
+            @* <div class="form-section"> *@
+            @*     <h2>Account Information</h2> *@
+            @* *@
+            @*     <label>Email:</label> *@
+            @*     <input type="email" class="form-control" placeholder="email" @bind="email" required/> *@
+            @* *@
+            @*     <label>Password:</label> *@
+            @*     <input type="password" class="form-control" placeholder="Create a password" @bind="password" required/> *@
+            @* *@
+            @*     <label>Confirm Password:</label> *@
+            @*     <input type="password" class="form-control" placeholder="Confirm your password" @bind="confirmPassword" required/> *@
+            @* </div> *@
 
             <!-- Personal Information Fields -->
             <div class="form-section">
                 <h2>Personal Information</h2>
 
                 <label>Name:</label>
-                <input type="text" class="form-control" placeholder="@name" @bind="name" required/>
+                <input type="text" class="form-control" placeholder="Enter your name" @bind="name" required/>
 
                 <label>CPR Number:</label>
-                <input type="text" class="form-control" placeholder="@cpr" @bind="cpr" required/>
+                <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="cpr" required/>
 
                 <label>Phone Number:</label>
-                <input type="tel" class="form-control" placeholder="@phone" @bind="phone" required/>
+                <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="phone" required/>
 
                 <label>Home Address:</label>
-                <input type="text" class="form-control" placeholder="@address" @bind="address" required/>
+                <input type="text" class="form-control" placeholder="Enter your address" @bind="address" required/>
             </div>
 
             <!-- Introduction Section -->
@@ -308,6 +308,8 @@
 </style>
 
 @code {
+    private HouseOwnerDto houseOwner;
+    private int _userId;
     
     private string email = string.Empty;
     private string password = string.Empty;
@@ -315,8 +317,10 @@
     private string name = string.Empty;
     private string cpr = string.Empty;
     private string phone = string.Empty;
+    
     private string address = string.Empty;
     private string biography = string.Empty;
+    
     private string message = string.Empty;
     private string profilePictureUrl = string.Empty;
     private bool showSuccessMessage = false;
@@ -336,23 +340,25 @@
             return;
         }
 
-        var createHouseOwnerDto = new CreateHouseOwnerDto
+        var updateHouseOwnerDto = new UpdateHouseOwnerDto()
         {
-            Name = name,
-            Email = email,
-            Password = password,
-            ProfilePicture = profilePictureUrl,
+            UserId = _userId,
+            Name = houseOwner.Name,
+            Email = houseOwner.Email,
+            Password = houseOwner.Password,
             CPR = cpr,
             Phone = phone,
             Address = address,
             Biography = biography
         };
+        
+        updateHouseOwnerDto.ProfilePicture = string.IsNullOrEmpty(profilePictureUrl) ? houseOwner.ProfilePicture : profilePictureUrl;
 
         try
         {
-            HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
+            HouseOwnerDto created = await HouseOwnerService.UpdateAsync(updateHouseOwnerDto);
             showSuccessMessage = true;
-            message = $"House Owner created successfully!";
+            message = $"House Owner updated successfully!";
         }
         catch (Exception e)
         {
@@ -367,23 +373,52 @@
         var file = e.File;
         if (file != null)
         {
-            var uploadedFileUrl = await UploadProfilePicture(file);
-            profilePictureUrl = uploadedFileUrl;
+            // var uploadedFileUrl = await UploadProfilePicture(file);
+            profilePictureUrl = e.File.Name;
         }
     }
 
-    private async Task<string> UploadProfilePicture(IBrowserFile file)
+//     private async Task<string> UploadProfilePicture(IBrowserFile file)
+//     {
+// // converting to bytes
+//         var buffer = new byte[file.Size];
+//         await file.OpenReadStream().ReadAsync(buffer);
+//
+// // saving
+//         string imageUrl = file.Name;
+// //string imageUrl = "/path/to/images/" + file.Name; 
+//         return imageUrl;
+//     }
+
+    protected override async Task OnInitializedAsync()
     {
-// converting to bytes
-        var buffer = new byte[file.Size];
-        await file.OpenReadStream().ReadAsync(buffer);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState?.User;
 
-// saving
-        string imageUrl = file.Name;
-//string imageUrl = "/path/to/images/" + file.Name; 
-        return imageUrl;
+        if (user?.Identity != null && user.Identity.IsAuthenticated)
+        {
+            
+            if (user.IsInRole("HouseOwner"))
+            {
+                var ownerIdClaim = user.FindFirst("Id")?.Value;
+                if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
+                {
+                    houseOwner = await HouseOwnerService.GetSingleAsync(ownerId);
+                    email = houseOwner.Email;
+                    cpr = houseOwner.CPR;
+                    phone = houseOwner.Phone;
+                    name = houseOwner.Name;
+                    biography = houseOwner.Biography;
+                    address = houseOwner.Address;
+                    _userId = ownerId;
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("User is NOT authenticated.");
+        }
     }
-
 }
 
 }

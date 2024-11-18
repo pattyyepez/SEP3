@@ -1,4 +1,5 @@
 ﻿@page "/view-all-house-profiles"
+@using System.Security.Claims
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
@@ -7,6 +8,7 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseProfileService HouseProfileService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
     <div class="signup-page-container">
@@ -160,15 +162,30 @@
 
 @code {
     private List<HouseProfileDto> houseProfiles = new List<HouseProfileDto>();
+    private int userId = 0;
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+        
+        IEnumerable<Claim> claims = user.Claims;
+        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        userId = int.Parse(userIdAsString);
+        
         await LoadAllHouseProfiles();
     }
 
     private async Task LoadAllHouseProfiles()
     {
-        houseProfiles = await Task.Run(() => HouseProfileService.GetAll().ToList());
+        houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(userId).ToList());
     }
 
     private void NavigateToDetails(int profileId)

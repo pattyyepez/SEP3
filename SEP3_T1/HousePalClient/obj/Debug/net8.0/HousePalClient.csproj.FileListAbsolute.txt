@@ -203,3 +203,5 @@ C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\HousePalClient.
 C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\ref\HousePalClient.dll
 C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\EditHouseOwner.razor.rz.scp.css
 C:\Users\patty\SEP3\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\EditHouseSitter.razor.rz.scp.css
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\EditHouseOwner.razor.rz.scp.css
+C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\obj\Debug\net8.0\scopedcss\Components\Pages\EditHouseSitter.razor.rz.scp.css

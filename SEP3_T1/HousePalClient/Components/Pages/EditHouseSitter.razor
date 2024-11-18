@@ -23,18 +23,18 @@
 
             <form class="house-sitter-form" @onsubmit="CreateOwner">
                 <!-- Account Information Fields -->
-                <div class="form-section">
-                    <h2>Account Information</h2>
-
-                    <label>Email:</label>
-                    <input type="email" class="form-control" placeholder="@context.User.Identities.Where(i => i.Name == "email")" @bind="email" required/>
-
-                    <label>Password:</label>
-                    <input type="password" class="form-control" placeholder="Create a password" @bind="password" required/>
-
-                    <label>Confirm Password:</label>
-                    <input type="password" class="form-control" placeholder="Confirm your password" @bind="confirmPassword" required/>
-                </div>
+                @* <div class="form-section"> *@
+                @*     <h2>Account Information</h2> *@
+                @* *@
+                @*     <label>Email:</label> *@
+                @*     <input type="email" class="form-control" placeholder="@context.User.Identities.Where(i => i.Name == "email")" @bind="email" required/> *@
+                @* *@
+                    @* <label>Password:</label> *@
+                    @* <input type="password" class="form-control" placeholder="Create a password" @bind="password" required/> *@
+                    @* *@
+                    @* <label>Confirm Password:</label> *@
+                    @* <input type="password" class="form-control" placeholder="Confirm your password" @bind="confirmPassword" required/> *@
+                @* </div> *@
 
                 <!-- Personal Information Fields -->
                 <div class="form-section">
@@ -342,8 +342,9 @@
 </style>
 
 @code {
-    [Inject] public IHouseSitterService service { get; set; }
+    // [Inject] public IHouseSitterService service { get; set; }
     private HouseSitterDto houseSitterProfile;
+    private int _userId;
 
    // private string emailOld = @context.User.Identity?.Name;
 
@@ -353,8 +354,10 @@
     private string name = string.Empty;
     private string cpr = string.Empty;
     private string phone = string.Empty;
+    
     private string biography = string.Empty;
     private string experiences = string.Empty;
+    
     private string message = string.Empty;
     private string profilePictureUrl = string.Empty;
     private bool showSuccessMessage = false;
@@ -377,34 +380,35 @@
             return;
         }
         
-        var createHouseSitterDro = new CreateHouseSitterDto()
+        var updateHouseSitterDto = new UpdateHouseSitterDto()
         {
-            Name = name,
-            Email = email,
-            Password = password,
-            ProfilePicture = profilePictureUrl,
+            UserId = _userId,
+            Name = houseSitterProfile.Name,
+            Email = houseSitterProfile.Email,
+            Password = houseSitterProfile.Password,
             CPR = cpr,
             Phone = phone,
             Experience = experiences,
             Biography = biography
         };
 
-        createHouseSitterDro.Skills = [];
+        updateHouseSitterDto.Skills = [];
         foreach (var skill in skills){
             if (skill.Selected)
             {
                 Console.WriteLine(skill.Text);
-                createHouseSitterDro.Skills.Add(skill.Text);
+                updateHouseSitterDto.Skills.Add(skill.Text);
             }
         }
 
-        createHouseSitterDro.Pictures = pictures;
+        updateHouseSitterDto.ProfilePicture = string.IsNullOrEmpty(profilePictureUrl) ? houseSitterProfile.ProfilePicture : profilePictureUrl;
+        updateHouseSitterDto.Pictures = pictures.Any() ? houseSitterProfile.Pictures : pictures;
         
         try
         {
-            HouseSitterDto created = await service.AddAsync(createHouseSitterDro);
+            HouseSitterDto created = await HouseSitterService.UpdateAsync(updateHouseSitterDto);
             showSuccessMessage = true;
-            message = $"House Owner created successfully!";
+            message = $"House Sitter edited successfully!";
         }
         catch (Exception e)
         {
@@ -448,7 +452,7 @@
 
     protected override async void OnInitialized()
     {
-        skills = new MultiSelectList(service.GetAllSkills());
+        skills = new MultiSelectList(HouseSitterService.GetAllSkills());
         await InvokeAsync(StateHasChanged);
     }
     protected override async Task OnInitializedAsync()
@@ -465,6 +469,13 @@
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
                     houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
+                    email = houseSitterProfile.Email;
+                    cpr = houseSitterProfile.CPR;
+                    phone = houseSitterProfile.Phone;
+                    name = houseSitterProfile.Name;
+                    experiences = houseSitterProfile.Experience;
+                    biography = houseSitterProfile.Biography;
+                    _userId = sitterId;
                 }
             }
         }

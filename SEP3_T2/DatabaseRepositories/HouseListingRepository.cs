@@ -25,8 +25,8 @@ public class HouseListingRepository : IHouseListingRepository
         {
             ProfileId = houseListing.ProfileId,
             StartDate = new DateTimeOffset(houseListing.StartDate).ToUnixTimeMilliseconds(),
-            EndDate = new DateTimeOffset(houseListing.EndDate).ToUnixTimeMilliseconds(),
-            Status = houseListing.Status,
+            EndDate = new DateTimeOffset(houseListing.EndDate).ToUnixTimeMilliseconds()
+            // Status = houseListing.Status,
         });
         
         return Task.FromResult(new HouseListingDto

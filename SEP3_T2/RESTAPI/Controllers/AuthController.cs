@@ -1,6 +1,7 @@
 ﻿using DTOs.HouseOwner;
 using DTOs.HouseSitter;
 using DTOs.Login;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
@@ -28,7 +29,7 @@ public class AuthController : ControllerBase
         UserDto user = null;
         string password = null;
 
-        if(_ownerRepo.GetAll().Any(o => o.Email == request.Email))
+        if(_ownerRepo.GetAll().Where(o => o.Email == request.Email).Any(o => o.Password == request.Password))
         {
             owner = _ownerRepo.GetAll().SingleOrDefault(o => o.Email == request.Email);
             password = owner.Password;
@@ -45,7 +46,7 @@ public class AuthController : ControllerBase
                 Biography = owner.Biography
             };
         }
-        if(_sitterRepo.GetAll().Any(s => s.Email == request.Email))
+        if(_sitterRepo.GetAll().Any(s => s.Email == request.Email) && _sitterRepo.GetAll().Any(s => s.Password == request.Password))
         {
             sitter = _sitterRepo.GetAll().SingleOrDefault(s => s.Email == request.Email);
             password = sitter.Password;

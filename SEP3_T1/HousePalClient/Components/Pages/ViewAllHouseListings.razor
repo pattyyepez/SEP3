@@ -1,4 +1,5 @@
 ﻿@page "/view-all-house-listings"
+@using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
@@ -8,7 +9,7 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
     <div class="signup-page-container">
@@ -16,21 +17,21 @@
 
         @if (houseListings == null || !houseListings.Any())
         {
-        <p>No house listings found.</p>
+            <p>No house listings found.</p>
         }
         else
         {
-        <div class="house-listing-list">
-            @foreach (var listing in houseListings)
-            {
-            <div class="house-listing-item">
-                <p>
-                    @listing.Profile.Title
-                </p>
-                <button class="btn btn-details" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+            <div class="house-listing-list">
+                @foreach (var listing in houseListings)
+                {
+                    <div class="house-listing-item">
+                        <p>
+                            @listing.Profile.Title
+                        </p>
+                        <button class="btn btn-details" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                    </div>
+                }
             </div>
-            }
-        </div>
         }
     </div>
 </div>
@@ -159,20 +160,48 @@
 </style>
 
 @code {
-private List<HouseListingDto> houseListings = new List<HouseListingDto>();
+    private List<HouseListingDto> houseListings;
+    private int _userId;
+    private bool _houseOwner;
 
-protected override async Task OnInitializedAsync()
-{
-await LoadAllHouseListings();
-}
+    protected override async Task OnInitializedAsync()
+    {
+        houseListings = new List<HouseListingDto>();
+        var authState = await AuthenticationStateProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
 
-private async Task LoadAllHouseListings()
-{
-houseListings = await Task.Run(() => HouseListingService.GetAll().ToList());
-}
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+        
+        IEnumerable<Claim> claims = user.Claims;
+        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        _houseOwner = claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseOwner";
+        Console.WriteLine(_houseOwner);
+        _userId = int.Parse(userIdAsString);
+        
+        await LoadAllHouseListings();
+        await InvokeAsync(StateHasChanged);
+    }
 
-private void NavigateToDetails(int ListingId)
-{
-Navigation.NavigateTo($"/view-house-listing/{ListingId}");
-}
+    private async Task LoadAllHouseListings()
+    {
+        if (_houseOwner)
+            houseListings.AddRange(await Task.Run(() => HouseListingService.GetAllByOwner(_userId).ToList()));
+        else
+        {
+            Console.WriteLine("poop??");
+            houseListings.AddRange(await Task.Run(() => HouseListingService.GetAll().ToList()));
+        }
+            
+    }
+
+    private void NavigateToDetails(int ListingId)
+    {
+        Navigation.NavigateTo($"/view-house-listing/{ListingId}");
+    }
+
 }

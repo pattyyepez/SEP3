@@ -79,7 +79,7 @@ public class HouseProfileService : IHouseProfileService
         
         public IQueryable<HouseProfileDto> GetAllByOwner(int ownerId)
         {
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetProfilesByOwner/{ownerId}").Result;
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetProfilesByOwner/OwnerId?ownerId={ownerId}").Result;
 
             response.EnsureSuccessStatusCode();
 
