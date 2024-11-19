@@ -1,8 +1,7 @@
 package en.via.sep3_t3.server;
 
-import en.via.sep3_t3.repositories.HouseOwnerRepository;
-import en.via.sep3_t3.repositories.HouseProfileRepository;
-import en.via.sep3_t3.repositories.HouseSitterRepository;
+import en.via.sep3_t3.repositories.*;
+import en.via.sep3_t3.services.HouseListingServiceImpl;
 import en.via.sep3_t3.services.HouseOwnerServiceImpl;
 import en.via.sep3_t3.services.HouseProfileServiceImpl;
 import en.via.sep3_t3.services.HouseSitterServiceImpl;
@@ -18,6 +17,8 @@ public class HousePalServer {
   private HouseOwnerRepository houseOwnerRepository;
   private HouseSitterRepository houseSitterRepository;
   private HouseProfileRepository houseProfileRepository;
+  private HouseListingRepository houseListingRepository;
+  private ApplicationRepository applicationRepository;
 
   public static void main(String[] args) throws Exception {
     new HousePalServer().run();
@@ -36,7 +37,7 @@ public class HousePalServer {
     HouseOwnerServiceImpl houseOwnerService = new HouseOwnerServiceImpl(houseOwnerRepository);
     HouseSitterServiceImpl houseSitterService = new HouseSitterServiceImpl(houseSitterRepository);
     HouseProfileServiceImpl houseProfileService = new HouseProfileServiceImpl(houseProfileRepository);
-//    HouseOwnerServiceImpl houseOwnerService = new HouseOwnerServiceImpl(houseOwnerRepository);
+    HouseListingServiceImpl houseListingService = new HouseListingServiceImpl(houseListingRepository);
 
     Server server = NettyServerBuilder.forPort(9090)
         .addService(houseOwnerService)

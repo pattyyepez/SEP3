@@ -1,0 +1,212 @@
+﻿@page "/view-house-listing/{listingId:int}"
+@using DTOs.HouseListing
+@using HousePalClient.Components.Layout
+@using Microsoft.AspNetCore.Components
+@using Services
+@layout LoginLayout
+@inject NavigationManager Navigation
+@inject IHouseListingService HouseListingService
+@inject IHouseProfileService HouseProfileService
+<h1>House Listing Details</h1>
+
+<div class="listing-container">
+    @if (houseListing == null)
+    {
+    <p>Loading house listing details...</p>
+    }
+    else
+    {
+    <div class="house-listing-details">
+        @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
+        {
+        <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
+        }
+        <h2>@houseListing.Profile?.Title</h2>
+        <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
+        <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
+        <p><strong>Status:</strong> @houseListing.Status</p>
+
+        @if (houseListing.Profile != null)
+        {
+        <div class="profile-details">
+            <h3>House Profile Details</h3>
+            <p><strong>Description:</strong> @houseListing.Profile.Description</p>
+            <p><strong>City:</strong> @houseListing.Profile.City</p>
+            <p><strong>Region:</strong> @houseListing.Profile.Region</p>
+            <p><strong>Address:</strong> @houseListing.Profile.Address</p>
+            <p><strong>Amenities:</strong> @string.Join(", ", houseListing.Profile.Amenities)</p>
+            <p><strong>Chores:</strong> @string.Join(", ", houseListing.Profile.Chores)</p>
+            <p><strong>Rules:</strong> @string.Join(", ", houseListing.Profile.Rules)</p>
+        </div>
+        }
+        <CascadingAuthenticationState>
+            <AuthorizeView Roles="HouseOwner">
+                <Authorized Context="authContext">
+                    <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
+                </Authorized>
+            </AuthorizeView>
+
+            <AuthorizeView Roles="HouseSitter">
+                <Authorized Context="authContext">
+                    <button type="button" class="btn btn-primary" @onclick="HandleApplication">Apply</button>
+                </Authorized>
+            </AuthorizeView>
+        </CascadingAuthenticationState>
+
+    </div>
+    }
+</div>
+@*
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseOwner">
+        <Authorized Context="authContext">
+            <h1>House Listing Details</h1>
+
+            <div class="listing-container">
+                @if (houseListing == null)
+                {
+                <p>Loading house listing details...</p>
+                }
+                else
+                {
+                <div class="house-listing-details">
+                    @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
+                    {
+                    <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
+                    }
+                    <h2>@houseListing.Profile?.Title</h2>
+                    <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
+                    <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
+                    <p><strong>Status:</strong> @houseListing.Status</p>
+
+                    @if (houseListing.Profile != null)
+                    {
+                    <div class="profile-details">
+                        <h3>House Profile Details</h3>
+                        <p><strong>Description:</strong> @houseListing.Profile.Description</p>
+                        <p><strong>City:</strong> @houseListing.Profile.City</p>
+                        <p><strong>Region:</strong> @houseListing.Profile.Region</p>
+                        <p><strong>Address:</strong> @houseListing.Profile.Address</p>
+                        <p><strong>Amenities:</strong> @string.Join(", ", houseListing.Profile.Amenities)</p>
+                        <p><strong>Chores:</strong> @string.Join(", ", houseListing.Profile.Chores)</p>
+                        <p><strong>Rules:</strong> @string.Join(", ", houseListing.Profile.Rules)</p>
+                    </div>
+                    }
+                </div>
+                <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
+                }
+            </div>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="HouseSitter">
+        <Authorized Context="authContext">
+            <h1>House Listing Details</h1>
+
+            <div class="listing-container">
+                @if (houseListing == null)
+                {
+                <p>Loading house listing details...</p>
+                }
+                else
+                {
+                <div class="house-listing-details">
+                    @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
+                    {
+                    <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
+                    }
+                    <h2>@houseListing.Profile?.Title</h2>
+                    <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
+                    <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
+                    <p><strong>Status:</strong> @houseListing.Status</p>
+
+                    @if (houseListing.Profile != null)
+                    {
+                    <div class="profile-details">
+                        <h3>House Profile Details</h3>
+                        <p><strong>Description:</strong> @houseListing.Profile.Description</p>
+                        <p><strong>City:</strong> @houseListing.Profile.City</p>
+                        <p><strong>Region:</strong> @houseListing.Profile.Region</p>
+                        <p><strong>Address:</strong> @houseListing.Profile.Address</p>
+                        <p><strong>Amenities:</strong> @string.Join(", ", houseListing.Profile.Amenities)</p>
+                        <p><strong>Chores:</strong> @string.Join(", ", houseListing.Profile.Chores)</p>
+                        <p><strong>Rules:</strong> @string.Join(", ", houseListing.Profile.Rules)</p>
+                    </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-primary" @onclick="HandleApplication">Apply</button>
+                }
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+*@
+<style>
+    .listing-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 2em;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 2em auto;
+    }
+
+    .listing-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 1em;
+    }
+
+    h1, h2, h3 {
+        text-align: center;
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+    }
+
+    p {
+        font-family: Futura;
+        color: #3d3d3d;
+    }
+
+    .house-listing-details p, .profile-details p {
+        margin: 0.5em 0;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int listingId { get; set; }
+
+    private HouseListingDto houseListing;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadHouseListingDetails();
+    }
+
+    private async Task LoadHouseListingDetails()
+    {
+        houseListing = await HouseListingService.GetSingleAsync(listingId);
+
+        if (houseListing.Profile == null && houseListing.ProfileId != 0)
+        {
+            houseListing.Profile = await HouseProfileService.GetSingleAsync(houseListing.ProfileId);
+        }
+    }
+    private async Task DeleteAccount()
+    {
+        await HouseListingService.DeleteAsync(houseListing.Id);
+        Navigation.NavigateTo("/view-all-house-listings"); 
+        
+    }
+    private void HandleApplication()
+    {
+      //  Navigation.NavigateTo($"/application/{ListingId}");
+    }
+}

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\RESTAPI.csproj": {}
+    "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RESTAPI\\RESTAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj": {
+    "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj",
+        "projectUniqueName": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj",
         "projectName": "DatabaseRepositories",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\obj\\",
+        "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj",
+        "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DatabaseRepositories\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,11 +26,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj"
+              "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj": {
+                "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj"
               },
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj"
+              "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj": {
+                "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj"
               }
             }
           }
@@ -89,17 +89,17 @@
         }
       }
     },
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj": {
+    "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\obj\\",
+        "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj",
+        "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -147,17 +147,17 @@
         }
       }
     },
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj": {
+    "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj",
+        "projectUniqueName": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj",
         "projectName": "RepositoryContracts",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RepositoryContracts\\obj\\",
+        "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RepositoryContracts\\RepositoryContracts.csproj",
+        "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RepositoryContracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -169,8 +169,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj"
+              "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj": {
+                "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj"
               }
             }
           }
@@ -209,17 +209,17 @@
         }
       }
     },
-    "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\RESTAPI.csproj": {
+    "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RESTAPI\\RESTAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
+        "projectUniqueName": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
         "projectName": "RESTAPI",
-        "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
-        "packagesPath": "C:\\Users\\domin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\RESTAPI\\obj\\",
+        "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RESTAPI\\RESTAPI.csproj",
+        "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\RESTAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\domin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -231,11 +231,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj"
+              "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj": {
+                "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DatabaseRepositories\\DatabaseRepositories.csproj"
               },
-              "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj": {
-                "projectPath": "C:\\Users\\domin\\OneDrive\\Desktop\\SEP3\\SEP3_T2\\DTOs\\DTOs.csproj"
+              "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj": {
+                "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T2\\DTOs\\DTOs.csproj"
               }
             }
           }

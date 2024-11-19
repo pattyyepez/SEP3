@@ -27,6 +27,8 @@
                     <div class="house-listing-item">
                         <p>
                             @listing.Profile.Title
+                            <br/>
+                            @listing.StartDate - @listing.EndDate
                         </p>
                         <button class="btn btn-details" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
                     </div>
