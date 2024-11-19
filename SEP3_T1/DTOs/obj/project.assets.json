@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T1\\DTOs\\DTOs.csproj",
+      "projectUniqueName": "C:\\Users\\patty\\RiderProjects\\SEP3-Better\\SEP3_T1\\DTOs\\DTOs.csproj",
       "projectName": "DTOs",
-      "projectPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T1\\DTOs\\DTOs.csproj",
+      "projectPath": "C:\\Users\\patty\\RiderProjects\\SEP3-Better\\SEP3_T1\\DTOs\\DTOs.csproj",
       "packagesPath": "C:\\Users\\patty\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\patty\\SEP3_housepal\\SEP3_T1\\DTOs\\obj\\",
+      "outputPath": "C:\\Users\\patty\\RiderProjects\\SEP3-Better\\SEP3_T1\\DTOs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\patty\\AppData\\Roaming\\NuGet\\NuGet.Config"
