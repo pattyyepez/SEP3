@@ -72,7 +72,14 @@
 <style>
     @@font-face {
         font-family: 'LogoFont';
-        src: url('/fonts/logo-font.ttf');
+        src: url('fonts/logo-font.ttf');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura-medium-bt.ttf');
         font-weight: normal;
         font-style: normal;
     }
@@ -87,7 +94,7 @@
 
     label {
         color: #3d3d3d;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         margin-bottom: 0.1em;
     }
 
@@ -99,7 +106,7 @@
         width: 100vw;
         position: relative;
         overflow: hidden;
-        animation: rotateBackground 25s infinite;
+        animation: rotateBackground 25s infinite !important;
         background-size: cover;
         background-position: center;
     }
@@ -115,7 +122,7 @@
     }
 
     .login-fields {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         width: 50%;
         padding: 3em;
@@ -161,11 +168,11 @@
     }
 
     @@keyframes rotateBackground {
-         0% { background-image: url('/images/loginBackgrounds/1.jpg'); }
-         25% { background-image: url('/images/loginBackgrounds/2.jpg'); }
-         50% { background-image: url('/images/loginBackgrounds/3.jpg'); }
-         75% { background-image: url('/images/loginBackgrounds/5.jpg'); }
-         100% { background-image: url('/images/loginBackgrounds/1.jpg'); }
+         0% { background-image: url('images/loginBackgrounds/1.jpg'); }
+         25% { background-image: url('images/loginBackgrounds/2.jpg'); }
+         50% { background-image: url('images/loginBackgrounds/3.jpg'); }
+         75% { background-image: url('images/loginBackgrounds/5.jpg'); }
+         100% { background-image: url('images/loginBackgrounds/1.jpg'); }
     }
 </style>
 
