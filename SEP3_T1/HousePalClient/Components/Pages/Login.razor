@@ -15,7 +15,6 @@
                 <div class="login-box">
                     <div class="login-fields">
                         <h2>Welcome!</h2>
-                        <h3>Please login</h3>
                         <EditForm Model="loginModel" Context="formContext">
                             <DataAnnotationsValidator/>
 
@@ -89,13 +88,7 @@
         color: #ff7e5f;
         font-family: 'LogoFont', sans-serif;
         align-self: center;
-        margin-bottom: 0.5em;
-    }
-
-    label {
-        color: #3d3d3d;
-        font-family: 'FuturaFont', sans-serif;
-        margin-bottom: 0.1em;
+        margin-bottom: 0.25em;
     }
 
     .login-container {
@@ -122,14 +115,19 @@
     }
 
     .login-fields {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
         width: 50%;
         padding: 3em;
         background-color: white;
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+    
+    .login-fields label {
+        font-family: 'FuturaFont', sans-serif;
+        color: #3d3d3d;
+        font-size: 1.15em;
+        margin-left: 0.2em;
     }
 
     .welcome-message {
@@ -154,6 +152,7 @@
     .form-control {
         font-size: 1rem;
         padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .button-group {
@@ -165,7 +164,9 @@
     .btn {
         font-size: 1rem;
         padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
     }
+    
 
     @@keyframes rotateBackground {
          0% { background-image: url('images/loginBackgrounds/1.jpg'); }
