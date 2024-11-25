@@ -49,13 +49,16 @@
     </AuthorizeView>
     <AuthorizeView Roles="HouseOwner">
         <Authorized Context="authContext">
-            <p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
+            @{
+                Navigation.NavigateTo("/homepage-houseowner");
+            };
+            @*<p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
             <br/>
             <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button>
             <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseListing">Create House Listing</button>
             <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button>
             <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</button>
+            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</bu*@tton>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView Roles="HouseSitter">
@@ -179,6 +182,12 @@
 
 @code {
     private LoginModel loginModel = new();
+
+    private void GoToHomepage()
+    {
+        Navigation.NavigateTo("/homepage-houseowner");
+    }
+    
     private void HandleCreateHouseProfile()
     {
         Navigation.NavigateTo("/create-house-profile");

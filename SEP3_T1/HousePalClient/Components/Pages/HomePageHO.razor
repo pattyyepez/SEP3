@@ -1,0 +1,52 @@
+﻿@page "/homepage-houseowner"
+@using HousePalClient.Components.Layout
+@layout MainLayout
+@inject NavigationManager Navigation
+
+<div class="home-page-container">
+    <!-- Welcome Message -->
+    <div class="welcome-section">
+        <h1>Welcome back, @userName!</h1>
+        <p>Here's an overview of your account:</p>
+    </div>
+
+    <!-- Quick Overview Section -->
+    <div class="overview-section">
+        <div class="overview-item">
+            <h2>My Profile</h2>
+            <p>View and update your personal details</p>
+            <button @onclick="NavigateToProfile" class="btn btn-primary">Go to Profile</button>
+        </div>
+        <div class="overview-item">
+            <h2>My Houses</h2>
+            <p>Manage and view your registered houses</p>
+            <button @onclick="NavigateToMyHouses" class="btn btn-primary">Go to My Houses</button>
+        </div>
+        <div class="overview-item">
+            <h2>My Listings</h2>
+            <p>View or create new house listings</p>
+            <button @onclick="NavigateToMyListings" class="btn btn-primary">Go to My Listings</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Simulate user data for the homepage (replace this with actual data in a real app)
+    private string userName = "John Doe";
+
+    // Navigate to different pages
+    private void NavigateToProfile()
+    {
+        Navigation.NavigateTo("/profile");
+    }
+
+    private void NavigateToMyHouses()
+    {
+        Navigation.NavigateTo("/houses");
+    }
+
+    private void NavigateToMyListings()
+    {
+        Navigation.NavigateTo("/listings");
+    }
+}

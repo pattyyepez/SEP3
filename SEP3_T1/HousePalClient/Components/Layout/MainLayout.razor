@@ -1,26 +1,64 @@
-﻿@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+<div class="main-layout">
+    <!-- Banner and Sidebar Section -->
+    <div class="header-sidebar-container">
+        <!-- Banner with logo and menu button -->
+        <div class="banner">
+            <div class="menu-toggle" @onclick="ToggleMenu">
+                <button class="menu-btn">☰</button>
+            </div>
+            <div class="logo">
+                <img src="/images/logo.png" alt="HousePal Logo" />
+            </div>
         </div>
 
-        <article class="content px-4">
-            <CascadingAuthenticationState>
-                @Body
-            </CascadingAuthenticationState>
+        <!-- Sidebar Navigation Menu -->
+        <div class="sidebar" @class="(isMenuOpen ? 'open' : 'closed')">
+            <ul>
+                <li><button @onclick="NavigateToProfile">My Profile</button></li>
+                <li><button @onclick="NavigateToMyHouses">My Houses</button></li>
+                <li><button @onclick="NavigateToMyListings">My Listings</button></li>
+                <li><button @onclick="LogOut">Log Out</button></li>
+            </ul>
+        </div>
+    </div>
 
-        </article>
-    </main>
+    <!-- Main Content Section -->
+    <div class="content-area">
+        @Body
+    </div>
 </div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+@code {
+    private bool isMenuOpen = false;
+
+    // Navigation methods for the sidebar buttons
+    private void ToggleMenu()
+    {
+        isMenuOpen = !isMenuOpen;
+    }
+
+    private void NavigateToProfile()
+    {
+        Navigation.NavigateTo("/profile");
+    }
+
+    private void NavigateToMyHouses()
+    {
+        Navigation.NavigateTo("/houses");
+    }
+
+    private void NavigateToMyListings()
+    {
+        Navigation.NavigateTo("/listings");
+    }
+
+    private void LogOut()
+    {
+        // Handle log out logic (clear session, cookies, etc.)
+        Navigation.NavigateTo("/login");
+    }
+}
