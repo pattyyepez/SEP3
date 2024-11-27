@@ -100,7 +100,7 @@ public class HouseProfileController : ControllerBase
             var response = await _repo.GetSingleAsync(id);
             
             if(includeOwner)
-                response.Owner = await ownerRepo.GetSingleAsync(id);
+                response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
             
             return Ok(response);
         }

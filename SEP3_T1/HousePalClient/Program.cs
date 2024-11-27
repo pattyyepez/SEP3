@@ -8,11 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped(sp => new HttpClient
-    {
-        BaseAddress = new Uri("https://localhost:7134")
-    }
-);
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped(sp => new HttpClient() { BaseAddress = new Uri("https://localhost:7134") });
 
 builder.Services.AddScoped<IHouseOwnerService, HouseOwnerService>();
 builder.Services.AddScoped<IHouseSitterService, HouseSitterService>();

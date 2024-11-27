@@ -21,4 +21,10 @@
       <_ContentIncludedByDefault Remove="wwwroot\fonts\logo-font.ttf" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="Components\Pages\EditHouseProfile.razor.css">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+    </ItemGroup>
+
 </Project>

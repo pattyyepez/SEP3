@@ -192,12 +192,7 @@
 
     private async Task LoadHouseListingDetails()
     {
-        houseListing = await HouseListingService.GetSingleAsync(listingId);
-
-        if (houseListing.Profile == null && houseListing.ProfileId != 0)
-        {
-            houseListing.Profile = await HouseProfileService.GetSingleAsync(houseListing.ProfileId);
-        }
+        houseListing = await HouseListingService.GetSingleAsync(listingId, true);
     }
     private async Task DeleteAccount()
     {

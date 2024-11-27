@@ -60,9 +60,9 @@ public class HouseListingService : IHouseListingService
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<HouseListingDto> GetSingleAsync(int id)
+        public async Task<HouseListingDto> GetSingleAsync(int id, bool details)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/{id}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/{id}?includeProfile={details}");
 
             response.EnsureSuccessStatusCode();
     

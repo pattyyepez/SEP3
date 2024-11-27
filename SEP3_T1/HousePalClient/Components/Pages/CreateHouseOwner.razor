@@ -1,11 +1,15 @@
-﻿@using DTOs.HouseOwner
+﻿@using DTOs
+@using DTOs.HouseOwner
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
+@using MediaTypeHeaderValue = System.Net.Http.Headers.MediaTypeHeaderValue
 @using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
-@rendermode InteractiveServer
 @inject IHouseOwnerService HouseOwnerService
+@inject ILogger<FileUploadTest> Logger
+@inject HttpClient Http
+@rendermode InteractiveServer
 @page "/house-owner-signup"
 
 
@@ -19,32 +23,30 @@
                 <h2>Account Information</h2>
 
                 <label>Email:</label>
-                <input type="email" class="form-control" placeholder="Enter your email" @bind="email" required/>
+                <input type="email" class="form-control" placeholder="Enter your email" @bind="_email" required/>
 
                 <label>Password:</label>
-                <input type="password" class="form-control" placeholder="Create a password" @bind="password" required/>
+                <input type="password" class="form-control" placeholder="Create a password" @bind="_password" required/>
 
                 <label>Confirm Password:</label>
-                <input type="password" class="form-control" placeholder="Confirm your password" @bind="confirmPassword" required/>
+                <input type="password" class="form-control" placeholder="Confirm your password" @bind="_confirmPassword" required/>
             </div>
 
             <!-- Personal Information Fields -->
             <div class="form-section">
                 <h2>Personal Information</h2>
-
-                <!--   <label>First Name:</label>
-                   <input type="text" class="form-control" placeholder="Enter your first name" @bind="name" required /> -->
+                
                 <label>Name:</label>
-                <input type="text" class="form-control" placeholder="Enter your name" @bind="name" required/>
+                <input type="text" class="form-control" placeholder="Enter your name" @bind="_name" required/>
 
                 <label>CPR Number:</label>
-                <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="cpr" required/>
+                <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="_cpr" required/>
 
                 <label>Phone Number:</label>
-                <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="phone" required/>
+                <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="_phone" required/>
 
                 <label>Home Address:</label>
-                <input type="text" class="form-control" placeholder="Enter your home address" @bind="address" required/>
+                <input type="text" class="form-control" placeholder="Enter your home address" @bind="_address" required/>
             </div>
 
             <!-- Introduction Section -->
@@ -52,17 +54,17 @@
                 <h2>Introduce Yourself</h2>
 
                 <label>Short Introduction:</label>
-                <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="biography" required></textarea>
+                <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="_biography" required></textarea>
                 <label>Upload a Profile Picture:</label>
-                <InputFile OnChange="HandleFileSelected" accept="image/*" class="form-control"/>
+                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
             </div>
 
             <!-- Display Message if exists -->
-            @if (!string.IsNullOrEmpty(message))
+            @if (!string.IsNullOrEmpty(_message))
             {
                 <div>
-                    <label>@message</label>
+                    <label>@_message</label>
                 </div>
             }
 
@@ -71,16 +73,17 @@
         </form>
     </div>
 </div>
-@if (showSuccessMessage)
+@if (_showSuccessMessage)
 {
     <div class="modal-background">
         <div class="modal-content">
-            <h2>Hello, @name!</h2>
+            <h2>Hello, @_name!</h2>
             <p>Your account has been created successfully.</p>
             <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login</button>
         </div>
     </div>
 }
+
 <style>
     @@font-face {
         font-family: 'LogoFont';
@@ -308,17 +311,20 @@
 </style>
 
 @code {
-    private string email = string.Empty;
-    private string password = string.Empty;
-    private string confirmPassword = string.Empty;
-    private string name = string.Empty;
-    private string cpr = string.Empty;
-    private string phone = string.Empty;
-    private string address = string.Empty;
-    private string biography = string.Empty;
-    private string message = string.Empty;
-    private string profilePictureUrl = string.Empty;
-    private bool showSuccessMessage = false;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _confirmPassword = string.Empty;
+    private string _name = string.Empty;
+    private string _cpr = string.Empty;
+    private string _phone = string.Empty;
+    private string _address = string.Empty;
+    private string _biography = string.Empty;
+    private string _message = string.Empty;
+    private string _profilePictureUrl = string.Empty;
+    private bool _showSuccessMessage = false;
+    
+    private List<FileDto> _uploadResults = new();
+    private int maxAllowedFiles = 3;
 
     private void RedirectToLogin()
     {
@@ -327,60 +333,115 @@
 
     private async Task CreateOwner()
     {
-        message = string.Empty;
+        _message = string.Empty;
 
-        if (password != confirmPassword)
+        if (_password != _confirmPassword)
         {
-            message = "Passwords do not match";
+            _message = "Passwords do not match";
             return;
         }
 
         var createHouseOwnerDto = new CreateHouseOwnerDto
         {
-            Name = name,
-            Email = email,
-            Password = password,
-            ProfilePicture = profilePictureUrl,
-            CPR = cpr,
-            Phone = phone,
-            Address = address,
-            Biography = biography
+            Name = _name,
+            Email = _email,
+            Password = _password,
+            ProfilePicture = _profilePictureUrl,
+            CPR = _cpr,
+            Phone = _phone,
+            Address = _address,
+            Biography = _biography
         };
 
         try
         {
             HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
-            showSuccessMessage = true;
-            message = $"House Owner created successfully!";
+            _showSuccessMessage = true;
+            _message = $"House Owner created successfully!";
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            message = $"Error: {e.Message}";
+            _message = $"Error: {e.Message}";
         }
     }
 
 
-    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    private async Task OnInputProfilePictureChange(InputFileChangeEventArgs e)
     {
-        var file = e.File;
-        if (file != null)
+        if (!string.IsNullOrEmpty(_profilePictureUrl))
+            await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
+
+        long maxFileSize = long.MaxValue;
+        var upload = false;
+
+        using var content = new MultipartFormDataContent();
+
+        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        if (_uploadResults.SingleOrDefault(
+                f => f.FileName == file.Name) is null)
         {
-            var uploadedFileUrl = await UploadProfilePicture(file);
-            profilePictureUrl = uploadedFileUrl;
+            try
+            {
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+
+                fileContent.Headers.ContentType =
+                    new MediaTypeHeaderValue(file.ContentType);
+
+                content.Add(
+                    content: fileContent,
+                    name: "\"files\"",
+                    fileName: file.Name);
+
+                upload = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogInformation(
+                    $"{file.Name} not uploaded (Err: 6): {ex.Message}",
+                    file.Name, ex.Message);
+
+                _uploadResults.Add(
+                    new()
+                    {
+                        FileName = file.Name,
+                        ErrorCode = 6,
+                        Uploaded = false
+                    });
+            }
+        }
+
+        if (upload)
+        {
+            var response = await Http.PostAsync("/Filesave", content);
+
+            var newUploadResults = await response.Content
+                .ReadFromJsonAsync<IList<FileDto>>();
+
+            if (newUploadResults is not null)
+            {
+                _profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
+            }
         }
     }
 
-    private async Task<string> UploadProfilePicture(IBrowserFile file)
+    private static bool FileUpload(IList<FileDto> uploadResults,
+        string? fileName, ILogger<FileUploadTest> logger, out FileDto result)
     {
-// converting to bytes
-        var buffer = new byte[file.Size];
-        await file.OpenReadStream().ReadAsync(buffer);
+        result = uploadResults.SingleOrDefault(f => f.FileName == fileName) ?? new();
 
-// saving
-        string imageUrl = file.Name;
-//string imageUrl = "/path/to/images/" + file.Name; 
-        return imageUrl;
+        if (!result.Uploaded)
+        {
+            logger.LogInformation($"{fileName} not uploaded (Err: 5)", fileName);
+            result.ErrorCode = 5;
+        }
+
+        return result.Uploaded;
+    }
+
+    private class File
+    {
+        public string? Name { get; set; }
     }
 
 }

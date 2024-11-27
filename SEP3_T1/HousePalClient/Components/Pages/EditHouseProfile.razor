@@ -1,6 +1,5 @@
-﻿@page "/create-house-profile"
+﻿@page "/edit-house-profile/{profileId}"
 @using System.Net.Http.Headers
-@using System.Security.Claims
 @using DTOs
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
@@ -15,12 +14,9 @@
 @inject HttpClient Http
 @rendermode InteractiveServer
 
-@* @attribute [Authorize] *@
-
 <div class="page-container">
     <div class="signup-page-container">
-        <p>Hello, @_name!</p>
-        <h1>Create Your House Profile</h1>
+        <h1>Edit House Profile</h1>
 
         <form class="house-profile-form" @onsubmit="CreateProfile">
             <!-- House Profile Information Fields -->
@@ -29,7 +25,7 @@
 
                 <label>Title:</label>
                 <input type="text" class="form-control" placeholder="Enter title" @bind="_title" required/>
-                
+
                 <label>Description:</label>
                 <textarea class="form-control" rows="4" placeholder="Describe your house" @bind="_description" required></textarea>
 
@@ -124,136 +120,21 @@
     </div>
 }
 
-<style>
-
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    .page-container
-    {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
-    }
-
-    .signup-page-container {
-        max-width: 800px;
-        margin: 63em 0 3em 0;
-        padding: 2em 2em;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        text-align: center;
-        color: #ff7e5f;
-        margin-bottom: 1em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    h2 {
-        text-align: center;
-        color: #3d3d3d;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 1.7rem;
-    }
-
-    .form-section {
-        margin-bottom: 2em;
-        padding: 1em;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.75em;
-        margin-top: 0.5em;
-        margin-bottom: 1.5em;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1rem;
-    }
-
-    input
-    {
-        font-family: Futura;
-    }
-
-    label
-    {
-        font-family: Futura;
-        color: #3d3d3d;
-    }
-
-    textarea.form-control {
-        resize: vertical;
-        font-family: Futura;
-    }
-
-    .btn-primary {
-        display: block;
-        width: 100%;
-        padding: 0.75em;
-        font-size: 1.2rem;
-        background-color: #ff7e5f;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-family: Futura;
-    }
-
-    .btn-primary:hover {
-        background-color: #feb47b;
-    }
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        overflow: hidden; 
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-    }
-
-
-</style>
+@functions
+{
+    [Parameter] public string? profileId { get; set; }
+}
 
 @code {
-    private string _title = "poop"; //string.Empty;
-    private string _description = "poop"; //string.Empty;
-    private string _city = "poop"; //string.Empty;
-    private string _region = "poop"; //string.Empty;
-    private string _address = "poop"; //string.Empty;
+    private string _title = string.Empty;
+    private string _description = string.Empty;
+    private string _city = string.Empty;
+    private string _region = string.Empty;
+    private string _address = string.Empty;
     private List<string> _pictures = [];
     private string _message = string.Empty;
     private bool _showSuccessMessage = false;
-    private string _name = "";
+    private string _name = string.Empty;
     private int _houseOwnerId = 0;
     private MultiSelectList? _amenities = null;
     private MultiSelectList? _chores = null;
@@ -271,9 +152,9 @@
     {
         _message = string.Empty;
 
-        var createHouseProfileDto = new CreateHouseProfileDto
+        var updateProfile = new UpdateHouseProfileDto()
         {
-            OwnerId = _houseOwnerId,
+            Id = int.Parse(profileId),
             Title = _title,
             Description = _description,
             City = _city,
@@ -281,34 +162,37 @@
             Address = _address,
             Pictures = _pictures
         };
-        
-        createHouseProfileDto.Chores = [];
-        foreach (var chore in _chores){
+
+        updateProfile.Chores = [];
+        foreach (var chore in _chores!)
+        {
             if (chore.Selected)
-            { 
-                createHouseProfileDto.Chores.Add(chore.Text);
+            {
+                updateProfile.Chores.Add(chore.Text);
             }
         }
-        
-        createHouseProfileDto.Rules = [];
-        foreach (var rule in _rules){
+
+        updateProfile.Rules = [];
+        foreach (var rule in _rules!)
+        {
             if (rule.Selected)
-            { 
-                createHouseProfileDto.Rules.Add(rule.Text);
+            {
+                updateProfile.Rules.Add(rule.Text);
             }
         }
-        
-        createHouseProfileDto.Amenities = [];
-        foreach (var amenity in _amenities){
+
+        updateProfile.Amenities = [];
+        foreach (var amenity in _amenities!)
+        {
             if (amenity.Selected)
-            { 
-                createHouseProfileDto.Amenities.Add(amenity.Text);
+            {
+                updateProfile.Amenities.Add(amenity.Text);
             }
         }
-        
+
         try
         {
-            await HouseProfileService.AddAsync(createHouseProfileDto);
+            await HouseProfileService.UpdateAsync(updateProfile);
             _showSuccessMessage = true;
             _message = "House Profile created successfully!";
         }
@@ -318,13 +202,11 @@
         }
     }
 
-
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         foreach (var fileToDelete in _pictures)
         {
-            if (!string.IsNullOrEmpty(fileToDelete))
-                await Http.DeleteAsync($"/Filesave/{fileToDelete.Split('.')[0]}/{fileToDelete.Split('.')[1]}");
+            await Http.DeleteAsync($"/Filesave/{fileToDelete.Split('.')[0]}/{fileToDelete.Split('.')[1]}");
         }
         
         _pictures = [];
@@ -386,36 +268,54 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
+        _rules = new MultiSelectList(HouseProfileService.GetAllRules());
+        
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState?.User;
-        
-        if (user?.Identity != null && user.Identity.IsAuthenticated)
+
+        if (user?.Identity != null && user.Identity.IsAuthenticated && profileId != null)
         {
-            var houseOwnerIdClaim = user.FindFirst(c => c.Type == "Id");
-            if (houseOwnerIdClaim != null)
+            var profile = await HouseProfileService.GetSingleAsync(int.Parse(profileId), false);
+            _houseOwnerId = profile.OwnerId;
+            _title = profile.Title;
+            _description = profile.Description;
+            _city = profile.City;
+            _region = profile.Region;
+            _address = profile.Address;
+            _pictures = profile.Pictures;
+            
+            foreach (var rule in _rules)
             {
-                _houseOwnerId = int.Parse(houseOwnerIdClaim.Value);
+                if (profile.Rules.Contains(rule.Text))
+                {
+                    rule.Selected = true;
+                }
             }
-        
-            var nameClaim = user.FindFirst(ClaimTypes.Name);
-            if (nameClaim != null)
+            
+            foreach (var chore in _chores)
             {
-                _name = nameClaim.Value;
+                if (profile.Chores.Contains(chore.Text))
+                {
+                    chore.Selected = true;
+                }
+            }
+            
+            foreach (var amenity in _amenities)
+            {
+                if (profile.Amenities.Contains(amenity.Text))
+                {
+                    amenity.Selected = true;
+                }
             }
         }
         else
         {
-            _message = "User not authenticated.";
+            Console.WriteLine("User is NOT authenticated.");
         }
         
-        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
-        _rules = new MultiSelectList(HouseProfileService.GetAllRules());
         await InvokeAsync(StateHasChanged);
     }
-    
-    private class File
-    {
-        public string? Name { get; set; }
-    }
+
 }

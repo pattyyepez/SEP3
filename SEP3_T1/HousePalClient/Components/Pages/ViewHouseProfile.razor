@@ -6,6 +6,7 @@
 @layout LoginLayout
 @inject NavigationManager Navigation
 @inject IHouseProfileService HouseProfileService
+@rendermode InteractiveServer
 
 <h1>House Profile Details</h1>
 
@@ -28,6 +29,8 @@
             <p><strong>Amenities:</strong> @string.Join(", ", houseProfile.Amenities)</p>
             <p><strong>Chores:</strong> @string.Join(", ", houseProfile.Chores)</p>
             <p><strong>Rules:</strong> @string.Join(", ", houseProfile.Rules)</p>
+            <button class="btn-edit" @onclick="EditHouseProfile">Edit House Profile</button>
+            @* <button class="btn-delete" @onclick="DeleteProfile">Delete House Profile</button> *@
         </div>
     }
 </div>
@@ -75,6 +78,11 @@
 
     private HouseProfileDto houseProfile;
 
+    private void EditHouseProfile()
+    {
+        Navigation.NavigateTo($"/edit-house-profile/{profileId}");
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await LoadHouseProfile();
@@ -82,6 +90,6 @@
 
     private async Task LoadHouseProfile()
     {
-        houseProfile = await HouseProfileService.GetSingleAsync(profileId); 
+        houseProfile = await HouseProfileService.GetSingleAsync(profileId, false); 
     }
 }

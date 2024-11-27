@@ -1,11 +1,13 @@
 package en.via.sep3_t3.domain;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class Application
 {
-  private int listing_id;
-  private int sitter_id;
+  @Id private int listing_id;
+  @Id private int sitter_id;
   private String message;
   private String status;
   private Date date;

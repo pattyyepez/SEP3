@@ -1,10 +1,12 @@
 package en.via.sep3_t3.domain;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class HouseListing
 {
-  private int id;
+  @Id private int id;
   private int profile_id;
   private Date startDate;
   private Date endDate;

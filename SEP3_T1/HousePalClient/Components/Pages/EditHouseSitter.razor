@@ -1,4 +1,5 @@
-﻿@page "/edit-account-sitter"
+﻿@using System.Net.Http.Headers
+@using DTOs
 @using DTOs.HouseSitter
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
@@ -6,14 +7,12 @@
 @using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
-@rendermode InteractiveServer
-@inject IHouseOwnerService HouseOwnerService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
+@inject ILogger<FileUploadTest> Logger
 @inject IHouseSitterService HouseSitterService
-@using Microsoft.AspNetCore.Components.Authorization
-
-
+@rendermode InteractiveServer
+@page "/edit-account-sitter"
 
 <CascadingAuthenticationState>
     <AuthorizeView> 
@@ -21,7 +20,7 @@
         <div class="signup-page-container">
             <h1>Update Your House Sitter Account</h1>
 
-            <form class="house-sitter-form" @onsubmit="CreateOwner">
+            <form class="house-sitter-form" @onsubmit="EditSitter">
                 <!-- Account Information Fields -->
                 @* <div class="form-section"> *@
                 @*     <h2>Account Information</h2> *@
@@ -41,13 +40,13 @@
                     <h2>Personal Information</h2>
                 
                     <label>Name:</label>
-                    <input type="text" class="form-control" placeholder="Enter your name" @bind="name" required/>
+                    <input type="text" class="form-control" placeholder="Enter your name" @bind="_name" required/>
 
                     <label>CPR Number:</label>
-                    <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="cpr" required/>
+                    <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="_cpr" required/>
 
                     <label>Phone Number:</label>
-                    <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="phone" required/>
+                    <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="_phone" required/>
                 </div>
 
                 <!-- Introduction Section -->
@@ -55,16 +54,16 @@
                     <h2>Introduce Yourself</h2>
 
                     <label>Short Introduction:</label>
-                    <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="biography" required></textarea>
+                    <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="_biography" required></textarea>
                 
                     <label>Relevant experiences:</label>
-                    <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="experiences" required></textarea>
+                    <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
                     <label>Upload a Profile Picture:</label>
-                    <InputFile OnChange="HandleFileSelected" accept="image/*" class="form-control" multiple/>
+                    <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
                 
                     <label>Upload At Least 3 Pictures:</label>
-                    <InputFile OnChange="HandleFileSelected" accept="image/*" class="form-control" multiple/>
+                    <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
 
                 </div>
 
@@ -72,7 +71,7 @@
                     <h2>Skills</h2>
             
                     <ul>
-                        @foreach(var item in skills)
+                        @foreach(var item in _skills)
                         {
                             <li>
                                 <input type="checkbox" @bind="item.Selected"/> @* @onclick="(()=>handleClick(item))" *@
@@ -85,26 +84,26 @@
                 </div>
 
                 <!-- Display Message if exists -->
-                @if (!string.IsNullOrEmpty(message))
+                @if (!string.IsNullOrEmpty(_message))
                 {
                     <div>
-                        <label>@message</label>
+                        <label>@_message</label>
                     </div>
                 }
 
                 <!-- Submit Button -->
-                <button type="button" @onclick="CreateOwner" class="btn btn-primary">Create Account</button>
+                <button type="button" @onclick="EditSitter" class="btn btn-primary">Create Account</button>
             </form>
         </div>
     </div>
     </AuthorizeView>
 
 </CascadingAuthenticationState>
-@if (showSuccessMessage)
+@if (_showSuccessMessage)
 {
     <div class="modal-background">
         <div class="modal-content">
-            <h2>Hello, @name!</h2>
+            <h2>Hello, @_name!</h2>
             <p>Your account has been created successfully.</p>
             <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login</button>
         </div>
@@ -345,118 +344,199 @@
     // [Inject] public IHouseSitterService service { get; set; }
     private HouseSitterDto houseSitterProfile;
     private int _userId;
-
-   // private string emailOld = @context.User.Identity?.Name;
-
-    private string email = string.Empty;
-    private string password = string.Empty;
-    private string confirmPassword = string.Empty;
-    private string name = string.Empty;
-    private string cpr = string.Empty;
-    private string phone = string.Empty;
     
-    private string biography = string.Empty;
-    private string experiences = string.Empty;
+    private string _name = string.Empty;
+    private string _cpr = string.Empty;
+    private string _phone = string.Empty;
     
-    private string message = string.Empty;
-    private string profilePictureUrl = string.Empty;
-    private bool showSuccessMessage = false;
+    private string _biography = string.Empty;
+    private string _experiences = string.Empty;
+    
+    private string _message = string.Empty;
+    private string _profilePictureUrl = string.Empty;
+    private bool _showSuccessMessage = false;
 
-    MultiSelectList skills;
-    List<string> pictures = [];
+    MultiSelectList? _skills;
+    List<string> _pictures = [];
+    
+    private List<FileDto> _uploadResults = new();
+    private int maxAllowedFiles = 3;
 
     private void RedirectToLogin()
     {
         Navigation.NavigateTo("/");
     }
 
-    private async Task CreateOwner()
+    private async Task EditSitter()
     {
-        message = string.Empty;
-        
-        if (password != confirmPassword)
-        {
-            message = "Passwords do not match";
-            return;
-        }
+        _message = string.Empty;
         
         var updateHouseSitterDto = new UpdateHouseSitterDto()
         {
             UserId = _userId,
-            Name = houseSitterProfile.Name,
+            Name = _name,
             Email = houseSitterProfile.Email,
             Password = houseSitterProfile.Password,
-            CPR = cpr,
-            Phone = phone,
-            Experience = experiences,
-            Biography = biography
+            ProfilePicture = _profilePictureUrl,
+            CPR = _cpr,
+            Phone = _phone,
+            Experience = _experiences,
+            Biography = _biography,
+            Pictures = _pictures
         };
 
         updateHouseSitterDto.Skills = [];
-        foreach (var skill in skills){
+        foreach (var skill in _skills){
             if (skill.Selected)
             {
                 Console.WriteLine(skill.Text);
                 updateHouseSitterDto.Skills.Add(skill.Text);
             }
         }
-
-        updateHouseSitterDto.ProfilePicture = string.IsNullOrEmpty(profilePictureUrl) ? houseSitterProfile.ProfilePicture : profilePictureUrl;
-        updateHouseSitterDto.Pictures = pictures.Any() ? houseSitterProfile.Pictures : pictures;
         
         try
         {
             HouseSitterDto created = await HouseSitterService.UpdateAsync(updateHouseSitterDto);
-            showSuccessMessage = true;
-            message = $"House Sitter edited successfully!";
+            _showSuccessMessage = true;
+            _message = $"House Sitter edited successfully!";
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            message = $"Error: {e.Message}";
+            _message = $"Error: {e.Message}";
+        }
+    }
+    
+    private async Task OnInputProfilePictureChange(InputFileChangeEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(_profilePictureUrl))
+            await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
+
+        _uploadResults = new();
+        long maxFileSize = long.MaxValue;
+        var upload = false;
+
+        using var content = new MultipartFormDataContent();
+
+        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        if (_uploadResults.SingleOrDefault(
+                f => f.FileName == file.Name) is null)
+        {
+            try
+            {
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+
+                fileContent.Headers.ContentType =
+                    new MediaTypeHeaderValue(file.ContentType);
+
+                content.Add(
+                    content: fileContent,
+                    name: "\"files\"",
+                    fileName: file.Name);
+
+                upload = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogInformation(
+                    $"{file.Name} not uploaded (Err: 6): {ex.Message}",
+                    file.Name, ex.Message);
+
+                _uploadResults.Add(
+                    new()
+                    {
+                        FileName = file.Name,
+                        ErrorCode = 6,
+                        Uploaded = false
+                    });
+            }
+        }
+
+        if (upload)
+        {
+            var response = await Http.PostAsync("/Filesave", content);
+
+            var newUploadResults = await response.Content
+                .ReadFromJsonAsync<IList<FileDto>>();
+
+            if (newUploadResults is not null)
+            {
+                _profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
+            }
         }
     }
 
 
-    private async Task HandleFileSelected(InputFileChangeEventArgs e)
-    {
-        var files = e.GetMultipleFiles(e.FileCount);
-        if (files != null)
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    { 
+        foreach (var fileToDelete in _pictures)
         {
-            if (e.FileCount == 1)
+            if (!string.IsNullOrEmpty(fileToDelete))
             {
-                // var uploadedFileUrl = await UploadProfilePicture(file.);
-                profilePictureUrl = files[0].Name;
+                await Http.DeleteAsync($"/Filesave/{fileToDelete.Split('.')[0]}/{fileToDelete.Split('.')[1]}");
             }
-            else
+
+        }
+        _pictures = [];
+        long maxFileSize = long.MaxValue;
+        var upload = false;
+
+        using var content = new MultipartFormDataContent();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            if (_uploadResults.SingleOrDefault(
+                    f => f.FileName == file.Name) is null)
             {
-                foreach (var file in files)
+                try
+                { 
+                    var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+
+                    fileContent.Headers.ContentType =
+                        new MediaTypeHeaderValue(file.ContentType);
+
+                    content.Add(
+                        content: fileContent,
+                        name: "\"files\"",
+                        fileName: file.Name);
+
+                    upload = true;
+                }
+                catch (Exception ex)
                 {
-                    pictures.Add(file.Name);
+                    Logger.LogInformation(
+                        $"{file.Name} not uploaded (Err: 6): {ex.Message}",
+                        file.Name, ex.Message);
+
+                    _uploadResults.Add(
+                        new()
+                        {
+                            FileName = file.Name,
+                            ErrorCode = 6,
+                            Uploaded = false
+                        });
                 }
             }
         }
-    }
 
-    private async Task<string> UploadProfilePicture(IBrowserFile file)
-    {
-// converting to bytes
-        var buffer = new byte[file.Size];
-        await file.OpenReadStream().ReadAsync(buffer);
+        if (upload)
+        {
+            var response = await Http.PostAsync("/Filesave", content);
 
-// saving
-        string imageUrl = file.Name;
-//string imageUrl = "/path/to/images/" + file.Name; 
-        return imageUrl;
-    }
+            var newUploadResults = await response.Content
+                .ReadFromJsonAsync<IList<FileDto>>();
 
-    protected override async void OnInitialized()
-    {
-        skills = new MultiSelectList(HouseSitterService.GetAllSkills());
-        await InvokeAsync(StateHasChanged);
+            if (newUploadResults is not null)
+            {
+                // _uploadResults = _uploadResults.Concat(newUploadResults).ToList();
+                _pictures.AddRange(newUploadResults.Select(p => p.StoredFileName!).ToList());
+            }
+        }
     }
+    
     protected override async Task OnInitializedAsync()
     {
+        _skills = new MultiSelectList(HouseSitterService.GetAllSkills());
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState?.User;
 
@@ -469,12 +549,22 @@
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
                     houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
-                    email = houseSitterProfile.Email;
-                    cpr = houseSitterProfile.CPR;
-                    phone = houseSitterProfile.Phone;
-                    name = houseSitterProfile.Name;
-                    experiences = houseSitterProfile.Experience;
-                    biography = houseSitterProfile.Biography;
+                    _profilePictureUrl = houseSitterProfile.ProfilePicture;
+                    _cpr = houseSitterProfile.CPR;
+                    _phone = houseSitterProfile.Phone;
+                    _name = houseSitterProfile.Name;
+                    _experiences = houseSitterProfile.Experience;
+                    _biography = houseSitterProfile.Biography;
+                    _pictures = houseSitterProfile.Pictures;
+
+                    foreach (var skill in _skills)
+                    {
+                        if (houseSitterProfile.Skills.Contains(skill.Text))
+                        {
+                            skill.Selected = true;
+                        }
+                    }
+
                     _userId = sitterId;
                 }
             }

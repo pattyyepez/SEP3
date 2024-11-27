@@ -1,7 +1,9 @@
 package en.via.sep3_t3.domain;
 
+import org.springframework.data.annotation.Id;
+
 public abstract class User {
-  private int userId;
+  @Id private int userId;
   private String name;
   private String email;
   private String password;

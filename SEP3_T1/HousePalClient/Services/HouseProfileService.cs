@@ -29,7 +29,7 @@ public class HouseProfileService : IHouseProfileService
             return JsonConvert.DeserializeObject<HouseProfileDto>(jsonResponse);
         }
 
-        public async Task<HouseProfileDto> UpdateAsync(HouseProfileDto houseProfile)
+        public async Task<HouseProfileDto> UpdateAsync(UpdateHouseProfileDto houseProfile)
         {
             var convertedHouseProfile = JsonConvert.SerializeObject(houseProfile);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseProfile);
@@ -52,9 +52,9 @@ public class HouseProfileService : IHouseProfileService
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<HouseProfileDto> GetSingleAsync(int id)
+        public async Task<HouseProfileDto> GetSingleAsync(int id, bool details)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetHouseProfile/{id}?includeOwner=true");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetHouseProfile/{id}?includeOwner={details}");
 
             response.EnsureSuccessStatusCode();
     

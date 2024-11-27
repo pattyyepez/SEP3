@@ -1,11 +1,13 @@
 package en.via.sep3_t3.domain;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HouseProfile
 {
-  private int id;
+  @Id private int id;
   private String title;
   private String description;
   private String city;
