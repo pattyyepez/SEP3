@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/login"
 @layout LoginLayout
 @using HousePalClient.Auth
 @using HousePalClient.Components.Layout
@@ -15,7 +15,6 @@
                 <div class="login-box">
                     <div class="login-fields">
                         <h2>Welcome!</h2>
-                        <h3>Please login</h3>
                         <EditForm Model="loginModel" Context="formContext">
                             <DataAnnotationsValidator/>
 
@@ -72,7 +71,14 @@
 <style>
     @@font-face {
         font-family: 'LogoFont';
-        src: url('/fonts/logo-font.ttf');
+        src: url('fonts/logo-font.ttf');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
     }
@@ -82,13 +88,7 @@
         color: #ff7e5f;
         font-family: 'LogoFont', sans-serif;
         align-self: center;
-        margin-bottom: 0.5em;
-    }
-
-    label {
-        color: #3d3d3d;
-        font-family: Futura;
-        margin-bottom: 0.1em;
+        margin-bottom: 0.25em;
     }
 
     .login-container {
@@ -99,7 +99,7 @@
         width: 100vw;
         position: relative;
         overflow: hidden;
-        animation: rotateBackground 25s infinite;
+        animation: rotateBackground 25s infinite !important;
         background-size: cover;
         background-position: center;
     }
@@ -115,14 +115,19 @@
     }
 
     .login-fields {
-        font-family: Futura;
-        color: #3d3d3d;
         width: 50%;
         padding: 3em;
         background-color: white;
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+    
+    .login-fields label {
+        font-family: 'FuturaFont', sans-serif;
+        color: #3d3d3d;
+        font-size: 1.15em;
+        margin-left: 0.2em;
     }
 
     .welcome-message {
@@ -147,6 +152,7 @@
     .form-control {
         font-size: 1rem;
         padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .button-group {
@@ -158,14 +164,16 @@
     .btn {
         font-size: 1rem;
         padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
     }
+    
 
     @@keyframes rotateBackground {
-         0% { background-image: url('/images/loginBackgrounds/1.jpg'); }
-         25% { background-image: url('/images/loginBackgrounds/2.jpg'); }
-         50% { background-image: url('/images/loginBackgrounds/3.jpg'); }
-         75% { background-image: url('/images/loginBackgrounds/5.jpg'); }
-         100% { background-image: url('/images/loginBackgrounds/1.jpg'); }
+         0% { background-image: url('images/loginBackgrounds/1.jpg'); }
+         25% { background-image: url('images/loginBackgrounds/2.jpg'); }
+         50% { background-image: url('images/loginBackgrounds/3.jpg'); }
+         75% { background-image: url('images/loginBackgrounds/5.jpg'); }
+         100% { background-image: url('images/loginBackgrounds/1.jpg'); }
     }
 </style>
 
