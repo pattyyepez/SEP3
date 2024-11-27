@@ -8,14 +8,26 @@
 /* Banner Section */
 .banner {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    background-color: #ff7e5f; /* Banner color */
-    padding: 1em;
+    max-height: 105vh;
+    min-width: 100vw;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral/Orange Gradient */
+}
+
+.logo {
+    margin: 1vh;
+    align-self: flex-end;
+
+}
+
+.logo img {
+    width: 7.5em;
 }
 
 .menu-toggle {
     display: flex;
+    align-self: flex-start;
     align-items: center;
 }
 
@@ -27,9 +39,6 @@
     cursor: pointer;
 }
 
-.logo img {
-    width: 150px; /* Adjust the size as needed */
-}
 
 /* Sidebar Navigation Menu */
 .sidebar {
@@ -38,15 +47,11 @@
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: red;
-    color: white;
-    padding-top: 2em;
-    transition: transform 0.3s ease-in-out;
-    transform: translateX(-250px); /* Hidden by default */
-}
-
-.sidebar.open {
-    transform: translateX(0); /* Slide in */
+    background-color: #333;
+    color: #fff;
+    padding-top: 20px;
+ /*   transition: transform 0.3s ease-in-out;
+    z-index: 100;*/
 }
 
 .sidebar ul {

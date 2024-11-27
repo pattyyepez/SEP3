@@ -7,8 +7,8 @@
     <div class="header-sidebar-container">
         <!-- Banner with logo and menu button -->
         <div class="banner">
-            <div class="menu-toggle" @onclick="ToggleMenu">
-                <button class="menu-btn">☰</button>
+            <div class="menu-toggle">
+                <button class="menu-btn" @onclick="ToggleMenu">☰</button>
             </div>
             <div class="logo">
                 <img src="/images/logo.png" alt="HousePal Logo" />
@@ -16,7 +16,7 @@
         </div>
 
         <!-- Sidebar Navigation Menu -->
-        <div class="sidebar" @class="(isMenuOpen ? 'open' : 'closed')">
+        <div class="sidebar" style="@sidebarStyle">
             <ul>
                 <li><button @onclick="NavigateToProfile">My Profile</button></li>
                 <li><button @onclick="NavigateToMyHouses">My Houses</button></li>
@@ -33,7 +33,10 @@
 </div>
 
 @code {
+    
     private bool isMenuOpen = false;
+    
+    private string sidebarStyle => isMenuOpen ? "display: block;" : "display: none;";
 
     // Navigation methods for the sidebar buttons
     private void ToggleMenu()
