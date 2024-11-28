@@ -5,7 +5,7 @@ using RepositoryContracts;
 namespace RESTAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class HouseListingController : ControllerBase
 {
     private readonly IHouseListingRepository _repo;
@@ -157,6 +157,55 @@ public class HouseListingController : ControllerBase
         {
             return StatusCode(500,
                 $"Error deleting HouseListing: {ex.Message}");
+        }
+    }
+
+    [HttpGet] 
+    public async Task<IActionResult> GetFilteredListings(
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromQuery] FilteredHouseListingsDto filter)
+    {
+        try
+        {
+            var listings = _repo.GetAll();
+            foreach (var listing in listings)
+            {
+                listing.Profile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            }
+
+            if(!string.IsNullOrWhiteSpace(filter.Region))
+                listings = listings
+                    .Where(l => l.Profile.Region == filter.Region);
+                    
+            if(!string.IsNullOrWhiteSpace(filter.City))
+                listings = listings
+                    .Where(l => l.Profile.City == filter.City);
+
+            if (filter.StartDay.HasValue)
+                listings = listings
+                    .Where(l => Math.Abs(
+                        l.StartDate.Subtract(new DateTime(filter.StartYear.Value, filter.StartMonth.Value, filter.StartDay.Value)).TotalDays) < 6);
+            
+            if (filter.EndDay.HasValue)
+                listings = listings
+                    .Where(l => Math.Abs(
+                        l.EndDate.Subtract(new DateTime(filter.EndYear.Value, filter.EndMonth.Value, filter.EndDay.Value)).TotalDays) < 6);
+                
+            if (filter.Amenities.Any())
+                listings = listings
+                    .Where(l => l.Profile.Amenities.Intersect(filter.Amenities).Any());
+            
+            if (filter.Chores.Any())
+                listings = listings
+                    .Where(l => l.Profile.Chores.Intersect(filter.Chores).Any());
+                
+                // .Where(l => l.EndDate.CompareTo(filter.EndDate) == 0);
+            return Ok(listings.ToList());
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                $"Error getting filtered HouseListings: {ex.Message}");
         }
     }
 }

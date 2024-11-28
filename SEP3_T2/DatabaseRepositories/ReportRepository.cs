@@ -36,7 +36,7 @@ public class ReportRepository : IReportRepository
             AdminId = report.AdminId,
             Comment = report.Comment,
             Status = reply.Status,
-            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
         });
     }
 
@@ -56,7 +56,7 @@ public class ReportRepository : IReportRepository
             AdminId = reply.AdminId,
             Comment = reply.Comment,
             Status = reply.Status,
-            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
         });
     }
 
@@ -84,7 +84,7 @@ public class ReportRepository : IReportRepository
             AdminId = reply.AdminId,
             Comment = reply.Comment,
             Status = reply.Status,
-            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
         });
     }
 
@@ -104,7 +104,7 @@ public class ReportRepository : IReportRepository
                 AdminId = report.AdminId,
                 Comment = report.Comment,
                 Status = report.Status,
-                Date = new DateTime(1970, 1, 1).AddMilliseconds(report.Date)
+                Date = new DateTime(1970, 1, 2).AddMilliseconds(report.Date)
             });
         }
 

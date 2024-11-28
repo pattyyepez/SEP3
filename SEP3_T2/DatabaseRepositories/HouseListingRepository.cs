@@ -33,8 +33,8 @@ public class HouseListingRepository : IHouseListingRepository
         {
             Id = reply.Id,
             ProfileId = reply.ProfileId,
-            StartDate = new DateTime(1970, 1, 1).AddMilliseconds(reply.StartDate),
-            EndDate = new DateTime(1970, 1, 1).AddMilliseconds(reply.EndDate),
+            StartDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.StartDate),
+            EndDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.EndDate),
             Status = reply.Status,
         });
     }
@@ -51,8 +51,8 @@ public class HouseListingRepository : IHouseListingRepository
         {
             Id = reply.Id,
             ProfileId = reply.ProfileId,
-            StartDate = new DateTime(1970, 1, 1).AddMilliseconds(reply.StartDate),
-            EndDate = new DateTime(1970, 1, 1).AddMilliseconds(reply.EndDate),
+            StartDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.StartDate),
+            EndDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.EndDate),
             Status = reply.Status,
         });
     }
@@ -77,8 +77,8 @@ public class HouseListingRepository : IHouseListingRepository
         {
             Id = reply.Id,
             ProfileId = reply.ProfileId,
-            StartDate = new DateTime(1970, 1, 1).AddMilliseconds(reply.StartDate),
-            EndDate = new DateTime(1970, 1, 1).AddMilliseconds(reply.EndDate),
+            StartDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.StartDate),
+            EndDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.EndDate),
             Status = reply.Status
         });
     }
@@ -95,8 +95,8 @@ public class HouseListingRepository : IHouseListingRepository
             {
                 Id = houseListing.Id,
                 ProfileId = houseListing.ProfileId,
-                StartDate = new DateTime(1970, 1, 1).AddMilliseconds(houseListing.StartDate),
-                EndDate = new DateTime(1970, 1, 1).AddMilliseconds(houseListing.EndDate),
+                StartDate = new DateTime(1970, 1, 2).AddMilliseconds(houseListing.StartDate),
+                EndDate = new DateTime(1970, 1, 2).AddMilliseconds(houseListing.EndDate),
                 Status = houseListing.Status
             });
         }
