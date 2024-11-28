@@ -88,31 +88,6 @@ public class FilesaveController(
         return new CreatedResult(resourcePath, uploadResults);
     }
     
-    // [HttpGet("{filename}/{extension}")]
-    // public async Task<ActionResult> GetFile(
-    //     string filename, string extension)
-    // {
-    //     filename = filename + "." + extension;
-    //     filename = $"Development/unsafe_uploads/{filename}";
-    //     if (Path.Exists(filename))  
-    //     {  
-    //         return File(System.IO.File.OpenRead(filename), "application/octet-stream", Path.GetFileName(filename));  
-    //     }  
-    //     return NotFound();    
-    // }
-    
-    // [HttpGet("{filename}/{extension}")]  
-    // public IActionResult Download(string filename, string extension)  
-    // {  
-    //     filename = filename + "." + extension;
-    //     filename = $"Development/unsafe_uploads/{filename}";
-    //     if (Path.Exists(filename))  
-    //     {  
-    //         return File(System.IO.File.ReadAllBytes(filename), $"image/{extension}", System.IO.Path.GetFileName(filename)); 
-    //     } 
-    //     return NotFound();    
-    // }  
-    
     [HttpGet("{filename}/{extension}")]
     public IActionResult GetImage(string filename, string extension)
     {

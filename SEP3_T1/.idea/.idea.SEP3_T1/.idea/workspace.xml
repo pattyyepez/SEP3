@@ -9,14 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="Sending and deleting pictures, integrating it into all the different classes that require it🙏🙏🤓🫡🚨😈🗣️🔥🔥🔥⁉️">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="PICTURES WORK NOW YIPPEE!! 🎷🐛">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/NavMenu.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/DataSourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/DataSourceConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +174,7 @@
       <workItem from="1732100486234" duration="6824000" />
       <workItem from="1732611277179" duration="2601000" />
       <workItem from="1732694856752" duration="232000" />
-      <workItem from="1732695108000" duration="19450000" />
+      <workItem from="1732695108000" duration="22518000" />
     </task>
     <task id="LOCAL-00001" summary="initial T3 commit, for now just being able to retrieve any house owner using the ID">
       <option name="closed" value="true" />
@@ -297,7 +296,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732710911224</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="PICTURES WORK NOW YIPPEE!! 🎷🐛">
+      <option name="closed" value="true" />
+      <created>1732786219380</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1732786219380</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,7 +364,8 @@
     <MESSAGE value="final try" />
     <MESSAGE value="some funny stuff :}" />
     <MESSAGE value="Sending and deleting pictures, integrating it into all the different classes that require it️⁉️" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sending and deleting pictures, integrating it into all the different classes that require it️⁉️" />
+    <MESSAGE value="PICTURES WORK NOW YIPPEE!! " />
+    <option name="LAST_COMMIT_MESSAGE" value="PICTURES WORK NOW YIPPEE!! " />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -20,7 +20,7 @@
         <div class="house-profile-details">
             @if (houseProfile.Pictures != null && houseProfile.Pictures.Any())
             {
-                <img src="@houseProfile.Pictures.First()" alt="House Picture" class="profile-img" />
+                <img src="https://localhost:7134/Filesave/@houseProfile.Pictures.First().Split('.')[0]/@houseProfile.Pictures.First().Split('.')[1]" alt="House Profile picture"/>
             }
             <h2>@houseProfile.Description</h2>
             <p><strong>City:</strong> @houseProfile.City</p>

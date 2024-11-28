@@ -17,9 +17,9 @@
     else
     {
     <div class="house-listing-details">
-        @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
+        @if (houseListing.Profile != null && houseListing.Profile.Pictures != null && houseListing.Profile.Pictures.Any())
         {
-        <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
+            <img src="https://localhost:7134/Filesave/@houseListing.Profile.Pictures.First().Split('.')[0]/@houseListing.Profile.Pictures.First().Split('.')[1]" alt="House Profile picture"/>
         }
         <h2>@houseListing.Profile?.Title</h2>
         <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>

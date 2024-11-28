@@ -18,16 +18,17 @@
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
         <h2>Welcome, @context.User.Identity?.Name!</h2>
-        @if (houseOwnerProfile != null)
+        @if (_houseOwnerProfile != null)
         {
             <div class="profile-container">
                 <h2>House Owner Profile</h2>
-                <p><strong>Name:</strong> @houseOwnerProfile.Name</p>
-                <p><strong>Email:</strong> @houseOwnerProfile.Email</p>
-                <p><strong>Phone:</strong> @houseOwnerProfile.Phone</p>
-                <p><strong>Address:</strong> @houseOwnerProfile.Address</p>
-                <p><strong>Biography:</strong> @houseOwnerProfile.Biography</p>
-                <img src="@houseOwnerProfile.ProfilePicture" alt="Profile Picture" class="profile-img" />
+                <p><strong>Name:</strong> @_houseOwnerProfile.Name</p>
+                <p><strong>Email:</strong> @_houseOwnerProfile.Email</p>
+                <p><strong>Phone:</strong> @_houseOwnerProfile.Phone</p>
+                <p><strong>Address:</strong> @_houseOwnerProfile.Address</p>
+                <p><strong>Biography:</strong> @_houseOwnerProfile.Biography</p>
+                <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                
                 <button class="btn-edit" @onclick="EditAccountHouseOwner">Edit Account</button>
                 <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
             </div>
@@ -42,22 +43,22 @@
     <AuthorizeView Roles="HouseSitter">
         <h4>Hello, @context.User.Identity?.Name!</h4>
         
-        @if (houseSitterProfile != null)
+        @if (_houseSitterProfile != null)
         {
             <div class="profile-container">
                 <h2>House Sitter Profile</h2>
-                <p><strong>Name:</strong> @houseSitterProfile.Name</p>
-                <p><strong>Email:</strong> @houseSitterProfile.Email</p>
-                <p><strong>Phone:</strong> @houseSitterProfile.Phone</p>
-                <p><strong>Biography:</strong> @houseSitterProfile.Biography</p>
-                <p><strong>Experience:</strong> @houseSitterProfile.Experience</p>
-                <p><strong>Skills:</strong> @string.Join(", ", houseSitterProfile.Skills)</p>
+                <p><strong>Name:</strong> @_houseSitterProfile.Name</p>
+                <p><strong>Email:</strong> @_houseSitterProfile.Email</p>
+                <p><strong>Phone:</strong> @_houseSitterProfile.Phone</p>
+                <p><strong>Biography:</strong> @_houseSitterProfile.Biography</p>
+                <p><strong>Experience:</strong> @_houseSitterProfile.Experience</p>
+                <p><strong>Skills:</strong> @string.Join(", ", _houseSitterProfile.Skills)</p>
                 
-                @if (houseSitterProfile.Pictures != null && houseSitterProfile.Pictures.Any())
+                @if (_houseSitterProfile.Pictures != null && _houseSitterProfile.Pictures.Any())
                 {
                     <div>
                         <h4>Pictures:</h4>
-                        @foreach (var picture in houseSitterProfile.Pictures)
+                        @foreach (var picture in _houseSitterProfile.Pictures)
                         {
                             <img src="@picture" alt="House Sitter Picture" class="profile-img" />
                         }
@@ -106,8 +107,8 @@
 </style>
 
 @code {
-    private HouseOwnerDto houseOwnerProfile;
-    private HouseSitterDto houseSitterProfile;
+    private HouseOwnerDto? _houseOwnerProfile;
+    private HouseSitterDto? _houseSitterProfile;
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,7 +122,7 @@
                 var ownerIdClaim = user.FindFirst("Id")?.Value;
                 if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
                 {
-                    houseOwnerProfile = await HouseOwnerService.GetSingleAsync(ownerId);
+                    _houseOwnerProfile = await HouseOwnerService.GetSingleAsync(ownerId);
                 }
             }
             else if (user.IsInRole("HouseSitter"))
@@ -129,7 +130,7 @@
                 var sitterIdClaim = user.FindFirst("Id")?.Value;
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
-                    houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
+                    _houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
                 }
             }
         }
@@ -149,13 +150,13 @@
 
     private async Task DeleteAccount()
     {
-        if (houseOwnerProfile != null)
+        if (_houseOwnerProfile != null)
         {
-            await HouseOwnerService.DeleteAsync(houseOwnerProfile.UserId);
+            await HouseOwnerService.DeleteAsync(_houseOwnerProfile.UserId);
         }
-        else if (houseSitterProfile != null)
+        else if (_houseSitterProfile != null)
         {
-            await HouseSitterService.DeleteAsync(houseSitterProfile.UserId);
+            await HouseSitterService.DeleteAsync(_houseSitterProfile.UserId);
         }
         Navigation.NavigateTo("/"); 
         
