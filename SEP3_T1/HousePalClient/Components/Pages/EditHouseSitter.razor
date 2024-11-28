@@ -61,9 +61,28 @@
 
                     <label>Upload a Profile Picture:</label>
                     <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
-                
+
+                    @if (!string.IsNullOrEmpty(_profilePictureUrl))
+                    {
+                        <hr/>
+                        <p>Uploaded picture:</p>
+                        <img src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                        <hr/>
+                    }
+                    
                     <label>Upload At Least 3 Pictures:</label>
                     <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
+
+                    @if (_pictures.Count != 0)
+                    {
+                        <hr/>
+                        <p>Uploaded pictures:</p>
+                        foreach (var picture in _pictures)
+                        {
+                            <br/>
+                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
+                        }
+                    }
 
                 </div>
 

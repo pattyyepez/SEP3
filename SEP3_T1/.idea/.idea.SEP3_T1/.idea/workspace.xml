@@ -9,40 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DTOs/Files/FileDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SEP3_T2/.idea/.idea.SEP3_T2/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SEP3_T2/DTOs/UploadResult.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseProfile/UpdateHouseProfileDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseProfile/UpdateHouseProfileDto.cs" afterDir="false" />
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="Sending and deleting pictures, integrating it into all the different classes that require it🙏🙏🤓🫡🚨😈🗣️🔥🔥🔥⁉️">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/NavMenu.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/HousePalClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/HousePalClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseListingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SEP3_T1.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/SEP3_T1.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/RESTAPI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/RESTAPI.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/HouseListing.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/HouseListing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/HouseProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/HouseProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/HouseReview.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/HouseReview.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/Report.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/SitterReview.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/SitterReview.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/DataSourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/DataSourceConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/server/HousePalServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseProfileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/HouseProfileServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,23 +67,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.HousePalClient: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.HousePalClient: https.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;http.certificates&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.HousePalClient: http.executor": "Run",
+    ".NET Launch Settings Profile.HousePalClient: https.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "http.certificates",
+    "two.files.diff.last.used.file": "C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.HousePalClient: https">
     <configuration name="HousePalClient: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/HousePalClient/HousePalClient.csproj" />
@@ -201,6 +175,7 @@
       <workItem from="1732100486234" duration="6824000" />
       <workItem from="1732611277179" duration="2601000" />
       <workItem from="1732694856752" duration="232000" />
+      <workItem from="1732695108000" duration="19450000" />
     </task>
     <task id="LOCAL-00001" summary="initial T3 commit, for now just being able to retrieve any house owner using the ID">
       <option name="closed" value="true" />
@@ -314,7 +289,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731926334934</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Sending and deleting pictures, integrating it into all the different classes that require it🙏🙏🤓🫡🚨😈🗣️🔥🔥🔥⁉️">
+      <option name="closed" value="true" />
+      <created>1732710911224</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1732710911224</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -373,7 +356,8 @@
     <MESSAGE value="huh" />
     <MESSAGE value="final try" />
     <MESSAGE value="some funny stuff :}" />
-    <option name="LAST_COMMIT_MESSAGE" value="some funny stuff :}" />
+    <MESSAGE value="Sending and deleting pictures, integrating it into all the different classes that require it️⁉️" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sending and deleting pictures, integrating it into all the different classes that require it️⁉️" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -18,7 +18,6 @@ public class FilesaveController(
     {
         Console.Write("got request");
         var maxAllowedFiles = 3;
-        long maxFileSize = long.MaxValue;
         var filesProcessed = 0;
         var resourcePath = new Uri($"{Request.Scheme}://{Request.Host}/");
         List<FileDto> uploadResults = [];
@@ -41,14 +40,6 @@ public class FilesaveController(
                     logger.LogInformation("{FileName} length is 0 (Err: 1)",
                         trustedFileNameForDisplay);
                     uploadResult.ErrorCode = 1;
-                }
-                else if (file.Length > maxFileSize)
-                {
-                    Console.Write("error 2");
-                    logger.LogInformation("{FileName} of {Length} bytes is " +
-                        "larger than the limit of {Limit} bytes (Err: 2)",
-                        trustedFileNameForDisplay, file.Length, maxFileSize);
-                    uploadResult.ErrorCode = 2;
                 }
                 else
                 {
@@ -97,15 +88,44 @@ public class FilesaveController(
         return new CreatedResult(resourcePath, uploadResults);
     }
     
-    [HttpGet]
-    public async Task<ActionResult> GetFile(
-        [FromQuery] string pathName)
+    // [HttpGet("{filename}/{extension}")]
+    // public async Task<ActionResult> GetFile(
+    //     string filename, string extension)
+    // {
+    //     filename = filename + "." + extension;
+    //     filename = $"Development/unsafe_uploads/{filename}";
+    //     if (Path.Exists(filename))  
+    //     {  
+    //         return File(System.IO.File.OpenRead(filename), "application/octet-stream", Path.GetFileName(filename));  
+    //     }  
+    //     return NotFound();    
+    // }
+    
+    // [HttpGet("{filename}/{extension}")]  
+    // public IActionResult Download(string filename, string extension)  
+    // {  
+    //     filename = filename + "." + extension;
+    //     filename = $"Development/unsafe_uploads/{filename}";
+    //     if (Path.Exists(filename))  
+    //     {  
+    //         return File(System.IO.File.ReadAllBytes(filename), $"image/{extension}", System.IO.Path.GetFileName(filename)); 
+    //     } 
+    //     return NotFound();    
+    // }  
+    
+    [HttpGet("{filename}/{extension}")]
+    public IActionResult GetImage(string filename, string extension)
     {
-        if (System.IO.File.Exists(pathName))  
-        {  
-            return File(System.IO.File.OpenRead(pathName), "application/octet-stream", Path.GetFileName(pathName));  
-        }  
-        return NotFound();    
+        filename = filename + "." + extension;
+        filename = $"Development/unsafe_uploads/{filename}";
+
+        if (!System.IO.File.Exists(filename))
+        {
+            return NotFound("Image not found.");
+        }
+
+        var imageBytes = System.IO.File.ReadAllBytes(filename);
+        return File(imageBytes, $"image/{extension}");
     }
     
     [HttpDelete("{filename}/{extension}")]

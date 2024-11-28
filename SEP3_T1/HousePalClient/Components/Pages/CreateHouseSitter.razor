@@ -58,10 +58,29 @@
 
                 <label>Upload a Profile Picture:</label>
                 <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
+
+                @if (!string.IsNullOrEmpty(_profilePictureUrl))
+                {
+                    <hr/>
+                    <p>Uploaded picture:</p>
+                    <img src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                    <hr/>
+                }
                 
                 <label>Upload At Least 3 Pictures:</label>
                 <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
 
+                @if (_pictures.Count != 0)
+                {
+                    <hr/>
+                    <p>Uploaded pictures:</p>
+                    foreach (var picture in _pictures)
+                    {
+                        <br/>
+                        <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
+                    }
+                }
+                
             </div>
 
             <div class="form-section">
@@ -71,7 +90,7 @@
                     @foreach(var item in skills)
                     {
                         <li>
-                            <input type="checkbox" @bind="item.Selected"/> @* @onclick="(()=>handleClick(item))" *@
+                            <input type="checkbox" @bind="item.Selected"/>
                             <label>@item.Text</label>
                         </li>
                     }
@@ -255,7 +274,7 @@
     private bool _showSuccessMessage = false;
     
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
+    private int maxAllowedFiles = 5;
 
     MultiSelectList skills;
     List<string> _pictures = [];
@@ -315,7 +334,6 @@
         if (!string.IsNullOrEmpty(_profilePictureUrl))
             await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
         
-        long maxFileSize = long.MaxValue;
         var upload = false;
 
         using var content = new MultipartFormDataContent();
@@ -326,7 +344,7 @@
         {
             try
             {
-                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                var fileContent = new StreamContent(file.OpenReadStream(long.MaxValue));
 
                 fileContent.Headers.ContentType =
                     new MediaTypeHeaderValue(file.ContentType);
@@ -380,7 +398,6 @@
 
         }
         _pictures = [];
-        long maxFileSize = long.MaxValue;
         var upload = false;
 
         using var content = new MultipartFormDataContent();
@@ -392,7 +409,7 @@
             {
                 try
                 { 
-                    var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                    var fileContent = new StreamContent(file.OpenReadStream(long.MaxValue));
 
                     fileContent.Headers.ContentType =
                         new MediaTypeHeaderValue(file.ContentType);
@@ -434,20 +451,6 @@
                 _pictures.AddRange(newUploadResults.Select(p => p.StoredFileName!).ToList());
             }
         }
-    }
-    
-    private static bool FileUpload(IList<FileDto> uploadResults,
-        string? fileName, ILogger<FileUploadTest> logger, out FileDto result)
-    {
-        result = uploadResults.SingleOrDefault(f => f.FileName == fileName) ?? new();
-
-        if (!result.Uploaded)
-        {
-            logger.LogInformation($"{fileName} not uploaded (Err: 5)", fileName);
-            result.ErrorCode = 5;
-        }
-
-        return result.Uploaded;
     }
 
     protected override async void OnInitialized()

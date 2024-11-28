@@ -33,6 +33,7 @@
                             <span>
                                 Stored File Name: @result.StoredFileName
                             </span>
+                            <img src="https://localhost:7134/Filesave/@result.StoredFileName!.Split('.')[0]/@result.StoredFileName!.Split('.')[1]" alt="@result.StoredFileName!"/>
                         }
                         else
                         {
@@ -128,6 +129,16 @@
 
         return result.Uploaded;
     }
+
+    public static class DownloadFile 
+    {   
+        public static async Task<byte[]?> GetUrlContent(string url)  
+        {  
+            using (var client = new HttpClient())  
+            using (var result = await client.GetAsync(url))  
+                return result.IsSuccessStatusCode ? await result.Content.ReadAsByteArrayAsync() : null;  
+        }  
+    } 
 
     private class File
     {

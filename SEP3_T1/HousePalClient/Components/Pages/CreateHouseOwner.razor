@@ -58,6 +58,13 @@
                 <label>Upload a Profile Picture:</label>
                 <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
+                @if (!string.IsNullOrEmpty(_profilePictureUrl))
+                {
+                    <hr/>
+                    <p>Uploaded picture:</p>
+                    <img src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                }
+
             </div>
 
             <!-- Display Message if exists -->
@@ -336,25 +343,6 @@
                 _profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
             }
         }
-    }
-
-    private static bool FileUpload(IList<FileDto> uploadResults,
-        string? fileName, ILogger<FileUploadTest> logger, out FileDto result)
-    {
-        result = uploadResults.SingleOrDefault(f => f.FileName == fileName) ?? new();
-
-        if (!result.Uploaded)
-        {
-            logger.LogInformation($"{fileName} not uploaded (Err: 5)", fileName);
-            result.ErrorCode = 5;
-        }
-
-        return result.Uploaded;
-    }
-
-    private class File
-    {
-        public string? Name { get; set; }
     }
 
 }
