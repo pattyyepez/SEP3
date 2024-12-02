@@ -1,0 +1,36 @@
+﻿@page "/homepage-houseowner"
+@using HousePalClient.Components.Layout
+@layout MainLayout
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<div class="home-page-container">
+    <!-- Welcome Message -->
+    <div class="welcome-section">
+        <h1>Welcome back, @userName!</h1>
+        <p>Here's an overview of your account:</p>
+    </div>
+    </div>
+    
+
+
+@code {
+    // Simulate user data for the homepage (replace this with actual data in a real app)
+    private string userName = "John Doe";
+
+    // Navigate to different pages
+    private void NavigateToProfile()
+    {
+        Navigation.NavigateTo("/profile");
+    }
+
+    private void NavigateToMyHouses()
+    {
+        Navigation.NavigateTo("/houses");
+    }
+
+    private void NavigateToMyListings()
+    {
+        Navigation.NavigateTo("/listings");
+    }
+}

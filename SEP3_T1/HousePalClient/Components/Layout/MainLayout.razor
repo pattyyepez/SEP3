@@ -1,27 +1,276 @@
-﻿@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
+<head>
+    <!-- Add Font Awesome CDN to your head tag -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<div class="main-layout">
+    <!-- Top Banner -->
+    <div class="banner">
+        <button class="menu-button" @onclick="ToggleSidebar">☰</button>
+
+        <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
+
+        <div class="profile-picture-container" @onclick="TogglePopup">
+            <img src="images/profilepic1.jpg" alt="Profile Picture" class="profile-picture"/>
+        </div>
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <div class="popup @(isPopupOpen ? "show" : "")">
+        <ul>
+            <li>
+                <button href="/dashboard"><i class="fa-solid fa-user"></i> Account</button>
+            </li>
+            <li>
+                <button href="/dashboard"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
+            </li>
+        </ul>
+    </div>
 
-        <article class="content px-4">
-            <CascadingAuthenticationState>
-                @Body
-            </CascadingAuthenticationState>
+    <!-- Sidebar -->
+    <div class="sidebar @(isSidebarOpen ? "open" : "")">
+        <nav class="menu">
+            <ul>
+                <li>
+                    <button href="/dashboard"><i class="fas fa-home"></i> My Houses</button>
+                </li>
+                <li>
+                    <button href="/dashboard"><i class="fas fa-list"></i> All Listings</button>
+                </li>
+                <li>
+                    <button href="/dashboard"><i class="fas fa-clock"></i> Pending Appl.</button>
+                </li>
+                <li>
+                    <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
+                </li>
+                <li>
+                    <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-        </article>
-    </main>
+    <!-- Main Content Area -->
+    <div class="content">
+        @Body
+    </div>
 </div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
-<Preload LoadingText="Loading..." />
+<style>
+
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    /* Main Layout Styles */
+    .main-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Top Banner */
+    .banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral Gradient */
+        padding: 1em;
+        height: 7em;
+        z-index: 1000;
+    }
+
+    .menu-button {
+        color: white;
+        background: none;
+        font-size: 1.8em;
+        border-style: none;
+    }
+
+    .logo {
+        width: 6em;
+        height: auto;
+    }
+
+    .profile-picture {
+        width: 4em;
+        height: 4em;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        display: flex;
+        width: 15em;
+        background-color: white;
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        padding: 7em 1em 1em 1em;
+        color: #fff;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        z-index: 900;
+    }
+
+    .sidebar.open {
+        transform: translateX(0) !important;
+    }
+
+    .menu {
+        font-family: 'FuturaFont', sans-serif;
+        width: 15em;
+    }
+
+    .menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu li {
+        margin: 1em 0;
+    }
+
+    .menu ul li button {
+        color: #3d3d3d;
+        text-decoration: none;
+        font-size: 1.2em;
+        border-style: none;
+        border-radius: 5px;
+        width: 100%;
+        height: 2.2em;
+        background: none;
+        text-align: left;
+    }
+
+    .menu button:hover {
+        background-color: rgba(61, 61, 61, 0.1);
+    }
+
+    .menu button:focus {
+        background-color: rgba(61, 61, 61, 0.1);
+        font-weight: bold;
+    }
+
+    /* Content Area */
+    .content {
+        flex: 1;
+        padding: 3em;
+        position: relative;
+        z-index: 100;
+        overflow-y: auto;
+    }
+
+    .main-layout::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+        z-index: 1050;
+    }
+
+    .main-layout.sidebar-open::after {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .sidebar.open + .content {
+        filter: blur(3px);
+        pointer-events: none;
+    }
+
+    .popup {
+        position: absolute;
+        top: 6.35em;
+        right: 2em;
+        background-color: white;
+        border-radius: 9px;
+        box-shadow: 0.5px 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1300;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        padding: 0.5em;
+        width: 9em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .popup.show {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .popup ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .popup li {
+        margin: 0.4em;
+    }
+
+    .popup ul li button {
+        color: #3d3d3d;
+        text-decoration: none;
+        font-size: 1.2em;
+        border-style: none;
+        border-radius: 5px;
+        width: 100%;
+        height: 2.2em;
+        background: none;
+        text-align: left;
+    }
+
+    .popup button:hover {
+        background-color: rgba(61, 61, 61, 0.1);
+    }
+
+    .popup button:focus {
+        background-color: rgba(61, 61, 61, 0.1);
+        font-weight: bold;
+    }
+
+</style>
+
+@code {
+    private bool isSidebarOpen = false;
+    private bool isPopupOpen = false;
+
+    private void ToggleSidebar()
+    {
+        isSidebarOpen = !isSidebarOpen;
+    }
+
+    private void TogglePopup()
+    {
+        Console.WriteLine($"Popup state changed: {isPopupOpen}");
+        isPopupOpen = !isPopupOpen;
+        Console.WriteLine($"Popup state changed: {isPopupOpen}");
+        StateHasChanged();
+    }
+
+}

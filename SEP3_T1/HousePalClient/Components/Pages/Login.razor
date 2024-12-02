@@ -49,13 +49,16 @@
     </AuthorizeView>
     <AuthorizeView Roles="HouseOwner">
         <Authorized Context="authContext">
-            <p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
+            @{
+                Navigation.NavigateTo("/view-all-house-profiles");
+            };
+            @*<p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
             <br/>
             <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button>
             <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseListing">Create House Listing</button>
             <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button>
             <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</button>
+            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</bu*@tton>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView Roles="HouseSitter">
@@ -170,15 +173,22 @@
 
     @@keyframes rotateBackground {
          0% { background-image: url('images/loginBackgrounds/1.jpg'); }
-         25% { background-image: url('images/loginBackgrounds/2.jpg'); }
-         50% { background-image: url('images/loginBackgrounds/3.jpg'); }
-         75% { background-image: url('images/loginBackgrounds/5.jpg'); }
-         100% { background-image: url('images/loginBackgrounds/1.jpg'); }
+         20% { background-image: url('images/loginBackgrounds/2.jpg'); }
+         40% { background-image: url('images/loginBackgrounds/3.jpg'); }
+         60% { background-image: url('images/loginBackgrounds/4.jpg'); }
+         80% { background-image: url('images/loginBackgrounds/5.jpg'); }
+        100% { background-image: url('images/loginBackgrounds/1.jpg'); }
     }
 </style>
 
 @code {
     private LoginModel loginModel = new();
+
+    private void GoToHomepage()
+    {
+        Navigation.NavigateTo("/homepage-houseowner");
+    }
+    
     private void HandleCreateHouseProfile()
     {
         Navigation.NavigateTo("/create-house-profile");
@@ -204,7 +214,7 @@
         try
         {
             await ((SimpleAuthProvider)AuthProvider).Login(loginModel.Username, loginModel.Password);
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo("/view-all-house-profiles");
         }
         catch (Exception e)
         {
