@@ -7,7 +7,6 @@
 @inject NavigationManager Navigation
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
-<h1>House Listing Details</h1>
 
 <div class="listing-container">
     @if (houseListing == null)
@@ -16,8 +15,6 @@
     }
     else
     {
-       
-        
         <div class="container house-profile">
             <!-- Carousel Section -->
             <div class="carousel-container">
@@ -50,10 +47,21 @@
                 </div>
             </div>
 
-            <!-- House Title and Location -->
-            <h1 class="house-title">@houseListing.Profile.Title</h1>
-            <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @houseListing.Profile.City, @houseListing.Profile.Region</h2>
-            <p class="house-description">@houseListing.Profile.Description</p>
+            <div class="info-section">
+                
+                <div class="text-content">
+                    <!-- House Title and Location -->
+                    <h1 class="house-title">@houseListing.Profile.Title</h1>
+                    <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @houseListing.Profile.City, @houseListing.Profile.Region</h2>
+                    <p class="house-description">@houseListing.Profile.Description</p>
+                </div>
+                
+                <div class="dates">
+                    <p><strong>Start Date: </strong>@houseListing.StartDate</p>
+                    <p><strong>End Date: </strong>@houseListing.EndDate</p>
+                </div>
+                
+            </div>
 
             <hr class="section-divider"/>
 
@@ -102,75 +110,170 @@
 
             <hr class="section-divider"/>
 
-            <!-- Buttons Section -->
-            <div class="action-buttons">
-                <button type="button" class="btn btn-primary" @onclick="EditHouseProfile">Edit House Profile</button>
-                <button type="button" class="btn btn-secondary" @onclick="DeleteHouseProfile">Delete House Profile</button>
-            </div>
         </div>  
-        
-    <div class="house-listing-details">
-        @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
-        {
-        <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
-        }
-        <h2>@houseListing.Profile?.Title</h2>
-        <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
-        <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
-        <p><strong>Status:</strong> @houseListing.Status</p>
-        
-        <CascadingAuthenticationState>
-            <AuthorizeView Roles="HouseOwner">
-                <Authorized Context="authContext">
-                    <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
-                </Authorized>
-            </AuthorizeView>
-
-            <AuthorizeView Roles="HouseSitter">
-                <Authorized Context="authContext">
-                    <button type="button" class="btn btn-primary" @onclick="HandleApplication">Apply</button>
-                </Authorized>
-            </AuthorizeView>
-        </CascadingAuthenticationState>
-
-    </div>
     }
 </div>
 
 <style>
-    .listing-container {
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    h3 {
+        font-family: 'LogoFont', sans-serif;
+        color: #3d3d3d;
+    }
+    
+    .info-section {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        padding: 2em;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        max-width: 800px;
-        margin: 2em auto;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2em;
+        margin-top: 1.5em;
     }
-
-    .listing-img {
-        width: 100%;
-        height: auto;
+    
+    .text-content {
+        flex: 2;
+    }
+    
+    .dates {
+        flex: 0.65;
+        background-color: #ff7e5f;
+        padding: 1em;
         border-radius: 10px;
-        margin-bottom: 1em;
+        text-align: center;
+        font-family: 'FuturaFont', sans-serif;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dates p{
+        margin: 0.5em 0;
+    }
+    
+
+    .carousel-container {
+        margin-bottom: 2em;
     }
 
-    h1, h2, h3 {
-        text-align: center;
-        color: #ff7e5f;
+    .host-section {
+        display: flex;
+        align-items: center;
+        gap: 1.5em;
+    }
+
+    .host-picture {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .host-bio {
+        flex: 1;
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .carousel img {
+        max-height: 32em;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .profile-container{
+        padding: 0.85em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .house-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 0.5em;
         font-family: 'LogoFont', sans-serif;
     }
 
-    p {
-        font-family: Futura;
+    .house-location {
+        font-size: 1.25rem;
         color: #3d3d3d;
+        margin-bottom: 1em;
+        font-family: 'FuturaFont', sans-serif;
     }
 
-    .house-listing-details p, .profile-details p {
-        margin: 0.5em 0;
+    .house-description {
+        font-size: 1rem;
+        color: #3d3d3d;
+        margin-bottom: 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .section-divider {
+        margin: 2em 0;
+        border: 0;
+        height: 1px;
+        background-color: #ddd;
+    }
+
+    .chores-amenities-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .chores-column, .amenities-column {
+        flex: 1;
+    }
+
+    .chores-container, .amenities-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin-top: 1em;
+    }
+
+    .pill {
+        background-color: #ff7e5f;
+        color: white;
+        padding: 0.5em 1em;
+        border-radius: 50px;
+        font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .vertical-divider {
+        width: 1px;
+        background-color: #ddd;
+        height: auto;
+        margin: 0 1em;
+    }
+
+    .house-rules {
+        list-style: decimal inside;
+        font-size: 1rem;
+        color: #3d3d3d;
+        line-height: 1.8;
+        margin: 1em 0;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .house-rules li {
+        margin-bottom: 0.5em;
     }
 </style>
 
