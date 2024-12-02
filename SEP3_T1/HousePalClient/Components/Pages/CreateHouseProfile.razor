@@ -15,7 +15,6 @@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <p>Hello, @_name!</p>
         <h1>Create Your House Profile</h1>
 
         <form class="house-profile-form" @onsubmit="CreateProfile">
@@ -125,9 +124,24 @@
 
     @@font-face {
         font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
+        src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
+        ) format('truetype');
         font-weight: normal;
         font-style: normal;
+    }
+
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    h3 {
+        font-size: 1.5em;
+        color: #3d3d3d;
+        font-family: 'FuturaFont', sans-serif;
+        margin: 0.45em 0 0 0.4em;
     }
 
     .page-container
@@ -135,6 +149,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding-top: 22em;
         min-height: 100vh;
         min-width: 100vw;
         background: linear-gradient(150deg, #ff7e5f, #feb47b);
@@ -143,25 +158,19 @@
 
     .signup-page-container {
         max-width: 800px;
-        margin: 63em 0 3em 0;
+        margin: 38em 0 3em 0;
         padding: 2em 2em;
         background-color: #ffffff;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
-        text-align: center;
+    .signup-page-container h1 {
+        font-size: 3em;
         color: #ff7e5f;
-        margin-bottom: 1em;
         font-family: 'LogoFont', sans-serif;
-    }
-
-    h2 {
-        text-align: center;
-        color: #3d3d3d;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 1.7rem;
+        align-self: center;
+        margin-bottom: 0.5em;
     }
 
     .form-section {
@@ -170,6 +179,28 @@
         border-radius: 10px;
         background-color: #f9f9f9;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section h2 {
+        text-align: center;
+        font-size: 1.8em;
+        color: #3d3d3d;
+        font-family: 'FuturaFont', sans-serif;
+        font-weight: bold;
+        margin-bottom: 0.3em;
+    }
+
+    .form-section label
+    {
+        color: #3d3d3d;
+        font-family: 'FuturaFont', sans-serif;
+        margin-bottom: 0.1em;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .form-control {
@@ -184,18 +215,12 @@
 
     input
     {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
-    label
-    {
-        font-family: Futura;
-        color: #3d3d3d;
-    }
-
-    textarea.form-control {
+    textarea .form-control {
         resize: vertical;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .btn-primary {
@@ -208,12 +233,13 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .btn-primary:hover {
         background-color: #feb47b;
     }
+
     .modal-background {
         position: fixed;
         top: 0;
@@ -225,7 +251,7 @@
         justify-content: center;
         align-items: center;
         z-index: 1000;
-        overflow: hidden; 
+        overflow: hidden;
     }
 
     .modal-content {
@@ -238,7 +264,12 @@
         width: 100%;
     }
 
-
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
 </style>
 
 @code {

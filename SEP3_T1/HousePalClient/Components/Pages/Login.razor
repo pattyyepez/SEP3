@@ -50,7 +50,7 @@
     <AuthorizeView Roles="HouseOwner">
         <Authorized Context="authContext">
             @{
-                Navigation.NavigateTo("/homepage-houseowner");
+                Navigation.NavigateTo("/view-all-house-profiles");
             };
             @*<p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
             <br/>
@@ -214,7 +214,7 @@
         try
         {
             await ((SimpleAuthProvider)AuthProvider).Login(loginModel.Username, loginModel.Password);
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo("/view-all-house-profiles");
         }
         catch (Exception e)
         {
