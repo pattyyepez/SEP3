@@ -1,60 +1,86 @@
 @page "/file-upload-test"
 @using System.Linq
 @using System.Net.Http.Headers
+@using Microsoft.AspNetCore.Components
 @using DTOs
 @inject HttpClient Http
 @inject ILogger<FileUploadTest> Logger
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
 @rendermode InteractiveServer
 
 <PageTitle>File Upload 2</PageTitle>
 
-<h1>File Upload Example 2</h1>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <h1>File Upload Example 2</h1>
 
-<p>
-    <label>
-        Upload up to @maxAllowedFiles files:
-        <InputFile OnChange="OnInputFileChange" multiple/>
-    </label>
-</p>
+            <p>
+                <label>
+                    Upload up to @maxAllowedFiles files:
+                    <InputFile OnChange="OnInputFileChange" multiple/>
+                </label>
+            </p>
 
-@if (files.Count > 0)
-{
-    <div class="card">
-        <div class="card-body">
-            <ul>
-                @foreach (var file in files)
-                {
-                    <li>
-                        File: @file.Name
-                        <br>
-                        @if (FileUpload(uploadResults, file.Name, Logger,
-                                 out var result))
+            @if (files.Count > 0)
+            {
+            <div class="card">
+                <div class="card-body">
+                    <ul>
+                        @foreach (var file in files)
                         {
+                        <li>
+                            File: @file.Name
+                            <br>
+                            @if (FileUpload(uploadResults, file.Name, Logger,
+                            out var result))
+                            {
                             <span>
                                 Stored File Name: @result.StoredFileName
                             </span>
                             <img src="https://localhost:7134/Filesave/@result.StoredFileName!.Split('.')[0]/@result.StoredFileName!.Split('.')[1]" alt="@result.StoredFileName!"/>
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                             <span>
                                 There was an error uploading the file
                                 (Error: @result.ErrorCode).
                             </span>
+                            }
+                        </li>
                         }
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-    
+                    </ul>
+                </div>
+            </div>
 
-}
+
+            }
+        </Authorized>
+        <NotAuthorized>
+            <p>not authorized bruh</p>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
 
 @code {
+    [Inject] protected PreloadService PreloadService { get; set; } = default!;
+
     private List<File> files = new();
     private List<FileDto> uploadResults = new();
     private int maxAllowedFiles = 3;
+
+    protected override async Task OnInitializedAsync()
+    {
+        PreloadService.Show();
+        await base.OnInitializedAsync();
+        
+        PreloadService.Hide();
+    }
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {

@@ -100,12 +100,27 @@ public class HouseListingService : IHouseListingService
         
         //  https://localhost:7134/api/HouseListing/GetFilteredListings
         // ?Region=s&City=s&Rating=1&StartDay=1&StartMonth=1&StartYear=1&EndDay=1&EndMonth=1&EndYear=1
-        // &Amenities=string&Chores=Water%20plants&Chores=Take%20out%20trash
+        // &Amenities=string&Chores=Water%20plants&Chores=Take%20out%20trash  &StartDay=1&StartMonth=1&StartYear=1
         public IQueryable<HouseListingDto> GetFilteredListings(FilteredHouseListingsDto filter)
         {
             string uri =
-                "https://localhost:7134/api/HouseListing/GetFilteredListings";
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetListingsByOwner").Result;
+                "https://localhost:7134/api/HouseListing/GetFilteredListings?";
+            
+            if(!string.IsNullOrWhiteSpace(filter.Region))
+                uri += $"Region={filter.Region}&";
+            
+            if(!string.IsNullOrWhiteSpace(filter.City))
+                uri += $"City={filter.City}&";
+            
+            if(filter.StartDay.HasValue)
+                uri += $"StartDay={filter.StartDay}&StartMonth={filter.StartMonth}&StartYear={filter.StartYear}&";
+            
+            if(filter.EndDay.HasValue)
+                uri += $"EndDay={filter.EndDay}&EndMonth={filter.EndMonth}&EndYear={filter.EndYear}&";
+            
+            uri = uri.TrimEnd('&');
+            
+            HttpResponseMessage response = _httpClient.GetAsync(uri).Result;
 
             response.EnsureSuccessStatusCode();
 

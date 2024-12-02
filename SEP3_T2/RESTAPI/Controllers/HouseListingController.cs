@@ -198,8 +198,7 @@ public class HouseListingController : ControllerBase
             if (filter.Chores.Any())
                 listings = listings
                     .Where(l => l.Profile.Chores.Intersect(filter.Chores).Any());
-                
-                // .Where(l => l.EndDate.CompareTo(filter.EndDate) == 0);
+            
             return Ok(listings.ToList());
         }
         catch (Exception ex)
