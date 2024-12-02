@@ -3,7 +3,7 @@
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
 @using Services
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
@@ -16,6 +16,99 @@
     }
     else
     {
+       
+        
+        <div class="container house-profile">
+            <!-- Carousel Section -->
+            <div class="carousel-container">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @for (int i = 0; i < Images.Count; i++)
+                        {
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")"
+                                    aria-current="@(i == 0 ? "true" : "false")"
+                                    aria-label="Slide @i"></button>
+                        }
+                    </div>
+                    <div class="carousel-inner">
+                        @foreach (var image in Images)
+                        {
+                            <div class="carousel-item @(Images.IndexOf(image) == 0 ? "active" : "")">
+                                <img src="@image" class="d-block w-100" alt="House Image">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- House Title and Location -->
+            <h1 class="house-title">@houseListing.Profile.Title</h1>
+            <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @houseListing.Profile.City, @houseListing.Profile.Region</h2>
+            <p class="house-description">@houseListing.Profile.Description</p>
+
+            <hr class="section-divider"/>
+
+            <!-- House Chores & Amenities Section -->
+            <div class="chores-amenities-row">
+                <div class="chores-column">
+                    <h3>House Chores</h3>
+                    <div class="chores-container">
+                        @foreach (var chore in houseListing.Profile.Chores)
+                        {
+                            <div class="pill">@chore</div>
+                        }
+                    </div>
+                </div>
+                <div class="vertical-divider"></div>
+                <div class="amenities-column">
+                    <h3>House Amenities</h3>
+                    <div class="amenities-container">
+                        @foreach (var amenity in houseListing.Profile.Amenities)
+                        {
+                            <div class="pill">@amenity</div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <hr class="section-divider"/>
+
+            <!-- House Rules Section -->
+            <h3>House Rules</h3>
+            <ol class="house-rules">
+                @foreach (var rule in houseListing.Profile.Rules)
+                {
+                    <li>@rule</li>
+                }
+            </ol>
+
+            <hr class="section-divider"/>
+
+            <!-- Meet the Host Section -->
+            <h3>Meet the Host</h3>
+            <div class="host-section">
+                <img src="@houseListing.Profile.Owner.ProfilePicture" alt="Host Profile Picture" class="host-picture"/>
+                <p class="host-bio">@houseListing.Profile.Owner.Biography</p>
+            </div>
+
+            <hr class="section-divider"/>
+
+            <!-- Buttons Section -->
+            <div class="action-buttons">
+                <button type="button" class="btn btn-primary" @onclick="EditHouseProfile">Edit House Profile</button>
+                <button type="button" class="btn btn-secondary" @onclick="DeleteHouseProfile">Delete House Profile</button>
+            </div>
+        </div>  
+        
     <div class="house-listing-details">
         @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
         {
@@ -25,20 +118,7 @@
         <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
         <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
         <p><strong>Status:</strong> @houseListing.Status</p>
-
-        @if (houseListing.Profile != null)
-        {
-        <div class="profile-details">
-            <h3>House Profile Details</h3>
-            <p><strong>Description:</strong> @houseListing.Profile.Description</p>
-            <p><strong>City:</strong> @houseListing.Profile.City</p>
-            <p><strong>Region:</strong> @houseListing.Profile.Region</p>
-            <p><strong>Address:</strong> @houseListing.Profile.Address</p>
-            <p><strong>Amenities:</strong> @string.Join(", ", houseListing.Profile.Amenities)</p>
-            <p><strong>Chores:</strong> @string.Join(", ", houseListing.Profile.Chores)</p>
-            <p><strong>Rules:</strong> @string.Join(", ", houseListing.Profile.Rules)</p>
-        </div>
-        }
+        
         <CascadingAuthenticationState>
             <AuthorizeView Roles="HouseOwner">
                 <Authorized Context="authContext">
@@ -56,92 +136,7 @@
     </div>
     }
 </div>
-@*
-<CascadingAuthenticationState>
-    <AuthorizeView Roles="HouseOwner">
-        <Authorized Context="authContext">
-            <h1>House Listing Details</h1>
 
-            <div class="listing-container">
-                @if (houseListing == null)
-                {
-                <p>Loading house listing details...</p>
-                }
-                else
-                {
-                <div class="house-listing-details">
-                    @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
-                    {
-                    <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
-                    }
-                    <h2>@houseListing.Profile?.Title</h2>
-                    <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
-                    <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
-                    <p><strong>Status:</strong> @houseListing.Status</p>
-
-                    @if (houseListing.Profile != null)
-                    {
-                    <div class="profile-details">
-                        <h3>House Profile Details</h3>
-                        <p><strong>Description:</strong> @houseListing.Profile.Description</p>
-                        <p><strong>City:</strong> @houseListing.Profile.City</p>
-                        <p><strong>Region:</strong> @houseListing.Profile.Region</p>
-                        <p><strong>Address:</strong> @houseListing.Profile.Address</p>
-                        <p><strong>Amenities:</strong> @string.Join(", ", houseListing.Profile.Amenities)</p>
-                        <p><strong>Chores:</strong> @string.Join(", ", houseListing.Profile.Chores)</p>
-                        <p><strong>Rules:</strong> @string.Join(", ", houseListing.Profile.Rules)</p>
-                    </div>
-                    }
-                </div>
-                <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
-                }
-            </div>
-        </Authorized>
-    </AuthorizeView>
-
-    <AuthorizeView Roles="HouseSitter">
-        <Authorized Context="authContext">
-            <h1>House Listing Details</h1>
-
-            <div class="listing-container">
-                @if (houseListing == null)
-                {
-                <p>Loading house listing details...</p>
-                }
-                else
-                {
-                <div class="house-listing-details">
-                    @if (houseListing.Profile != null && houseListing.Profile.Pictures.Any())
-                    {
-                    <img src="@houseListing.Profile.Pictures.First()" alt="House Image" class="listing-img" />
-                    }
-                    <h2>@houseListing.Profile?.Title</h2>
-                    <p><strong>Start Date:</strong> @houseListing.StartDate.ToShortDateString()</p>
-                    <p><strong>End Date:</strong> @houseListing.EndDate.ToShortDateString()</p>
-                    <p><strong>Status:</strong> @houseListing.Status</p>
-
-                    @if (houseListing.Profile != null)
-                    {
-                    <div class="profile-details">
-                        <h3>House Profile Details</h3>
-                        <p><strong>Description:</strong> @houseListing.Profile.Description</p>
-                        <p><strong>City:</strong> @houseListing.Profile.City</p>
-                        <p><strong>Region:</strong> @houseListing.Profile.Region</p>
-                        <p><strong>Address:</strong> @houseListing.Profile.Address</p>
-                        <p><strong>Amenities:</strong> @string.Join(", ", houseListing.Profile.Amenities)</p>
-                        <p><strong>Chores:</strong> @string.Join(", ", houseListing.Profile.Chores)</p>
-                        <p><strong>Rules:</strong> @string.Join(", ", houseListing.Profile.Rules)</p>
-                    </div>
-                    }
-                </div>
-                <button type="button" class="btn btn-primary" @onclick="HandleApplication">Apply</button>
-                }
-            </div>
-        </Authorized>
-    </AuthorizeView>
-</CascadingAuthenticationState>
-
-*@
 <style>
     .listing-container {
         display: flex;
@@ -205,8 +200,29 @@
         Navigation.NavigateTo("/view-all-house-listings"); 
         
     }
+    
+    private void EditHouseProfile()
+    {
+        Console.WriteLine("Edit House Profile clicked!");
+        // Navigate or open edit page logic here
+    }
+
+    private void DeleteHouseProfile()
+    {
+        Console.WriteLine("Delete House Profile clicked!");
+        // Confirm delete logic here
+    }
+    
     private void HandleApplication()
     {
       //  Navigation.NavigateTo($"/application/{ListingId}");
     }
+    
+    private List<string> Images = new List<string>
+    {
+        "/images/loginBackgrounds/1.jpg",
+        "/images/loginBackgrounds/2.jpg",
+        "/images/loginBackgrounds/3.jpg", 
+        "/images/loginBackgrounds/4.jpg"
+    };
 }

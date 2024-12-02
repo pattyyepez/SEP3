@@ -1,11 +1,10 @@
 ﻿@page "/view-all-house-listings"
 @using System.Security.Claims
 @using DTOs.HouseListing
-@using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
 @using Services
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
@@ -13,32 +12,37 @@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>All House Listings</h1>
+        <h1>My Listings</h1>
 
         @if (houseListings == null || !houseListings.Any())
         {
-            <p>No house listings found.</p>
+            <p>No house profiles found.</p>
         }
         else
         {
-            <div class="house-listing-list">
+            <div class="house-profile-list">
                 @foreach (var listing in houseListings)
                 {
-                    <div class="house-listing-item">
-                        <p>
-                            @listing.Profile.Title
-                            <br/>
-                            @listing.StartDate - @listing.EndDate
-                        </p>
-                        <button class="btn btn-details" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                    <div class="house-profile-item">
+                        @if (listing.Profile.Pictures != null && listing.Profile.Pictures.Any())
+                        {
+                            <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img" />
+                        }
+                        <p>@listing.Profile.Title</p>
+                        <p>@listing.StartDate - @listing.EndDate</p>
+                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
                     </div>
                 }
+                <div class="house-profile-item">
+                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
+                </div>
             </div>
         }
     </div>
 </div>
 
 <style>
+
     @@font-face {
         font-family: 'LogoFont';
         src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
@@ -46,68 +50,11 @@
         font-style: normal;
     }
 
-    h2
-    {
-        font-size: 3em;
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        align-self: center;
-        margin-bottom: 0.5em;
-    }
-
-    label
-    {
-        color: #222222;
-        font-family: Futura;
-        margin-bottom: 0.1em;
-    }
-
-    ul {
-        list-style: none;
-    }
-
-    .welcome-message h1 {
-        font-size: 2rem;
-        font-family: "Canela Text";
-        margin: 0;
-    }
-
-    .form-group {
-        margin-bottom: 1.5em;
-    }
-
-    .form-control {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-    }
-
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 1em;
-    }
-
-    .btn {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-    }
-
-    .page-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-    }
-
-    .signup-page-container {
-        max-width: 800px;
-        margin: 3em 0;
-        padding: 2em 2em;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
     }
 
     h1 {
@@ -117,47 +64,51 @@
         font-family: 'LogoFont', sans-serif;
     }
 
-    .house-listing-list {
+    .btn {
+        font-size: 0.85em;
+        padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .house-profile-list {
         display: flex;
         flex-wrap: wrap;
         gap: 1.5em;
         justify-content: center;
     }
 
-    .house-listing-item {
-        width: 200px;
+    .house-profile-item {
+        width: 15em;
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
-        padding: 1em;
+        padding: 0 0 1em 0;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .house-profile-item div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 95%;
+        height: 95%;
     }
 
     .house-profile-img {
         width: 100%;
         height: auto;
-        border-radius: 10px;
+        border-radius: 10px 10px 0 0;
     }
 
     p {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
+        margin: 1em;
     }
 
-    .btn-details {
-        margin-top: 0.5em;
-        padding: 0.5em 1em;
-        font-size: 1rem;
-        color: #ffffff;
-        background-color: #ff7e5f;
-        border: none;
-        border-radius: 5px;
+    .plus {
         cursor: pointer;
-        font-family: Futura;
-    }
-
-    .btn-details:hover {
-        background-color: #feb47b;
     }
 </style>
 
@@ -204,6 +155,11 @@
     private void NavigateToDetails(int ListingId)
     {
         Navigation.NavigateTo($"/view-house-listing/{ListingId}");
+    }
+    
+    private void NavigateToCreate()
+    {
+        Navigation.NavigateTo("/create-house-listing");
     }
 
 }

@@ -10,7 +10,7 @@
 <div class="main-layout">
     <!-- Top Banner -->
     <div class="banner">
-        <button class="menu-button" @onclick="ToggleSidebar">☰</button>
+        <button class="menu-button" @onclick="ToggleSidebar"><div class="icon @(isSidebarOpen ? "open" : "")"><i class="fa-solid fa-bars"></i></div></button>
 
         <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
 
@@ -35,13 +35,13 @@
         <nav class="menu">
             <ul>
                 <li>
-                    <button href="/dashboard"><i class="fas fa-home"></i> My Houses</button>
+                    <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> My Houses</button>
                 </li>
                 <li>
-                    <button href="/dashboard"><i class="fas fa-list"></i> All Listings</button>
+                    <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
                 </li>
                 <li>
-                    <button href="/dashboard"><i class="fas fa-clock"></i> Pending Appl.</button>
+                    <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
                 </li>
                 <li>
                     <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
@@ -116,7 +116,7 @@
     /* Sidebar */
     .sidebar {
         display: flex;
-        width: 15em;
+        width: 16.5em;
         background-color: white;
         position: fixed;
         height: 100%;
@@ -132,6 +132,14 @@
 
     .sidebar.open {
         transform: translateX(0) !important;
+    }
+    
+    .icon {
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .icon.open {
+        transform: rotate(90deg) !important;
     }
 
     .menu {

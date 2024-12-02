@@ -12,7 +12,7 @@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>All House Profiles</h1>
+        <h1>My Houses</h1>
 
         @if (houseProfiles == null || !houseProfiles.Any())
         {
@@ -28,7 +28,7 @@
                         {
                             <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img" />
                         }
-                        <p>@profile.Description</p>
+                        <p>@profile.Title</p>
                         <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
                     </div>
                 }
@@ -63,8 +63,6 @@
         font-family: 'LogoFont', sans-serif;
     }
 
-
-
     .btn {
         font-size: 0.85em;
         padding: 0.375em 0.75em;
@@ -79,7 +77,7 @@
     }
 
     .house-profile-item {
-        width: 12em;
+        width: 15em;
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -106,6 +104,10 @@
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         margin: 1em;
+    }
+    
+    .plus {
+        cursor: pointer;
     }
     
 </style>
