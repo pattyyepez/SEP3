@@ -18,6 +18,10 @@ builder.Services.AddScoped<IHouseOwnerService, HouseOwnerService>();
 builder.Services.AddScoped<IHouseSitterService, HouseSitterService>();
 builder.Services.AddScoped<IHouseProfileService, HouseProfileService>();
 builder.Services.AddScoped<IHouseListingService, HouseListingService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<ISitterReviewService, SitterReviewService>();
+builder.Services.AddScoped<IHouseReviewService, HouseReviewService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 

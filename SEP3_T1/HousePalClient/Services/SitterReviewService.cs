@@ -13,7 +13,7 @@ public class SitterReviewService : ISitterReviewService
             _httpClient = httpClient;
         }
 
-        public async Task<SitterReviewDto> AddAsync(SitterReviewDto sitterReview)
+        public async Task<SitterReviewDto> AddAsync(CreateSitterReviewDto sitterReview)
         {
             var convertedSitterReview = JsonConvert.SerializeObject(sitterReview);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedSitterReview);
@@ -29,21 +29,21 @@ public class SitterReviewService : ISitterReviewService
             return JsonConvert.DeserializeObject<SitterReviewDto>(jsonResponse)!;
         }
 
-        public async Task<SitterReviewDto> UpdateAsync(SitterReviewDto sitterReview)
-        {
-            var convertedSitterReview = JsonConvert.SerializeObject(sitterReview);
-            var buffer = System.Text.Encoding.UTF8.GetBytes(convertedSitterReview);
-            var byteContent = new ByteArrayContent(buffer);
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/SitterReview/{sitterReview.Id}", byteContent);
-            
-            response.EnsureSuccessStatusCode();
-    
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"{jsonResponse}\n");
-            return JsonConvert.DeserializeObject<SitterReviewDto>(jsonResponse);
-        }
+        // public async Task<SitterReviewDto> UpdateAsync(SitterReviewDto sitterReview)
+        // {
+        //     var convertedSitterReview = JsonConvert.SerializeObject(sitterReview);
+        //     var buffer = System.Text.Encoding.UTF8.GetBytes(convertedSitterReview);
+        //     var byteContent = new ByteArrayContent(buffer);
+        //     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        //     
+        //     using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/SitterReview/{sitterReview.Id}", byteContent);
+        //     
+        //     response.EnsureSuccessStatusCode();
+        //
+        //     var jsonResponse = await response.Content.ReadAsStringAsync();
+        //     Console.WriteLine($"{jsonResponse}\n");
+        //     return JsonConvert.DeserializeObject<SitterReviewDto>(jsonResponse);
+        // }
 
         public async Task DeleteAsync(int id)
         {

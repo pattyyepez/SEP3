@@ -14,7 +14,7 @@ public class ApplicationService : IApplicationService
             _httpClient = httpClient;
         }
 
-        public async Task<ApplicationDto> AddAsync(ApplicationDto application)
+        public async Task<ApplicationDto> AddAsync(CreateApplicationDto application)
         {
             var convertedApplication = JsonConvert.SerializeObject(application);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedApplication);
@@ -22,22 +22,32 @@ public class ApplicationService : IApplicationService
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
             using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/Application", byteContent);
-            
-            response.EnsureSuccessStatusCode();
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException);
+                Console.WriteLine(ex.StackTrace);
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
             return JsonConvert.DeserializeObject<ApplicationDto>(jsonResponse);
         }
 
-        public async Task<ApplicationDto> UpdateAsync(ApplicationDto application)
+        public async Task<ApplicationDto> UpdateAsync(UpdateApplicationDto application)
         {
             var convertedApplication = JsonConvert.SerializeObject(application);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedApplication);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/{application.ListingId}{application.SitterId}", byteContent);
+            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/{application.ListingId}/{application.SitterId}", byteContent);
             
             response.EnsureSuccessStatusCode();
     

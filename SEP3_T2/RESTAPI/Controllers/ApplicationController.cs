@@ -111,6 +111,8 @@ public class ApplicationController : ControllerBase
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Error creating Application: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
+
             return StatusCode(500,
                 $"Error creating Application: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
         }

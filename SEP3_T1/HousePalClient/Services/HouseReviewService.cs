@@ -13,7 +13,7 @@ public class HouseReviewService : IHouseReviewService
             _httpClient = httpClient;
         }
 
-        public async Task<HouseReviewDto> AddAsync(HouseReviewDto houseReview)
+        public async Task<HouseReviewDto> AddAsync(CreateHouseReviewDto houseReview)
         {
             var convertedHouseReview = JsonConvert.SerializeObject(houseReview);
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseReview);
@@ -29,21 +29,21 @@ public class HouseReviewService : IHouseReviewService
             return JsonConvert.DeserializeObject<HouseReviewDto>(jsonResponse);
         }
 
-        public async Task<HouseReviewDto> UpdateAsync(HouseReviewDto houseReview)
-        {
-            var convertedHouseReview = JsonConvert.SerializeObject(houseReview);
-            var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseReview);
-            var byteContent = new ByteArrayContent(buffer);
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseReview/{houseReview.Id}", byteContent);
-            
-            response.EnsureSuccessStatusCode();
-    
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"{jsonResponse}\n");
-            return JsonConvert.DeserializeObject<HouseReviewDto>(jsonResponse);
-        }
+        // public async Task<HouseReviewDto> UpdateAsync(HouseReviewDto houseReview)
+        // {
+        //     var convertedHouseReview = JsonConvert.SerializeObject(houseReview);
+        //     var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseReview);
+        //     var byteContent = new ByteArrayContent(buffer);
+        //     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        //     
+        //     using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseReview/{houseReview.Id}", byteContent);
+        //     
+        //     response.EnsureSuccessStatusCode();
+        //
+        //     var jsonResponse = await response.Content.ReadAsStringAsync();
+        //     Console.WriteLine($"{jsonResponse}\n");
+        //     return JsonConvert.DeserializeObject<HouseReviewDto>(jsonResponse);
+        // }
 
         public async Task DeleteAsync(int id)
         {

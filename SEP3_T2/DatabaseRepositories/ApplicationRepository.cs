@@ -25,8 +25,7 @@ public class ApplicationRepository : IApplicationRepository
         {
             ListingId = application.ListingId,
             SitterId = application.SitterId,
-            Message = application.Message,
-            Status = application.Status
+            Message = application.Message
         });
         
         return Task.FromResult(new ApplicationDto
@@ -35,7 +34,7 @@ public class ApplicationRepository : IApplicationRepository
             SitterId = reply.SitterId,
             Message = reply.Message,
             Status = reply.Status,
-            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
         });
     }
 
