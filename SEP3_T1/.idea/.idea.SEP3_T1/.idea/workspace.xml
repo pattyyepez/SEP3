@@ -9,17 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/App.razor" afterDir="false" />
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="Being able to apply to a listing as a house sitter">
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/FileUploadTest.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseListings.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseListings.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/HousePalClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/HousePalClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/HomePageHO.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/HomePageHO.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IApplicationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/proto/proto.proto" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/proto/proto.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +181,7 @@
       <workItem from="1732694856752" duration="232000" />
       <workItem from="1732695108000" duration="25673000" />
       <workItem from="1732867667772" duration="8835000" />
+      <workItem from="1733123800654" duration="24484000" />
     </task>
     <task id="LOCAL-00001" summary="initial T3 commit, for now just being able to retrieve any house owner using the ID">
       <option name="closed" value="true" />
@@ -325,7 +327,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732800435416</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="filtering, adding the blazor bootstrap nuget package for modals n other cool stuff">
+      <option name="closed" value="true" />
+      <created>1733125008187</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1733125008187</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Being able to apply to a listing as a house sitter">
+      <option name="closed" value="true" />
+      <created>1733134015648</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1733134015648</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,7 +406,9 @@
     <MESSAGE value="PICTURES WORK NOW YIPPEE!! " />
     <MESSAGE value="more picture work :-D" />
     <MESSAGE value="starting to work on filters" />
-    <option name="LAST_COMMIT_MESSAGE" value="starting to work on filters" />
+    <MESSAGE value="filtering, adding the blazor bootstrap nuget package for modals n other cool stuff" />
+    <MESSAGE value="Being able to apply to a listing as a house sitter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Being able to apply to a listing as a house sitter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

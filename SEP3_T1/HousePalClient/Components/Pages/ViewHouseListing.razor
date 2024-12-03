@@ -1,4 +1,5 @@
 ﻿@page "/view-house-listing/{listingId:int}"
+@using DTOs.Application
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
@@ -7,6 +8,7 @@
 @inject NavigationManager Navigation
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
+@inject IApplicationService ApplicationService
 
 <head>
     <!-- Add Font Awesome CDN to your head tag -->
@@ -17,7 +19,7 @@
 
 
 <div class="listing-container">
-    @if (houseListing == null)
+    @if (_houseListing == null)
     {
     <p>Loading house listing details...</p>
     }
@@ -28,7 +30,7 @@
             <div class="carousel-container">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        @for (int i = 0; i < Images.Count; i++)
+                        @for (int i = 0; i < _houseListing.Profile.Pictures.Count; i++)
                         {
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
@@ -37,10 +39,10 @@
                         }
                     </div>
                     <div class="carousel-inner">
-                        @foreach (var image in Images)
+                        @foreach (var image in _houseListing.Profile.Pictures)
                         {
-                            <div class="carousel-item @(Images.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="@image" class="d-block w-100" alt="House Image">
+                            <div class="carousel-item @(_houseListing.Profile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
                             </div>
                         }
                     </div>
@@ -59,14 +61,14 @@
                 
                 <div class="text-content">
                     <!-- House Title and Location -->
-                    <h1 class="house-title">@houseListing.Profile.Title</h1>
-                    <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @houseListing.Profile.City, @houseListing.Profile.Region</h2>
-                    <p class="house-description">@houseListing.Profile.Description</p>
+                    <h1 class="house-title">@_houseListing.Profile.Title</h1>
+                    <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseListing.Profile.City, @_houseListing.Profile.Region</h2>
+                    <p class="house-description">@_houseListing.Profile.Description</p>
                 </div>
                 
                 <div class="dates">
-                    <p><strong>Start Date: </strong>@houseListing.StartDate</p>
-                    <p><strong>End Date: </strong>@houseListing.EndDate</p>
+                    <p><strong>Start Date: </strong>@_houseListing.StartDate</p>
+                    <p><strong>End Date: </strong>@_houseListing.EndDate</p>
                 </div>
                 
             </div>
@@ -78,7 +80,7 @@
                 <div class="chores-column">
                     <h3>House Chores</h3>
                     <div class="chores-container">
-                        @foreach (var chore in houseListing.Profile.Chores)
+                        @foreach (var chore in _houseListing.Profile.Chores)
                         {
                             <div class="pill">@chore</div>
                         }
@@ -88,7 +90,7 @@
                 <div class="amenities-column">
                     <h3>House Amenities</h3>
                     <div class="amenities-container">
-                        @foreach (var amenity in houseListing.Profile.Amenities)
+                        @foreach (var amenity in _houseListing.Profile.Amenities)
                         {
                             <div class="pill">@amenity</div>
                         }
@@ -101,10 +103,10 @@
             <!-- House Rules Section -->
             <h3>House Rules</h3>
             <ol class="house-rules">
-                @foreach (var rule in houseListing.Profile.Rules)
-                {
-                    <li>@rule</li>
-                }
+                    @foreach (var rule in _houseListing.Profile.Rules)
+                    {
+                        <li>@rule</li>
+                    }
             </ol>
 
             <hr class="section-divider"/>
@@ -112,13 +114,37 @@
             <!-- Meet the Host Section -->
             <h3>Meet the Host</h3>
             <div class="host-section">
-                <img src="@houseListing.Profile.Owner.ProfilePicture" alt="Host Profile Picture" class="host-picture"/>
-                <p class="host-bio">@houseListing.Profile.Owner.Biography</p>
+                <img src="https://localhost:7134/Filesave/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
+                <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
             </div>
 
             <hr class="section-divider"/>
-            
 
+            @if (_applications != null)
+            {
+                @foreach (var application in _applications)
+                {
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">@application.Sitter.Name</h5>
+                                    <p class="card-text">@application.Message</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">@application.Date</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            
+            
         </div>  
     }
 </div>
@@ -287,30 +313,37 @@
 </style>
 
 @code {
-    [Parameter]
-    public int listingId { get; set; }
+    [Parameter] public int listingId { get; set; }
 
-    private HouseListingDto houseListing;
+    private HouseListingDto? _houseListing;
+    private List<ApplicationDto>? _applications;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadHouseListingDetails();
+        await LoadApplications();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadApplications()
+    {
+        _applications = ApplicationService.GetApplicationsByListing(listingId, true).ToList();
     }
 
     private async Task LoadHouseListingDetails()
     {
-        houseListing = await HouseListingService.GetSingleAsync(listingId);
+        _houseListing = await HouseListingService.GetSingleAsync(listingId, false);
 
-        if (houseListing.Profile == null && houseListing.ProfileId != 0)
+        if (_houseListing.Profile == null && _houseListing.ProfileId != 0)
         {
-            houseListing.Profile = await HouseProfileService.GetSingleAsync(houseListing.ProfileId);
+            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
         }
     }
+    
     private async Task DeleteAccount()
     {
-        await HouseListingService.DeleteAsync(houseListing.Id);
+        await HouseListingService.DeleteAsync(_houseListing.Id);
         Navigation.NavigateTo("/view-all-house-listings"); 
-        
     }
     
     private void EditHouseProfile()
@@ -329,12 +362,4 @@
     {
       //  Navigation.NavigateTo($"/application/{ListingId}");
     }
-    
-    private List<string> Images = new List<string>
-    {
-        "/images/loginBackgrounds/1.jpg",
-        "/images/loginBackgrounds/2.jpg",
-        "/images/loginBackgrounds/3.jpg", 
-        "/images/loginBackgrounds/4.jpg"
-    };
 }

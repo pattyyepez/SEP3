@@ -9,6 +9,6 @@ public interface IApplicationService
     Task DeleteAsync(int listingId, int sitterId);
     Task<ApplicationDto> GetSingleAsync(int listingId, int sitterId);
     IQueryable<ApplicationDto> GetAll();
-    IQueryable<ApplicationDto> GetApplicationsByListing(int listingId);
+    IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, bool includeSitter);
     IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status);
 }

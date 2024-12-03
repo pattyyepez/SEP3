@@ -80,12 +80,21 @@ public class ApplicationController : ControllerBase
     
     // GET: https://localhost:7134/api/Application/GetApplication/{listingId}
     [HttpGet("{listingId}")]
-    public async Task<IActionResult> GetApplication(int listingId)
+    public async Task<IActionResult> GetApplication(int listingId,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeSitter)
     {
         try
         {
             var response = _repo.GetAll().Where(a => a.ListingId == listingId);
 
+            foreach (var application in response)
+            {
+                if (includeSitter)
+                    application.Sitter =
+                        await sitterRepo.GetSingleAsync(application.SitterId);
+            }
+            
             return Ok(response);
         }
         catch (Exception ex)
