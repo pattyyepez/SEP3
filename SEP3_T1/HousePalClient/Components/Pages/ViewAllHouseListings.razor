@@ -23,15 +23,18 @@
             <div class="house-profile-list">
                 @foreach (var listing in houseListings)
                 {
-                    <div class="house-profile-item">
-                        @if (listing.Profile.Pictures != null && listing.Profile.Pictures.Any())
-                        {
-                            <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img" />
-                        }
-                        <p>@listing.Profile.Title</p>
-                        <p>@listing.StartDate - @listing.EndDate</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                    </div>
+                    if ( listing.Status.Equals("Open"))
+                    {
+                        <div class="house-profile-item">
+                            @if (listing.Profile.Pictures != null && listing.Profile.Pictures.Any())
+                            {
+                                <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img" />
+                            }
+                            <p>@listing.Profile.Title</p>
+                            <p>@listing.StartDate - @listing.EndDate</p>
+                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                        </div>
+                    }
                 }
                 <div class="house-profile-item">
                     <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
