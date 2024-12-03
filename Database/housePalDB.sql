@@ -128,7 +128,7 @@ CREATE TABLE Application (
     listing_id INT NOT NULL,
     sitter_id INT NOT NULL,
     message VARCHAR(10000) NOT NULL,
-    status VARCHAR(10) NOT NULL CHECK (status IN ('Pending', 'Approved', 'Rejected')),
+    status VARCHAR(10) NOT NULL CHECK (status IN ('Pending', 'Approved', 'Confirmed', 'Rejected')),
     date TIMESTAMP NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES House_listing(listing_id) ON DELETE CASCADE,
     FOREIGN KEY (sitter_id) REFERENCES HouseSitter(sitter_id) ON DELETE CASCADE,
@@ -197,9 +197,13 @@ INSERT INTO HouseProfile (owner_id, title, description, address, region, city) V
 (4, 'flooded.', 'Modern house in Odense. Cozy and perfect for cat lovers.', 'Skoveringe, 11', 'Sjealland', 'Copenaguen');
 
 INSERT INTO House_pictures (profile_id, picture) VALUES
-(1, 'house1.jpg'),
-(1, 'house11.jpg'),
-(1, 'house111.jpg'),
+(1, 'house1_1.png'),
+(1, 'house1_2.jpg'),
+(1, 'house1_3.jpg'),
+(1, 'house1_4.jpg'),
+(1, 'house1_5.jpg'),
+(1, 'house1_6.jpg'),
+(1, 'house1_7.jpg'),
 (2, 'house2.jpg'),
 (2, 'house22.jpg'),
 (2, 'house222.jpg'),
@@ -211,6 +215,7 @@ INSERT INTO House_pictures (profile_id, picture) VALUES
 (4, 'house444.jpg');
 
 INSERT INTO House_listing (profile_id, startDate, endDate, status) VALUES
+(1, '2024-11-01', '2024-11-30', 'Open'),
 (1, '2024-11-01', '2024-11-30', 'Open'),
 (2, '2024-12-01', '2024-12-15', 'Open'),
 (3, '2024-10-01', '2024-10-15', 'Closed'),
@@ -274,7 +279,6 @@ INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
 (1, 5, 'I am available and love taking care of pets!', 'Pending', '2024-10-22'),
 (2, 6, 'Experienced sitter available for your house and garden.', 'Approved', '2024-10-23');
 INSERT INTO House_review (profile_id, sitter_id, rating, comments, date) VALUES
-
 (3, 5, 5, 'Beautiful house, great experience!', '2024-10-20'),
 (2, 6, 4, 'Lovely home, perfect location.', '2024-10-21');
 INSERT INTO Sitter_review (owner_id, sitter_id, rating, comments, date) VALUES
