@@ -3,7 +3,6 @@
 @using HousePalClient.Auth
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
-@using Services
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
@@ -35,7 +34,7 @@
                         </EditForm>
                     </div>
                     <div class="welcome-message">
-                        <img src="/images/logo.png" alt="Welcome Image" class="welcome-image" />
+                        <img src="/images/logo.png" alt="Welcome Image" class="welcome-image"/>
                     </div>
                 </div>
             </div>
@@ -46,28 +45,6 @@
         @*     <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button> *@
         @*     <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button> *@
         @* </Authorized> *@
-    </AuthorizeView>
-    <AuthorizeView Roles="HouseOwner">
-        <Authorized Context="authContext">
-            @{
-                Navigation.NavigateTo("/view-all-house-profiles");
-            };
-            @*<p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
-            <br/>
-            <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseProfile">Create House Profile</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleCreateHouseListing">Create House Listing</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseProfiles">View All House Profiles</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</bu*@tton>
-        </Authorized>
-    </AuthorizeView>
-    <AuthorizeView Roles="HouseSitter">
-        <Authorized Context="authContext">
-            <p>Gotten ID: @authContext.User.Claims.Single(c => c.Type == "Id").Value</p>
-            <br/>
-            <button type="button" class="btn btn-primary" @onclick="HandleAllViewHouseListings">View All House Listings</button>
-            <button type="button" class="btn btn-primary" @onclick="HandleViewMyAccount">View My Account</button>
-        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -188,27 +165,22 @@
     {
         Navigation.NavigateTo("/homepage-houseowner");
     }
-    
+
     private void HandleCreateHouseProfile()
     {
         Navigation.NavigateTo("/create-house-profile");
     }
+
     private void HandleCreateHouseListing()
     {
         Navigation.NavigateTo("/create-house-listing");
     }
+
     private void HandleAllViewHouseProfiles()
     {
         Navigation.NavigateTo("/view-all-house-profiles");
     }
-    private void HandleAllViewHouseListings()
-    {
-        Navigation.NavigateTo("/view-all-house-listings");
-    }
-    private void HandleViewMyAccount()
-    {
-        Navigation.NavigateTo("/view-my-account");
-    }
+
     private async Task HandleLoginClick()
     {
         try
@@ -233,4 +205,5 @@
         public string Username { get; set; } = "niels.jensen@gmail.com";
         public string Password { get; set; } = "12345";
     }
+
 }

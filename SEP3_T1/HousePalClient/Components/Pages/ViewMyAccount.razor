@@ -60,7 +60,7 @@
                         <h4>Pictures:</h4>
                         @foreach (var picture in _houseSitterProfile.Pictures)
                         {
-                            <img src="@picture" alt="House Sitter Picture" class="profile-img" />
+                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="House Sitter Picture" class="profile-img" />
                         }
                     </div>
                 }
@@ -139,10 +139,12 @@
             Console.WriteLine("User is NOT authenticated.");
         }
     }
+
     private void EditAccountHouseOwner()
     {
         Navigation.NavigateTo("/edit-account-owner");
     }
+
     private void EditAccountHouseSitter()
     {
         Navigation.NavigateTo("/edit-account-sitter");
@@ -158,9 +160,10 @@
         {
             await HouseSitterService.DeleteAsync(_houseSitterProfile.UserId);
         }
-        Navigation.NavigateTo("/"); 
-        
+
+        Navigation.NavigateTo("/");
+
     }
 
-
+}
 }

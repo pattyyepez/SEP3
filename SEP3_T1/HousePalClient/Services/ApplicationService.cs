@@ -21,7 +21,7 @@ public class ApplicationService : IApplicationService
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/Application", byteContent);
+            using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/Application/CreateApplication", byteContent);
 
             try
             {
@@ -47,7 +47,7 @@ public class ApplicationService : IApplicationService
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/{application.ListingId}/{application.SitterId}", byteContent);
+            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/UpdateApplication/{application.ListingId}/{application.SitterId}", byteContent);
             
             response.EnsureSuccessStatusCode();
     
@@ -56,16 +56,16 @@ public class ApplicationService : IApplicationService
             return JsonConvert.DeserializeObject<ApplicationDto>(jsonResponse);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int listingId, int sitterId)
         {
-            using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/Application/{id}");
+            using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/Application/DeleteApplication/{listingId}/{sitterId}");
             
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<ApplicationDto> GetSingleAsync(int id)
+        public async Task<ApplicationDto> GetSingleAsync(int listingId, int sitterId)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/Application/{id}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplication/{listingId}/{sitterId}");
 
             response.EnsureSuccessStatusCode();
     
@@ -76,7 +76,7 @@ public class ApplicationService : IApplicationService
 
         public IQueryable<ApplicationDto> GetAll()
         {
-            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/Application").Result;
+            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/Application/GetAllApplications").Result;
 
             response.EnsureSuccessStatusCode();
 
@@ -87,6 +87,33 @@ public class ApplicationService : IApplicationService
 
             return application.AsQueryable();
         }
-        
-    
+
+        public IQueryable<ApplicationDto> GetApplicationsByListing(int listingId)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplication/{listingId}").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var application = JsonConvert.DeserializeObject<List<ApplicationDto>>(jsonResponse);
+
+            return application.AsQueryable();
+        }
+
+        //https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}
+        public IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var application = JsonConvert.DeserializeObject<List<ApplicationDto>>(jsonResponse);
+
+            return application.AsQueryable();
+        }
 }

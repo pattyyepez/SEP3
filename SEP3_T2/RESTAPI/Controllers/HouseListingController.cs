@@ -110,6 +110,37 @@ public class HouseListingController : ControllerBase
         }
     }
     
+    [HttpGet("{ownerId:int}/{status}")]
+    public async Task<IActionResult> GetListingsByOwnerStatus(
+        [FromServices] IHouseProfileRepository profileRepo,
+        int ownerId, string status)
+    {
+        try
+        {
+            var response = _repo.GetAll();
+
+            if (ownerId == 0) return Ok(response.Where(l => l.Status == status));
+
+            var toReturn = new List<HouseListingDto>();
+
+            foreach (var listing in response)
+            {
+                listing.Profile =
+                    await profileRepo.GetSingleAsync(listing.ProfileId);
+                toReturn.Add(listing);
+            }
+            
+            return Ok(toReturn.AsQueryable().Where(l => l.Profile.OwnerId == ownerId && l.Status == status));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.InnerException);
+            Console.WriteLine(ex.StackTrace);
+            return StatusCode(500, $"Error fetching HouseListing: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
     // POST: api/HouseListing
     [HttpPost]
     public async Task<IActionResult> CreateHouseListing(

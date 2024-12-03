@@ -26,14 +26,16 @@
                     <div class="house-profile-item">
                         @if (profile.Pictures != null && profile.Pictures.Any())
                         {
-                            <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img" />
+                            <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img"/>
                         }
                         <p>@profile.Description</p>
                         <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
                     </div>
                 }
                 <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
+                    <div @onclick="NavigateToCreate" class="plus">
+                        <i class="fa-solid fa-plus fa-2xl"></i>
+                    </div>
                 </div>
             </div>
         }
@@ -111,11 +113,13 @@
 </style>
 
 @code {
+    [Inject] protected PreloadService PreloadService { get; set; } = default!;
     private List<HouseProfileDto> houseProfiles = new List<HouseProfileDto>();
     private int userId = 0;
 
     protected override async Task OnInitializedAsync()
     {
+        PreloadService.Show();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -125,12 +129,13 @@
             Console.WriteLine("Not authenticated");
             return;
         }
-        
+
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         userId = int.Parse(userIdAsString);
-        
+
         await LoadAllHouseProfiles();
+        PreloadService.Hide();
     }
 
     private async Task LoadAllHouseProfiles()
@@ -142,9 +147,10 @@
     {
         Navigation.NavigateTo($"/view-house-profile/{profileId}");
     }
-    
+
     private void NavigateToCreate()
     {
         Navigation.NavigateTo("/create-house-profile");
     }
+
 }

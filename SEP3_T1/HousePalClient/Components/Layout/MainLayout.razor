@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components
+@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
 
@@ -7,57 +9,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
-<div class="main-layout">
-    <!-- Top Banner -->
-    <div class="banner">
-        <button class="menu-button" @onclick="ToggleSidebar">☰</button>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+    <div class="main-layout">
+        <!-- Top Banner -->
+        <div class="banner">
+            <button class="menu-button" @onclick="ToggleSidebar">☰</button>
 
-        <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
+            <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
 
-        <div class="profile-picture-container" @onclick="TogglePopup">
-            <img src="images/profilepic1.jpg" alt="Profile Picture" class="profile-picture"/>
+            <div class="profile-picture-container" @onclick="TogglePopup">
+                <img src="https://localhost:7134/Filesave/@_pfp.Split('.')[0]/@_pfp.Split('.')[1]" alt="Profile Picture" class="profile-picture"/>
+            </div>
         </div>
-    </div>
 
-    <div class="popup @(isPopupOpen ? "show" : "")">
-        <ul>
-            <li>
-                <button href="/dashboard"><i class="fa-solid fa-user"></i> Account</button>
-            </li>
-            <li>
-                <button href="/dashboard"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
-            </li>
-        </ul>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar @(isSidebarOpen ? "open" : "")">
-        <nav class="menu">
+        <div class="popup @(isPopupOpen ? "show" : "")">
             <ul>
                 <li>
-                    <button href="/dashboard"><i class="fas fa-home"></i> My Houses</button>
+                    <button @onclick="NavigateToMyAccount"><i class="fa-solid fa-user"></i> Account</button>
                 </li>
                 <li>
-                    <button href="/dashboard"><i class="fas fa-list"></i> All Listings</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-clock"></i> Pending Appl.</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
+                    <button @onclick="NavigateToLogOut"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
                 </li>
             </ul>
-        </nav>
-    </div>
+        </div>
 
-    <!-- Main Content Area -->
-    <div class="content">
-        @Body
+        <!-- Sidebar -->
+        <div class="sidebar @(isSidebarOpen ? "open" : "")">
+            <nav class="menu">
+                <ul>
+                    @if (context.User.Claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseOwner")
+                    {
+                        <li>
+                            <button @onclick="NavigateToMyProfiles"><i class="fas fa-home"></i>My Houses</button>
+                        </li>
+                        <li>
+                            <button @onclick="NavigateToAllListings"><i class="fas fa-list"></i>All Listings</button>
+                        </li>
+                        <li>
+                            <button @onclick="NavigateToPendingApplications"><i class="fas fa-clock"></i>Pending Appl.</button>
+                        </li>
+                        <li>
+                            <button @onclick="NavigateToConfirmedStays"><i class="fas fa-check-circle"></i>Confirmed Stays</button>
+                        </li>
+                        <li>
+                            <button @onclick="NavigateToPendingReview"><i class="fas fa-pencil-alt"></i>Pending for Review</button>
+                        </li>
+                    }
+                    else
+                    {
+                        
+                    }
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content">
+            @Body
+        </div>
     </div>
-</div>
+        </Authorized>
+    </AuthorizeView>
+    
+</CascadingAuthenticationState>
 
 <style>
 
@@ -259,6 +275,26 @@
 @code {
     private bool isSidebarOpen = false;
     private bool isPopupOpen = false;
+    
+    private string _pfp = String.Empty;
+
+    protected override async void OnInitialized()
+    {
+        
+        var authState = await AuthProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+
+        IEnumerable<Claim> claims = user.Claims;
+        _pfp = claims.Single(c => c.Type == "ProfilePicture").Value;
+        await InvokeAsync(StateHasChanged);
+    }
 
     private void ToggleSidebar()
     {
@@ -273,4 +309,40 @@
         StateHasChanged();
     }
 
+    private void NavigateToMyProfiles()
+    {
+        Navigation.NavigateTo("/view-all-house-profiles");
+    }
+    
+    private void NavigateToAllListings()
+    {
+        Navigation.NavigateTo("/view-all-house-listings");
+    }
+    
+    private void NavigateToPendingApplications()
+    {
+        
+    }
+    
+    private void NavigateToConfirmedStays()
+    {
+        
+    }
+    
+    private void NavigateToPendingReview()
+    {
+        
+    }
+    
+    private void NavigateToMyAccount()
+    {
+        Navigation.NavigateTo("/view-my-account");
+    }
+    
+    private void NavigateToLogOut()
+    {
+        
+    }
 }
+
+<Preload LoadingText="Loading..." />

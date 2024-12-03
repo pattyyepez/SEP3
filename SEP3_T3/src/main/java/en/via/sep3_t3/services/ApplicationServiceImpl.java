@@ -7,8 +7,10 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,13 +61,14 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       application.setListing_id(request.getListingId());
       application.setSitter_id(request.getSitterId());
       application.setMessage(request.getMessage());
-      application.setStatus(request.getStatus());
-      application.setDate(Timestamp.valueOf(LocalDateTime.now()));
+      application.setStatus("Pending");
+      application.setDate(new Date(System.currentTimeMillis()));
 
       applicationRepository.save(application);
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
