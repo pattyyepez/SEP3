@@ -1,86 +1,51 @@
 ﻿@page "/view-all-house-listings"
 @using System.Security.Claims
-@using BlazorBootstrap
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
 @using Services
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-<Preload LoadingText="Loading..."></Preload>
-<CascadingAuthenticationState>
-    <div class="page-container">
-        <div class="signup-page-container">
-            <h1>All House Listings</h1>
 
-            @if (houseListings == null || !houseListings.Any())
-            {
-                <p>No house listings found.</p>
-            }
-            else
-            {
-                <AuthorizeView Roles="HouseSitter">
-                        <Modal @ref="modal" Title="Filtering listings">
-                            <BodyTemplate>
-                                <div class="row">
-                                    <div class="col-5 col-md-3 text-end">Region:</div>
-                                    <input class="col-7 col-md-9" @bind="_region"/>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5 col-md-3 text-end">City:</div>
-                                    <input class="col-7 col-md-9" @bind="_city"/>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5 col-md-3 text-end">Start date:</div>
-                                    <input
-                                        type="date"
-                                        id="start"
-                                        name="listing-start"
-                                        @bind-value="@StartDate"
-                                        min="@_minDateStart.ToString("yyyy-MM-dd")"
-                                        max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
-                                </div>
-                                <div class="row">
-                                    <div class="col-5 col-md-3 text-end">End date:</div>
-                                    <input
-                                        type="date"
-                                        id="end"
-                                        name="listing-start"
-                                        @bind-value="@EndDate"
-                                        min="@_minDateEnd.Value.ToString("yyyy-MM-dd")"
-                                        max="@_maxDateEnd.Value.ToString("yyyy-MM-dd")"/>
-                                </div>
-                            </BodyTemplate>
-                            <FooterTemplate>
-                                <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
-                                <Button Color="ButtonColor.Primary" @onclick="FilterListings">Find listings</Button>
-                            </FooterTemplate>
-                        </Modal>
-                        <button class="btn btn-details" @onclick="OnShowModalClick">Filter Listings</button>
-                    </AuthorizeView>
-                <div class="house-listing-list">
-                    @foreach (var listing in houseListings)
+<div class="page-container">
+    <div class="signup-page-container">
+        <h1>My Listings</h1>
+
+        @if (houseListings == null || !houseListings.Any())
+        {
+            <p>No house profiles found.</p>
+        }
+        else
+        {
+            <div class="house-profile-list">
+                @foreach (var listing in houseListings)
+                {
+                    if ( listing.Status.Equals("Open"))
                     {
-                        <div class="house-listing-item">
-                            <p>
-                                @listing.Profile.Title
-                                <br/>
-                                @listing.StartDate - @listing.EndDate
-                            </p>
-                            <button class="btn btn-details" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                        <div class="house-profile-item">
+                            @if (listing.Profile.Pictures != null && listing.Profile.Pictures.Any())
+                            {
+                                <img src="/images/HP1.jpg" alt="House Picture" class="house-profile-img" />
+                            }
+                            <p>@listing.Profile.Title</p>
+                            <p>@listing.StartDate - @listing.EndDate</p>
+                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
                         </div>
                     }
+                }
+                <div class="house-profile-item">
+                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
                 </div>
-            }
-        </div>
+            </div>
+        }
     </div>
-</CascadingAuthenticationState>
-
+</div>
 
 <style>
+
     @@font-face {
         font-family: 'LogoFont';
         src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
@@ -88,68 +53,11 @@
         font-style: normal;
     }
 
-    h2
-    {
-        font-size: 3em;
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        align-self: center;
-        margin-bottom: 0.5em;
-    }
-
-    label
-    {
-        color: #222222;
-        font-family: Futura;
-        margin-bottom: 0.1em;
-    }
-
-    ul {
-        list-style: none;
-    }
-
-    .welcome-message h1 {
-        font-size: 2rem;
-        font-family: "Canela Text";
-        margin: 0;
-    }
-
-    .form-group {
-        margin-bottom: 1.5em;
-    }
-
-    .form-control {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-    }
-
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 1em;
-    }
-
-    .btn {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-    }
-
-    .page-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-    }
-
-    .signup-page-container {
-        max-width: 800px;
-        margin: 3em 0;
-        padding: 2em 2em;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
     }
 
     h1 {
@@ -159,107 +67,61 @@
         font-family: 'LogoFont', sans-serif;
     }
 
-    .house-listing-list {
+    .btn {
+        font-size: 0.85em;
+        padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .house-profile-list {
         display: flex;
         flex-wrap: wrap;
         gap: 1.5em;
         justify-content: center;
     }
 
-    .house-listing-item {
-        width: 200px;
+    .house-profile-item {
+        width: 15em;
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
-        padding: 1em;
+        padding: 0 0 1em 0;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .house-profile-item div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 95%;
+        height: 95%;
     }
 
     .house-profile-img {
         width: 100%;
         height: auto;
-        border-radius: 10px;
+        border-radius: 10px 10px 0 0;
     }
 
     p {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
+        margin: 1em;
     }
 
-    .btn-details {
-        margin-top: 0.5em;
-        padding: 0.5em 1em;
-        font-size: 1rem;
-        color: #ffffff;
-        background-color: #ff7e5f;
-        border: none;
-        border-radius: 5px;
+    .plus {
         cursor: pointer;
-        font-family: Futura;
-    }
-
-    .btn-details:hover {
-        background-color: #feb47b;
     }
 </style>
 
 @code {
-    [Inject] protected PreloadService PreloadService { get; set; } = default!;
-    
     private List<HouseListingDto> houseListings;
     private int _userId;
     private bool _houseOwner;
 
-    private Modal modal = default!;
-
-    private string _region = string.Empty;
-    private string _city = string.Empty;
-
-    private readonly DateTime _minDateStart = DateTime.Today;
-    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
-
-    private DateTime? _minDateEnd = DateTime.Today;
-    private DateTime? _maxDateEnd = DateTime.Today.AddYears(5);
-
-    private DateTime? _gottenStart = null;
-    private DateTime? _gottenEnd = null;
-
-    // Property for Start Date
-    private DateTime? StartDate
-    {
-        get => _gottenStart;
-        set
-        {
-            _gottenStart = value;
-            _minDateEnd = _gottenStart;
-
-            if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
-            {
-                _gottenEnd = _gottenStart;
-            }
-        }
-    }
-
-    // Property for End Date
-    private DateTime? EndDate
-    {
-        get => _gottenEnd;
-        set => _gottenEnd = value;
-    }
-
-    private async Task OnShowModalClick()
-    {
-        await modal.ShowAsync();
-    }
-
-    private async Task OnHideModalClick()
-    {
-        await modal.HideAsync();
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show(SpinnerColor.Light, "Loading data...");
         houseListings = new List<HouseListingDto>();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
@@ -270,15 +132,15 @@
             Console.WriteLine("Not authenticated");
             return;
         }
-
+        
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _houseOwner = claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseOwner";
+        Console.WriteLine(_houseOwner);
         _userId = int.Parse(userIdAsString);
-
+        
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadAllHouseListings()
@@ -290,29 +152,17 @@
             Console.WriteLine("poop??");
             houseListings.AddRange(await Task.Run(() => HouseListingService.GetAll().ToList()));
         }
-    }
-
-    private async void FilterListings()
-    {
-        FilteredHouseListingsDto filter = new FilteredHouseListingsDto
-        {
-            City = _city,
-            Region = _region,
-            StartDay = _gottenStart?.Day,
-            StartMonth = _gottenStart?.Month,
-            StartYear = _gottenStart?.Year,
-            EndDay = _gottenEnd?.Day,
-            EndMonth = _gottenEnd?.Month,
-            EndYear = _gottenEnd?.Year
-        };
-        houseListings = HouseListingService.GetFilteredListings(filter).ToList();
-        await InvokeAsync(StateHasChanged);
-        await modal.HideAsync();
+            
     }
 
     private void NavigateToDetails(int ListingId)
     {
         Navigation.NavigateTo($"/view-house-listing/{ListingId}");
+    }
+    
+    private void NavigateToCreate()
+    {
+        Navigation.NavigateTo("/create-house-listing");
     }
 
 }
