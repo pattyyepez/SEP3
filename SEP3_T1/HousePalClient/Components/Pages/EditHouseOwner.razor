@@ -16,23 +16,10 @@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>Create Your House Owner Account</h1>
+        <h1>Edit your account</h1>
 
         <form class="house-owner-form" @onsubmit="CreateOwner">
-            <!-- Account Information Fields -->
-            @* <div class="form-section"> *@
-            @*     <h2>Account Information</h2> *@
-            @* *@
-            @*     <label>Email:</label> *@
-            @*     <input type="email" class="form-control" placeholder="email" @bind="email" required/> *@
-            @* *@
-            @*     <label>Password:</label> *@
-            @*     <input type="password" class="form-control" placeholder="Create a password" @bind="password" required/> *@
-            @* *@
-            @*     <label>Confirm Password:</label> *@
-            @*     <input type="password" class="form-control" placeholder="Confirm your password" @bind="confirmPassword" required/> *@
-            @* </div> *@
-
+            
             <!-- Personal Information Fields -->
             <div class="form-section">
                 <h2>Personal Information</h2>
@@ -63,7 +50,7 @@
                 {
                     <hr/>
                     <p>Uploaded picture:</p>
-                    <img src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                    <img class="uploaded-image" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
                 }
             </div>
 
@@ -91,6 +78,7 @@
     </div>
 }
 <style>
+
     @@font-face {
         font-family: 'LogoFont';
         src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
@@ -99,146 +87,40 @@
         font-style: normal;
     }
 
-
-    h2
-    {
-        font-size: 3em;
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        align-self: center;
-        margin-bottom: 0.5em;
-    }
-
-    label
-    {
-        color: #222222;
-        font-family: Futura;
-        margin-bottom: 0.1em;
-    }
-
-    .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        position: relative;
-        overflow: hidden;
-        animation: rotateBackground 25s infinite; /* Apply animation to the main container */
-        background-size: cover;
-        background-position: center;
-    }
-
-    .login-box {
-        display: flex;
-        width: 800px;
-        height: 400px;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-        background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent to see the background */
-    }
-
-    .login-fields {
-        font-family: Futura;
-        color: #222222;
-        width: 50%;
-        padding: 3em;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .welcome-message {
-        width: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral/Orange Gradient */
-        color: white;
-        flex-direction: column;
-    }
-
-    .welcome-message h1 {
-        font-size: 2rem;
-        font-family: "Canela Text";
-        margin: 0;
-    }
-
-    .welcome-image {
-        width: 250px; /* Adjust as needed */
-        height: auto;
-        /*margin-bottom: 1em;*/
-    }
-
-    .form-group {
-        margin-bottom: 1.5em;
-    }
-
-    .form-control {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-    }
-
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 1em; /* Space between buttons */
-    }
-
-    .btn {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-    }
-
-    @@keyframes rotateBackground {
-        0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
-        25% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/2.jpg'); }
-        50% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/3.jpg'); }
-        75% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/4.jpg'); }
-        100% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
-    }
-
     @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
     }
+    
 
     .page-container
     {
         display: flex;
-        flex-direction: column;
+        justify-content: flex-start;
         align-items: center;
-        min-height: 100vh;
-        min-width: 100vw;
+        width: 100vw;
         background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
+        flex-direction: column;
+        padding: 2em;
     }
 
     .signup-page-container {
-        max-width: 800px;
-        margin: 63em 0 3em 0;
+        width: 35em;
+        margin: 2em 0 3em 0;
         padding: 2em 2em;
         background-color: #ffffff;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
-        text-align: center;
+    .signup-page-container h1 {
+        font-size: 3em;
         color: #ff7e5f;
-        margin-bottom: 1em;
         font-family: 'LogoFont', sans-serif;
-    }
-
-    h2 {
-        text-align: center;
-        color: #3d3d3d;
-        font-family: Futura;
-        font-size: 1.7rem;
+        align-self: center;
+        margin-bottom: 0.5em;
     }
 
     .form-section {
@@ -247,6 +129,28 @@
         border-radius: 10px;
         background-color: #f9f9f9;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section h2 {
+        text-align: center;
+        font-size: 2rem;
+        color: #3d3d3d;
+        font-family: 'FuturaFont', sans-serif;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .form-section label
+    {
+        color: #3d3d3d;
+        font-family: 'FuturaFont', sans-serif;
+        margin-bottom: 0.1em;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.375em 0.75em;
+        font-family: 'FuturaFont', sans-serif !important;
     }
 
     .form-control {
@@ -261,18 +165,12 @@
 
     input
     {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif !important;
     }
 
-    label
-    {
-        font-family: Futura;
-        color: #3d3d3d;
-    }
-
-    textarea.form-control {
+    textarea{
         resize: vertical;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif !important;
     }
 
     .btn-primary {
@@ -285,13 +183,14 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .btn-primary:hover {
         background-color: #feb47b;
     }
-    .modal-background {
+
+    /*.modal-background {
         position: fixed;
         top: 0;
         left: 0;
@@ -303,9 +202,9 @@
         align-items: center;
         z-index: 1000;
         overflow: hidden;
-    }
+    }*/
 
-    .modal-content {
+/*    .modal-content {
         background-color: #fff;
         padding: 2em;
         border-radius: 8px;
@@ -313,7 +212,22 @@
         text-align: center;
         max-width: 400px;
         width: 100%;
+    }*/
+
+    input
+    {
+        font-family: 'FuturaFont', sans-serif;
     }
+
+    textarea .form-control {
+        resize: vertical;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .uploaded-image {
+        width: 8em;
+    }
+    
 </style>
 
 @code {
@@ -456,6 +370,4 @@
             Console.WriteLine("User is NOT authenticated.");
         }
     }
-}
-
 }

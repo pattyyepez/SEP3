@@ -17,22 +17,39 @@
 
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
-        <h2>Welcome, @context.User.Identity?.Name!</h2>
         @if (_houseOwnerProfile != null)
         {
-            <div class="profile-container">
-                <h2>House Owner Profile</h2>
-                <p><strong>Name:</strong> @_houseOwnerProfile.Name</p>
-                <p><strong>Email:</strong> @_houseOwnerProfile.Email</p>
-                <p><strong>Phone:</strong> @_houseOwnerProfile.Phone</p>
-                <p><strong>Address:</strong> @_houseOwnerProfile.Address</p>
-                <p><strong>Biography:</strong> @_houseOwnerProfile.Biography</p>
-                <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
-                
-                <button class="btn-edit" @onclick="EditAccountHouseOwner">Edit Account</button>
-                <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
+            <div class="account-page">
+                <div class="profile-container">
+                    <div>
+                        <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                        <h1 class="user-name"> @_houseOwnerProfile.Name</h1>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="info-section">
+                        <h2>Personal Information</h2>
+                        <p><strong>Email:</strong> @_houseOwnerProfile.Email</p>
+                        <p><strong>Phone:</strong> @_houseOwnerProfile.Phone</p>
+                        <p><strong>Address:</strong> @_houseOwnerProfile.Address</p>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="bio-section">
+                        <h2>Biography</h2>
+                        <p>@_houseOwnerProfile.Biography</p>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
+                        <button type="button" class="btn btn-secondary" @onclick="DeleteAccount">Delete Account</button>
+                    </div>
+                </div>
             </div>
-            
         }
         else
         {
@@ -73,37 +90,97 @@
             <p>Loading house sitter profile...</p>
         }
     </AuthorizeView>
-    
 </CascadingAuthenticationState>
 
 <style>
+
+    @@font-face {
+        font-family: 'LogoFont';
+        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+    .account-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        background: linear-gradient(150deg, #ff7e5f, #feb47b);
+    }
+    
     .profile-container {
-        max-width: 600px;
-        margin: auto;
-        padding: 2em;
-        background-color: #ffffff;
-        border-radius: 10px;
+        background-color: white;
+        border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 40%;
+        max-width: 600px;
+        padding: 2em;
+        text-align: center;
+        font-family: 'FuturaFont', sans-serif;
+
+    }
+    
+    .profile-container {
+        margin-bottom: 1.5em;
+    }
+
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 0.5em;
+    }
+    
+    .user-name {
+        font-size: 2rem;
+        color: #ff7e5f;
+        margin: 0;
+    }
+    
+    .info-section, .bio-section {
+        text-align: left;
+        margin-bottom: 1em;
     }
 
     h2 {
         text-align: center;
-        color: #ff7e5f;
+        color: #3d3d3d;
         font-family: 'LogoFont', sans-serif;
-    }
-
-    .profile-img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        margin-bottom: 1em;
+        font-size: 1.5rem;
+        margin-bottom: 0.5em;
     }
 
     p {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
+        font-size: 1rem;
         margin: 0.5em 0;
     }
+
+    .action-buttons {
+        margin-top: 2em;
+        display: flex;
+        gap: 2em;
+        justify-content: center;
+    }
+
+    .section-divider {
+        margin: 2em 0;
+        border: 0;
+        height: 1px;
+        background-color: #ddd;
+    }
+    
 </style>
 
 @code {
@@ -165,5 +242,4 @@
 
     }
 
-}
 }

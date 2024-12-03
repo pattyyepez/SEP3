@@ -21,9 +21,9 @@
         <form class="house-profile-form" @onsubmit="CreateListing">
 
             <div class="form-section">
-                <h2><label for="house-profiles">Select House Profile for the Listing:</label></h2>
+                <h2><label for="house-profiles">Select House:</label></h2>
                 
-                <select @bind="_gottenProfile.Title" name="house-profiles" id="house-profiles">
+                <select @bind="_gottenProfile.Title" name="house-profiles" id="house-profiles" class="choose-house">
                     <option disabled selected>Select an option</option>
                     @foreach (var profile in _houseProfiles)
                     {
@@ -92,6 +92,13 @@
         font-style: normal;
     }
 
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
     .page-container
     {
         display: flex;
@@ -105,7 +112,7 @@
 
     .signup-page-container {
         max-width: 800px;
-        margin: 63em 0 3em 0;
+        margin: 8.5em 0 3em 0;
         padding: 2em 2em;
         background-color: #ffffff;
         border-radius: 15px;
@@ -115,7 +122,7 @@
     h1 {
         text-align: center;
         color: #ff7e5f;
-        margin-bottom: 1em;
+        margin-bottom: 0.5em;
         font-family: 'LogoFont', sans-serif;
     }
 
@@ -124,6 +131,7 @@
         color: #3d3d3d;
         font-family: 'LogoFont', sans-serif;
         font-size: 1.7rem;
+        margin-bottom: 0.5em;
     }
 
     .form-section {
@@ -134,30 +142,24 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .form-control {
-        width: 100%;
-        padding: 0.75em;
-        margin-top: 0.5em;
-        margin-bottom: 1.5em;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1rem;
-    }
-
     input
     {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
+    }
+    
+    .choose-house {
+        font-family: 'FuturaFont', sans-serif;
     }
 
     label
     {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
     }
 
     textarea.form-control {
         resize: vertical;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .btn-primary {
@@ -170,7 +172,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .btn-primary:hover {
