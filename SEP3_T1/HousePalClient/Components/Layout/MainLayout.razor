@@ -23,7 +23,7 @@
     <div class="popup @(isPopupOpen ? "show" : "")">
         <ul>
             <li>
-                <button href="/dashboard"><i class="fa-solid fa-user"></i> Account</button>
+                <button onclick="window.location.href = '/view-my-account'"><i class="fa-solid fa-user"></i> Account</button>
             </li>
             <li>
                 <button href="/dashboard"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
@@ -32,27 +32,56 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar @(isSidebarOpen ? "open" : "")">
-        <nav class="menu">
-            <ul>
-                <li>
-                    <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> My Houses</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <CascadingAuthenticationState>
+        <AuthorizeView Roles="HouseOwner">
+            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+                <nav class="menu">
+                    <ul>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> My Houses</button>
+                        </li>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="HouseSitter">
+            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+                <nav class="menu">
+                    <ul>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> Biotch</button>
+                        </li>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </AuthorizeView>
+        
+    </CascadingAuthenticationState>
 
     <!-- Main Content Area -->
     <div class="content">
