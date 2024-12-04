@@ -21,7 +21,7 @@
 <div class="listing-container">
     @if (_houseListing == null)
     {
-    <p>Loading house listing details...</p>
+        <p>Loading house listing details...</p>
     }
     else
     {
@@ -35,7 +35,8 @@
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
                                     aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @i"></button>
+                                    aria-label="Slide @i">
+                            </button>
                         }
                     </div>
                     <div class="carousel-inner">
@@ -58,19 +59,23 @@
             </div>
 
             <div class="info-section">
-                
+
                 <div class="text-content">
                     <!-- House Title and Location -->
                     <h1 class="house-title">@_houseListing.Profile.Title</h1>
                     <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseListing.Profile.City, @_houseListing.Profile.Region</h2>
                     <p class="house-description">@_houseListing.Profile.Description</p>
                 </div>
-                
+
                 <div class="dates">
-                    <p><strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")</p>
-                    <p><strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")</p>
+                    <p>
+                        <strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")
+                    </p>
+                    <p>
+                        <strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")
+                    </p>
                 </div>
-                
+
             </div>
 
             <hr class="section-divider"/>
@@ -103,10 +108,10 @@
             <!-- House Rules Section -->
             <h3>House Rules</h3>
             <ol class="house-rules">
-                    @foreach (var rule in _houseListing.Profile.Rules)
-                    {
-                        <li>@rule</li>
-                    }
+                @foreach (var rule in _houseListing.Profile.Rules)
+                {
+                    <li>@rule</li>
+                }
             </ol>
 
             <hr class="section-divider"/>
@@ -120,43 +125,88 @@
 
             <hr class="section-divider"/>
 
-            @if (_applications != null)
+            @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
             {
-                @foreach (var application in _applications)
-                {
-                    <div class="card 
-@(application.Status == "Rejected" ? " text-white bg-danger border-danger " : "")
-@(application.Status == "Approved" ? " text-white bg-success border-success " : "")
-                        mb-3" style="max-width: 540px;">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">@application.Sitter.Name</h5>
-                                    <p class="card-text">@application.Message</p>
-                                    <p class="card-text">
-                                        <small class="text-muted">@application.Date</small>
-                                    </p>
-                                </div>
-                                @if (_houseListing.Status == "Open" && application.Status == "Pending")
-                                {
-                                    <div class="card-buttons">
-                                        <Button Color="ButtonColor.Success" @onclick="() => ApproveApplication(application)">Approve</Button>
-                                        <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
-                                    </div>
-                                }
-
+                <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
+                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
+                                <p class="card-text">
+                                    <small class="text-muted">@_approvedApplication.Date</small>
+                                </p>
                             </div>
                         </div>
                     </div>
+                </div>
+            }
+            else
+            {
+                @if (_applications != null)
+                {
+                    @if (_approvedApplication != null)
+                    {
+                        <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                        <p class="card-text">@_approvedApplication.Message</p>
+                                        <p class="card-text">
+                                            <small class="text-muted">@_approvedApplication.Date</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="section-divider"/>
+                    }
+
+                    @foreach (var application in _applications)
+                    {
+                        @if (!application.Equals(_approvedApplication))
+                        {
+                            <div class="card 
+                        @(application.Status == "Rejected" ? " text-white bg-danger border-danger " : "")
+                        mb-3" style="max-width: 540px;">
+                                <div class="row no-gutters">
+                                    <div class="col-md-4">
+                                        <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@application.Sitter.Name</h5>
+                                            <p class="card-text">@application.Message</p>
+                                            <p class="card-text">
+                                                <small class="text-muted">@application.Date</small>
+                                            </p>
+                                        </div>
+                                        @if (_approvedApplication == null && application.Status == "Pending")
+                                        {
+                                            <div class="card-buttons">
+                                                <Button Color="ButtonColor.Success" @onclick="() => ApproveApplication(application)">Approve</Button>
+                                                <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
                 }
             }
 
-            
-            
-        </div>  
+        </div>
     }
 </div>
 
@@ -334,6 +384,7 @@
 
     private HouseListingDto? _houseListing;
     private List<ApplicationDto>? _applications;
+    private ApplicationDto? _approvedApplication;
 
     protected override async Task OnInitializedAsync()
     {
@@ -347,6 +398,9 @@
     private async Task LoadApplications()
     {
         _applications = ApplicationService.GetApplicationsByListing(listingId, true).ToList();
+        if (_applications.Any(a => a.Status == "Approved"))
+            _approvedApplication = _applications.SingleOrDefault(a => a.Status == "Approved");
+        else _approvedApplication = _applications.SingleOrDefault(a => a.Status == "Confirmed");
     }
 
     private async Task LoadHouseListingDetails()
@@ -358,13 +412,13 @@
             _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
         }
     }
-    
+
     private async Task DeleteListing()
     {
         await HouseListingService.DeleteAsync(_houseListing.Id);
-        Navigation.NavigateTo("/view-open-house-listings"); 
+        Navigation.NavigateTo("/view-open-house-listings");
     }
-    
+
     private async void ApproveApplication(ApplicationDto application)
     {
         UpdateApplicationDto updatedApplication = new UpdateApplicationDto
@@ -374,14 +428,7 @@
             Status = "Approved"
         };
 
-        // UpdateHouseListingDto updatedListing = new UpdateHouseListingDto
-        // {
-        //     Id = application.ListingId,
-        //     Status = "Closed"
-        // };
-        
         await ApplicationService.UpdateAsync(updatedApplication);
-        // await HouseListingService.UpdateAsync(updatedListing);
         await LoadApplications();
         await InvokeAsync(StateHasChanged);
     }
@@ -394,14 +441,15 @@
             SitterId = application.SitterId,
             Status = "Rejected"
         };
-        
+
         await ApplicationService.UpdateAsync(update);
         await LoadApplications();
         await InvokeAsync(StateHasChanged);
     }
-    
+
     private void HandleApplication()
     {
-      //  Navigation.NavigateTo($"/application/{ListingId}");
+        //  Navigation.NavigateTo($"/application/{ListingId}");
     }
+
 }

@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/login";
         // options.LogoutPath = "/logout";
         options.Cookie.MaxAge = TimeSpan.FromMinutes(90);
-        options.AccessDeniedPath = "/login";
+        options.AccessDeniedPath = "/";
     });
 
 var app = builder.Build();

@@ -14,22 +14,23 @@
     <div class="signup-page-container">
         <h1>My Listings</h1>
 
-        @if (houseListings == null || !houseListings.Any())
+        @if (_houseListings == null || !_houseListings.Any())
         {
             <p>No house profiles found.</p>
         }
         else
         {
             <div class="house-profile-list">
-                @foreach (var listing in houseListings)
+                @foreach (var listing in _houseListings)
                 {
                         <div class="house-profile-item">
-                            @if (listing.Profile.Pictures != null && listing.Profile.Pictures.Any())
+                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
                             {
                                 <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                             }
                             <p>@listing.Profile.Title</p>
                             <p>@listing.StartDate - @listing.EndDate</p>
+                            <p>@listing.Applications!.Single(a => a.Status == "Confirmed").Sitter!.Name confirmed their stay.</p>
                             <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
                         </div>
                 }
@@ -113,15 +114,14 @@
 </style>
 
 @code {
-    [Inject] protected PreloadService PreloadService { get; set; } = default!;
-    private List<HouseListingDto> houseListings;
+    [Inject] private PreloadService PreloadService { get; set; } = default!;
+    private List<HouseListingDto>? _houseListings;
     private int _userId;
-    private bool _houseOwner;
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
-        houseListings = new List<HouseListingDto>();
+        _houseListings = new List<HouseListingDto>();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -134,8 +134,6 @@
         
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        _houseOwner = claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseOwner";
-        Console.WriteLine(_houseOwner);
         _userId = int.Parse(userIdAsString);
         
         await LoadAllHouseListings();
@@ -144,12 +142,8 @@
     }
 
     private async Task LoadAllHouseListings()
-    {
-        if (_houseOwner)
-            houseListings.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", false, true).ToList()));
-        else
-            houseListings.AddRange(await Task.Run(() => HouseListingService.GetAll().ToList()));
-            
+    { 
+        _houseListings!.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true).ToList()));
     }
 
     private void NavigateToDetails(int ListingId)

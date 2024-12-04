@@ -137,6 +137,7 @@
         userId = int.Parse(userIdAsString);
 
         await LoadAllHouseProfiles();
+        await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
