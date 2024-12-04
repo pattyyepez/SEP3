@@ -36,7 +36,7 @@ public class HouseReviewRepository : IHouseReviewRepository
             SitterId = reply.SitterId,
             Rating = reply.Rating,
             Comment = reply.Comment,
-            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -63,7 +63,7 @@ public class HouseReviewRepository : IHouseReviewRepository
             SitterId = reply.SitterId,
             Rating = reply.Rating,
             Comment = reply.Comment,
-            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -82,7 +82,7 @@ public class HouseReviewRepository : IHouseReviewRepository
                 SitterId = houseReview.SitterId,
                 Rating = houseReview.Rating,
                 Comment = houseReview.Comment,
-                Date = new DateTime(1970, 1, 2).AddMilliseconds(houseReview.Date)
+                Date = new DateTime(1970, 1, 1).AddMilliseconds(houseReview.Date).ToLocalTime(),
             });
         }
 

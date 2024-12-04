@@ -264,8 +264,8 @@
             listing = new CreateHouseListingDto()
             {
                 ProfileId = _houseProfiles.Single(p => p.Title == _gottenProfile.Title).Id,
-                StartDate = _gottenStart.Value,
-                EndDate = _gottenEnd.Value
+                StartDate = DateOnly.FromDateTime(_gottenStart.Value),
+                EndDate = DateOnly.FromDateTime(_gottenEnd.Value)
             };
         }
         else

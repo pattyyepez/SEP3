@@ -30,7 +30,7 @@
             <div class="carousel-container">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseListing.Profile.Pictures.Count; i++)
+                        @for (int i = 0; i < _houseListing.Profile!.Pictures!.Count; i++)
                         {
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
@@ -67,8 +67,8 @@
                 </div>
                 
                 <div class="dates">
-                    <p><strong>Start Date: </strong>@_houseListing.StartDate</p>
-                    <p><strong>End Date: </strong>@_houseListing.EndDate</p>
+                    <p><strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")</p>
+                    <p><strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")</p>
                 </div>
                 
             </div>
@@ -80,7 +80,7 @@
                 <div class="chores-column">
                     <h3>House Chores</h3>
                     <div class="chores-container">
-                        @foreach (var chore in _houseListing.Profile.Chores)
+                        @foreach (var chore in _houseListing.Profile!.Chores!)
                         {
                             <div class="pill">@chore</div>
                         }
@@ -90,7 +90,7 @@
                 <div class="amenities-column">
                     <h3>House Amenities</h3>
                     <div class="amenities-container">
-                        @foreach (var amenity in _houseListing.Profile.Amenities)
+                        @foreach (var amenity in _houseListing.Profile!.Amenities!)
                         {
                             <div class="pill">@amenity</div>
                         }
@@ -114,7 +114,7 @@
             <!-- Meet the Host Section -->
             <h3>Meet the Host</h3>
             <div class="host-section">
-                <img src="https://localhost:7134/Filesave/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
+                <img src="https://localhost:7134/Filesave/@_houseListing.Profile!.Owner!.ProfilePicture!.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
                 <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
             </div>
 
@@ -124,7 +124,10 @@
             {
                 @foreach (var application in _applications)
                 {
-                    <div class="card mb-3" style="max-width: 540px;">
+                    <div class="card 
+@(application.Status == "Rejected" ? " text-white bg-danger border-danger " : "")
+@(application.Status == "Approved" ? " text-white bg-success border-success " : "")
+                        mb-3" style="max-width: 540px;">
                         <div class="row no-gutters">
                             <div class="col-md-4">
                                 <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
@@ -137,6 +140,14 @@
                                         <small class="text-muted">@application.Date</small>
                                     </p>
                                 </div>
+                                @if (_houseListing.Status == "Open" && application.Status == "Pending")
+                                {
+                                    <div class="card-buttons">
+                                        <Button Color="ButtonColor.Success" @onclick="() => ApproveApplication(application)">Approve</Button>
+                                        <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
+                                    </div>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -310,9 +321,15 @@
     .house-rules li {
         margin-bottom: 0.5em;
     }
+
+    .card-buttons {
+        display: flex;
+        justify-content: space-evenly;
+    }
 </style>
 
 @code {
+    [Inject] protected PreloadService PreloadService { get; set; } = default!;
     [Parameter] public int listingId { get; set; }
 
     private HouseListingDto? _houseListing;
@@ -320,9 +337,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        PreloadService.Show();
         await LoadHouseListingDetails();
         await LoadApplications();
         await InvokeAsync(StateHasChanged);
+        PreloadService.Hide();
     }
 
     private async Task LoadApplications()
@@ -340,22 +359,45 @@
         }
     }
     
-    private async Task DeleteAccount()
+    private async Task DeleteListing()
     {
         await HouseListingService.DeleteAsync(_houseListing.Id);
-        Navigation.NavigateTo("/view-all-house-listings"); 
+        Navigation.NavigateTo("/view-open-house-listings"); 
     }
     
-    private void EditHouseProfile()
+    private async void ApproveApplication(ApplicationDto application)
     {
-        Console.WriteLine("Edit House Profile clicked!");
-        // Navigate or open edit page logic here
+        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
+        {
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
+            Status = "Approved"
+        };
+
+        // UpdateHouseListingDto updatedListing = new UpdateHouseListingDto
+        // {
+        //     Id = application.ListingId,
+        //     Status = "Closed"
+        // };
+        
+        await ApplicationService.UpdateAsync(updatedApplication);
+        // await HouseListingService.UpdateAsync(updatedListing);
+        await LoadApplications();
+        await InvokeAsync(StateHasChanged);
     }
 
-    private void DeleteHouseProfile()
+    private async void RejectApplication(ApplicationDto application)
     {
-        Console.WriteLine("Delete House Profile clicked!");
-        // Confirm delete logic here
+        UpdateApplicationDto update = new UpdateApplicationDto
+        {
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
+            Status = "Rejected"
+        };
+        
+        await ApplicationService.UpdateAsync(update);
+        await LoadApplications();
+        await InvokeAsync(StateHasChanged);
     }
     
     private void HandleApplication()

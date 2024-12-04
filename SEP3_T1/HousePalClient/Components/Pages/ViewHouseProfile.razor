@@ -27,7 +27,7 @@
             <div class="carousel-container">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        @for (int i = 0; i < Images.Count; i++)
+                        @for (int i = 0; i < _houseProfile.Pictures!.Count; i++)
                         {
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
@@ -36,10 +36,10 @@
                         }
                     </div>
                     <div class="carousel-inner">
-                        @foreach (var image in Images)
+                        @foreach (var image in _houseProfile.Pictures!)
                         {
-                            <div class="carousel-item @(Images.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="@image" class="d-block w-100" alt="House Image">
+                            <div class="carousel-item @(_houseProfile.Pictures!.IndexOf(image) == 0 ? "active" : "")">
+                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
                             </div>
                         }
                     </div>
@@ -260,13 +260,7 @@
 </style>
 
 @code {
-    private List<string> Images = new List<string>
-    {
-        "/images/loginBackgrounds/1.jpg",
-        "/images/loginBackgrounds/2.jpg",
-        "/images/loginBackgrounds/3.jpg", 
-        "/images/loginBackgrounds/4.jpg"
-    };
+    [Inject] protected PreloadService PreloadService { get; set; } = default!;
 
     private void EditHouseProfile()
     {
@@ -287,8 +281,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        PreloadService.Show();
         await LoadHouseProfile();
         await InvokeAsync(StateHasChanged);
+        PreloadService.Hide();
     }
 
     private async Task LoadHouseProfile()

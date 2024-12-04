@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +64,7 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       application.setSitter_id(request.getSitterId());
       application.setMessage(request.getMessage());
       application.setStatus("Pending");
-      application.setDate(new Date(System.currentTimeMillis()));
+      application.setDate(LocalDateTime.now());
 
       applicationRepository.save(application);
       responseObserver.onNext(buildApplicationResponse(application));
@@ -106,7 +108,8 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
         .setSitterId(application.getSitter_id())
         .setMessage(application.getMessage())
         .setStatus(application.getStatus())
-        .setDate(application.getDate() != null ? application.getDate().getTime() : 0)
+        .setDate(application.getDate() != null ?
+            ZonedDateTime.of(application.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
         .build();
   }
 }

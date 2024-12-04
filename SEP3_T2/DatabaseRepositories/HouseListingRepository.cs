@@ -24,8 +24,8 @@ public class HouseListingRepository : IHouseListingRepository
         HouseListingResponse reply = _client.CreateHouseListing(new CreateHouseListingRequest
         {
             ProfileId = houseListing.ProfileId,
-            StartDate = new DateTimeOffset(houseListing.StartDate).ToUnixTimeMilliseconds(),
-            EndDate = new DateTimeOffset(houseListing.EndDate).ToUnixTimeMilliseconds()
+            StartDate = new DateTimeOffset(houseListing.StartDate.ToDateTime(new TimeOnly())).ToUnixTimeMilliseconds(),
+            EndDate = new DateTimeOffset(houseListing.EndDate.ToDateTime(new TimeOnly())).ToUnixTimeMilliseconds()
             // Status = houseListing.Status,
         });
         
@@ -33,17 +33,17 @@ public class HouseListingRepository : IHouseListingRepository
         {
             Id = reply.Id,
             ProfileId = reply.ProfileId,
-            StartDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.StartDate),
-            EndDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.EndDate),
+            StartDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(reply.StartDate).ToLocalTime()),
+            EndDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(reply.EndDate).ToLocalTime()),
             Status = reply.Status,
         });
     }
 
-    public Task<HouseListingDto> UpdateAsync(int id, UpdateHouseListingDto houseListing)
+    public Task<HouseListingDto> UpdateAsync(UpdateHouseListingDto houseListing)
     {
         HouseListingResponse reply = _client.UpdateHouseListing(new UpdateHouseListingRequest()
         {
-            Id = id,
+            Id = houseListing.Id.Value,
             Status = houseListing.Status
         });
         
@@ -51,8 +51,8 @@ public class HouseListingRepository : IHouseListingRepository
         {
             Id = reply.Id,
             ProfileId = reply.ProfileId,
-            StartDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.StartDate),
-            EndDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.EndDate),
+            StartDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(reply.StartDate).ToLocalTime()),
+            EndDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(reply.EndDate).ToLocalTime()),
             Status = reply.Status,
         });
     }
@@ -77,8 +77,8 @@ public class HouseListingRepository : IHouseListingRepository
         {
             Id = reply.Id,
             ProfileId = reply.ProfileId,
-            StartDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.StartDate),
-            EndDate = new DateTime(1970, 1, 2).AddMilliseconds(reply.EndDate),
+            StartDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(reply.StartDate).ToLocalTime()),
+            EndDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(reply.EndDate).ToLocalTime()),
             Status = reply.Status
         });
     }
@@ -95,8 +95,8 @@ public class HouseListingRepository : IHouseListingRepository
             {
                 Id = houseListing.Id,
                 ProfileId = houseListing.ProfileId,
-                StartDate = new DateTime(1970, 1, 2).AddMilliseconds(houseListing.StartDate),
-                EndDate = new DateTime(1970, 1, 2).AddMilliseconds(houseListing.EndDate),
+                StartDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(houseListing.StartDate).ToLocalTime()),
+                EndDate = DateOnly.FromDateTime(new DateTime(1970, 1, 1).AddMilliseconds(houseListing.EndDate).ToLocalTime()),
                 Status = houseListing.Status
             });
         }

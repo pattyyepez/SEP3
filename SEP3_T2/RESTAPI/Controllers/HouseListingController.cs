@@ -1,4 +1,6 @@
-﻿using DTOs.HouseListing;
+﻿using DTOs.Application;
+using DTOs.HouseListing;
+using DTOs.HouseSitter;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
@@ -85,6 +87,7 @@ public class HouseListingController : ControllerBase
 
     }
     
+    
     [HttpGet("OwnerId")]
     public async Task<IActionResult> GetListingsByOwner(int ownerId, [FromServices] IHouseProfileRepository profileRepo)
     {
@@ -110,9 +113,15 @@ public class HouseListingController : ControllerBase
         }
     }
     
+    // GET api/HouseListing/GetListingsByOwnerStatus/{ownerId}/{status}?includeApplications=true&includeProfiles=true
+    
     [HttpGet("{ownerId:int}/{status}")]
     public async Task<IActionResult> GetListingsByOwnerStatus(
         [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IApplicationRepository applicationRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeApplications,
+        [FromQuery] bool includeProfiles,
         int ownerId, string status)
     {
         try
@@ -125,8 +134,20 @@ public class HouseListingController : ControllerBase
 
             foreach (var listing in response)
             {
-                listing.Profile =
-                    await profileRepo.GetSingleAsync(listing.ProfileId);
+                if (includeProfiles)
+                { 
+                    listing.Profile = await profileRepo.GetSingleAsync(listing.ProfileId);
+                }
+                
+                if (includeApplications)
+                { 
+                    listing.Applications = applicationRepo.GetAll()
+                        .Where(a => a.ListingId == listing.Id)
+                        .Select(a => new ApplicationDto{Status = a.Status, 
+                            Sitter = new HouseSitterDto{Name = sitterRepo.GetSingleAsync(a.SitterId).Result.Name}})
+                        .ToList();
+                }
+
                 toReturn.Add(listing);
             }
             
@@ -158,14 +179,14 @@ public class HouseListingController : ControllerBase
         }
     }
 
-    // PUT: api/HouseListing/{id}
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateHouseListing(int id,
+    // PUT: api/HouseListing
+    [HttpPut]
+    public async Task<IActionResult> UpdateHouseListing(
         [FromBody] UpdateHouseListingDto updateDto)
     {
         try
         {
-            var response = await _repo.UpdateAsync(id, updateDto);
+            var response = await _repo.UpdateAsync(updateDto);
             return Ok(response);
         }
         catch (Exception ex)
@@ -215,12 +236,12 @@ public class HouseListingController : ControllerBase
             if (filter.StartDay.HasValue)
                 listings = listings
                     .Where(l => Math.Abs(
-                        l.StartDate.Subtract(new DateTime(filter.StartYear.Value, filter.StartMonth.Value, filter.StartDay.Value)).TotalDays) < 6);
+                        l.StartDate.ToDateTime(new TimeOnly()).Subtract(new DateTime(filter.StartYear.Value, filter.StartMonth.Value, filter.StartDay.Value)).TotalDays) < 6);
             
             if (filter.EndDay.HasValue)
                 listings = listings
                     .Where(l => Math.Abs(
-                        l.EndDate.Subtract(new DateTime(filter.EndYear.Value, filter.EndMonth.Value, filter.EndDay.Value)).TotalDays) < 6);
+                        l.EndDate.ToDateTime(new TimeOnly()).Subtract(new DateTime(filter.EndYear.Value, filter.EndMonth.Value, filter.EndDay.Value)).TotalDays) < 6);
                 
             if (filter.Amenities.Any())
                 listings = listings

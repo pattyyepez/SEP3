@@ -34,7 +34,7 @@ public class ApplicationRepository : IApplicationRepository
             SitterId = reply.SitterId,
             Message = reply.Message,
             Status = reply.Status,
-            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -53,7 +53,7 @@ public class ApplicationRepository : IApplicationRepository
             SitterId = reply.SitterId,
             Message = reply.Message,
             Status = reply.Status,
-            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -75,13 +75,16 @@ public class ApplicationRepository : IApplicationRepository
             ListingId = listingId,
             SitterId = sitterId
         });
+        
+        Console.WriteLine(reply.Date);
+        
         return Task.FromResult(new ApplicationDto
         {
             ListingId = reply.ListingId,
             SitterId = reply.SitterId,
             Status = reply.Status,
             Message = reply.Message,
-            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -93,14 +96,16 @@ public class ApplicationRepository : IApplicationRepository
 
         foreach (var application in applicationResponses)
         {
+            Console.WriteLine(application.Date);
+
             applications.Add(new ApplicationDto
             {
                 ListingId = application.ListingId,
                 SitterId = application.SitterId,
                 Status = application.Status,
                 Message = application.Message,
-                Date = new DateTime(1970, 1, 1).AddMilliseconds(application.Date),
-                
+                Date = new DateTime(1970, 1, 1).AddMilliseconds(application.Date).ToLocalTime(),
+
             });
         }
 

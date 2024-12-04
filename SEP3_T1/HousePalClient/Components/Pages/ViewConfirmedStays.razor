@@ -1,41 +1,40 @@
-﻿@page "/view-all-house-profiles"
+﻿@page "/view-confirmed-stays"
 @using System.Security.Claims
-@using DTOs.HouseProfile
+@using DTOs.HouseListing
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
 @using Services
-@layout MainLayout;
+@layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-@inject IHouseProfileService HouseProfileService
+@inject IHouseListingService HouseListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>My Houses</h1>
+        <h1>My Listings</h1>
 
-        @if (houseProfiles == null || !houseProfiles.Any())
+        @if (houseListings == null || !houseListings.Any())
         {
             <p>No house profiles found.</p>
         }
         else
         {
             <div class="house-profile-list">
-                @foreach (var profile in houseProfiles)
+                @foreach (var listing in houseListings)
                 {
-                    <div class="house-profile-item">
-                        @if (profile.Pictures != null && profile.Pictures.Any())
-                        {
-                            <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                        }
-                        <p>@profile.Title</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
-                    </div>
+                        <div class="house-profile-item">
+                            @if (listing.Profile.Pictures != null && listing.Profile.Pictures.Any())
+                            {
+                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                            }
+                            <p>@listing.Profile.Title</p>
+                            <p>@listing.StartDate - @listing.EndDate</p>
+                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                        </div>
                 }
                 <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus">
-                        <i class="fa-solid fa-plus fa-2xl"></i>
-                    </div>
+                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
                 </div>
             </div>
         }
@@ -43,7 +42,7 @@
 </div>
 
 <style>
-    
+
     @@font-face {
         font-family: 'LogoFont';
         src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
@@ -95,7 +94,7 @@
         width: 95%;
         height: 95%;
     }
-    
+
     .house-profile-img {
         width: 100%;
         height: auto;
@@ -107,21 +106,22 @@
         color: #3d3d3d;
         margin: 1em;
     }
-    
+
     .plus {
         cursor: pointer;
     }
-    
 </style>
 
 @code {
     [Inject] protected PreloadService PreloadService { get; set; } = default!;
-    private List<HouseProfileDto> houseProfiles = new List<HouseProfileDto>();
-    private int userId = 0;
+    private List<HouseListingDto> houseListings;
+    private int _userId;
+    private bool _houseOwner;
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
+        houseListings = new List<HouseListingDto>();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -131,28 +131,35 @@
             Console.WriteLine("Not authenticated");
             return;
         }
-
+        
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        userId = int.Parse(userIdAsString);
-
-        await LoadAllHouseProfiles();
+        _houseOwner = claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseOwner";
+        Console.WriteLine(_houseOwner);
+        _userId = int.Parse(userIdAsString);
+        
+        await LoadAllHouseListings();
+        await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private async Task LoadAllHouseProfiles()
+    private async Task LoadAllHouseListings()
     {
-        houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(userId).ToList());
+        if (_houseOwner)
+            houseListings.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", false, true).ToList()));
+        else
+            houseListings.AddRange(await Task.Run(() => HouseListingService.GetAll().ToList()));
+            
     }
 
-    private void NavigateToDetails(int profileId)
+    private void NavigateToDetails(int ListingId)
     {
-        Navigation.NavigateTo($"/view-house-profile/{profileId}");
+        Navigation.NavigateTo($"/view-house-listing/{ListingId}");
     }
-
+    
     private void NavigateToCreate()
     {
-        Navigation.NavigateTo("/create-house-profile");
+        Navigation.NavigateTo("/create-house-listing");
     }
 
 }

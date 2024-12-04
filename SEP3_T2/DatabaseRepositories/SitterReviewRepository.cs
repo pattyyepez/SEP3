@@ -35,7 +35,7 @@ public class SitterReviewRepository : ISitterReviewRepository
             SitterId = reply.SitterId,
             Rating = reply.Rating,
             Comment = reply.Comment,
-            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -62,7 +62,7 @@ public class SitterReviewRepository : ISitterReviewRepository
             SitterId = reply.SitterId,
             Rating = reply.Rating,
             Comment = reply.Comment,
-            Date = new DateTime(1970, 1, 2).AddMilliseconds(reply.Date)
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
 
@@ -81,7 +81,7 @@ public class SitterReviewRepository : ISitterReviewRepository
                 SitterId = sitterReview.SitterId,
                 Rating = sitterReview.Rating,
                 Comment = sitterReview.Comment,
-                Date = new DateTime(1970, 1, 2).AddMilliseconds(sitterReview.Date)
+                Date = new DateTime(1970, 1, 1).AddMilliseconds(sitterReview.Date).ToLocalTime(),
             });
         }
 

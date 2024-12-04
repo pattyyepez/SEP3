@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using DTOs.HouseListing;
-using DTOs.HouseSitter;
 using Newtonsoft.Json;
 
 namespace Services;
@@ -45,6 +44,22 @@ public class HouseListingService : IHouseListingService
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task<HouseListingDto> UpdateAsync(UpdateHouseListingDto houseListing)
+        {
+            var convertedListing = JsonConvert.SerializeObject(houseListing);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(convertedListing);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            
+            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseListing/UpdateHouseListing", byteContent);
+            
+            response.EnsureSuccessStatusCode();
+            
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"{jsonResponse}\n");
+            return JsonConvert.DeserializeObject<HouseListingDto>(jsonResponse);
+        }
+
         public async Task<HouseListingDto> GetSingleAsync(int id, bool details)
         {
             using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetHouseListing/{id}?includeProfile={details}");
@@ -73,6 +88,20 @@ public class HouseListingService : IHouseListingService
         public IQueryable<HouseListingDto> GetAllByProfile(int profileId)
         {
             HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetListingsByProfile/ProfileId?profileId={profileId}").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var houseListing = JsonConvert.DeserializeObject<List<HouseListingDto>>(jsonResponse);
+
+            return houseListing.AsQueryable();
+        }
+        
+        public IQueryable<HouseListingDto> GetAllByOwnerStatus(int ownerId, string status, bool includeApplications, bool includeProfiles)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetListingsByOwnerStatus/{ownerId}/{status}?includeApplications={includeApplications}&includeProfiles={includeProfiles}").Result;
 
             response.EnsureSuccessStatusCode();
 

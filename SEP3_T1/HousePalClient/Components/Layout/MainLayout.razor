@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components
 @inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
@@ -16,7 +17,10 @@
         <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
 
         <div class="profile-picture-container" @onclick="TogglePopup">
-            <img src="images/profilepic1.jpg" alt="Profile Picture" class="profile-picture"/>
+            @if (!string.IsNullOrWhiteSpace(_profilePictre))
+            {
+                <img src="https://localhost:7134/Filesave/@_profilePictre.Split('.')[0]/@_profilePictre.Split('.')[1]" alt="Profile Picture" class="profile-picture"/>
+            }
         </div>
     </div>
 
@@ -39,10 +43,10 @@
                     <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> My Houses</button>
                 </li>
                 <li>
-                    <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
+                    <button onclick="window.location.href = '/view-open-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
                 </li>
                 <li>
-                    <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
+                    <button onclick="window.location.href = '/view-approved-house-listings'"><i class="fas fa-clock"></i> Waiting Confirmation</button>
                 </li>
                 <li>
                     <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
@@ -269,6 +273,26 @@
     private bool isSidebarOpen = false;
     private bool isPopupOpen = false;
 
+    private string? _profilePictre = string.Empty;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+        
+        IEnumerable<Claim> claims = user.Claims;
+        _profilePictre = claims.Single(c => c.Type == "ProfilePicture").Value;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
     private void ToggleSidebar()
     {
         isSidebarOpen = !isSidebarOpen;
@@ -283,3 +307,5 @@
     }
 
 }
+
+<Preload LoadingText="Loading..." />
