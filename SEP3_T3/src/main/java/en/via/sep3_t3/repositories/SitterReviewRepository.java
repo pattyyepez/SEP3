@@ -10,6 +10,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Qualifier("SitterReviewBase")
@@ -43,7 +45,8 @@ public class SitterReviewRepository implements ISitterReviewRepository
       ps.setInt(2, sitterReview.getSitter_id());
       ps.setInt(3, sitterReview.getRating());
       ps.setString(4, sitterReview.getComment());
-      ps.setTimestamp(5, new Timestamp(sitterReview.getDate().getTime()));
+      ps.setTimestamp(5, new Timestamp(
+          ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
       return ps;
     }, keyHolder);
 
@@ -64,7 +67,7 @@ public class SitterReviewRepository implements ISitterReviewRepository
       sitterReview.setSitter_id(rs.getInt("sitter_id"));
       sitterReview.setRating(rs.getInt("rating"));
       sitterReview.setComment(rs.getString("comments"));
-      sitterReview.setDate(rs.getTimestamp("date"));
+      sitterReview.setDate(rs.getTimestamp("date").toLocalDateTime());
       return sitterReview;
     }
   }

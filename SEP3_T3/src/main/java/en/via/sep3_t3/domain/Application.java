@@ -2,7 +2,7 @@ package en.via.sep3_t3.domain;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Application
 {
@@ -10,7 +10,7 @@ public class Application
   @Id private int sitter_id;
   private String message;
   private String status;
-  private Date date;
+  private LocalDateTime date;
 
 
   public int getListing_id()
@@ -53,12 +53,12 @@ public class Application
     this.message = message;
   }
 
-  public Date getDate()
+  public LocalDateTime getDate()
   {
     return date;
   }
 
-  public void setDate(Date date)
+  public void setDate(LocalDateTime date)
   {
     this.date = date;
   }

@@ -6,8 +6,9 @@ import en.via.sep3_t3.repositoryContracts.ISitterReviewRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
       sitterReview.setSitter_id(request.getSitterId());
       sitterReview.setRating(request.getRating());
       sitterReview.setComment(request.getComment());
-      sitterReview.setDate(Timestamp.valueOf(LocalDateTime.now()));
+      sitterReview.setDate(LocalDateTime.now());
 
       int id = sitterReviewRepository.save(sitterReview);
       sitterReview.setId(id);
@@ -98,7 +99,7 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
         .setSitterId(sitterReview.getSitter_id())
         .setRating(sitterReview.getRating())
         .setComment(sitterReview.getComment())
-        .setDate(sitterReview.getDate() != null ? sitterReview.getDate().getTime() : 0)
+        .setDate(sitterReview.getDate() != null ? ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
         .build();
   }
 }

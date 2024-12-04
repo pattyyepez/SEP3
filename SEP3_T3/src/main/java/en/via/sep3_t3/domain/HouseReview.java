@@ -1,8 +1,7 @@
 package en.via.sep3_t3.domain;
 
 import org.springframework.data.annotation.Id;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class HouseReview
 {
@@ -11,7 +10,7 @@ public class HouseReview
   private int sitter_id;
   private int rating;
   private String comment;
-  private Date date;
+  private LocalDateTime date;
 
   public int getId()
   {
@@ -53,12 +52,12 @@ public class HouseReview
     return comment;
   }
 
-  public Date getDate()
+  public LocalDateTime getDate()
   {
     return date;
   }
 
-  public void setDate(Date date)
+  public void setDate(LocalDateTime date)
   {
     this.date = date;
   }

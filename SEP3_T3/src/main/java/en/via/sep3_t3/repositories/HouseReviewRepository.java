@@ -10,6 +10,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Qualifier("HouseReviewBase")
@@ -47,7 +49,8 @@ public class HouseReviewRepository implements IHouseReviewRepository
       ps.setInt(2, houseReview.getSitter_id());
       ps.setInt(3, houseReview.getRating());
       ps.setString(4, houseReview.getComment());
-      ps.setTimestamp(5, new Timestamp(houseReview.getDate().getTime()));
+      ps.setTimestamp(5, new Timestamp(
+          ZonedDateTime.of(houseReview.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
       return ps;
     }, keyHolder);
 
@@ -71,7 +74,7 @@ public class HouseReviewRepository implements IHouseReviewRepository
       houseReview.setSitter_id(rs.getInt("sitter_id"));
       houseReview.setRating(rs.getInt("rating"));
       houseReview.setComment(rs.getString("comments"));
-      houseReview.setDate(rs.getTimestamp("date"));
+      houseReview.setDate(rs.getTimestamp("date").toLocalDateTime());
       return houseReview;
     }
   }

@@ -1,8 +1,7 @@
 package en.via.sep3_t3.domain;
 
 import org.springframework.data.annotation.Id;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Report
 {
@@ -12,14 +11,14 @@ public class Report
   private int admin_id;
   private String comment;
   private String status;
-  private Date date;
+  private LocalDateTime date;
 
-  public Date getDate()
+  public LocalDateTime getDate()
   {
     return date;
   }
 
-  public void setDate(Date date)
+  public void setDate(LocalDateTime date)
   {
     this.date = date;
   }

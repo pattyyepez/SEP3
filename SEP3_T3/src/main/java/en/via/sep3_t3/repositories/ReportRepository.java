@@ -10,6 +10,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Qualifier("ReportBase")
@@ -48,7 +50,8 @@ public class ReportRepository implements IReportRepository
       ps.setInt(1, report.getReporting_id());
       ps.setInt(2, report.getReported_id());
       ps.setString(3, report.getComment());
-      ps.setTimestamp(4, new Timestamp(report.getDate().getTime()));
+      ps.setTimestamp(4, new Timestamp(
+          ZonedDateTime.of(report.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
       return ps;
     }, keyHolder);
 
@@ -78,7 +81,7 @@ public class ReportRepository implements IReportRepository
       report.setAdmin_id(rs.getInt("admin_id"));
       report.setComment(rs.getString("comments"));
       report.setStatus(rs.getString("status"));
-      report.setDate(rs.getTimestamp("date"));
+      report.setDate(rs.getTimestamp("date").toLocalDateTime());
       return report;
     }
   }

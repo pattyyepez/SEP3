@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +76,7 @@ import java.util.List;
       houseReview.setSitter_id(request.getSitterId());
       houseReview.setRating(request.getRating());
       houseReview.setComment(request.getComment());
-      houseReview.setDate(Timestamp.valueOf(LocalDateTime.now()));
+      houseReview.setDate(LocalDateTime.now());
 
       int id = houseReviewRepository.save(houseReview);
       houseReview.setId(id);
@@ -111,7 +113,8 @@ import java.util.List;
         .setSitterId(houseReview.getSitter_id())
         .setRating(houseReview.getRating()).setComment(houseReview.getComment())
         .setDate(
-            houseReview.getDate() != null ? houseReview.getDate().getTime() : 0)
+            houseReview.getDate() != null ?
+                ZonedDateTime.of(houseReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
         .build();
   }
 }

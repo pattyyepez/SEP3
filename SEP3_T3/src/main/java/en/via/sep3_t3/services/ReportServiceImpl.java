@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
       report.setAdmin_id(request.getAdminId());
       report.setComment(request.getComment());
       report.setStatus("Pending");
-      report.setDate(Timestamp.valueOf(LocalDateTime.now()));
+      report.setDate(LocalDateTime.now());
 
       int id = reportRepository.save(report);
       report.setId(id);
@@ -114,7 +116,7 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
         .setAdminId(report.getAdmin_id())
         .setComment(report.getComment())
         .setStatus(report.getStatus())
-        .setDate(report.getDate() != null ? report.getDate().getTime() : 0)
+        .setDate(report.getDate() != null ? ZonedDateTime.of(report.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)
         .build();
   }
 }
