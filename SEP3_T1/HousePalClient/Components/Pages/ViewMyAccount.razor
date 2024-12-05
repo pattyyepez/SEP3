@@ -22,7 +22,7 @@
     <AuthorizeView Roles="HouseOwner">
         @if (_houseOwnerProfile != null)
         {
-            <div class="account-page">
+            <div class="account-page-owner">
                 <div class="profile-container">
                     <div>
                         <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
@@ -85,7 +85,7 @@
         
         @if (_houseSitterProfile != null)
         {
-            <div class="account-page">
+            <div class="account-page-sitter">
                 <div class="profile-container">
                     <div>
                         <img src="https://localhost:7134/Filesave/@_houseSitterProfile.ProfilePicture.Split('.')[0]/@_houseSitterProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
@@ -209,20 +209,33 @@
 
     @@font-face {
         font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
+        src: url('http://localhost:[puerto]/fonts/futura.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
     }
-    
-    .account-page {
-        justify-content: center;
+
+    .account-page-owner {
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        width: 100vw;
+        padding: 2em 2em;
+        min-height: 100vh;
+        min-width: 100vw;
+        background: linear-gradient(150deg, #ff7e5f, #feb47b); 
+    }
+    
+    .account-page-sitter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2em 2em;
+        min-height: 100vh;
+        min-width: 100vw;
         background: linear-gradient(150deg, #ff7e5f, #feb47b);
-        padding-top: 37em;
     }
     
     .profile-container {
+        margin: 3em 0 3em 0;
         background-color: white;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

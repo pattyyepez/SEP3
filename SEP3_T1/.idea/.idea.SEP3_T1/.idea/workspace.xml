@@ -9,10 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="logout working yeihhh">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="delete botton working for HL, HP, HO and HSb">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/LoginLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/LoginLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseListing.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/SignUp.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/SignUp.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -344,7 +348,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733390556084</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="delete botton working for HL, HP, HO and HSb">
+      <option name="closed" value="true" />
+      <created>1733398375690</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1733398375690</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -410,7 +422,8 @@
     <MESSAGE value="filtering, adding the blazor bootstrap nuget package for modals n other cool stuff" />
     <MESSAGE value="Being able to apply to a listing as a house sitter" />
     <MESSAGE value="logout working yeihhh" />
-    <option name="LAST_COMMIT_MESSAGE" value="logout working yeihhh" />
+    <MESSAGE value="delete botton working for HL, HP, HO and HSb" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete botton working for HL, HP, HO and HSb" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
