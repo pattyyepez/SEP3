@@ -28,6 +28,9 @@ using System.Threading.Tasks;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.InnerException);
                 return StatusCode(500, $"Error fetching all HouseOwners: {ex.Message}");
             }
         }

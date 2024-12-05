@@ -48,6 +48,7 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
