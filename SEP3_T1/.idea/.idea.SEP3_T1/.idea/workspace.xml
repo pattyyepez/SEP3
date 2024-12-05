@@ -9,9 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="Being able to apply to a listing as a house sitter">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="logout working yeihhh">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733134015648</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="logout working yeihhh">
+      <option name="closed" value="true" />
+      <created>1733390556084</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1733390556084</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -399,7 +409,8 @@
     <MESSAGE value="starting to work on filters" />
     <MESSAGE value="filtering, adding the blazor bootstrap nuget package for modals n other cool stuff" />
     <MESSAGE value="Being able to apply to a listing as a house sitter" />
-    <option name="LAST_COMMIT_MESSAGE" value="Being able to apply to a listing as a house sitter" />
+    <MESSAGE value="logout working yeihhh" />
+    <option name="LAST_COMMIT_MESSAGE" value="logout working yeihhh" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -407,27 +418,13 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/HousePalClient/Auth/SimpleAuthProvider.cs</url>
           <line>26</line>
-          <properties documentPath="C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\Auth\SimpleAuthProvider.cs" containingFunctionPresentation="Method 'GetAuthenticationStateAsync'">
-            <startOffsets>
-              <option value="676" />
-            </startOffsets>
-            <endOffsets>
-              <option value="699" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\Auth\SimpleAuthProvider.cs" containingFunctionPresentation="Method 'GetAuthenticationStateAsync'" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/HousePalClient/Auth/SimpleAuthProvider.cs</url>
           <line>33</line>
-          <properties documentPath="C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\Auth\SimpleAuthProvider.cs" containingFunctionPresentation="Method 'GetAuthenticationStateAsync'">
-            <startOffsets>
-              <option value="902" />
-            </startOffsets>
-            <endOffsets>
-              <option value="940" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\Auth\SimpleAuthProvider.cs" containingFunctionPresentation="Method 'GetAuthenticationStateAsync'" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

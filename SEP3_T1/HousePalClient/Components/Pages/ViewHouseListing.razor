@@ -206,6 +206,33 @@
                 }
             }
 
+            <hr class="section-divider"/>
+
+            <!-- Buttons Section -->
+            <div class="action-buttons">
+                <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Listing</button>
+            </div>
+
+            <div>
+                @if (_showConfirmationMessage)
+                {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h3>Are you sure?</h3>
+                        <p>Do you really want to delete this listing? This action cannot be undone.</p>
+                        <button class="btn btn-danger" @onclick="DeleteHouseListing">Yes</button>
+                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                    </div>
+                </div>
+                }
+
+                @if (_showSuccessMessage)
+                {
+                <div class="alert alert-success" role="alert">
+                    The house listing has been deleted successfully!
+                </div>
+                }
+            </div>
         </div>
     }
 </div>
@@ -376,16 +403,70 @@
         display: flex;
         justify-content: space-evenly;
     }
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 300px;
+    }
+    .modal-content button {
+        margin: 10px;
+    }
+    h3 {
+        font-family: 'LogoFont', sans-serif;
+        color: #3d3d3d;
+    }
 </style>
 
 @code {
     [Inject] protected PreloadService PreloadService { get; set; } = default!;
     [Parameter] public int listingId { get; set; }
+    private bool _showConfirmationMessage = false;
+    private bool _showSuccessMessage = false;
 
     private HouseListingDto? _houseListing;
     private List<ApplicationDto>? _applications;
     private ApplicationDto? _approvedApplication;
 
+    
+    private void ShowConfirmation()
+    {
+        _showConfirmationMessage = true;
+        _showSuccessMessage = false;
+    }
+
+    private async Task DeleteHouseListing()
+    {
+        if (_houseListing != null)
+        {
+            _showConfirmationMessage = false;
+            await HouseListingService.DeleteAsync(_houseListing.Id);
+            _showSuccessMessage = true;
+            await Task.Delay(2000); 
+            Navigation.NavigateTo("/view-my-listings");
+        }
+    }
+
+    private void CancelDelete()
+    {
+        _showConfirmationMessage = false;
+    }
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
@@ -412,12 +493,7 @@
             _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
         }
     }
-
-    private async Task DeleteListing()
-    {
-        await HouseListingService.DeleteAsync(_houseListing.Id);
-        Navigation.NavigateTo("/view-open-house-listings");
-    }
+    
 
     private async void ApproveApplication(ApplicationDto application)
     {
