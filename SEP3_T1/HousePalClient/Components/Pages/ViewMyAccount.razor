@@ -133,7 +133,14 @@
                     <hr class="section-divider"/>
 
                     <div class="action-buttons">
-                        <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
+                        @if (_houseOwnerProfile != null)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="EditAccountHouseSitter">Edit Account</button>
+                        }
                         <button type="button" class="btn btn-secondary" @onclick="DeleteAccount">Delete Account</button>
                     </div>
                 </div>
