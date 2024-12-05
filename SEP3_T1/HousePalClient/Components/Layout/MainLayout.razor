@@ -1,5 +1,4 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Components
+﻿@using Microsoft.AspNetCore.Components
 @inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
@@ -17,17 +16,14 @@
         <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
 
         <div class="profile-picture-container" @onclick="TogglePopup">
-            @if (!string.IsNullOrWhiteSpace(_profilePictre))
-            {
-                <img src="https://localhost:7134/Filesave/@_profilePictre.Split('.')[0]/@_profilePictre.Split('.')[1]" alt="Profile Picture" class="profile-picture"/>
-            }
+            <img src="images/profilepic1.jpg" alt="Profile Picture" class="profile-picture"/>
         </div>
     </div>
 
     <div class="popup @(isPopupOpen ? "show" : "")">
         <ul>
             <li>
-                <button href="/dashboard"><i class="fa-solid fa-user"></i> Account</button>
+                <button onclick="window.location.href = '/view-my-account'"><i class="fa-solid fa-user"></i> Account</button>
             </li>
             <li>
                 <button href="/dashboard"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
@@ -36,24 +32,56 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar @(isSidebarOpen ? "open" : "")">
-        <nav class="menu">
-            <ul>
-                <li>
-                    <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> My Houses</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href = '/view-my-listings'"><i class="fas fa-list"></i> My Listings</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href = '/view-confirmed-stays'"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
-                </li>
-                <li>
-                    <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <CascadingAuthenticationState>
+        <AuthorizeView Roles="HouseOwner">
+            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+                <nav class="menu">
+                    <ul>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> My Houses</button>
+                        </li>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="HouseSitter">
+            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+                <nav class="menu">
+                    <ul>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> Biotch</button>
+                        </li>
+                        <li>
+                            <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
+                        </li>
+                        <li>
+                            <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </AuthorizeView>
+        
+    </CascadingAuthenticationState>
 
     <!-- Main Content Area -->
     <div class="content">
@@ -270,26 +298,6 @@
     private bool isSidebarOpen = false;
     private bool isPopupOpen = false;
 
-    private string? _profilePictre = string.Empty;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await AuthProvider
-            .GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity is null || !user.Identity.IsAuthenticated)
-        {
-            Console.WriteLine("Not authenticated");
-            return;
-        }
-        
-        IEnumerable<Claim> claims = user.Claims;
-        _profilePictre = claims.Single(c => c.Type == "ProfilePicture").Value;
-
-        await InvokeAsync(StateHasChanged);
-    }
-
     private void ToggleSidebar()
     {
         isSidebarOpen = !isSidebarOpen;
@@ -304,5 +312,3 @@
     }
 
 }
-
-<Preload LoadingText="Loading..." />

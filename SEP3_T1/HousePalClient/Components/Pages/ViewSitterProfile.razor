@@ -1,14 +1,15 @@
-﻿@page "/view-house-profile/{profileId:int}"
-@using DTOs.HouseProfile
+﻿@page "/view-sitter-profile/{profileId:int}"
+@using DTOs.HouseSitter
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
 @using Services
 @layout MainLayout
 @inject NavigationManager Navigation
-@inject IHouseProfileService HouseProfileService
+@inject IHouseSitterService HouseSitterService
 @rendermode InteractiveServer
 
-@attribute [Authorize(Roles = "HouseOwner")]
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <head>
     <!-- Add Font Awesome CDN to your head tag -->
@@ -18,18 +19,18 @@
 </head>
 @* <p>@houseProfile.Title</p> *@
 <div class="profile-container">
-    @if (_houseProfile == null)
+    @if (_houseSitterProfile == null)
     {
-        <p>Loading house profile details...</p>
+        <p>Loading house sitter details...</p>
     }
     else
     { 
-        <div class="container house-profile">
+        <div class="container sitter-profile">
             <!-- Carousel Section -->
             <div class="carousel-container">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseProfile.Pictures!.Count; i++)
+                        @for (int i = 0; i < _houseSitterProfile.Pictures.Count; i++)
                         {
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
@@ -38,10 +39,10 @@
                         }
                     </div>
                     <div class="carousel-inner">
-                        @foreach (var image in _houseProfile.Pictures!)
+                        @foreach (var image in _houseSitterProfile.Pictures)
                         {
-                            <div class="carousel-item @(_houseProfile.Pictures!.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
+                            <div class="carousel-item @(_houseSitterProfile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture" />
                             </div>
                         }
                     </div>
@@ -55,15 +56,31 @@
                     </button>
                 </div>
             </div>
-        
-            <!-- House Title and Location -->
-        <h1 class="house-title">@_houseProfile.Title</h1>
-        <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
-        <p class="house-description">@_houseProfile.Description</p>
-        
+            
+            <h1 class="house-title">@_houseSitterProfile.Name</h1>
+            <p class="house-description">@_houseSitterProfile.Biography</p>
+            
             <hr class="section-divider"/>
-        
-            <!-- House Chores & Amenities Section -->
+           
+            <h3>Past experience</h3>
+            <p class="house-description">@_houseSitterProfile.Experience</p>
+
+            <hr class="section-divider"/>
+            
+            <div class="skills-section">
+                <h3>Skills</h3>
+                <div class="skills-container">
+                    @foreach (var skill in _houseSitterProfile.Skills)
+                    {
+                        <div class="pill">@skill</div>
+                    }
+                </div>
+            </div>
+
+
+            
+            
+            @*
         <div class="chores-amenities-row">
         <div class="chores-column">
         <h3>House Chores</h3>
@@ -112,7 +129,7 @@
             <div class="action-buttons">
                 <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">Edit House Profile</button>
                 <button type="button" class="btn btn-secondary" @onclick="DeleteHouseProfile">Delete House Profile</button>
-            </div>
+            </div>*@
         </div>
     }
 </div>
@@ -180,6 +197,17 @@
         color: #333;
         margin-bottom: 0.5em;
         font-family: 'LogoFont', sans-serif;
+    }
+    
+    .skills-section {
+        display: flex;
+    }
+
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin-top: 1em;
     }
 
     .house-location {
@@ -262,34 +290,20 @@
 </style>
 
 @code {
-    [Inject] protected PreloadService PreloadService { get; set; } = default!;
-
-    private void EditHouseProfile(int profileId)
-    {
-        Navigation.NavigateTo($"/edit-house-profile/{profileId}");
-    }
-
-    private void DeleteHouseProfile()
-    {
-        Console.WriteLine("Delete House Profile clicked!");
-        // Confirm delete logic here
-    }
     
     [Parameter]
     public int ProfileId { get; set; } 
 
-    private HouseProfileDto? _houseProfile;
+    private HouseSitterDto? _houseSitterProfile;
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         await LoadHouseProfile();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadHouseProfile()
     {
-        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true); 
+        _houseSitterProfile = await HouseSitterService.GetSingleAsync(ProfileId); 
     }
 }

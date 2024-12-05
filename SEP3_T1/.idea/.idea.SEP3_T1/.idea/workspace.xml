@@ -9,10 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/BrowseListings.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="Being able to apply to a listing as a house sitter">
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/HomePageHO.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/HomePageHO.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IApplicationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/java/en/via/sep3_t3/services/ApplicationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T3/src/main/proto/proto.proto" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T3/src/main/proto/proto.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,12 +51,12 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/24372012c6c94138bf3f496e104366ffc8f918/7d/5325f34e/DefaultInterpolatedStringHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f756609c93104d12b4c2d24605eb00101a6920/da/d439a208/HttpResponseMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/497a7533411fefdadb19a5f233635ae9f3e173098c7a9bf65a37c4d8cab4c1/CascadingAuthenticationState.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7beca651b1af466d51e879c74afac8ebca741c3e99965ead1e70bb60811c3054/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c333538d8f8419e6653f459a98486459a863b8a4b30ff6beb6ead8d7d7ae477/AuthorizeView.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eddc51a49dddbdbde4ba2ca25b90ace5a2b5c63fd7d9ea946adb53ab61da735/AuthenticationStateProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/HousePalClient/Components/Layout/NavMenu.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
@@ -173,8 +181,7 @@
       <workItem from="1732694856752" duration="232000" />
       <workItem from="1732695108000" duration="25673000" />
       <workItem from="1732867667772" duration="8835000" />
-      <workItem from="1733123800654" duration="59999000" />
-      <workItem from="1733345430792" duration="842000" />
+      <workItem from="1733123800654" duration="24484000" />
     </task>
     <task id="LOCAL-00001" summary="initial T3 commit, for now just being able to retrieve any house owner using the ID">
       <option name="closed" value="true" />
@@ -336,63 +343,7 @@
       <option name="project" value="LOCAL" />
       <updated>1733134015648</updated>
     </task>
-    <task id="LOCAL-00021" summary="Like a whole lot of stuff i think 🎷🐛">
-      <option name="closed" value="true" />
-      <created>1733220534540</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1733220534540</updated>
-    </task>
-    <task id="LOCAL-00022" summary="merging joans gui into master and some application shenanigans 🫡🐛🎷">
-      <option name="closed" value="true" />
-      <created>1733227779412</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1733227779412</updated>
-    </task>
-    <task id="LOCAL-00023" summary="added some stuff to db">
-      <option name="closed" value="true" />
-      <created>1733227826808</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1733227826808</updated>
-    </task>
-    <task id="LOCAL-00024" summary="like a whole lottt">
-      <option name="closed" value="true" />
-      <created>1733317774952</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1733317774952</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Date stuff n stuff">
-      <option name="closed" value="true" />
-      <created>1733318006130</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1733318006130</updated>
-    </task>
-    <task id="LOCAL-00026" summary="the 2 views for checking all house listings, open approved and confirmed">
-      <option name="closed" value="true" />
-      <created>1733326281341</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1733326281341</updated>
-    </task>
-    <task id="LOCAL-00027" summary="db">
-      <option name="closed" value="true" />
-      <created>1733326429749</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1733326429749</updated>
-    </task>
-    <option name="localTasksCounter" value="28" />
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -437,6 +388,8 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="initial T3 commit, for now just being able to retrieve any house owner using the ID" />
+    <MESSAGE value="Making my version of the T3 work cuz it had proto problems, so now on git it should be working as well" />
     <MESSAGE value="making T1 work for all methods regarding HouseOwner (except getting all), and adding T2 to the git" />
     <MESSAGE value="web decor" />
     <MESSAGE value="heres your DEADline MARIA." />
@@ -455,14 +408,7 @@
     <MESSAGE value="starting to work on filters" />
     <MESSAGE value="filtering, adding the blazor bootstrap nuget package for modals n other cool stuff" />
     <MESSAGE value="Being able to apply to a listing as a house sitter" />
-    <MESSAGE value="Like a whole lot of stuff i think " />
-    <MESSAGE value="merging joans gui into master and some application shenanigans " />
-    <MESSAGE value="added some stuff to db" />
-    <MESSAGE value="like a whole lottt" />
-    <MESSAGE value="Date stuff n stuff" />
-    <MESSAGE value="the 2 views for checking all house listings, open approved and confirmed" />
-    <MESSAGE value="db" />
-    <option name="LAST_COMMIT_MESSAGE" value="db" />
+    <option name="LAST_COMMIT_MESSAGE" value="Being able to apply to a listing as a house sitter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
