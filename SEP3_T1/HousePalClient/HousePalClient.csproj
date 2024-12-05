@@ -23,9 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Components\Pages\EditHouseProfile.razor.css">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      </Content>
+      <Content Remove="Components\Pages\HomePageHO.razor" />
+      <Content Remove="Components\Pages\HouseOwnerPage.razor" />
     </ItemGroup>
 
 </Project>

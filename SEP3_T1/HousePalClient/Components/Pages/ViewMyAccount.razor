@@ -58,31 +58,85 @@
     </AuthorizeView>
 
     <AuthorizeView Roles="HouseSitter">
-        <h4>Hello, @context.User.Identity?.Name!</h4>
         
         @if (_houseSitterProfile != null)
         {
-            <div class="profile-container">
-                <h2>House Sitter Profile</h2>
-                <p><strong>Name:</strong> @_houseSitterProfile.Name</p>
-                <p><strong>Email:</strong> @_houseSitterProfile.Email</p>
-                <p><strong>Phone:</strong> @_houseSitterProfile.Phone</p>
-                <p><strong>Biography:</strong> @_houseSitterProfile.Biography</p>
-                <p><strong>Experience:</strong> @_houseSitterProfile.Experience</p>
-                <p><strong>Skills:</strong> @string.Join(", ", _houseSitterProfile.Skills)</p>
-                
-                @if (_houseSitterProfile.Pictures != null && _houseSitterProfile.Pictures.Any())
-                {
+            <div class="account-page">
+                <div class="profile-container">
                     <div>
-                        <h4>Pictures:</h4>
-                        @foreach (var picture in _houseSitterProfile.Pictures)
+                        <img src="https://localhost:7134/Filesave/@_houseSitterProfile.ProfilePicture.Split('.')[0]/@_houseSitterProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                        <h1 class="user-name"> @_houseSitterProfile.Name</h1>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="info-section">
+                        <h2>Personal Information</h2>
+                        <p><strong>Email:</strong> @_houseSitterProfile.Email</p>
+                        <p><strong>Phone:</strong> @_houseSitterProfile.Phone</p>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="bio-section">
+                        <h2>Biography</h2>
+                        <p>@_houseSitterProfile.Biography</p>
+                    </div>
+
+                    <div class="bio-section">
+                        <h2>Past experience</h2>
+                        <p>@_houseSitterProfile.Experience</p>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <h2>Skills</h2>
+                    <div class="skills-container">
+                        @foreach (var skill in _houseSitterProfile.Skills)
                         {
-                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="House Sitter Picture" class="profile-img" />
+                            <div class="pill">@skill</div>
                         }
                     </div>
-                }
-                <button class="btn-edit" @onclick="EditAccountHouseSitter">Edit Account</button>
-                <button class="btn-delete" @onclick="DeleteAccount">Delete Account</button>
+
+                    <hr class="section-divider"/>
+                    
+                    <div class="carousel-container">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                @for (int i = 0; i < _houseSitterProfile.Pictures.Count; i++)
+                                {
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                            class="@(i == 0 ? "active" : "")"
+                                            aria-current="@(i == 0 ? "true" : "false")"
+                                            aria-label="Slide @i"></button>
+                                }
+                            </div>
+                            <div class="carousel-inner">
+                                @foreach (var image in _houseSitterProfile.Pictures)
+                                {
+                                    <div class="carousel-item @(_houseSitterProfile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                        <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture" />
+                                    </div>
+                                }
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
+                        <button type="button" class="btn btn-secondary" @onclick="DeleteAccount">Delete Account</button>
+                    </div>
+                </div>
             </div>
         }
         else
@@ -109,12 +163,11 @@
     }
     
     .account-page {
-        display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
         width: 100vw;
         background: linear-gradient(150deg, #ff7e5f, #feb47b);
+        padding-top: 37em;
     }
     
     .profile-container {
@@ -127,6 +180,10 @@
         text-align: center;
         font-family: 'FuturaFont', sans-serif;
 
+    }
+
+    .carousel-container {
+        margin-bottom: 2em;
     }
     
     .profile-container {
@@ -179,6 +236,23 @@
         border: 0;
         height: 1px;
         background-color: #ddd;
+    }
+
+    .pill {
+        background-color: #ff7e5f;
+        color: white;
+        padding: 0.5em 1em;
+        border-radius: 50px;
+        font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin-top: 1em;
     }
     
 </style>
