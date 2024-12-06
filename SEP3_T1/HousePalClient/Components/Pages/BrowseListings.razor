@@ -3,52 +3,116 @@
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Mvc.Rendering
 @using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
+@inject IHouseProfileService HouseProfileService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
     <div class="signup-page-container">
         <h1>My Listings</h1>
-
-        @if (_houseListings == null || !_houseListings.Any())
-        {
-            <p>No house profiles found.</p>
-        }
-        else
-        {
-            <div class="house-profile-list">
+        <div class="house-profile-list">
+            <div class="house-profile-item">
+                <div @onclick="OnShowModalClick" class="plus">Filter</div>
+            </div>
+            @if (_houseListings == null || !_houseListings.Any())
+            {
+                <p>No listings found.</p>
+            }
+            else
+            {
                 @foreach (var listing in _houseListings)
                 {
-                        <div class="house-profile-item">
-                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                            {
-                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                            }
-                            <p>@listing.Profile.Title</p>
-                            <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                            @if (listing.Applications!.Any(a => a.Status == "Approved"))
-                            {
-                                <p>Waiting for @listing.Applications!.Single(a => a.Status == "Approved").Sitter!.Name's confirmation</p>
-                            }
-                            else
-                            {
-                                <p>Applications: @listing.Applications!.Count()</p>
-                            }
-                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                        </div>
-                    
+                    <div class="house-profile-item">
+                        @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                        {
+                            <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                        }
+                        <p>@listing.Profile.Title</p>
+                        <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                        <p>@listing.Profile.Region</p>
+                        <p>@listing.Profile.City</p>
+                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                    </div>
                 }
-                <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
+
+@if (_showModal)
+{
+    <div class="modal-background">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-5 col-md-3 text-end">Region:</div>
+                <input class="col-7 col-md-9" @bind="_region"/>
+            </div>
+            <div class="row">
+                <div class="col-5 col-md-3 text-end">City:</div>
+                <input class="col-7 col-md-9" @bind="_city"/>
+            </div>
+            <div class="row">
+                <div class="col-5 col-md-3 text-end">Start date:</div>
+                <input
+                    type="date"
+                    id="start"
+                    name="listing-start"
+                    placeholder="dd-mm-yyyy"
+                    @bind-value="@StartDate"
+                    min="@_minDateStart.ToString("yyyy-MM-dd")"
+                    max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
+            </div>
+            <div class="row">
+                <div class="col-5 col-md-3 text-end">End date:</div>
+                <input
+                    type="date"
+                    id="end"
+                    name="listing-start"
+                    placeholder="dd-mm-yyyy"
+                    @bind-value="@EndDate"
+                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                    max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
+            </div>
+            <div class="row">
+                <h3>Amenities:</h3>
+                @if (_amenities is not null)
+                {
+                    <ul>
+                        @foreach (var amenity in _amenities)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="amenity.Selected"/>
+                                <label>@amenity.Text</label>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            <div class="row">
+                <h3>Chores:</h3>
+                @if (_chores is not null)
+                {
+                    <ul>
+                        @foreach (var chore in _chores)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="chore.Selected"/>
+                                <label>@chore.Text</label>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+            <Button Color="ButtonColor.Primary" @onclick="Filter">Find listings</Button>
+        </div>
+    </div>
+}
 
 <style>
 
@@ -119,31 +183,105 @@
     .plus {
         cursor: pointer;
     }
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
 </style>
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
+
+    private bool _showModal;
+    private string _region = string.Empty;
+    private string _city = string.Empty;
+    private readonly DateTime _minDateStart = DateTime.Today;
+    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
+    private DateTime _minDateEnd = DateTime.Today;
+    private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
+    private DateTime? _gottenStart;
+    private DateTime? _gottenEnd;
+
+    private MultiSelectList _amenities = default!;
+    private MultiSelectList _chores = default!;
+
     private List<HouseListingDto>? _houseListings;
-    private int _userId;
+
+    // Property for Start Date
+    private DateTime? StartDate
+    {
+        get => _gottenStart;
+        set
+        {
+            _gottenStart = value;
+            if (value < DateTime.Today) _gottenStart = DateTime.Today;
+            _minDateEnd = _gottenStart!.Value;
+            if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
+            {
+                _gottenEnd = _gottenStart;
+            }
+        }
+    }
+
+    // Property for End Date
+    private DateTime? EndDate
+    {
+        get => _gottenEnd;
+        set
+        {
+            _gottenEnd = value;
+            if (value < _minDateEnd) _gottenEnd = _minDateEnd;
+        }
+    }
+
+    private void OnShowModalClick()
+    {
+        _showModal = true;
+    }
+
+    private void OnHideModalClick()
+    {
+        _showModal = false;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
-        var authState = await AuthenticationStateProvider
-            .GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity is null || !user.Identity.IsAuthenticated)
-        {
-            Console.WriteLine("Not authenticated");
-            return;
-        }
-        
-        IEnumerable<Claim> claims = user.Claims;
-        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        _userId = int.Parse(userIdAsString);
-        
+        // var authState = await AuthenticationStateProvider
+        //     .GetAuthenticationStateAsync();
+        // var user = authState.User;
+        //
+        // if (user.Identity is null || !user.Identity.IsAuthenticated)
+        // {
+        //     Console.WriteLine("Not authenticated");
+        //     return;
+        // }
+        //
+        // IEnumerable<Claim> claims = user.Claims;
+        // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -151,17 +289,50 @@
 
     private async Task LoadAllHouseListings()
     {
-        _houseListings!.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Open", true, true).ToList()));
+        _houseListings!.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList()));
     }
 
     private void NavigateToDetails(int listingId)
     {
         Navigation.NavigateTo($"/view-house-listing/{listingId}");
     }
-    
-    private void NavigateToCreate()
+
+    private async void Filter()
     {
-        Navigation.NavigateTo("/create-house-listing");
+        FilteredHouseListingsDto filter = new FilteredHouseListingsDto
+        {
+            City = _city,
+            Region = _region,
+            StartDay = _gottenStart?.Day,
+            StartMonth = _gottenStart?.Month,
+            StartYear = _gottenStart?.Year,
+            EndDay = _gottenEnd?.Day,
+            EndMonth = _gottenEnd?.Month,
+            EndYear = _gottenEnd?.Year,
+        };
+
+        filter.Chores = [];
+        if (_chores.Any())
+            foreach (var chore in _chores)
+            {
+                if (chore.Selected)
+                {
+                    filter.Chores.Add(chore.Text);
+                }
+            }
+
+        filter.Amenities = [];
+        foreach (var amenity in _amenities)
+        {
+            if (amenity.Selected)
+            {
+                filter.Amenities.Add(amenity.Text);
+            }
+        }
+
+        _houseListings = HouseListingService.GetFilteredListings(filter).ToList();
+        await InvokeAsync(StateHasChanged);
+        _showModal = false;
     }
 
 }

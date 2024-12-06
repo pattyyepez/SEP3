@@ -76,8 +76,6 @@ public class ApplicationRepository : IApplicationRepository
             SitterId = sitterId
         });
         
-        Console.WriteLine(reply.Date);
-        
         return Task.FromResult(new ApplicationDto
         {
             ListingId = reply.ListingId,
@@ -96,7 +94,6 @@ public class ApplicationRepository : IApplicationRepository
 
         foreach (var application in applicationResponses)
         {
-            Console.WriteLine(application.Date);
 
             applications.Add(new ApplicationDto
             {

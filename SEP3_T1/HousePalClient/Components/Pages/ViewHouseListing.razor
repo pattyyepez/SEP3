@@ -1,4 +1,5 @@
 ﻿@page "/view-house-listing/{listingId:int}"
+@using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
@@ -9,6 +10,7 @@
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
 @inject IApplicationService ApplicationService
+@inject AuthenticationStateProvider AuthProvider
 
 <head>
     <!-- Add Font Awesome CDN to your head tag -->
@@ -124,6 +126,11 @@
             </div>
 
             <hr class="section-divider"/>
+            
+            @if (_houseSitter)
+            {
+                <button @onclick="OnShowModalClick">Apply!</button>
+            }
 
             @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
             {
@@ -209,6 +216,20 @@
         </div>
     }
 </div>
+
+@if (_showModal)
+{
+<div class="modal-background">
+    <div class="modal-content">
+        <div class="row">
+            <label for="message" class="col-5 col-md-3 text-end" required>Message for House Owner:</label>
+            <textarea id="message" class="col-7 col-md-9" @bind="_message"></textarea>
+        </div>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+        <Button Color="ButtonColor.Primary" @onclick="CreateApplication">Apply</Button>
+    </div>
+</div>
+}
 
 <style>
     @@font-face {
@@ -376,6 +397,30 @@
         display: flex;
         justify-content: space-evenly;
     }
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
 </style>
 
 @code {
@@ -385,10 +430,32 @@
     private HouseListingDto? _houseListing;
     private List<ApplicationDto>? _applications;
     private ApplicationDto? _approvedApplication;
+    private bool _houseSitter;
+    
+    private bool _showModal;
+    private string _message = string.Empty;
+    private int _sitterId = 0;
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
+        var authState = await AuthProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+            
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+            
+        IEnumerable<Claim> claims = user.Claims;
+        _houseSitter = claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseSitter";
+        if (_houseSitter)
+        {
+            string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+            _sitterId = int.Parse(userIdAsString);
+        }
         await LoadHouseListingDetails();
         await LoadApplications();
         await InvokeAsync(StateHasChanged);
@@ -447,9 +514,28 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void HandleApplication()
+    private void OnShowModalClick()
     {
         //  Navigation.NavigateTo($"/application/{ListingId}");
+        _showModal = true;
+    }
+    
+    private void OnHideModalClick()
+    {
+        _showModal = false;
+    }
+    
+    private async void CreateApplication()
+    {
+        CreateApplicationDto application = new CreateApplicationDto
+        {
+            ListingId = listingId,
+            SitterId = _sitterId,
+            Message = _message
+        };
+        await ApplicationService.AddAsync(application);
+        _showModal = false;
+        Navigation.NavigateTo("/view-all-house-listings"); 
     }
 
 }

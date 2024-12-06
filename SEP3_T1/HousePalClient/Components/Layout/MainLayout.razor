@@ -1,10 +1,12 @@
-﻿@using HousePalClient.Auth
+﻿@using System.Security.Claims
+@using HousePalClient.Auth
 @using Microsoft.AspNetCore.Components
 @inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
 
 <head>
+    <title>Browsing listings</title>
     <!-- Add Font Awesome CDN to your head tag -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -12,16 +14,19 @@
 <div class="main-layout">
     <!-- Top Banner -->
     <div class="banner">
-        <button class="menu-button" @onclick="ToggleSidebar"><div class="icon @(isSidebarOpen ? "open" : "")"><i class="fa-solid fa-bars"></i></div></button>
+        <button class="menu-button" @onclick="ToggleSidebar"><div class="icon @(_isSidebarOpen ? "open" : "")"><i class="fa-solid fa-bars"></i></div></button>
 
         <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
 
         <div class="profile-picture-container" @onclick="TogglePopup">
-            <img src="images/profilepic1.jpg" alt="Profile Picture" class="profile-picture"/>
+            @if (!string.IsNullOrWhiteSpace(_profilePicture))
+            {
+                <img src="https://localhost:7134/Filesave/@_profilePicture.Split('.')[0]/@_profilePicture.Split('.')[1]" alt="Profile Picture" class="profile-picture"/>
+            }
         </div>
     </div>
 
-    <div class="popup @(isPopupOpen ? "show" : "")">
+    <div class="popup @(_isPopupOpen ? "show" : "")">
         <ul>
             <li>
                 <button onclick="window.location.href = '/view-my-account'"><i class="fa-solid fa-user"></i> Account</button>
@@ -35,7 +40,7 @@
     <!-- Sidebar -->
     <CascadingAuthenticationState>
         <AuthorizeView Roles="HouseOwner">
-            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+            <div class="sidebar @(_isSidebarOpen ? "open" : "")">
                 <nav class="menu">
                     <ul>
                         <li>
@@ -56,7 +61,7 @@
         </AuthorizeView>
 
         <AuthorizeView Roles="HouseSitter">
-            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+            <div class="sidebar @(_isSidebarOpen ? "open" : "")">
                 <nav class="menu">
                     <ul>
                         <li>
@@ -293,22 +298,40 @@
 </style>
 
 @code {
-    private bool isSidebarOpen = false;
-    private bool isPopupOpen = false;
+    private bool _isSidebarOpen;
+    private bool _isPopupOpen;
+    private string _profilePicture = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+        
+        IEnumerable<Claim> claims = user.Claims;
+        _profilePicture = claims.Single(c => c.Type == "ProfilePicture").Value;
+        
+        await InvokeAsync(StateHasChanged);
+    }
 
     private void ToggleSidebar()
     {
-        isSidebarOpen = !isSidebarOpen;
+        _isSidebarOpen = !_isSidebarOpen;
     }
 
     private void TogglePopup()
     {
-        Console.WriteLine($"Popup state changed: {isPopupOpen}");
-        isPopupOpen = !isPopupOpen;
-        Console.WriteLine($"Popup state changed: {isPopupOpen}");
+        Console.WriteLine($"Popup state changed: {_isPopupOpen}");
+        _isPopupOpen = !_isPopupOpen;
+        Console.WriteLine($"Popup state changed: {_isPopupOpen}");
         StateHasChanged();
     }
-    private async Task HandleLogout()
+    private void HandleLogout()
     {
         if (AuthProvider is SimpleAuthProvider simpleAuthProvider)
         {
@@ -316,6 +339,5 @@
             Navigation.NavigateTo("/login", true);
         }
     }
-
-
 }
+<Preload LoadingText="Loading..."></Preload>

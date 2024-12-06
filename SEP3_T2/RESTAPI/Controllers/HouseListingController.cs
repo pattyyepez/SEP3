@@ -127,9 +127,7 @@ public class HouseListingController : ControllerBase
         try
         {
             var response = _repo.GetAll();
-
-            if (ownerId == 0) return Ok(response.Where(l => l.Status == status));
-
+            
             var toReturn = new List<HouseListingDto>();
 
             foreach (var listing in response)
@@ -150,8 +148,8 @@ public class HouseListingController : ControllerBase
 
                 toReturn.Add(listing);
             }
-            
-            return Ok(toReturn.AsQueryable().Where(l => l.Profile.OwnerId == ownerId && l.Status == status));
+
+            return Ok(ownerId == 0 ? response.Where(l => l.Status == status) : toReturn.AsQueryable().Where(l => l.Profile.OwnerId == ownerId && l.Status == status));
         }
         catch (Exception ex)
         {
@@ -219,7 +217,7 @@ public class HouseListingController : ControllerBase
     {
         try
         {
-            var listings = _repo.GetAll();
+            var listings = _repo.GetAll().Where(l => l.Status == "Open");
             foreach (var listing in listings)
             {
                 listing.Profile = await profileRepo.GetSingleAsync(listing.ProfileId);

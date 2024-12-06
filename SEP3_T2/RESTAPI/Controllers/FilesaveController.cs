@@ -83,8 +83,7 @@ public class FilesaveController(
 
             uploadResults.Add(uploadResult);
         }
-
-        Console.WriteLine(resourcePath);
+        
         return new CreatedResult(resourcePath, uploadResults);
     }
     
