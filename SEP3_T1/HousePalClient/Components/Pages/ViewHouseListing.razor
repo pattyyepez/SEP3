@@ -125,87 +125,91 @@
 
             <hr class="section-divider"/>
 
-            @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
-            {
-                <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
-                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
-                                <p class="card-text">
-                                    <small class="text-muted">@_approvedApplication.Date</small>
-                                </p>
+            <div class="applicants-section">
+            
+                <h3>Applicants for this listing:</h3>
+
+                @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
+                {
+                    <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                    <p class="card-text">@_approvedApplication.Sitter.Phone</p>
+                                    <p class="card-text">@_approvedApplication.Sitter.Email</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">@_approvedApplication.Date</small>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-            else
-            {
-                @if (_applications != null)
+                }
+                else
                 {
-                    @if (_approvedApplication != null)
+                    @if (_applications != null)
                     {
-                        <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
-                            <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                        <p class="card-text">@_approvedApplication.Message</p>
-                                        <p class="card-text">
-                                            <small class="text-muted">@_approvedApplication.Date</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="section-divider"/>
-                    }
-
-                    @foreach (var application in _applications)
-                    {
-                        @if (!application.Equals(_approvedApplication))
+                        @if (_approvedApplication != null)
                         {
-                            <div class="card 
-                        @(application.Status == "Rejected" ? " text-white bg-danger border-danger " : "")
-                        mb-3" style="max-width: 540px;">
+                            <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
                                 <div class="row no-gutters">
                                     <div class="col-md-4">
-                                        <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
+                                        <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
-                                            <h5 class="card-title">@application.Sitter.Name</h5>
-                                            <p class="card-text">@application.Message</p>
+                                            <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                            <p class="card-text">@_approvedApplication.Message</p>
                                             <p class="card-text">
-                                                <small class="text-muted">@application.Date</small>
+                                                <small class="text-muted">@_approvedApplication.Date</small>
                                             </p>
                                         </div>
-                                        @if (_approvedApplication == null && application.Status == "Pending")
-                                        {
-                                            <div class="card-buttons">
-                                                <Button Color="ButtonColor.Success" @onclick="() => ApproveApplication(application)">Approve</Button>
-                                                <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
-                                            </div>
-                                        }
-
                                     </div>
                                 </div>
                             </div>
+
+                            <hr class="section-divider"/>
+                        }
+
+                        @foreach (var application in _applications)
+                        {
+                            @if (!application.Equals(_approvedApplication))
+                            { 
+                                <div class="card @(application.Status == "Rejected" ? "rejected" : "pending") mb-3">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-4">
+                                            <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <a><h5 class="card-title">@application.Sitter.Name</h5></a>
+                                                <p class="card-text">@application.Message</p>
+                                                <p class="card-text">
+                                                    <small>@application.Date</small>
+                                                </p>
+                                                @if (_approvedApplication == null && application.Status == "Pending")
+                                                {
+                                                    <div class="card-buttons">
+                                                        <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
+                                                        <Button Color="ButtonColor.Danger" class="approve" @onclick="() => RejectApplication(application)">Reject</Button>
+                                                        <div class="card-buttons">
+                                                            <Button Color="ButtonColor.Primary" @onclick="() => SitterProfile(application.SitterId)">View details</Button>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         }
                     }
                 }
-            }
-
+            </div>
         </div>
     }
 </div>
@@ -228,6 +232,7 @@
     h3 {
         font-family: 'LogoFont', sans-serif;
         color: #3d3d3d;
+        margin-bottom: 0.7em;
     }
     
     .info-section {
@@ -371,11 +376,52 @@
     .house-rules li {
         margin-bottom: 0.5em;
     }
+    
+    .applicants-section{
+        padding: 0.85em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
     .card-buttons {
         display: flex;
         justify-content: space-evenly;
     }
+    
+    .card-img {
+        border-radius: 12px 8px 8px 12px; 
+    }
+    
+    .card {
+        max-width: 540px;
+        border-radius: 12px;
+        font-family: 'FuturaFont', sans-serif;
+        color: #3d3d3d;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-style: none;
+    }
+
+    .card.pending{
+        background-color: #f1f1f1;
+    }
+    
+    .card.rejected{
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .approve {
+        margin-right: 0.5em;
+    }
+    
+    
 </style>
 
 @code {
@@ -447,9 +493,9 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void HandleApplication()
+    private void SitterProfile(int profileID)
     {
-        //  Navigation.NavigateTo($"/application/{ListingId}");
+        Navigation.NavigateTo($"/view-sitter-profile/{profileID}");
     }
 
 }
