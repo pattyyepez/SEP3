@@ -5,11 +5,13 @@
 @layout LoginLayout
 @inject NavigationManager Navigation
 
+
+<div class="banner">
+    <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
+</div>
 <div class="page-container">
     <!-- Banner -->
-    <div class="banner">
-        <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
-    </div>
+
 
     <!-- About -->
     <div class="about-container">
@@ -86,22 +88,20 @@
         background-color: white;
     }
 
-    /* Banner */
+    /* Top Banner */
     .banner {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 105vh;
-        min-width: 100vw;
-        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral/Orange Gradient */
+        justify-content: center;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral Gradient */
+        padding: 1em;
+        height: 7em;
+        z-index: 1000;
     }
-    
+
     .logo {
-        max-height: 15vh;
-        margin-top: 80em;
-        margin-bottom: 0.5em;
+        width: 6em;
+        height: auto;
         align-self: center;
-        
     }
 
     .about-container {

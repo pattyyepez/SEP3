@@ -14,13 +14,13 @@
     <div class="signup-page-container">
         <h1>My Houses</h1>
 
-        @if (houseProfiles == null || !houseProfiles.Any())
-        {
-            <p>No house profiles found.</p>
-        }
-        else
-        {
-            <div class="house-profile-list">
+        <div class="house-profile-list">
+            @if (houseProfiles == null || !houseProfiles.Any())
+            {
+                <p>No house profiles found.</p>
+            }
+            else
+            {
                 @foreach (var profile in houseProfiles)
                 {
                     <div class="house-profile-item">
@@ -32,13 +32,13 @@
                         <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
                     </div>
                 }
-                <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus">
-                        <i class="fa-solid fa-plus fa-2xl"></i>
-                    </div>
+            }
+            <div class="house-profile-item">
+                <div @onclick="NavigateToCreate" class="plus">
+                    <i class="fa-solid fa-plus fa-2xl"></i>
                 </div>
             </div>
-        }
+        </div>
     </div>
 </div>
 
@@ -110,6 +110,7 @@
     
     .plus {
         cursor: pointer;
+        min-height: 15em;
     }
     
 </style>
