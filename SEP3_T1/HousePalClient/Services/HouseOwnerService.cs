@@ -3,7 +3,7 @@ using DTOs.HouseOwner;
 using HousePalClient.ServiceContracts;
 using Newtonsoft.Json;
 
-namespace Services
+namespace HousePalClient.Services
 {
     public class HouseOwnerService : IHouseOwnerService
     {

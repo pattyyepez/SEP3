@@ -10,6 +10,7 @@
 @inject NavigationManager Navigation
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
+@inject ISitterReviewService SitterReviewService
 @inject IApplicationService ApplicationService
 @inject AuthenticationStateProvider AuthProvider
 
@@ -195,6 +196,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">@application.Sitter.Name</h5>
                                             <p class="card-text">@application.Message</p>
+                                            <p class="card-text">@SitterReviewService.GetAllReviewsForSitter(application.SitterId).Select(r => r.Rating).Average()</p>
                                             <p class="card-text">
                                                 <small class="text-muted">@application.Date</small>
                                             </p>

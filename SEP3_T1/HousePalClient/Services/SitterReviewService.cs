@@ -3,7 +3,7 @@ using DTOs.SitterReview;
 using HousePalClient.ServiceContracts;
 using Newtonsoft.Json;
 
-namespace Services;
+namespace HousePalClient.Services;
 
 public class SitterReviewService : ISitterReviewService
 {
@@ -21,7 +21,7 @@ public class SitterReviewService : ISitterReviewService
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/SitterReview", byteContent);
+            using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/SitterReview/CreateSitterProfile", byteContent);
             
             response.EnsureSuccessStatusCode();
     
@@ -48,14 +48,14 @@ public class SitterReviewService : ISitterReviewService
 
         public async Task DeleteAsync(int id)
         {
-            using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/SitterReview/{id}");
+            using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/SitterReview/DeleteSitterReview/{id}");
             
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<SitterReviewDto> GetSingleAsync(int id)
+        public async Task<SitterReviewDto> GetSingleAsync(int id, bool includeOwner, bool includeSitter)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/SitterReview/{id}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/SitterReview/GetSitterReview/{id}?includeOwner={includeOwner}&includeSitter={includeSitter}");
 
             response.EnsureSuccessStatusCode();
     
@@ -64,9 +64,9 @@ public class SitterReviewService : ISitterReviewService
             return JsonConvert.DeserializeObject<SitterReviewDto>(jsonResponse);
         }
 
-        public IQueryable<SitterReviewDto> GetAll()
+        public IQueryable<SitterReviewDto> GetAll(bool includeOwner, bool includeSitter)
         {
-            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/SitterReview").Result;
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/SitterReview/GetAllSitterReviews?includeOwner={includeOwner}&includeSitter={includeSitter}").Result;
 
             response.EnsureSuccessStatusCode();
 
@@ -76,6 +76,19 @@ public class SitterReviewService : ISitterReviewService
             var sitterReview = JsonConvert.DeserializeObject<List<SitterReviewDto>>(jsonResponse);
 
             return sitterReview.AsQueryable();
-        
-    }
+        }
+
+        public IQueryable<SitterReviewDto> GetAllReviewsForSitter(int sitterId)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/SitterReview/GetAllReviewsForSitter/{sitterId}").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var sitterReview = JsonConvert.DeserializeObject<List<SitterReviewDto>>(jsonResponse);
+
+            return sitterReview.AsQueryable();
+        }
 }

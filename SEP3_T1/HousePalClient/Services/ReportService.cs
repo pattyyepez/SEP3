@@ -3,7 +3,7 @@ using DTOs.Report;
 using HousePalClient.ServiceContracts;
 using Newtonsoft.Json;
 
-namespace Services;
+namespace HousePalClient.Services;
 
 public class ReportService : IReportService
 {

@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
+@using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using Services
@@ -303,7 +304,7 @@
         int userId = int.Parse(user.Claims.Single(c => c.Type == "Id").Value);
 
         var confirmedApplications = await Task.Run(() =>
-            ApplicationService.GetApplicationsByUserStatus(userId, "Confirmed").ToList());
+            ApplicationService.GetApplicationsByUserStatus(userId, "Confirmed", false, false).ToList());
 
         var allListings = await Task.Run(() => 
             HouseListingService.GetAllByOwnerStatus(userId, "Closed", false, true).ToList());
