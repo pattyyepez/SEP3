@@ -91,6 +91,16 @@
         justify-content: center;
     }
 
+    .house-profile-item {
+        width: 15em;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 0 0 1em 0;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
     .house-profile-item div {
         display: flex;
         justify-content: center;
@@ -99,10 +109,20 @@
         height: 95%;
     }
 
+    .house-profile-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px 10px 0 0;
+    }
+
     p {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         margin: 1em;
+    }
+
+    .plus {
+        cursor: pointer;
     }
 </style>
 
@@ -146,7 +166,7 @@
     {
         Navigation.NavigateTo($"/view-house-listing/{listingId}");
     }
-
+    
     private void NavigateToCreate()
     {
         Navigation.NavigateTo("/create-house-listing");
