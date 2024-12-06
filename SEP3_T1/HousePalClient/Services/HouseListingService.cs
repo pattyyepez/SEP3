@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using DTOs.HouseListing;
+using HousePalClient.ServiceContracts;
 using Newtonsoft.Json;
 
 namespace Services;
@@ -146,6 +147,18 @@ public class HouseListingService : IHouseListingService
             
             if(filter.EndDay.HasValue)
                 uri += $"EndDay={filter.EndDay}&EndMonth={filter.EndMonth}&EndYear={filter.EndYear}&";
+            
+            if(filter.Chores.Any())
+                foreach (var chore in filter.Chores)
+                {
+                    uri += $"Chores={chore}&";
+                }
+            
+            if(filter.Amenities.Any())
+                foreach (var amenity in filter.Amenities)
+                {
+                    uri += $"Amenities={amenity}&";
+                }
             
             uri = uri.TrimEnd('&');
             

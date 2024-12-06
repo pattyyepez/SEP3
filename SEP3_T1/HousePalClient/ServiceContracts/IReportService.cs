@@ -1,6 +1,6 @@
 ﻿using DTOs.Report;
 
-namespace Services;
+namespace HousePalClient.ServiceContracts;
 
 public interface IReportService
 {

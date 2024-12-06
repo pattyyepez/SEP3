@@ -38,7 +38,7 @@ public class ApplicationRepository implements IApplicationRepository {
     String sql = "INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES (?, ?, ?, ?, ?)";
     jdbcTemplate.update(sql, application.getListing_id(), application.getSitter_id(),
         application.getMessage(), application.getStatus(),
-        new Timestamp(ZonedDateTime.of(application.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
+        new Timestamp(ZonedDateTime.of(application.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()));
   }
 
   public Application update(Application application) {

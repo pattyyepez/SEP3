@@ -1,9 +1,12 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@using System.Security.Claims
+@using HousePalClient.Auth
+@using Microsoft.AspNetCore.Components
 @inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
 
 <head>
+    <title>Browsing listings</title>
     <!-- Add Font Awesome CDN to your head tag -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -11,22 +14,25 @@
 <div class="main-layout">
     <!-- Top Banner -->
     <div class="banner">
-        <button class="menu-button" @onclick="ToggleSidebar"><div class="icon @(isSidebarOpen ? "open" : "")"><i class="fa-solid fa-bars"></i></div></button>
+        <button class="menu-button" @onclick="ToggleSidebar"><div class="icon @(_isSidebarOpen ? "open" : "")"><i class="fa-solid fa-bars"></i></div></button>
 
         <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
 
         <div class="profile-picture-container" @onclick="TogglePopup">
-            <img src="images/profilepic1.jpg" alt="Profile Picture" class="profile-picture"/>
+            @if (!string.IsNullOrWhiteSpace(_profilePicture))
+            {
+                <img src="https://localhost:7134/Filesave/@_profilePicture.Split('.')[0]/@_profilePicture.Split('.')[1]" alt="Profile Picture" class="profile-picture"/>
+            }
         </div>
     </div>
 
-    <div class="popup @(isPopupOpen ? "show" : "")">
+    <div class="popup @(_isPopupOpen ? "show" : "")">
         <ul>
             <li>
                 <button onclick="window.location.href = '/view-my-account'"><i class="fa-solid fa-user"></i> Account</button>
             </li>
             <li>
-                <button href="/dashboard"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
+                <button @onclick="HandleLogout"><i class="fa-solid fa-right-to-bracket"></i> Log Out</button>
             </li>
         </ul>
     </div>
@@ -34,7 +40,7 @@
     <!-- Sidebar -->
     <CascadingAuthenticationState>
         <AuthorizeView Roles="HouseOwner">
-            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+            <div class="sidebar @(_isSidebarOpen ? "open" : "")">
                 <nav class="menu">
                     <ul>
                         <li>
@@ -47,6 +53,9 @@
                             <button onclick="window.location.href = '/view-confirmed-stays'"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
                         </li>
                         <li>
+                            <button onclick="window.location.href = '/view-my-past-listings'"><i class="fas fa-history"></i> Past Listings</button>
+                        </li>
+                        <li>
                             <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
                         </li>
                     </ul>
@@ -55,20 +64,26 @@
         </AuthorizeView>
 
         <AuthorizeView Roles="HouseSitter">
-            <div class="sidebar @(isSidebarOpen ? "open" : "")">
+            <div class="sidebar @(_isSidebarOpen ? "open" : "")">
                 <nav class="menu">
                     <ul>
                         <li>
-                            <button onclick="window.location.href = '/view-all-house-profiles'"><i class="fas fa-home"></i> Biotch</button>
+                            <button onclick="window.location.href = '/browse-listings'"><i class="fas fa-home"></i> Browse Listings</button>
                         </li>
                         <li>
-                            <button onclick="window.location.href = '/view-all-house-listings'"><i class="fas fa-list"></i> Open Listings</button>
+                            <button onclick="window.location.href = '/view-my-applications'"><i class="fas fa-list"></i> View my Appl.</button>
                         </li>
                         <li>
                             <button href="/dashboard"><i class="fas fa-clock"></i> Waiting Confirmation</button>
                         </li>
                         <li>
                             <button href="/dashboard"><i class="fas fa-check-circle"></i> Confirmed Stays</button>
+                        </li>
+                        <li>
+                            <button onclick="window.location.href = '/view-my-past-stays'"><i class="fas fa-history"></i> Past Stays</button>
+                        </li>
+                        <li>
+                            <button onclick="window.location.href = '/view-upcoming-stays'"><i class="fas fa-calendar-plus"></i> Upcoming Stays</button>
                         </li>
                         <li>
                             <button href="/dashboard"><i class="fas fa-pencil-alt"></i> Pending for Review</button>
@@ -292,20 +307,46 @@
 </style>
 
 @code {
-    private bool isSidebarOpen = false;
-    private bool isPopupOpen = false;
+    private bool _isSidebarOpen;
+    private bool _isPopupOpen;
+    private string _profilePicture = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+        
+        IEnumerable<Claim> claims = user.Claims;
+        _profilePicture = claims.Single(c => c.Type == "ProfilePicture").Value;
+        
+        await InvokeAsync(StateHasChanged);
+    }
 
     private void ToggleSidebar()
     {
-        isSidebarOpen = !isSidebarOpen;
+        _isSidebarOpen = !_isSidebarOpen;
     }
 
     private void TogglePopup()
     {
-        Console.WriteLine($"Popup state changed: {isPopupOpen}");
-        isPopupOpen = !isPopupOpen;
-        Console.WriteLine($"Popup state changed: {isPopupOpen}");
+        Console.WriteLine($"Popup state changed: {_isPopupOpen}");
+        _isPopupOpen = !_isPopupOpen;
+        Console.WriteLine($"Popup state changed: {_isPopupOpen}");
         StateHasChanged();
     }
-
+    private void HandleLogout()
+    {
+        if (AuthProvider is SimpleAuthProvider simpleAuthProvider)
+        {
+            simpleAuthProvider.Logout();
+            Navigation.NavigateTo("/login", true);
+        }
+    }
 }
+<Preload LoadingText="Loading..."></Preload>

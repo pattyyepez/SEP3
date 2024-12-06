@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
+@using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Services
 @layout MainLayout
@@ -16,7 +17,7 @@
 
         @if (_houseListings == null || !_houseListings.Any())
         {
-            <p>No house profiles found.</p>
+            <p>No listings found.</p>
         }
         else
         {
@@ -144,15 +145,21 @@
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _userId = int.Parse(userIdAsString);
         
-        await LoadAllHouseListings();
+        await LoadUpcomingHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private async Task LoadAllHouseListings()
+    private async Task LoadUpcomingHouseListings()
     {
-        _houseListings!.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Open", true, true).ToList()));
+        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Open", true, true));
+        var today = DateOnly.FromDateTime(DateTime.Today); 
+
+        _houseListings = allListings
+            .Where(listing => listing.StartDate > today)
+            .ToList();
     }
+
 
     private void NavigateToDetails(int listingId)
     {

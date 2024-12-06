@@ -1,4 +1,6 @@
 ﻿using DTOs.Application;
+using DTOs.HouseListing;
+using DTOs.HouseProfile;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
@@ -110,6 +112,8 @@ public class ApplicationController : ControllerBase
         [FromServices] IHouseListingRepository listingRepo,
         [FromServices] IHouseProfileRepository profileRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
+        [FromQuery] bool includeListings,
+        [FromQuery] bool includeProfiles,
         int? userId, string? status)
     {
         try
@@ -132,6 +136,35 @@ public class ApplicationController : ControllerBase
                     {
                         applications =
                             applications.Where(a => a.SitterId == userId.Value);
+
+                        foreach (var application in applications)
+                        {
+                            if (includeListings)
+                            {
+                                var listing = await listingRepo.GetSingleAsync(
+                                    application.ListingId);
+                                application.Listing = new HouseListingDto
+                                {
+                                    StartDate = listing.StartDate,
+                                    EndDate = listing.EndDate,
+                                };
+                            }
+
+                            if (includeProfiles)
+                            {
+                                var profile = await profileRepo.GetSingleAsync(
+                                    (await listingRepo.GetSingleAsync(
+                                        application.ListingId)).ProfileId);
+                                application.Listing ??= new HouseListingDto();
+                                application.Listing.Profile =
+                                    new HouseProfileDto
+                                    {
+                                        Title = profile.Title,
+                                        Pictures = profile.Pictures,
+                                    };
+                            }
+                        }
+                        
                         return Ok(applications);
                     }
                     

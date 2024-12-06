@@ -1,8 +1,7 @@
-﻿@page "/view-confirmed-stays"
+﻿@page "/view-my-past-listings"
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
-@using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Services
 @layout MainLayout
@@ -10,39 +9,34 @@
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>My Listings</h1>
+        <h1>My Past Listings</h1>
 
         @if (_houseListings == null || !_houseListings.Any())
         {
-            <p>No listings found.</p>
+        <p>No past listings found.</p>
         }
         else
         {
-            <div class="house-profile-list">
-                @foreach (var listing in _houseListings)
+        <div class="house-profile-list">
+            @foreach (var listing in _houseListings)
+            {
+            <div class="house-profile-item">
+                @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
                 {
-                        <div class="house-profile-item">
-                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                            {
-                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                            }
-                            <p>@listing.Profile.Title</p>
-                            <p>@listing.StartDate - @listing.EndDate</p>
-                            <p>@listing.Applications!.Single(a => a.Status == "Confirmed").Sitter!.Name confirmed their stay.</p>
-                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                        </div>
+                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                 }
-                <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
-                </div>
+                <p>@listing.Profile.Title</p>
+                <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                <p>Status: Closed</p>
+                <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
             </div>
+            }
+        </div>
         }
     </div>
 </div>
-
 <style>
 
     @@font-face {
@@ -132,29 +126,29 @@
             Console.WriteLine("Not authenticated");
             return;
         }
-        
+
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _userId = int.Parse(userIdAsString);
-        
-        await LoadAllHouseListings();
+
+        await LoadPastHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private async Task LoadAllHouseListings()
-    { 
-        _houseListings!.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true).ToList()));
+    private async Task LoadPastHouseListings()
+    {
+        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true));
+        var today = DateOnly.FromDateTime(DateTime.Today); 
+
+        _houseListings = allListings
+            .Where(listing => listing.EndDate < today) 
+            .ToList();
     }
 
-    private void NavigateToDetails(int ListingId)
-    {
-        Navigation.NavigateTo($"/view-house-listing/{ListingId}");
-    }
-    
-    private void NavigateToCreate()
-    {
-        Navigation.NavigateTo("/create-house-listing");
-    }
 
+    private void NavigateToDetails(int listingId)
+    {
+        Navigation.NavigateTo($"/view-house-listing/{listingId}");
+    }
 }

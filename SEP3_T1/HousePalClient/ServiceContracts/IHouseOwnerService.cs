@@ -1,6 +1,6 @@
 ﻿using DTOs.HouseOwner;
 
-namespace Services;
+namespace HousePalClient.ServiceContracts;
 
 public interface IHouseOwnerService {
     Task<HouseOwnerDto> AddAsync(CreateHouseOwnerDto houseOwner);

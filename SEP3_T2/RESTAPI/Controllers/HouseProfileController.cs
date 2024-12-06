@@ -1,4 +1,5 @@
-﻿using DTOs.HouseProfile;
+﻿using DTOs.HouseOwner;
+using DTOs.HouseProfile;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
@@ -98,9 +99,17 @@ public class HouseProfileController : ControllerBase
         try
         {
             var response = await _repo.GetSingleAsync(id);
-            
-            if(includeOwner)
+
+            if (includeOwner)
+            {
+                // var temp = await ownerRepo.GetSingleAsync(response.OwnerId);
+                // response.Owner = new HouseOwnerDto
+                // {
+                //     Name = temp.Name,
+                //     
+                // }
                 response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
+            }
             
             return Ok(response);
         }

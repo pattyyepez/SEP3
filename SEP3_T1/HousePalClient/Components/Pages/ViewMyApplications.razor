@@ -1,5 +1,6 @@
-﻿@page "/view-confirmed-stays"
+﻿@page "/view-my-applications"
 @using System.Security.Claims
+@using DTOs.Application
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
@@ -8,32 +9,33 @@
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-@inject IHouseListingService HouseListingService
+@inject IApplicationService ApplicationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
     <div class="signup-page-container">
         <h1>My Listings</h1>
 
-        @if (_houseListings == null || !_houseListings.Any())
+        @if (_applications == null || !_applications.Any())
         {
-            <p>No listings found.</p>
+            <p>No applications found.</p>
         }
         else
         {
             <div class="house-profile-list">
-                @foreach (var listing in _houseListings)
+                @foreach (var application in _applications)
                 {
                         <div class="house-profile-item">
-                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                            @if (application.Listing!.Profile!.Pictures != null && application.Listing.Profile.Pictures.Any())
                             {
-                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                <img src="https://localhost:7134/Filesave/@application.Listing.Profile.Pictures[0].Split('.')[0]/@application.Listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                             }
-                            <p>@listing.Profile.Title</p>
-                            <p>@listing.StartDate - @listing.EndDate</p>
-                            <p>@listing.Applications!.Single(a => a.Status == "Confirmed").Sitter!.Name confirmed their stay.</p>
-                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                            <p>@application.Listing.Profile.Title</p>
+                            <p>@application.Listing.StartDate.ToString("dd/M/yyyy") - @application.Listing.EndDate.ToString("dd/M/yyyy")</p>
+                            <p>@application.Status</p>
+                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(application.ListingId)">More Details</button>
                         </div>
+                    
                 }
                 <div class="house-profile-item">
                     <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
@@ -116,13 +118,13 @@
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
-    private List<HouseListingDto>? _houseListings;
+    private List<ApplicationDto>? _applications;
     private int _userId;
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
-        _houseListings = new List<HouseListingDto>();
+        _applications = new List<ApplicationDto>();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -143,13 +145,15 @@
     }
 
     private async Task LoadAllHouseListings()
-    { 
-        _houseListings!.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true).ToList()));
+    {
+        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Pending", true, true).ToList()));
+        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Approved", true, true).ToList()));
+        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Rejected", true, true).ToList()));
     }
 
-    private void NavigateToDetails(int ListingId)
+    private void NavigateToDetails(int listingId)
     {
-        Navigation.NavigateTo($"/view-house-listing/{ListingId}");
+        Navigation.NavigateTo($"/view-house-listing/{listingId}");
     }
     
     private void NavigateToCreate()

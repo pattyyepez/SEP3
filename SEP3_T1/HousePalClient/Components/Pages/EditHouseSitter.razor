@@ -2,9 +2,9 @@
 @using DTOs
 @using DTOs.HouseSitter
 @using HousePalClient.Components.Layout
+@using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -554,17 +554,17 @@
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
                     houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
-                    _profilePictureUrl = houseSitterProfile.ProfilePicture;
-                    _cpr = houseSitterProfile.CPR;
-                    _phone = houseSitterProfile.Phone;
-                    _name = houseSitterProfile.Name;
-                    _experiences = houseSitterProfile.Experience;
-                    _biography = houseSitterProfile.Biography;
-                    _pictures = houseSitterProfile.Pictures;
+                    _profilePictureUrl = houseSitterProfile.ProfilePicture!;
+                    _cpr = houseSitterProfile.CPR!;
+                    _phone = houseSitterProfile.Phone!;
+                    _name = houseSitterProfile.Name!;
+                    _experiences = houseSitterProfile.Experience!;
+                    _biography = houseSitterProfile.Biography!;
+                    _pictures = houseSitterProfile.Pictures!;
 
                     foreach (var skill in _skills)
                     {
-                        if (houseSitterProfile.Skills.Contains(skill.Text))
+                        if (houseSitterProfile.Skills!.Contains(skill.Text))
                         {
                             skill.Selected = true;
                         }

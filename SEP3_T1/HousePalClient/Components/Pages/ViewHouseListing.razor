@@ -1,7 +1,9 @@
 ﻿@page "/view-house-listing/{listingId:int}"
+@using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
+@using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Services
 @layout MainLayout
@@ -9,8 +11,10 @@
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
 @inject IApplicationService ApplicationService
+@inject AuthenticationStateProvider AuthProvider
 
 <head>
+    <title>Viewing house listing</title>
     <!-- Add Font Awesome CDN to your head tag -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -108,7 +112,7 @@
             <!-- House Rules Section -->
             <h3>House Rules</h3>
             <ol class="house-rules">
-                @foreach (var rule in _houseListing.Profile.Rules)
+                @foreach (var rule in _houseListing.Profile!.Rules!)
                 {
                     <li>@rule</li>
                 }
@@ -124,95 +128,137 @@
             </div>
 
             <hr class="section-divider"/>
-
-            <div class="applicants-section">
             
-                <h3>Applicants for this listing:</h3>
+            @if (_houseSitter)
+            {
+                <button @onclick="OnShowModalClick">Apply!</button>
+            }
 
-                @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
-                {
-                    <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                    <p class="card-text">@_approvedApplication.Sitter.Phone</p>
-                                    <p class="card-text">@_approvedApplication.Sitter.Email</p>
-                                    <p class="card-text">
-                                        <small class="text-muted">@_approvedApplication.Date</small>
-                                    </p>
-                                </div>
+            @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
+            {
+                <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="https://localhost:7134/Filesave/@_approvedApplication!.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
+                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
+                                <p class="card-text">
+                                    <small class="text-muted">@_approvedApplication.Date</small>
+                                </p>
                             </div>
                         </div>
                     </div>
-                }
-                else
+                </div>
+            }
+            else
+            {
+                @if (_applications != null)
                 {
-                    @if (_applications != null)
+                    @if (_approvedApplication != null)
                     {
-                        @if (_approvedApplication != null)
-                        {
-                            <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
-                                <div class="row no-gutters">
-                                    <div class="col-md-4">
-                                        <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter.ProfilePicture.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                            <p class="card-text">@_approvedApplication.Message</p>
-                                            <p class="card-text">
-                                                <small class="text-muted">@_approvedApplication.Date</small>
-                                            </p>
-                                        </div>
+                        <div class="card text-white bg-success border-success mb-3" style="max-width: 540px;">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                        <p class="card-text">@_approvedApplication.Message</p>
+                                        <p class="card-text">
+                                            <small class="text-muted">@_approvedApplication.Date</small>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <hr class="section-divider"/>
-                        }
+                        <hr class="section-divider"/>
+                    }
 
-                        @foreach (var application in _applications)
+                    @foreach (var application in _applications)
+                    {
+                        @if (!application.Equals(_approvedApplication))
                         {
-                            @if (!application.Equals(_approvedApplication))
-                            { 
-                                <div class="card @(application.Status == "Rejected" ? "rejected" : "pending") mb-3">
-                                    <div class="row no-gutters">
-                                        <div class="col-md-4">
-                                            <img src="https://localhost:7134/Filesave/@application.Sitter.ProfilePicture.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
+                            <div class="card 
+                        @(application.Status == "Rejected" ? " text-white bg-danger border-danger " : "")
+                        mb-3" style="max-width: 540px;">
+                                <div class="row no-gutters">
+                                    <div class="col-md-4">
+                                        <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@application.Sitter.Name</h5>
+                                            <p class="card-text">@application.Message</p>
+                                            <p class="card-text">
+                                                <small class="text-muted">@application.Date</small>
+                                            </p>
                                         </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <a><h5 class="card-title">@application.Sitter.Name</h5></a>
-                                                <p class="card-text">@application.Message</p>
-                                                <p class="card-text">
-                                                    <small>@application.Date</small>
-                                                </p>
-                                                @if (_approvedApplication == null && application.Status == "Pending")
-                                                {
-                                                    <div class="card-buttons">
-                                                        <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
-                                                        <Button Color="ButtonColor.Danger" class="approve" @onclick="() => RejectApplication(application)">Reject</Button>
-                                                        <div class="card-buttons">
-                                                            <Button Color="ButtonColor.Primary" @onclick="() => SitterProfile(application.SitterId)">View details</Button>
-                                                        </div>
-                                                    </div>
-                                                }
+                                        @if (_approvedApplication == null && application.Status == "Pending")
+                                        {
+                                            <div class="card-buttons">
+                                                <Button Color="ButtonColor.Success" @onclick="() => ApproveApplication(application)">Approve</Button>
+                                                <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
                                             </div>
-                                        </div>
+                                        }
+
                                     </div>
                                 </div>
-                            }
+                            </div>
                         }
                     }
+                }
+            }
+
+            <hr class="section-divider"/>
+
+            <!-- Buttons Section -->
+            <div class="action-buttons">
+                <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Listing</button>
+            </div>
+
+            <div>
+                @if (_showConfirmationMessage)
+                {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h3>Are you sure?</h3>
+                        <p>Do you really want to delete this listing? This action cannot be undone.</p>
+                        <button class="btn btn-danger" @onclick="DeleteHouseListing">Yes</button>
+                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                    </div>
+                </div>
+                }
+
+                @if (_showSuccessMessage)
+                {
+                <div class="alert alert-success" role="alert">
+                    The house listing has been deleted successfully!
+                </div>
                 }
             </div>
         </div>
     }
 </div>
+
+@if (_showModal)
+{
+<div class="modal-background">
+    <div class="modal-content">
+        <div class="row">
+            <label for="message" class="col-5 col-md-3 text-end" required>Message for House Owner:</label>
+            <textarea id="message" class="col-7 col-md-9" @bind="_message"></textarea>
+        </div>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+        <Button Color="ButtonColor.Primary" @onclick="CreateApplication">Apply</Button>
+    </div>
+</div>
+}
 
 <style>
     @@font-face {
@@ -232,7 +278,6 @@
     h3 {
         font-family: 'LogoFont', sans-serif;
         color: #3d3d3d;
-        margin-bottom: 0.7em;
     }
     
     .info-section {
@@ -291,13 +336,6 @@
         max-height: 32em;
         object-fit: cover;
         border-radius: 10px;
-    }
-
-    .profile-container{
-        padding: 0.85em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 
     .house-title {
@@ -376,65 +414,102 @@
     .house-rules li {
         margin-bottom: 0.5em;
     }
-    
-    .applicants-section{
-        padding: 0.85em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 
     .card-buttons {
         display: flex;
         justify-content: space-evenly;
     }
-    
-    .card-img {
-        border-radius: 12px 8px 8px 12px; 
-    }
-    
-    .card {
-        max-width: 540px;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-style: none;
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
     }
 
-    .card.pending{
-        background-color: #f1f1f1;
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 300px;
     }
     
-    .card.rejected{
-        background-color: #dc3545;
-        color: white;
+    .modal-content button {
+        margin: 10px;
     }
     
-    .card-body {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+    h3 {
+        font-family: 'LogoFont', sans-serif;
+        color: #3d3d3d;
     }
-    
-    .approve {
-        margin-right: 0.5em;
-    }
-    
-    
 </style>
 
 @code {
-    [Inject] protected PreloadService PreloadService { get; set; } = default!;
-    [Parameter] public int listingId { get; set; }
+    [Inject] private PreloadService PreloadService { get; set; } = default!;
+    [Parameter] public int ListingId { get; set; }
+    private bool _showConfirmationMessage;
+    private bool _showSuccessMessage;
 
     private HouseListingDto? _houseListing;
     private List<ApplicationDto>? _applications;
     private ApplicationDto? _approvedApplication;
+    private bool _houseSitter;
+    
+    private bool _showModal;
+    private string _message = string.Empty;
+    private int _sitterId;
+    
+    private void ShowConfirmation()
+    {
+        _showConfirmationMessage = true;
+        _showSuccessMessage = false;
+    }
 
+    private async Task DeleteHouseListing()
+    {
+        if (_houseListing != null)
+        {
+            _showConfirmationMessage = false;
+            await HouseListingService.DeleteAsync(_houseListing.Id);
+            _showSuccessMessage = true;
+            await Task.Delay(2000); 
+            Navigation.NavigateTo("/view-my-listings");
+        }
+    }
+
+    private void CancelDelete()
+    {
+        _showConfirmationMessage = false;
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
+        var authState = await AuthProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+            
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+            
+        IEnumerable<Claim> claims = user.Claims;
+        _houseSitter = claims.Single(c => c.Type == ClaimTypes.Role).Value == "HouseSitter";
+        if (_houseSitter)
+        {
+            string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+            _sitterId = int.Parse(userIdAsString);
+        }
         await LoadHouseListingDetails();
         await LoadApplications();
         await InvokeAsync(StateHasChanged);
@@ -443,7 +518,7 @@
 
     private async Task LoadApplications()
     {
-        _applications = ApplicationService.GetApplicationsByListing(listingId, true).ToList();
+        _applications = ApplicationService.GetApplicationsByListing(ListingId, true).ToList();
         if (_applications.Any(a => a.Status == "Approved"))
             _approvedApplication = _applications.SingleOrDefault(a => a.Status == "Approved");
         else _approvedApplication = _applications.SingleOrDefault(a => a.Status == "Confirmed");
@@ -451,19 +526,14 @@
 
     private async Task LoadHouseListingDetails()
     {
-        _houseListing = await HouseListingService.GetSingleAsync(listingId, false);
+        _houseListing = await HouseListingService.GetSingleAsync(ListingId, false);
 
         if (_houseListing.Profile == null && _houseListing.ProfileId != 0)
         {
             _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
         }
     }
-
-    private async Task DeleteListing()
-    {
-        await HouseListingService.DeleteAsync(_houseListing.Id);
-        Navigation.NavigateTo("/view-open-house-listings");
-    }
+    
 
     private async void ApproveApplication(ApplicationDto application)
     {
@@ -493,9 +563,28 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void SitterProfile(int profileID)
+    private void OnShowModalClick()
     {
-        Navigation.NavigateTo($"/view-sitter-profile/{profileID}");
+        //  Navigation.NavigateTo($"/application/{ListingId}");
+        _showModal = true;
+    }
+    
+    private void OnHideModalClick()
+    {
+        _showModal = false;
+    }
+    
+    private async void CreateApplication()
+    {
+        CreateApplicationDto application = new CreateApplicationDto
+        {
+            ListingId = ListingId,
+            SitterId = _sitterId,
+            Message = _message
+        };
+        await ApplicationService.AddAsync(application);
+        _showModal = false;
+        Navigation.NavigateTo("/view-my-applications"); 
     }
 
 }

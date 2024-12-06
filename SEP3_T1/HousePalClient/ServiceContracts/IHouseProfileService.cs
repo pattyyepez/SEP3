@@ -1,6 +1,6 @@
 ﻿using DTOs.HouseProfile;
 
-namespace Services;
+namespace HousePalClient.ServiceContracts;
 
 public interface IHouseProfileService
 {

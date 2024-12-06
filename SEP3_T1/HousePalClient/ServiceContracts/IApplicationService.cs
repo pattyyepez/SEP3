@@ -1,6 +1,6 @@
 ﻿using DTOs.Application;
 
-namespace Services;
+namespace HousePalClient.ServiceContracts;
 
 public interface IApplicationService
 {
@@ -10,5 +10,5 @@ public interface IApplicationService
     Task<ApplicationDto> GetSingleAsync(int listingId, int sitterId);
     IQueryable<ApplicationDto> GetAll();
     IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, bool includeSitter);
-    IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status);
+    IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status, bool includeListings, bool includeProfiles);
 }

@@ -17,7 +17,7 @@ public class FilesaveController(
         [FromForm] IEnumerable<IFormFile> files)
     {
         Console.Write("got request");
-        var maxAllowedFiles = 3;
+        var maxAllowedFiles = 25;
         var filesProcessed = 0;
         var resourcePath = new Uri($"{Request.Scheme}://{Request.Host}/");
         List<FileDto> uploadResults = [];
@@ -25,7 +25,6 @@ public class FilesaveController(
         foreach (var file in files)
         {
             var uploadResult = new FileDto();
-            string trustedFileNameForFileStorage;
             var untrustedFileName = file.FileName;
             var extension = Path.GetExtension(untrustedFileName);
             uploadResult.FileName = untrustedFileName;
@@ -46,7 +45,7 @@ public class FilesaveController(
                     try
                     {
                         Console.Write("processing");
-                        trustedFileNameForFileStorage = Path.GetRandomFileName();
+                        var trustedFileNameForFileStorage = Path.GetRandomFileName();
                         trustedFileNameForFileStorage =
                             trustedFileNameForFileStorage.Split('.')[0] +
                             extension;
@@ -83,8 +82,7 @@ public class FilesaveController(
 
             uploadResults.Add(uploadResult);
         }
-
-        Console.WriteLine(resourcePath);
+        
         return new CreatedResult(resourcePath, uploadResults);
     }
     
@@ -104,7 +102,7 @@ public class FilesaveController(
     }
     
     [HttpDelete("{filename}/{extension}")]
-    public async Task<IActionResult> DeleteHouseProfile(string filename, string extension)
+    public async Task<IActionResult> DeleteFile(string filename, string extension)
     {
         try
         {
@@ -120,7 +118,7 @@ public class FilesaveController(
         catch (Exception ex)
         {
             return StatusCode(500,
-                $"Error deleting HouseProfile: {ex.Message}");
+                $"Error deleting File: {ex.Message}");
         }
     }
 }

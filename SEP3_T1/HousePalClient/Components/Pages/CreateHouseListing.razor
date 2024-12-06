@@ -2,6 +2,7 @@
 @using DTOs.HouseListing
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
+@using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Services
 @layout LoginLayout
@@ -112,7 +113,7 @@
 
     .signup-page-container {
         max-width: 800px;
-        margin: 8.5em 0 3em 0;
+        margin: 3em 0 3em 0;
         padding: 2em 2em;
         background-color: #ffffff;
         border-radius: 15px;
@@ -246,7 +247,7 @@
 
     private void RedirectToHome()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/view-my-listings");
     }
 
     private async Task StartDateChanged()
