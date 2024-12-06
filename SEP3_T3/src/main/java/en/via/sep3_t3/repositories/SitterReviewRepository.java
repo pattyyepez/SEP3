@@ -46,7 +46,7 @@ public class SitterReviewRepository implements ISitterReviewRepository
       ps.setInt(3, sitterReview.getRating());
       ps.setString(4, sitterReview.getComment());
       ps.setTimestamp(5, new Timestamp(
-          ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
+          ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()));
       return ps;
     }, keyHolder);
 

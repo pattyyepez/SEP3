@@ -51,7 +51,7 @@ public class ReportRepository implements IReportRepository
       ps.setInt(2, report.getReported_id());
       ps.setString(3, report.getComment());
       ps.setTimestamp(4, new Timestamp(
-          ZonedDateTime.of(report.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
+          ZonedDateTime.of(report.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()));
       return ps;
     }, keyHolder);
 

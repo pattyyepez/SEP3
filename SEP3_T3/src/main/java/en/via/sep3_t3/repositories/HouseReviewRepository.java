@@ -50,7 +50,7 @@ public class HouseReviewRepository implements IHouseReviewRepository
       ps.setInt(3, houseReview.getRating());
       ps.setString(4, houseReview.getComment());
       ps.setTimestamp(5, new Timestamp(
-          ZonedDateTime.of(houseReview.getDate(), ZoneId.systemDefault()).toInstant().getEpochSecond()));
+          ZonedDateTime.of(houseReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()));
       return ps;
     }, keyHolder);
 
