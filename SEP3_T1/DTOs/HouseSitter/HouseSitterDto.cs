@@ -1,4 +1,6 @@
-﻿namespace DTOs.HouseSitter;
+﻿using DTOs.SitterReview;
+
+namespace DTOs.HouseSitter;
 
 public class HouseSitterDto
 {
@@ -20,4 +22,5 @@ public class HouseSitterDto
     public List<string>? Skills { get; set; }
     
     // public AdminDto Admin { get; set; }
+    public List<SitterReviewDto>? Reviews { get; set; }
 }

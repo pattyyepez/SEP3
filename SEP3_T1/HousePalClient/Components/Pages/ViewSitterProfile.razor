@@ -7,6 +7,7 @@
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseSitterService HouseSitterService
+@inject ISitterReviewService SitterReviewService
 @rendermode InteractiveServer
 
 @inject HttpClient Http
@@ -78,7 +79,18 @@
                 </div>
             </div>
 
-
+            <hr class="section-divider"/>
+            
+            <div>
+                @foreach (var review in _houseSitterProfile.Reviews!)
+                {
+                    <div>
+                        <p>@review.Owner!.Name - @review.Date</p>
+                        <p>@review.Rating</p>
+                        <p>@review.Comment</p>
+                    </div>
+                }
+            </div>
             
             
             @*
@@ -305,6 +317,7 @@
 
     private async Task LoadHouseProfile()
     {
-        _houseSitterProfile = await HouseSitterService.GetSingleAsync(ProfileId); 
+        _houseSitterProfile = await HouseSitterService.GetSingleAsync(ProfileId);
+        _houseSitterProfile.Reviews = SitterReviewService.GetAllReviewsForSitter(_houseSitterProfile.UserId).ToList();
     }
 }

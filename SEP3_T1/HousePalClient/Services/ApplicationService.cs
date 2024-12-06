@@ -1,10 +1,9 @@
-﻿using DTOs.Application;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
+using DTOs.Application;
 using HousePalClient.ServiceContracts;
+using Newtonsoft.Json;
 
-
-namespace Services;
+namespace HousePalClient.Services;
 
 public class ApplicationService : IApplicationService
 {

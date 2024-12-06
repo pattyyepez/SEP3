@@ -1,11 +1,12 @@
-﻿using DTOs.SitterReview;
+﻿using DTOs.HouseOwner;
+using DTOs.SitterReview;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
 namespace RESTAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class SitterReviewController : ControllerBase
 {
     private readonly ISitterReviewRepository _repo;
@@ -66,6 +67,32 @@ public class SitterReviewController : ControllerBase
             
             if(includeSitter)
                 response.Sitter = await sitterRepo.GetSingleAsync(response.SitterId);
+            
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                $"Error fetching SitterReview: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
+    // GET: api/SitterReview/{sitterId}
+    [HttpGet("{sitterId}")]
+    public async Task<IActionResult> GetAllReviewsForSitter([FromServices] IHouseOwnerRepository ownerRepo, int sitterId)
+    {
+        try
+        {
+            var response = _repo.GetAll().Where(r => r.SitterId == sitterId);
+
+            foreach (var review in response)
+            {
+                var temp = await ownerRepo.GetSingleAsync(review.OwnerId);
+                review.Owner = new HouseOwnerDto
+                {
+                    Name = temp.Name,
+                };
+            }
             
             return Ok(response);
         }

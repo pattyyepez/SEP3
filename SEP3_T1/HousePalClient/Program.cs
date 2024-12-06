@@ -1,9 +1,9 @@
 using HousePalClient.Auth;
 using HousePalClient.Components;
 using HousePalClient.ServiceContracts;
+using HousePalClient.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
-using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
