@@ -1,4 +1,4 @@
-﻿@page "/browse-listings"
+﻿@page "/view-my-past-stays"
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using HousePalClient.Components.Layout
@@ -14,7 +14,7 @@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>Upcoming Listings</h1>
+        <h1>My Past Stays</h1>
         <div class="house-profile-list">
             <div class="house-profile-item">
                 <div @onclick="OnShowModalClick" class="plus">Filter</div>
@@ -211,6 +211,8 @@
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
+    [Inject] private IApplicationService ApplicationService { get; set; } = default!;
+
 
     private bool _showModal;
     private string _region = string.Empty;
@@ -286,18 +288,31 @@
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
-
     private async Task LoadAllHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
-        var today = DateOnly.FromDateTime(DateTime.Today); 
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity == null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("User not authenticated");
+            return;
+        }
+
+        int userId = int.Parse(user.Claims.Single(c => c.Type == "Id").Value);
+
+        var confirmedApplications = await Task.Run(() =>
+            ApplicationService.GetApplicationsByUserStatus(userId, "Confirmed").ToList());
+
+        var allListings = await Task.Run(() => 
+            HouseListingService.GetAllByOwnerStatus(userId, "Closed", false, true).ToList());
 
         _houseListings = allListings
-            .Where(listing => listing.StartDate > today)
+            .Where(listing => listing.EndDate < today &&
+                              confirmedApplications.Any(app => app.ListingId == listing.Id)) 
             .ToList();
     }
-
-
 
     private void NavigateToDetails(int listingId)
     {
