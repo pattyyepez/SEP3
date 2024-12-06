@@ -532,7 +532,7 @@
 
         if (_houseListing.Profile == null && _houseListing.ProfileId != 0)
         {
-            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
+            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true, true);
         }
     }
     

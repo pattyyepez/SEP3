@@ -356,6 +356,6 @@
 
     private async Task LoadHouseProfile()
     {
-        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true); 
+        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true, true); 
     }
 }

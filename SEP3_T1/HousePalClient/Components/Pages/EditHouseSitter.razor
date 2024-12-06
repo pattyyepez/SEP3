@@ -553,7 +553,7 @@
                 var sitterIdClaim = user.FindFirst("Id")?.Value;
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
-                    houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
+                    houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId, false);
                     _profilePictureUrl = houseSitterProfile.ProfilePicture!;
                     _cpr = houseSitterProfile.CPR!;
                     _phone = houseSitterProfile.Phone!;

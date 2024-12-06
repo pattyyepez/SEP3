@@ -317,7 +317,6 @@
 
     private async Task LoadHouseProfile()
     {
-        _houseSitterProfile = await HouseSitterService.GetSingleAsync(ProfileId);
-        _houseSitterProfile.Reviews = SitterReviewService.GetAllReviewsForSitter(_houseSitterProfile.UserId).ToList();
+        _houseSitterProfile = await HouseSitterService.GetSingleAsync(ProfileId, true);
     }
 }

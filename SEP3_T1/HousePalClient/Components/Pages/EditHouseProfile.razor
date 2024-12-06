@@ -444,7 +444,7 @@
 
         if (user?.Identity != null && user.Identity.IsAuthenticated && profileId != null)
         {
-            var profile = await HouseProfileService.GetSingleAsync(int.Parse(profileId), false);
+            var profile = await HouseProfileService.GetSingleAsync(int.Parse(profileId), false, false);
             _houseOwnerId = profile.OwnerId;
             _title = profile.Title;
             _description = profile.Description;

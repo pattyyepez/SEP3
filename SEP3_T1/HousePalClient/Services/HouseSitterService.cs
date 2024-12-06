@@ -53,9 +53,9 @@ public class HouseSitterService : IHouseSitterService
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<HouseSitterDto> GetSingleAsync(int id)
+        public async Task<HouseSitterDto> GetSingleAsync(int id, bool includeReviews)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseSitter/GetHouseSitter/{id}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseSitter/GetHouseSitter/{id}?includeReviews={includeReviews}");
 
             response.EnsureSuccessStatusCode();
     

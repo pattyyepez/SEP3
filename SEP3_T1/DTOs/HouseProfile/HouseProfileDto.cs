@@ -1,4 +1,5 @@
 ﻿using DTOs.HouseOwner;
+using DTOs.HouseReview;
 
 namespace DTOs.HouseProfile;
 
@@ -17,4 +18,5 @@ public class HouseProfileDto
     public List<string>? Pictures { get; set; }
     
     public HouseOwnerDto? Owner { get; set; }
+    public List<HouseReviewDto>? Reviews { get; set; }
 }

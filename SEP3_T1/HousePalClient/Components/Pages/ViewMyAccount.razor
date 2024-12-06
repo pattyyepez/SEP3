@@ -373,7 +373,7 @@
                 var sitterIdClaim = user.FindFirst("Id")?.Value;
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
-                    _houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
+                    _houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId, false);
                 }
             }
         }
