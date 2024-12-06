@@ -22,7 +22,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseOwner">
 <div class="listing-container">
     @if (_houseListing == null)
     {
@@ -261,6 +262,167 @@
     </div>
 </div>
 }
+    </AuthorizeView>
+    <AuthorizeView Roles="HouseSitter">
+        <div class="listing-container">
+            @if (_houseListing == null)
+            {
+            <p>Loading house listing details...</p>
+            }
+            else
+            {
+            <div class="container house-profile">
+                <!-- Carousel Section -->
+                <div class="carousel-container">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @for (int i = 0; i < _houseListing.Profile!.Pictures!.Count; i++)
+                            {
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")"
+                                    aria-current="@(i == 0 ? "true" : "false")"
+                                    aria-label="Slide @i">
+                            </button>
+                            }
+                        </div>
+                        <div class="carousel-inner">
+                            @foreach (var image in _houseListing.Profile.Pictures)
+                            {
+                            <div class="carousel-item @(_houseListing.Profile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
+                            </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+
+                    <div class="text-content">
+                        <!-- House Title and Location -->
+                        <h1 class="house-title">@_houseListing.Profile.Title</h1>
+                        <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseListing.Profile.City, @_houseListing.Profile.Region</h2>
+                        <p class="house-description">@_houseListing.Profile.Description</p>
+                    </div>
+
+                    <div class="dates">
+                        <p>
+                            <strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")
+                        </p>
+                        <p>
+                            <strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")
+                        </p>
+                    </div>
+
+                </div>
+
+                <hr class="section-divider"/>
+
+                <!-- House Chores & Amenities Section -->
+                <div class="chores-amenities-row">
+                    <div class="chores-column">
+                        <h3>House Chores</h3>
+                        <div class="chores-container">
+                            @foreach (var chore in _houseListing.Profile!.Chores!)
+                            {
+                            <div class="pill">@chore</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="amenities-column">
+                        <h3>House Amenities</h3>
+                        <div class="amenities-container">
+                            @foreach (var amenity in _houseListing.Profile!.Amenities!)
+                            {
+                            <div class="pill">@amenity</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="section-divider"/>
+
+                <!-- House Rules Section -->
+                <h3>House Rules</h3>
+                <ol class="house-rules">
+                    @foreach (var rule in _houseListing.Profile!.Rules!)
+                    {
+                    <li>@rule</li>
+                    }
+                </ol>
+
+                <hr class="section-divider"/>
+
+                <!-- Meet the Host Section -->
+                <h3>Meet the Host</h3>
+                <div class="host-section">
+                    <img src="https://localhost:7134/Filesave/@_houseListing.Profile!.Owner!.ProfilePicture!.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
+                    <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
+                </div>
+
+                <hr class="section-divider"/>
+
+                @if (_hasApplied)
+                {
+                <p class="alert alert-info">You have already applied for this listing.</p>
+                }
+                else
+                {
+                <button class="btn btn-primary" @onclick="OnShowModalClick">Apply</button>
+                }
+
+                @if (_applications != null && _applications.Any())
+                {
+                <div class="applications-section">
+                    <h3>Your Applications</h3>
+                    @foreach (var application in _applications.Where(a => a.SitterId == _sitterId))
+                    {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@application.Message</h5>
+                            <p class="card-text">
+                                <strong>Status:</strong> @application.Status
+                            </p>
+                            <p class="card-text"><small class="text-muted">@application.Date</small></p>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+
+                @if (!string.IsNullOrEmpty(_successMessage))
+                {
+                <div class="alert alert-success" role="alert">
+                    @_successMessage
+                </div>
+                }
+
+                @if (_showModal)
+                {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h3>Send Application</h3>
+                        <textarea @bind="_message" class="form-control" placeholder="Write your message..."></textarea>
+                        <button class="btn btn-secondary" @onclick="OnHideModalClick">Close</button>
+                        <button class="btn btn-primary" @onclick="CreateApplication">Send</button>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </AuthorizeView>
+
+</CascadingAuthenticationState>
 
 <style>
     @@font-face {
@@ -459,14 +621,15 @@
     [Parameter] public int ListingId { get; set; }
     private bool _showConfirmationMessage;
     private bool _showSuccessMessage;
-
     private HouseListingDto? _houseListing;
     private List<ApplicationDto>? _applications;
-    private ApplicationDto? _approvedApplication;
     private bool _houseSitter;
-    
+    private bool _hasApplied;
     private bool _showModal;
     private string _message = string.Empty;
+    private string _successMessage = string.Empty;
+    private ApplicationDto? _approvedApplication;
+
     private int _sitterId;
     
     private void ShowConfirmation()
@@ -520,10 +683,12 @@
 
     private async Task LoadApplications()
     {
-        _applications = ApplicationService.GetApplicationsByListing(ListingId, true).ToList();
-        if (_applications.Any(a => a.Status == "Approved"))
-            _approvedApplication = _applications.SingleOrDefault(a => a.Status == "Approved");
-        else _approvedApplication = _applications.SingleOrDefault(a => a.Status == "Confirmed");
+        var allApplications = ApplicationService.GetApplicationsByListing(ListingId, true).ToList();
+        _applications = _houseSitter
+            ? allApplications.Where(a => a.SitterId == _sitterId).ToList() 
+            : allApplications;
+
+        _hasApplied = _applications.Any(a => a.SitterId == _sitterId);
     }
 
     private async Task LoadHouseListingDetails()
@@ -578,6 +743,10 @@
     
     private async void CreateApplication()
     {
+        if (_hasApplied)
+        {
+            return;
+        }
         CreateApplicationDto application = new CreateApplicationDto
         {
             ListingId = ListingId,
@@ -585,7 +754,9 @@
             Message = _message
         };
         await ApplicationService.AddAsync(application);
+        _successMessage = "Your application was successfully sent!";
         _showModal = false;
+        _hasApplied = true;
         Navigation.NavigateTo("/view-my-applications"); 
     }
 

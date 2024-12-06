@@ -14,7 +14,7 @@
 
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>My Listings</h1>
+        <h1>My Applications</h1>
 
         @if (_applications == null || !_applications.Any())
         {
@@ -25,16 +25,16 @@
             <div class="house-profile-list">
                 @foreach (var application in _applications)
                 {
-                        <div class="house-profile-item">
-                            @if (application.Listing!.Profile!.Pictures != null && application.Listing.Profile.Pictures.Any())
-                            {
-                                <img src="https://localhost:7134/Filesave/@application.Listing.Profile.Pictures[0].Split('.')[0]/@application.Listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                            }
-                            <p>@application.Listing.Profile.Title</p>
-                            <p>@application.Listing.StartDate.ToString("dd/M/yyyy") - @application.Listing.EndDate.ToString("dd/M/yyyy")</p>
-                            <p>@application.Status</p>
-                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(application.ListingId)">More Details</button>
-                        </div>
+                    <div class="house-profile-item">
+                        @if (application.Listing!.Profile!.Pictures != null && application.Listing.Profile.Pictures.Any())
+                        {
+                            <img src="https://localhost:7134/Filesave/@application.Listing.Profile.Pictures[0].Split('.')[0]/@application.Listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                        }
+                        <p>@application.Listing.Profile.Title</p>
+                        <p>@application.Listing.StartDate.ToString("dd/M/yyyy") - @application.Listing.EndDate.ToString("dd/M/yyyy")</p>
+                        <p>@application.Status</p>
+                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(application.ListingId)">More Details</button>
+                    </div>
                     
                 }
                 <div class="house-profile-item">
@@ -44,6 +44,7 @@
         }
     </div>
 </div>
+
 
 <style>
 

@@ -15,13 +15,14 @@
     <div class="signup-page-container">
         <h1>My Listings</h1>
 
+        <div class="house-profile-list">
         @if (_houseListings == null || !_houseListings.Any())
         {
             <p>No listings found.</p>
         }
         else
         {
-            <div class="house-profile-list">
+            
                 @foreach (var listing in _houseListings)
                 {
                         <div class="house-profile-item">
@@ -43,11 +44,12 @@
                         </div>
                     
                 }
-                <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
-                </div>
-            </div>
         }
+        <div class="house-profile-item">
+            <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
+        </div>
+        
+        </div>
     </div>
 </div>
 
@@ -119,6 +121,7 @@
 
     .plus {
         cursor: pointer;
+        min-height: 15em;
     }
 </style>
 
