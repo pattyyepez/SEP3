@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using DTOs.HouseOwner;
+using HousePalClient.ServiceContracts;
 using Newtonsoft.Json;
 
 namespace Services

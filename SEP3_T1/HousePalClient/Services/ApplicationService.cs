@@ -1,6 +1,7 @@
 ﻿using DTOs.Application;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using HousePalClient.ServiceContracts;
 
 
 namespace Services;
@@ -103,9 +104,9 @@ public class ApplicationService : IApplicationService
         }
 
         //https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}
-        public IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status)
+        public IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status, bool includeListings, bool includeProfiles)
         {
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}").Result;
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}?includeListings={includeListings}&includeProfiles={includeProfiles}").Result;
 
             response.EnsureSuccessStatusCode();
 

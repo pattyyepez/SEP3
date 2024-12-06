@@ -1,6 +1,6 @@
 ﻿using DTOs.HouseSitter;
 
-namespace Services;
+namespace HousePalClient.ServiceContracts;
 
 public interface IHouseSitterService
 {

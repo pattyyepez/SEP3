@@ -9,20 +9,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="deleted some pages not used anymore and updated things that stopped working after">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="fixing an issue with creating new applications, reviews and reports">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyApplications.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Layout/MainLayout.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/BrowseListings.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/BrowseListings.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseListing.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseOwner.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseProfile.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/Login.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/Login.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseOwner.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseOwner.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewAllHouseProfile.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewConfirmedStays.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewConfirmedStays.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyListings.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyListings.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewSitterProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewSitterProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IApplicationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseListingService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseOwnerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseOwnerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseReviewService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseSitterService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseSitterService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IReportService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IReportService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/ISitterReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/ISitterReviewService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/DatabaseRepositories/ApplicationRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/DatabaseRepositories/ApplicationRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseOwnerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseOwnerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseReviewService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseSitterService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseSitterService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/ReportService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/ReportService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/SitterReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/SitterReviewService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,12 +78,14 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/24372012c6c94138bf3f496e104366ffc8f918/7d/5325f34e/DefaultInterpolatedStringHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f756609c93104d12b4c2d24605eb00101a6920/da/d439a208/HttpResponseMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/497a7533411fefdadb19a5f233635ae9f3e173098c7a9bf65a37c4d8cab4c1/CascadingAuthenticationState.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7beca651b1af466d51e879c74afac8ebca741c3e99965ead1e70bb60811c3054/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c333538d8f8419e6653f459a98486459a863b8a4b30ff6beb6ead8d7d7ae477/AuthorizeView.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eddc51a49dddbdbde4ba2ca25b90ace5a2b5c63fd7d9ea946adb53ab61da735/AuthenticationStateProvider.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/HousePalClient/Components/Layout/NavMenu.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewHouseListing.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewHouseListing.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
@@ -361,7 +388,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733389963405</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="browsing listings, filtering listings, being able to apply for a listing 🎷🐛🎷🐛🎷🐛">
+      <option name="closed" value="true" />
+      <created>1733466507526</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1733466507526</updated>
+    </task>
+    <task id="LOCAL-00024" summary="fixing an issue with creating new applications, reviews and reports">
+      <option name="closed" value="true" />
+      <created>1733467015504</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1733467015504</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -428,7 +471,9 @@
     <MESSAGE value="Being able to apply to a listing as a house sitter" />
     <MESSAGE value="merged, confused, naked, confused" />
     <MESSAGE value="deleted some pages not used anymore and updated things that stopped working after" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted some pages not used anymore and updated things that stopped working after" />
+    <MESSAGE value="browsing listings, filtering listings, being able to apply for a listing " />
+    <MESSAGE value="fixing an issue with creating new applications, reviews and reports" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing an issue with creating new applications, reviews and reports" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
