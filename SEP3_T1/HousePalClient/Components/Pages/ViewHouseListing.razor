@@ -187,7 +187,7 @@
                         @if (!application.Equals(_approvedApplication))
                         {
                             <div class="card 
-                        @(application.Status == "Rejected" ? " text-white bg-danger border-danger " : "")
+                        @(application.Status is "Rejected" or "Canceled" ? " text-white bg-danger border-danger " : "")
                         mb-3" style="max-width: 540px;">
                                 <div class="row no-gutters">
                                     <div class="col-md-4">
@@ -195,8 +195,8 @@
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
-                                            <h5 class="card-title">@application.Sitter.Name</h5>
-                                            <p class="card-text">@application.Message</p>
+                                            <a href="https://localhost:7262/view-sitter-profile/@application.SitterId"><h5 class="card-title">@application.Sitter.Name</h5></a>
+                                            <p class="card-text">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
                                             <p class="card-text">@SitterReviewService.GetAllReviewsForSitter(application.SitterId).Select(r => r.Rating).Average()</p>
                                             <p class="card-text">
                                                 <small class="text-muted">@application.Date</small>

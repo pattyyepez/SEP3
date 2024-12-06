@@ -10,6 +10,7 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IApplicationService ApplicationService
+@inject IHouseListingService ListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
@@ -25,26 +26,34 @@
             <div class="house-profile-list">
                 @foreach (var application in _applications)
                 {
-                    <div class="house-profile-item">
-                        @if (application.Listing!.Profile!.Pictures != null && application.Listing.Profile.Pictures.Any())
-                        {
-                            <img src="https://localhost:7134/Filesave/@application.Listing.Profile.Pictures[0].Split('.')[0]/@application.Listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                        }
-                        <p>@application.Listing.Profile.Title</p>
-                        <p>@application.Listing.StartDate.ToString("dd/M/yyyy") - @application.Listing.EndDate.ToString("dd/M/yyyy")</p>
-                        <p>@application.Status</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(application.ListingId)">More Details</button>
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <p>@application.Listing!.Profile!.Title</p>
+                                    <p>@application.Listing.StartDate.ToString("dd/M/yyyy") - @application.Listing.EndDate.ToString("dd/M/yyyy")</p>
+                                    <p>@application.Status</p>
+                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(application.ListingId)">More Details</button>
+                                </div>
+                                @if (application.Status == "Approved")
+                                {
+                                    <div class="card-buttons">
+                                        <Button Color="ButtonColor.Success" @onclick="() => ConfirmApplication(application)">Confirm</Button>
+                                        <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel</Button>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
                     </div>
-                    
                 }
-                <div class="house-profile-item">
-                    <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
-                </div>
             </div>
         }
     </div>
 </div>
-
 
 <style>
 
@@ -125,7 +134,6 @@
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
-        _applications = new List<ApplicationDto>();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -135,21 +143,23 @@
             Console.WriteLine("Not authenticated");
             return;
         }
-        
+
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _userId = int.Parse(userIdAsString);
-        
-        await LoadAllHouseListings();
+
+        await LoadAllApplications();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private async Task LoadAllHouseListings()
+    private async Task LoadAllApplications()
     {
+        _applications = new List<ApplicationDto>();
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Pending", true, true).ToList()));
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Approved", true, true).ToList()));
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Rejected", true, true).ToList()));
+        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Canceled", true, true).ToList()));
     }
 
     private void NavigateToDetails(int listingId)
@@ -162,4 +172,38 @@
         Navigation.NavigateTo("/create-house-listing");
     }
 
+    private async Task ConfirmApplication(ApplicationDto application)
+    {
+        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
+        {
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
+            Status = "Confirmed"
+        };
+
+        UpdateHouseListingDto updatedListing = new UpdateHouseListingDto
+        {
+            Id = application.ListingId,
+            Status = "Closed"
+        };
+
+        await ApplicationService.UpdateAsync(updatedApplication);
+        await ListingService.UpdateAsync(updatedListing);
+        await LoadAllApplications();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CancelApplication(ApplicationDto application)
+    {
+        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
+        {
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
+            Status = "Canceled"
+        };
+        
+        await ApplicationService.UpdateAsync(updatedApplication);
+        await LoadAllApplications();
+        await InvokeAsync(StateHasChanged);
+    }
 }
