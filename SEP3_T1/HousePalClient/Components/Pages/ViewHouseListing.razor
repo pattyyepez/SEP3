@@ -201,7 +201,7 @@
                                         <div class="card-body">
                                             <a href="https://localhost:7262/view-sitter-profile/@application.SitterId"><h5 class="card-title">@application.Sitter.Name</h5></a>
                                             <p class="card-text" style="font-style: italic">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
-                                            <p class="card-text"><i class="fa-solid fa-star"></i> @SitterReviewService.GetAllReviewsForSitter(application.SitterId).Select(r => r.Rating).Average()</p>
+                                            <p class="card-text"><i class="fa-solid fa-star"></i> @(application.Sitter.Reviews!.Any() ? application.Sitter!.Reviews!.Select(r => r.Rating).Average() : "No reviews")</p>
                                             <p class="card-text">
                                                 <small>@application.Date</small>
                                             </p>
@@ -772,6 +772,11 @@
         _applications = _houseSitter
             ? allApplications.Where(a => a.SitterId == _sitterId).ToList() 
             : allApplications;
+
+        foreach (var application in _applications)
+        {
+            application.Sitter!.Reviews = SitterReviewService.GetAllReviewsForSitter(application.SitterId).ToList();
+        }
 
         _hasApplied = _applications.Any(a => a.SitterId == _sitterId);
         _approvedApplication = _applications.Any(a => a.Status == "Approved") ? _applications.SingleOrDefault(a => a.Status == "Approved") : _applications.SingleOrDefault(a => a.Status == "Confirmed");
