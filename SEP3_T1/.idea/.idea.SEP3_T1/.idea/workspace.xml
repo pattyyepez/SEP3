@@ -9,25 +9,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="viewing your applications as a house sitter">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DTOs/HouseSitter/HouseSitterDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DTOs/HouseSitter/HouseSitterDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyPastListings.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyPastListings.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyPastStays.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyPastStays.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyUpcomingStays.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyUpcomingStays.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewSitterProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewSitterProfile.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/ISitterReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/ISitterReviewService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/ApplicationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseListingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseOwnerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseOwnerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseReviewService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseSitterService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseSitterService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseReviewService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseSitterService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseSitterService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/ReportService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/ReportService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/SitterReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/SitterReviewService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/SitterReviewController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/SitterReviewController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseSitterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseSitterController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/profile3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/sitter5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/sitter55.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/sitter555.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/SEP3_T2.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/SEP3_T2.sln.DotSettings.user" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,6 +196,7 @@
       <workItem from="1732695108000" duration="25673000" />
       <workItem from="1732867667772" duration="8835000" />
       <workItem from="1733123800654" duration="24484000" />
+      <workItem from="1733562395950" duration="1709000" />
     </task>
     <task id="LOCAL-00001" summary="initial T3 commit, for now just being able to retrieve any house owner using the ID">
       <option name="closed" value="true" />
@@ -392,7 +398,31 @@
       <option name="project" value="LOCAL" />
       <updated>1733473103839</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="starting work on reviews, you can now view a sitters average review score when they apply for a listing 🦨💨">
+      <option name="closed" value="true" />
+      <created>1733477737424</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1733477737425</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Being able to cancel an approved application as a house sitter">
+      <option name="closed" value="true" />
+      <created>1733482887126</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1733482887126</updated>
+    </task>
+    <task id="LOCAL-00028" summary="continuing with reviews and making the web api better 🦨🐛⁉️">
+      <option name="closed" value="true" />
+      <created>1733486629945</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1733486629945</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -437,9 +467,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="initial T3 commit, for now just being able to retrieve any house owner using the ID" />
-    <MESSAGE value="Making my version of the T3 work cuz it had proto problems, so now on git it should be working as well" />
-    <MESSAGE value="making T1 work for all methods regarding HouseOwner (except getting all), and adding T2 to the git" />
     <MESSAGE value="web decor" />
     <MESSAGE value="heres your DEADline MARIA." />
     <MESSAGE value="nothing works" />
@@ -462,7 +489,10 @@
     <MESSAGE value="browsing listings, filtering listings, being able to apply for a listing " />
     <MESSAGE value="fixing an issue with creating new applications, reviews and reports" />
     <MESSAGE value="viewing your applications as a house sitter" />
-    <option name="LAST_COMMIT_MESSAGE" value="viewing your applications as a house sitter" />
+    <MESSAGE value="starting work on reviews, you can now view a sitters average review score when they apply for a listing " />
+    <MESSAGE value="Being able to cancel an approved application as a house sitter" />
+    <MESSAGE value="continuing with reviews and making the web api better ⁉️" />
+    <option name="LAST_COMMIT_MESSAGE" value="continuing with reviews and making the web api better ⁉️" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

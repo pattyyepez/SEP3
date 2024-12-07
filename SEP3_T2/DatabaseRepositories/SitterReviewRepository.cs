@@ -30,7 +30,6 @@ public class SitterReviewRepository : ISitterReviewRepository
         
         return Task.FromResult(new SitterReviewDto
         {
-            Id = reply.Id,
             OwnerId = sitterReview.OwnerId,
             SitterId = reply.SitterId,
             Rating = reply.Rating,
@@ -38,26 +37,47 @@ public class SitterReviewRepository : ISitterReviewRepository
             Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime(),
         });
     }
+    
+    public Task<SitterReviewDto> UpdateAsync(UpdateSitterReviewDto review)
+    {
+        var reply = _client.UpdateSitterReview(new UpdateSitterReviewRequest
+        {
+            OwnerId = review.OwnerId,
+            SitterId = review.SitterId,
+            Rating = review.Rating,
+            Comment = review.Comment
+        });
+        
+        return Task.FromResult(new SitterReviewDto()
+        {
+            OwnerId = reply.OwnerId,
+            SitterId = reply.SitterId,
+            Rating = reply.Rating,
+            Comment = reply.Comment,
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime()
+        });
+    }
 
-    public Task DeleteAsync(int id)
+    public Task DeleteAsync(int ownerId, int sitterId)
     {
         _client.DeleteSitterReview(new SitterReviewRequest()
         {
-            Id = id
+            OwnerId = ownerId,
+            SitterId = sitterId
         });
         
         return Task.CompletedTask;
     }
 
-    public Task<SitterReviewDto> GetSingleAsync(int id)
+    public Task<SitterReviewDto> GetSingleAsync(int ownerId, int sitterId)
     {
         SitterReviewResponse reply = _client.GetSitterReview(new SitterReviewRequest()
         {
-            Id = id
+            OwnerId = ownerId,
+            SitterId = sitterId
         });
         return Task.FromResult(new SitterReviewDto
         {
-            Id = reply.Id,
             OwnerId = reply.OwnerId,
             SitterId = reply.SitterId,
             Rating = reply.Rating,
@@ -76,7 +96,6 @@ public class SitterReviewRepository : ISitterReviewRepository
         {
             sitterReviews.Add(new SitterReviewDto
             {
-                Id = sitterReview.Id,
                 OwnerId = sitterReview.OwnerId,
                 SitterId = sitterReview.SitterId,
                 Rating = sitterReview.Rating,

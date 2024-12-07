@@ -11,6 +11,7 @@
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
 @inject ISitterReviewService SitterReviewService
+@inject IHouseReviewService HouseReviewService
 @inject IApplicationService ApplicationService
 @inject AuthenticationStateProvider AuthProvider
 
@@ -733,7 +734,7 @@
             Navigation.NavigateTo("/view-my-listings");
         }
     }
-    
+
     private void CancelDelete()
     {
         _showConfirmationMessage = false;
@@ -782,7 +783,8 @@
 
         if (_houseListing.Profile == null && _houseListing.ProfileId != 0)
         {
-            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true, true);
+            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
+            _houseListing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(_houseListing.ProfileId).ToList();
         }
     }
     

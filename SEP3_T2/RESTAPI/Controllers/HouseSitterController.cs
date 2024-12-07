@@ -52,18 +52,11 @@ public class HouseSitterController : ControllerBase
 
     // GET: api/HouseSitter/{id}
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetHouseSitter(
-        [FromServices] ISitterReviewRepository reviewRepo,
-        [FromQuery] bool includeReviews,
-        int id)
+    public async Task<IActionResult> GetHouseSitter(int id)
     {
         try
         {
             var response = await _repo.GetSingleAsync(id);
-            
-            if (includeReviews)
-                response.Reviews = reviewRepo.GetAll().Where(r => r.SitterId == id).ToList();
-            
             return Ok(response);
         }
         catch (Exception ex)

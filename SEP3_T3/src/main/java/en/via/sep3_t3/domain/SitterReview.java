@@ -5,22 +5,11 @@ import java.time.LocalDateTime;
 
 public class SitterReview
 {
-  @Id private int id;
-  private int owner_id;
-  private int sitter_id;
+  @Id private int owner_id;
+  @Id private int sitter_id;
   private int rating;
   private String comment;
   private LocalDateTime date;
-
-  public int getId()
-  {
-    return id;
-  }
-
-  public void setId(int id)
-  {
-    this.id = id;
-  }
 
   public int getOwner_id()
   {
@@ -74,8 +63,7 @@ public class SitterReview
   @Override
   public String toString() {
     return "SitterReview{" +
-        "id='" + id + '\'' +
-        ", HouseSitter id='" + sitter_id + '\'' +
+        " HouseSitter id='" + sitter_id + '\'' +
         ", HouseOwner id=" + owner_id +
         ", Comment='" + comment + '\'' +
         ", Rating='" + rating + '\'' +

@@ -18,7 +18,7 @@ public class SitterReviewController : ControllerBase
     
     // GET: api/SitterReview?includeOwner=true&includeSitter=true
     [HttpGet]
-    public async Task<IActionResult> GetAllSitterReviews(
+    public async Task<IActionResult> GetAll(
         [FromServices] IHouseOwnerRepository ownerRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeOwner,
@@ -50,9 +50,9 @@ public class SitterReviewController : ControllerBase
         }
     }
 
-    // GET: api/SitterReview/{id}?includeOwner=true&includeSitter=true
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetSitterReview(int id,
+    // GET: api/SitterReview/{ownerId}/{sitterId}?includeOwner=true&includeSitter=true
+    [HttpGet("{ownerId}/{sitterId}")]
+    public async Task<IActionResult> Get(int ownerId, int sitterId,
         [FromServices] IHouseOwnerRepository ownerRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeOwner,
@@ -60,7 +60,7 @@ public class SitterReviewController : ControllerBase
     {
         try
         {
-            var response = await _repo.GetSingleAsync(id);
+            var response = await _repo.GetSingleAsync(ownerId, sitterId);
 
             if (includeOwner) 
                 response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
@@ -77,9 +77,9 @@ public class SitterReviewController : ControllerBase
         }
     }
     
-    // GET: api/SitterReview/{sitterId}
+    // GET: api/SitterReview/GetAllForSitter/{sitterId}
     [HttpGet("{sitterId}")]
-    public async Task<IActionResult> GetAllReviewsForSitter([FromServices] IHouseOwnerRepository ownerRepo, int sitterId)
+    public async Task<IActionResult> GetAllForSitter([FromServices] IHouseOwnerRepository ownerRepo, int sitterId)
     {
         try
         {
@@ -103,9 +103,9 @@ public class SitterReviewController : ControllerBase
         }
     }
 
-    // POST: api/SitterReview
+    // POST: api/SitterReview/Create
     [HttpPost]
-    public async Task<IActionResult> CreateSitterProfile(
+    public async Task<IActionResult> Create(
         [FromBody] CreateSitterReviewDto createDto)
     {
         try
@@ -119,14 +119,30 @@ public class SitterReviewController : ControllerBase
                 $"Error creating SitterReview: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
         }
     }
-
-    // DELETE: api/SitterReview/{id}
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSitterReview(int id)
+    
+    // PUT : api/sitterReview/Update
+    [HttpPut]
+    public async Task<IActionResult> Update(
+        [FromBody] UpdateSitterReviewDto updateDto)
     {
         try
         {
-            await _repo.DeleteAsync(id);
+            var response = await _repo.UpdateAsync(updateDto);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error editing Sitter Review: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+
+    // DELETE: api/SitterReview/Delete/{ownerId}/{sitterId}
+    [HttpDelete("{ownerId}/{sitterId}")]
+    public async Task<IActionResult> DeleteSitterReview(int ownerId, int sitterId)
+    {
+        try
+        {
+            await _repo.DeleteAsync(ownerId, sitterId);
             return Ok();
         }
         catch (Exception ex)

@@ -308,19 +308,26 @@ service ApplicationService {
 //house review
 
 message HouseReviewRequest {
-  int32 id = 1;
+  int32 profile_id = 1;
+  int32 sitter_id = 2;
 }
 
 message HouseReviewResponse {
-  int32 id = 1;
-  int32 profile_id = 2;
-  int32 sitter_id = 3;
-  int32 rating = 4;
-  string comment = 5;
-  int64 date = 6;
+  int32 profile_id = 1;
+  int32 sitter_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+  int64 date = 5;
 }
 
 message CreateHouseReviewRequest {
+  int32 profile_id = 1;
+  int32 sitter_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+}
+
+message UpdateHouseReviewRequest {
   int32 profile_id = 1;
   int32 sitter_id = 2;
   int32 rating = 3;
@@ -337,24 +344,32 @@ service HouseReviewService {
   rpc GetHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
   rpc GetAllHouseReviews(AllHouseReviewsRequest) returns (AllHouseReviewsResponse);
   rpc CreateHouseReview(CreateHouseReviewRequest) returns (HouseReviewResponse);
+  rpc UpdateHouseReview(UpdateHouseReviewRequest) returns (HouseReviewResponse);
   rpc DeleteHouseReview(HouseReviewRequest) returns (HouseReviewResponse);
 }
 
 //sitter review
 message SitterReviewRequest {
-  int32 id = 1;
+  int32 owner_id = 1;
+  int32 sitter_id = 2;
 }
 
 message SitterReviewResponse {
-  int32 id = 1;
-  int32 owner_id = 2;
-  int32 sitter_id = 3;
-  int32 rating = 4;
-  string comment = 5;
-  int64 date = 6;
+  int32 owner_id = 1;
+  int32 sitter_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+  int64 date = 5;
 }
 
 message CreateSitterReviewRequest {
+  int32 owner_id = 1;
+  int32 sitter_id = 2;
+  int32 rating = 3;
+  string comment = 4;
+}
+
+message UpdateSitterReviewRequest {
   int32 owner_id = 1;
   int32 sitter_id = 2;
   int32 rating = 3;
@@ -371,6 +386,7 @@ service SitterReviewService {
   rpc GetSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
   rpc GetAllSitterReviews(AllSitterReviewsRequest) returns (AllSitterReviewsResponse);
   rpc CreateSitterReview(CreateSitterReviewRequest) returns (SitterReviewResponse);
+  rpc UpdateSitterReview(UpdateSitterReviewRequest) returns (SitterReviewResponse);
   rpc DeleteSitterReview(SitterReviewRequest) returns (SitterReviewResponse);
 }
 

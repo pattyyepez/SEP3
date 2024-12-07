@@ -24,6 +24,8 @@ public class FilesaveController(
 
         foreach (var file in files)
         {
+            Console.Write("going through pictures");
+
             var uploadResult = new FileDto();
             var untrustedFileName = file.FileName;
             var extension = Path.GetExtension(untrustedFileName);
@@ -52,6 +54,8 @@ public class FilesaveController(
                         var path = Path.Combine(env.ContentRootPath,
                             env.EnvironmentName, "unsafe_uploads",
                             trustedFileNameForFileStorage);
+
+                        Console.Write("doin sum exra stuff");
 
                         await using FileStream fs = new(path, FileMode.Create);
                         await file.CopyToAsync(fs);
