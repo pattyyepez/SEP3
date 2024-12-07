@@ -5,9 +5,9 @@ namespace HousePalClient.ServiceContracts;
 public interface IHouseReviewService
 {
     Task<HouseReviewDto> AddAsync(CreateHouseReviewDto houseReview);
-    // Task<HouseReviewDto> UpdateAsync(HouseReviewDto houseReview);
-    Task DeleteAsync(int id);
-    Task<HouseReviewDto> GetSingleAsync(int id, bool includeProfile, bool includeSitter);
+    Task<HouseReviewDto> UpdateAsync(UpdateHouseReviewDto houseReview);
+    Task DeleteAsync(int profileId, int sitterId);
+    Task<HouseReviewDto> GetSingleAsync(int profileId, int sitterId, bool includeProfile, bool includeSitter);
     IQueryable<HouseReviewDto> GetAllReviewsForProfile(int profileId);
     IQueryable<HouseReviewDto> GetAll();
 }

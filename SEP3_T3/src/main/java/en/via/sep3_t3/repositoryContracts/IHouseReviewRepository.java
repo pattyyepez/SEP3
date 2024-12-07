@@ -7,7 +7,8 @@ import java.util.List;
 public interface IHouseReviewRepository
 {
   List<HouseReview> findAll();
-  HouseReview findById(int id);
-  int save(HouseReview houseReview);
-  void deleteById(int id);
+  HouseReview findById(int profileId, int sitterId);
+  void save(HouseReview houseReview);
+  HouseReview update(HouseReview houseReview);
+  void deleteById(int profileId, int sitterId);
 }

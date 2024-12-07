@@ -31,7 +31,6 @@ public class HouseReviewRepository : IHouseReviewRepository
         
         return Task.FromResult(new HouseReviewDto
         {
-            Id = reply.Id,
             ProfileId = reply.ProfileId,
             SitterId = reply.SitterId,
             Rating = reply.Rating,
@@ -40,25 +39,46 @@ public class HouseReviewRepository : IHouseReviewRepository
         });
     }
 
-    public Task DeleteAsync(int id)
+    public Task DeleteAsync(int profileId, int sitterId)
     {
         _client.DeleteHouseReview(new HouseReviewRequest()
         {
-            Id = id
+            ProfileId = profileId,
+            SitterId = sitterId
         });
         
         return Task.CompletedTask;
     }
+    
+    public Task<HouseReviewDto> UpdateAsync(UpdateHouseReviewDto houseReview)
+    {
+        var reply = _client.UpdateHouseReview(new UpdateHouseReviewRequest()
+        {
+            ProfileId = houseReview.ProfileId,
+            SitterId = houseReview.SitterId,
+            Rating = houseReview.Rating,
+            Comment = houseReview.Comment
+        });
+        
+        return Task.FromResult(new HouseReviewDto
+        {
+            ProfileId = reply.ProfileId,
+            SitterId = reply.SitterId,
+            Rating = reply.Rating,
+            Comment = reply.Comment,
+            Date = new DateTime(1970, 1, 1).AddMilliseconds(reply.Date).ToLocalTime()
+        });
+    }
 
-    public Task<HouseReviewDto> GetSingleAsync(int id)
+    public Task<HouseReviewDto> GetSingleAsync(int profileId, int sitterId)
     {
         HouseReviewResponse reply = _client.GetHouseReview(new HouseReviewRequest()
         {
-            Id = id
+            ProfileId = profileId,
+            SitterId = sitterId
         });
         return Task.FromResult(new HouseReviewDto
         {
-            Id = reply.Id,
             ProfileId = reply.ProfileId,
             SitterId = reply.SitterId,
             Rating = reply.Rating,
@@ -77,7 +97,6 @@ public class HouseReviewRepository : IHouseReviewRepository
         {
             houseReviews.Add(new HouseReviewDto
             {
-                Id = houseReview.Id,
                 ProfileId = houseReview.ProfileId,
                 SitterId = houseReview.SitterId,
                 Rating = houseReview.Rating,

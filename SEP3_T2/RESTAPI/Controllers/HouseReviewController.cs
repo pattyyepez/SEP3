@@ -18,7 +18,7 @@ public class HouseReviewController : ControllerBase
     
     // Get: api/HouseReview?includeProfile=true&includeSitter=true
     [HttpGet]
-    public async Task<IActionResult> GetAllHouseReviews(
+    public async Task<IActionResult> GetAll(
         [FromServices] IHouseProfileRepository profileRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeProfile,
@@ -50,8 +50,8 @@ public class HouseReviewController : ControllerBase
     }
 
     // GET: api/HouseReview/{id}?includeProfile=true&includeSitter=true
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetHouseReview(int id,
+    [HttpGet("{profileId}/{sitterId}")]
+    public async Task<IActionResult> Get(int profileId, int sitterId,
         [FromServices] IHouseProfileRepository profileRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeProfile,
@@ -59,7 +59,7 @@ public class HouseReviewController : ControllerBase
     {
         try
         {
-            var response = await _repo.GetSingleAsync(id);
+            var response = await _repo.GetSingleAsync(profileId, sitterId);
             
             if(includeProfile)
                 response.Profile = await profileRepo.GetSingleAsync(response.ProfileId);
@@ -78,7 +78,7 @@ public class HouseReviewController : ControllerBase
     
     // GET: api/SitterReview/{sitterId}
     [HttpGet("{profileId}")]
-    public async Task<IActionResult> GetAllReviewsForProfile(
+    public async Task<IActionResult> GetAllForProfile(
         [FromServices] IHouseSitterRepository sitterRepo,
         int profileId)
     {
@@ -106,7 +106,7 @@ public class HouseReviewController : ControllerBase
 
     // POST: api/HouseReview
     [HttpPost]
-    public async Task<IActionResult> CreateHouseReview(
+    public async Task<IActionResult> Create(
         [FromBody] CreateHouseReviewDto createDto)
     {
         try
@@ -121,13 +121,29 @@ public class HouseReviewController : ControllerBase
         }
     }
 
-    // DELETE: api/HouseReview/{id}
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteHouseReview(int id)
+    // PUT : api/houseReview/Update
+    [HttpPut]
+    public async Task<IActionResult> Update(
+        [FromBody] UpdateHouseReviewDto updateDto)
     {
         try
         {
-            await _repo.DeleteAsync(id);
+            var response = await _repo.UpdateAsync(updateDto);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error editing House Review: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+
+    // DELETE: api/HouseReview/{id}
+    [HttpDelete("{profileId}/{sitterId}")]
+    public async Task<IActionResult> Delete(int profileId, int sitterId)
+    {
+        try
+        {
+            await _repo.DeleteAsync(profileId, sitterId);
             return Ok();
         }
         catch (Exception ex)

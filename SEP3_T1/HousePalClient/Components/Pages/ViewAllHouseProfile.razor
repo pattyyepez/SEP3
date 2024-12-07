@@ -9,6 +9,7 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseProfileService HouseProfileService
+@inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
@@ -30,6 +31,7 @@
                             <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                         }
                         <p>@profile.Title</p>
+                        <p>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
                         <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
                     </div>
                 }
@@ -146,6 +148,8 @@
     private async Task LoadAllHouseProfiles()
     {
         houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(userId).ToList());
+        foreach(var profile in houseProfiles)
+            profile.Reviews = HouseReviewService.GetAllReviewsForProfile(profile.Id).ToList();
     }
 
     private void NavigateToDetails(int profileId)

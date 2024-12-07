@@ -6,7 +6,6 @@ import en.via.sep3_t3.repositoryContracts.IHouseReviewRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,7 +28,7 @@ import java.util.List;
   {
     try
     {
-      HouseReview houseReview = houseReviewRepository.findById(request.getId());
+      HouseReview houseReview = houseReviewRepository.findById(request.getProfileId(), request.getSitterId());
       HouseReviewResponse response = buildHouseReviewResponse(houseReview);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
@@ -78,11 +77,28 @@ import java.util.List;
       houseReview.setComment(request.getComment());
       houseReview.setDate(LocalDateTime.now());
 
-      int id = houseReviewRepository.save(houseReview);
-      houseReview.setId(id);
-
       HouseReviewResponse response = buildHouseReviewResponse(houseReview);
       responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
+      responseObserver.onError(e);
+    }
+  }
+
+  @Override public void updateHouseReview(UpdateHouseReviewRequest request,
+      StreamObserver<HouseReviewResponse> responseObserver)
+  {
+    try
+    {
+      HouseReview houseReview = new HouseReview();
+      houseReview.setProfile_id(request.getProfileId());
+      houseReview.setSitter_id(request.getSitterId());
+      houseReview.setRating(request.getRating());
+      houseReview.setComment(request.getComment());
+      houseReview = houseReviewRepository.update(houseReview);
+      responseObserver.onNext(buildHouseReviewResponse(houseReview));
       responseObserver.onCompleted();
     }
     catch (Exception e)
@@ -96,7 +112,7 @@ import java.util.List;
   {
     try
     {
-      houseReviewRepository.deleteById(request.getId());
+      houseReviewRepository.deleteById(request.getProfileId(), request.getSitterId());
       responseObserver.onNext(HouseReviewResponse.newBuilder().build());
       responseObserver.onCompleted();
     }
@@ -108,10 +124,11 @@ import java.util.List;
 
   private HouseReviewResponse buildHouseReviewResponse(HouseReview houseReview)
   {
-    return HouseReviewResponse.newBuilder().setId(houseReview.getId())
+    return HouseReviewResponse.newBuilder()
         .setProfileId(houseReview.getProfile_id())
         .setSitterId(houseReview.getSitter_id())
-        .setRating(houseReview.getRating()).setComment(houseReview.getComment())
+        .setRating(houseReview.getRating())
+        .setComment(houseReview.getComment())
         .setDate(
             houseReview.getDate() != null ?
                 ZonedDateTime.of(houseReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli() : 0)

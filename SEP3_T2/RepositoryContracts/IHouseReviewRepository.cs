@@ -5,7 +5,8 @@ namespace RepositoryContracts;
 public interface IHouseReviewRepository
 {
     Task<HouseReviewDto> AddAsync(CreateHouseReviewDto houseProfile);
-    Task DeleteAsync(int id);
-    Task<HouseReviewDto> GetSingleAsync(int id);
+    Task<HouseReviewDto> UpdateAsync(UpdateHouseReviewDto houseProfile);
+    Task DeleteAsync(int profileId, int sitterId);
+    Task<HouseReviewDto> GetSingleAsync(int profileId, int sitterId);
     IQueryable<HouseReviewDto> GetAll();
 }
