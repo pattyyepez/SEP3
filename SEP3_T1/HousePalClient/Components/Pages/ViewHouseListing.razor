@@ -177,14 +177,12 @@
                                 </div>
                                 
                                 <div class="card-body">
-                                    <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                    <p class="card-text">@_approvedApplication.Message</p>
+                                    <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
+                                    <p class="card-text" style="font-style: italic">@_approvedApplication.Sitter.Name has to confirm their stay before @(_approvedApplication.Date.Day + 3)/@_approvedApplication.Date.Month/@_approvedApplication.Date.Year.</p>
                                     <p class="card-text">
-                                        <small class="text-muted">@_approvedApplication.Date</small>
+                                        <small>@_approvedApplication.Date</small>
                                     </p>
                                 </div>
-                                
-                                <h4>This is an approved listing</h4>
                             </div>
 
                             <hr class="section-divider"/>
@@ -201,7 +199,7 @@
                                         
                                         <div class="card-body">
                                             <a href="https://localhost:7262/view-sitter-profile/@application.SitterId"><h5 class="card-title">@application.Sitter.Name</h5></a>
-                                            <p class="card-text">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
+                                            <p class="card-text" style="font-style: italic">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
                                             <p class="card-text"><i class="fa-solid fa-star"></i> @SitterReviewService.GetAllReviewsForSitter(application.SitterId).Select(r => r.Rating).Average()</p>
                                             <p class="card-text">
                                                 <small>@application.Date</small>
@@ -618,6 +616,14 @@
     .card a:hover{
         color: blue;
     }
+
+    .card.green a{
+        color: white;
+    }
+
+    .card.green a:hover{
+        color: blue;
+    }
     
     .card.rejected{
         background-color: #dc3545;
@@ -727,7 +733,7 @@
             Navigation.NavigateTo("/view-my-listings");
         }
     }
-
+    
     private void CancelDelete()
     {
         _showConfirmationMessage = false;
@@ -767,6 +773,7 @@
             : allApplications;
 
         _hasApplied = _applications.Any(a => a.SitterId == _sitterId);
+        _approvedApplication = _applications.Any(a => a.Status == "Approved") ? _applications.SingleOrDefault(a => a.Status == "Approved") : _applications.SingleOrDefault(a => a.Status == "Confirmed");
     }
 
     private async Task LoadHouseListingDetails()
