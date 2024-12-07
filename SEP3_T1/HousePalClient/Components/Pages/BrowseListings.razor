@@ -176,7 +176,15 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         font-family: 'FuturaFont', sans-serif;
     }
-    
+    .house-profile-img {
+        width: 100%; /* Ancho completo del contenedor */
+        height: 200px; /* Altura fija deseada */
+        object-fit: cover; /* Recorta la imagen para llenar el contenedor manteniendo la proporción */
+        border-radius: 10px 10px 0 0; /* Mantén el borde redondeado */
+        display: block; /* Asegura que se renderice como bloque */
+    }
+
+
     .filter-title{
         display: flex;
         flex-direction: row;
@@ -222,12 +230,7 @@
         width: 95%;
         height: 95%;
     }
-
-    .house-profile-img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px 10px 0 0;
-    }
+    
 
     p {
         font-family: 'FuturaFont', sans-serif;
