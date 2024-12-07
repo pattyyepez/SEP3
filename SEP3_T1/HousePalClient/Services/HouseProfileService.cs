@@ -53,9 +53,9 @@ public class HouseProfileService : IHouseProfileService
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<HouseProfileDto> GetSingleAsync(int id, bool includeOwner, bool includeReviews)
+        public async Task<HouseProfileDto> GetSingleAsync(int id, bool includeOwner)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetHouseProfile/{id}?includeOwner={includeOwner}&includeReviews={includeReviews}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetHouseProfile/{id}?includeOwner={includeOwner}");
 
             response.EnsureSuccessStatusCode();
     

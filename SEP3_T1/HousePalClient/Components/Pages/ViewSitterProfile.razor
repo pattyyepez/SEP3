@@ -21,7 +21,7 @@
 </head>
 @* <p>@houseProfile.Title</p> *@
 <div class="profile-container">
-    @if (_houseSitterProfile == null)
+    @if (_houseSitter == null)
     {
         <p>Loading house sitter details...</p>
     }
@@ -32,7 +32,7 @@
             <div class="carousel-container">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseSitterProfile.Pictures.Count; i++)
+                        @for (int i = 0; i < _houseSitter.Pictures.Count; i++)
                         {
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
@@ -41,9 +41,9 @@
                         }
                     </div>
                     <div class="carousel-inner">
-                        @foreach (var image in _houseSitterProfile.Pictures)
+                        @foreach (var image in _houseSitter.Pictures)
                         {
-                            <div class="carousel-item @(_houseSitterProfile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                            <div class="carousel-item @(_houseSitter.Pictures.IndexOf(image) == 0 ? "active" : "")">
                                 <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture" />
                             </div>
                         }
@@ -59,20 +59,20 @@
                 </div>
             </div>
             
-            <h1 class="house-title">@_houseSitterProfile.Name</h1>
-            <p class="house-description">@_houseSitterProfile.Biography</p>
+            <h1 class="house-title">@_houseSitter.Name</h1>
+            <p class="house-description">@_houseSitter.Biography</p>
             
             <hr class="section-divider"/>
            
             <h3>Past experience</h3>
-            <p class="house-description">@_houseSitterProfile.Experience</p>
+            <p class="house-description">@_houseSitter.Experience</p>
 
             <hr class="section-divider"/>
             
             <div class="skills-section">
                 <h3>Skills</h3>
                 <div class="skills-container">
-                    @foreach (var skill in _houseSitterProfile.Skills)
+                    @foreach (var skill in _houseSitter.Skills)
                     {
                         <div class="pill">@skill</div>
                     }
@@ -82,7 +82,7 @@
             <hr class="section-divider"/>
             
             <div>
-                @foreach (var review in _houseSitterProfile.Reviews!)
+                @foreach (var review in _houseSitter.Reviews!)
                 {
                     <div>
                         <p>@review.Owner!.Name - @review.Date</p>
@@ -307,16 +307,17 @@
     [Parameter]
     public int ProfileId { get; set; } 
 
-    private HouseSitterDto? _houseSitterProfile;
+    private HouseSitterDto? _houseSitter;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadHouseProfile();
+        await LoadHouseSitter();
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task LoadHouseProfile()
+    private async Task LoadHouseSitter()
     {
-        _houseSitterProfile = await HouseSitterService.GetSingleAsync(ProfileId, true);
+        _houseSitter = await HouseSitterService.GetSingleAsync(ProfileId);
+        _houseSitter.Reviews = SitterReviewService.GetAllReviewsForSitter(ProfileId).ToList();
     }
 }

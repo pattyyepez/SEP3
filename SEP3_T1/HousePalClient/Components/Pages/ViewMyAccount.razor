@@ -16,6 +16,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHouseOwnerService HouseOwnerService
 @inject IHouseSitterService HouseSitterService
+@inject ISitterReviewService SitterReviewService
 @inject AuthenticationStateProvider AuthProvider
 
 
@@ -373,7 +374,8 @@
                 var sitterIdClaim = user.FindFirst("Id")?.Value;
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
-                    _houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId, false);
+                    _houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
+                    _houseSitterProfile.Reviews = SitterReviewService.GetAllReviewsForSitter(sitterId).ToList();
                 }
             }
         }

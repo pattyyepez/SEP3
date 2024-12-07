@@ -7,6 +7,7 @@
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseProfileService HouseProfileService
+@inject IHouseReviewService HouseReviewService
 @rendermode InteractiveServer
 
 @attribute [Authorize(Roles = "HouseOwner")]
@@ -113,6 +114,19 @@
             <div class="action-buttons">
                 <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">Edit House Profile</button>
                 <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete House Profile</button>
+            </div>
+
+            <hr class="section-divider"/>
+
+            <div>
+                @foreach (var review in _houseProfile.Reviews!)
+                {
+                <div>
+                    <p>@review.Sitter!.Name - @review.Date</p>
+                    <p>@review.Rating</p>
+                    <p>@review.Comment</p>
+                </div>
+                }
             </div>
 
             <div>
@@ -309,9 +323,13 @@
 </style>
 
 @code {
-    private bool _showConfirmationMessage = false;
-    private bool _showSuccessMessage = false;
-    [Inject] protected PreloadService PreloadService { get; set; } = default!;
+    [Inject] private PreloadService PreloadService { get; set; } = default!;
+    
+    [Parameter] public int ProfileId { get; set; } 
+
+    private HouseProfileDto? _houseProfile;
+    private bool _showConfirmationMessage;
+    private bool _showSuccessMessage;
 
     private void EditHouseProfile(int profileId)
     {
@@ -340,11 +358,6 @@
     {
         _showConfirmationMessage = false;
     }
-    
-    [Parameter]
-    public int ProfileId { get; set; } 
-
-    private HouseProfileDto? _houseProfile;
 
     protected override async Task OnInitializedAsync()
     {
@@ -356,6 +369,7 @@
 
     private async Task LoadHouseProfile()
     {
-        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true, true); 
+        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true);
+        _houseProfile.Reviews = HouseReviewService.GetAllReviewsForProfile(ProfileId).ToList();
     }
 }

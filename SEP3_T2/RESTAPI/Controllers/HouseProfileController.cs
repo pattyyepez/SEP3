@@ -94,9 +94,7 @@ public class HouseProfileController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetHouseProfile(int id,
         [FromServices] IHouseOwnerRepository ownerRepo,
-        [FromServices] IHouseReviewRepository reviewRepo,
-        [FromQuery] bool includeOwner,
-        [FromQuery] bool includeReviews)
+        [FromQuery] bool includeOwner)
     {
         try
         {
@@ -112,9 +110,6 @@ public class HouseProfileController : ControllerBase
                 // }
                 response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
             }
-            
-            if(includeReviews)
-                response.Reviews = reviewRepo.GetAll().Where(r => r.ProfileId == response.Id).ToList();
             
             return Ok(response);
         }

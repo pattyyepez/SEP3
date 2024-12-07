@@ -21,7 +21,7 @@ public class HouseReviewService : IHouseReviewService
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/HouseReview", byteContent);
+            using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/HouseReview/CreateHouseReview", byteContent);
             
             response.EnsureSuccessStatusCode();
     
@@ -48,14 +48,14 @@ public class HouseReviewService : IHouseReviewService
 
         public async Task DeleteAsync(int id)
         {
-            using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/HouseReview/{id}");
+            using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/HouseReview/DeleteHouseReview/{id}");
             
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<HouseReviewDto> GetSingleAsync(int id)
+        public async Task<HouseReviewDto> GetSingleAsync(int id, bool includeProfile, bool includeSitter)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseReview/{id}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseReview/GetHouseReview/{id}?includeProfile={includeProfile}&includeSitter={includeSitter}");
 
             response.EnsureSuccessStatusCode();
     
@@ -64,9 +64,23 @@ public class HouseReviewService : IHouseReviewService
             return JsonConvert.DeserializeObject<HouseReviewDto>(jsonResponse);
         }
 
+        public IQueryable<HouseReviewDto> GetAllReviewsForProfile(int profileId)
+        { 
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseReview/GetAllReviewsForProfile/{profileId}").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var houseReview = JsonConvert.DeserializeObject<List<HouseReviewDto>>(jsonResponse);
+
+            return houseReview.AsQueryable();
+        }
+
         public IQueryable<HouseReviewDto> GetAll()
         {
-            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseReview").Result;
+            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseReview/GetAllHouseReviews").Result;
 
             response.EnsureSuccessStatusCode();
 

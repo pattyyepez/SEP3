@@ -11,6 +11,7 @@
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
 @inject ISitterReviewService SitterReviewService
+@inject IHouseReviewService HouseReviewService
 @inject IApplicationService ApplicationService
 @inject AuthenticationStateProvider AuthProvider
 
@@ -689,6 +690,8 @@
             : allApplications;
 
         _hasApplied = _applications.Any(a => a.SitterId == _sitterId);
+        
+        _approvedApplication = _applications.Any(a => a.Status == "Approved") ? _applications.SingleOrDefault(a => a.Status == "Approved") : _applications.SingleOrDefault(a => a.Status == "Confirmed");
     }
 
     private async Task LoadHouseListingDetails()
@@ -697,7 +700,8 @@
 
         if (_houseListing.Profile == null && _houseListing.ProfileId != 0)
         {
-            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true, true);
+            _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
+            _houseListing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(_houseListing.ProfileId).ToList();
         }
     }
     
