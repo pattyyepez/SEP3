@@ -18,7 +18,7 @@
     <div class="signup-page-container">
         <h1>Create Your House Sitter Account</h1>
 
-        <form class="house-sitter-form" @onsubmit="CreateOwner">
+        <form class="house-sitter-form" @onsubmit="CreateSitter">
             <!-- Account Information Fields -->
             <div class="form-section">
                 <h2>Account Information</h2>
@@ -64,7 +64,7 @@
                 {
                     <hr/>
                     <p>Uploaded picture:</p>
-                    <img src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                <img class="profile-picture" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
                     <hr/>
                 }
                 
@@ -75,11 +75,12 @@
                 {
                     <hr/>
                     <p>Uploaded pictures:</p>
-                    foreach (var picture in _pictures)
-                    {
-                        <br/>
-                        <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
-                    }
+                    <div class="uploaded-images-container">
+                        @foreach (var picture in _pictures)
+                        {
+                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
+                        }
+                    </div>
                 }
                 
             </div>
@@ -109,7 +110,7 @@
             }
 
             <!-- Submit Button -->
-            <button type="button" @onclick="CreateOwner" class="btn btn-primary">Create Account</button>
+            <button type="button" @onclick="CreateSitter" class="btn btn-primary">Create Account</button>
         </form>
     </div>
 </div>
@@ -146,14 +147,16 @@
         flex-direction: column;
         align-items: center;
         padding-top: 2em;
-        min-height: 100vh;
-        min-width: 100vw;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
         background: linear-gradient(150deg, #ff7e5f, #feb47b);
 
     }
 
     .signup-page-container {
-        max-width: 800px;
+        max-width: 50vw;
         margin: 3em 0 3em 0;
         padding: 2em 2em;
         background-color: #ffffff;
@@ -259,6 +262,25 @@
         max-width: 400px;
         width: 100%;
     }
+    .uploaded-images-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .uploaded-images-container img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
 </style>
 
 @code {
@@ -285,7 +307,7 @@
         Navigation.NavigateTo("/login");
     }
 
-    private async Task CreateOwner()
+    private async Task CreateSitter()
     {
         _message = string.Empty;
         
@@ -295,7 +317,7 @@
             return;
         }
         
-        var createHouseSitterDro = new CreateHouseSitterDto()
+        var createHouseSitterDto = new CreateHouseSitterDto()
         {
             Name = _name,
             Email = _email,
@@ -307,21 +329,21 @@
             Biography = _biography
         };
 
-        createHouseSitterDro.Skills = [];
+        createHouseSitterDto.Skills = [];
         foreach (var skill in skills){
             if (skill.Selected)
             {
-                createHouseSitterDro.Skills.Add(skill.Text);
+                createHouseSitterDto.Skills.Add(skill.Text);
             }
         }
 
-        createHouseSitterDro.Pictures = _pictures;
+        createHouseSitterDto.Pictures = _pictures;
         
         try
         {
-            HouseSitterDto created = await Service.AddAsync(createHouseSitterDro);
+            HouseSitterDto created = await Service.AddAsync(createHouseSitterDto);
             _showSuccessMessage = true;
-            _message = $"House Owner created successfully!";
+            _message = $"House Sitter created successfully!";
         }
         catch (Exception e)
         {
@@ -459,11 +481,5 @@
         skills = new MultiSelectList(Service.GetAllSkills());
         await InvokeAsync(StateHasChanged);
     }
-
-    private class File
-    {
-        public string? Name { get; set; }
-    }
-}
-
+    
 }

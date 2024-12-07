@@ -8,7 +8,7 @@
 @using Microsoft.AspNetCore.Components
 @using Services
 @using Microsoft.AspNetCore.Mvc.Rendering
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseProfileService HouseProfileService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -16,9 +16,9 @@
 @inject HttpClient Http
 @rendermode InteractiveServer
 
-@* @attribute [Authorize] *@
-
-<div class="page-container">
+<CascadingAuthenticationState>
+    <AuthorizeView>
+    <div class="page-container">
     <div class="signup-page-container">
         <h1>Create Your House Profile</h1>
 
@@ -101,11 +101,12 @@
                 {
                     <hr/>
                     <p>Uploaded pictures:</p>
-                    foreach (var picture in _pictures)
-                    {
-                        <br/>
-                        <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
-                    }
+                    <div class="uploaded-images-container">
+                        @foreach (var picture in _pictures)
+                        {
+                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
+                        }
+                    </div>
                 }
             </div>
 
@@ -133,6 +134,9 @@
         </div>
     </div>
 }
+    </AuthorizeView>
+
+</CascadingAuthenticationState>
 
 <style>
 
@@ -151,6 +155,20 @@
         font-style: normal;
     }
 
+    input[type="file"]::-webkit-file-upload-button {
+        color: white;
+        background-color: #ff7e5f;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5em 1em;
+        font-family: 'FuturaFont', sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    input[type="file"]::-webkit-file-upload-button:hover {
+        background-color: #feb47b;
+    }
     h3 {
         font-size: 1.5em;
         color: #3d3d3d;
@@ -163,18 +181,18 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-top: 2em;
-        min-height: 100vh;
-        min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        background-color: white;
     }
 
     .signup-page-container {
-        max-width: 800px;
+        max-width: 50vw;
         margin: 3em 0 3em 0;
         padding: 2em 2em;
-        background-color: #ffffff;
+        background-color: #fff2ef;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
@@ -191,7 +209,7 @@
         margin-bottom: 2em;
         padding: 1em;
         border-radius: 10px;
-        background-color: #f9f9f9;
+        background-color: #ffe5df;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -210,7 +228,18 @@
         font-family: 'FuturaFont', sans-serif;
         margin-bottom: 0.1em;
     }
+    .uploaded-images-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
 
+    .uploaded-images-container img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
     .btn {
         font-size: 1rem;
         padding: 0.375em 0.75em;
@@ -225,6 +254,8 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 1rem;
+        background-color: #fff2ef;
+
     }
 
     input

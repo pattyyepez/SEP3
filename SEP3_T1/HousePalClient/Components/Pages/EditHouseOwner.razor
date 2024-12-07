@@ -5,7 +5,7 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Services
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseOwnerService HouseOwnerService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -14,12 +14,13 @@
 @rendermode InteractiveServer
 @page "/edit-account-owner"
 
-
-<div class="page-container">
+<CascadingAuthenticationState>
+    <AuthorizeView>
+    <div class="page-container">
     <div class="signup-page-container">
-        <h1>Edit your account</h1>
+        <h1>Update Your Account</h1>
 
-        <form class="house-owner-form" @onsubmit="CreateOwner">
+        <form class="house-owner-form" @onsubmit="EditOwner">
             
             <!-- Personal Information Fields -->
             <div class="form-section">
@@ -51,20 +52,12 @@
                 {
                     <hr/>
                     <p>Uploaded picture:</p>
-                    <img class="uploaded-image" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                <img class="profile-picture" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
                 }
             </div>
 
-            <!-- Display Message if exists -->
-            @if (!string.IsNullOrEmpty(_message))
-            {
-                <div>
-                    <label>@_message</label>
-                </div>
-            }
-
             <!-- Submit Button -->
-            <button type="button" @onclick="CreateOwner" class="btn btn-primary">Update Account</button>
+            <button type="button" @onclick="EditOwner" class="btn btn-primary">Update</button>
         </form>
     </div>
 </div>
@@ -74,10 +67,13 @@
         <div class="modal-content">
             <h2>Hello, @_name!</h2>
             <p>Your account has been updated successfully.</p>
-            <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login</button>
+            <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
         </div>
     </div>
 }
+    </AuthorizeView>
+
+</CascadingAuthenticationState>
 <style>
 
     @@font-face {
@@ -94,24 +90,39 @@
         font-weight: normal;
         font-style: normal;
     }
-    
 
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .uploaded-images-container img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+        
+    }
     .page-container
     {
         display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
         flex-direction: column;
-        padding: 2em;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        background-color: white;
     }
 
     .signup-page-container {
-        width: 35em;
-        margin: 2em 0 3em 0;
+        max-width: 50vw;
+        margin: 3em 0 3em 0;
         padding: 2em 2em;
-        background-color: #ffffff;
+        background-color: #fff2ef;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
@@ -123,12 +134,26 @@
         align-self: center;
         margin-bottom: 0.5em;
     }
+    input[type="file"]::-webkit-file-upload-button {
+        color: white;
+        background-color: #ff7e5f;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5em 1em;
+        font-family: 'FuturaFont', sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    input[type="file"]::-webkit-file-upload-button:hover {
+        background-color: #feb47b;
+    }
 
     .form-section {
         margin-bottom: 2em;
         padding: 1em;
         border-radius: 10px;
-        background-color: #f9f9f9;
+        background-color: #ffe5df;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -162,6 +187,8 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 1rem;
+        background-color: #fff2ef;
+
     }
 
     input
@@ -190,8 +217,17 @@
     .btn-primary:hover {
         background-color: #feb47b;
     }
+    input
+    {
+        font-family: 'FuturaFont', sans-serif;
+    }
 
-    /*.modal-background {
+    textarea .form-control {
+        resize: vertical;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .modal-background {
         position: fixed;
         top: 0;
         left: 0;
@@ -203,9 +239,9 @@
         align-items: center;
         z-index: 1000;
         overflow: hidden;
-    }*/
+    }
 
-/*    .modal-content {
+    .modal-content {
         background-color: #fff;
         padding: 2em;
         border-radius: 8px;
@@ -213,22 +249,7 @@
         text-align: center;
         max-width: 400px;
         width: 100%;
-    }*/
-
-    input
-    {
-        font-family: 'FuturaFont', sans-serif;
     }
-
-    textarea .form-control {
-        resize: vertical;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .uploaded-image {
-        width: 8em;
-    }
-    
 </style>
 
 @code {
@@ -249,12 +270,12 @@
     private List<FileDto> _uploadResults = new();
     private int maxAllowedFiles = 3;
 
-    private void RedirectToLogin()
+    private void RedirectToHome()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/view-all-house-profiles");
     }
 
-    private async Task CreateOwner()
+    private async Task EditOwner()
     {
         _message = string.Empty;
 

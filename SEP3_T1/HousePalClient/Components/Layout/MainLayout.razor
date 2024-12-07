@@ -16,7 +16,7 @@
     <div class="banner">
         <button class="menu-button" @onclick="ToggleSidebar"><div class="icon @(_isSidebarOpen ? "open" : "")"><i class="fa-solid fa-bars"></i></div></button>
 
-        <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
+        <img src="/images/logo.png" alt="HousePal Logo" class="logo" @onclick="HandleLogoClick" />
 
         <div class="profile-picture-container" @onclick="TogglePopup">
             @if (!string.IsNullOrWhiteSpace(_profilePicture))
@@ -130,8 +130,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral Gradient */
         padding: 1em;
+        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral Gradient */
         height: 7em;
         z-index: 1000;
     }
@@ -146,6 +146,7 @@
     .logo {
         width: 6em;
         height: auto;
+        cursor: pointer;
     }
 
     .profile-picture {
@@ -223,10 +224,10 @@
     /* Content Area */
     .content {
         flex: 1;
-        padding: 3em;
         position: relative;
         z-index: 100;
         overflow-y: auto;
+        padding: 3em;
     }
 
     .main-layout::after {
@@ -348,5 +349,26 @@
             Navigation.NavigateTo("/login", true);
         }
     }
+    private async Task HandleLogoClick()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        if (user.IsInRole("HouseOwner"))
+        {
+            Navigation.NavigateTo("/view-all-house-profiles");
+        }
+        else if (user.IsInRole("HouseSitter"))
+        {
+            Navigation.NavigateTo("/browse-listings");
+        }
+    }
+
 }
 <Preload LoadingText="Loading..."></Preload>

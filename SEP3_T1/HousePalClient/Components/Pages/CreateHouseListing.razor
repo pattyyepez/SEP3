@@ -5,15 +5,15 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Services
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@* @attribute [Authorize] *@
-
+<CascadingAuthenticationState>
+    <AuthorizeView> 
 <div class="page-container">
     <div class="signup-page-container">
         @* <p>Hello, @_name!</p> *@
@@ -83,7 +83,9 @@
     </div>
 }
 
+</AuthorizeView>
 
+</CascadingAuthenticationState>
 <style>
 
     @@font-face {
@@ -105,17 +107,16 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vh;
+        min-height: 100vw;
         min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
+        background-color:white;
     }
 
     .signup-page-container {
-        max-width: 800px;
+        max-width: 50vw;
         margin: 3em 0 3em 0;
         padding: 2em 2em;
-        background-color: #ffffff;
+        background-color: #fff2ef;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
@@ -139,7 +140,7 @@
         margin-bottom: 2em;
         padding: 1em;
         border-radius: 10px;
-        background-color: #f9f9f9;
+        background-color: #ffe5df;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 

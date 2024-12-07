@@ -5,7 +5,7 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@layout LoginLayout
+@layout MainLayout
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
@@ -18,7 +18,7 @@
     <AuthorizeView> 
     <div class="page-container">
         <div class="signup-page-container">
-            <h1>Update Your House Sitter Account</h1>
+            <h1>Update Your Account</h1>
 
             <form class="house-sitter-form" @onsubmit="EditSitter">
                 <!-- Personal Information Fields -->
@@ -52,9 +52,10 @@
                     {
                         <hr/>
                         <p>Uploaded picture:</p>
-                        <img src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                        <img class="profile-picture" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
                         <hr/>
                     }
+
                     
                     <label>Upload At Least 3 Pictures:</label>
                     <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
@@ -63,12 +64,14 @@
                     {
                         <hr/>
                         <p>Uploaded pictures:</p>
-                        foreach (var picture in _pictures)
-                        {
-                            <br/>
-                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
-                        }
+                        <div class="uploaded-images-container">
+                            @foreach (var picture in _pictures)
+                            {
+                                <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
+                            }
+                        </div>
                     }
+
 
                 </div>
 
@@ -97,25 +100,27 @@
                 }
 
                 <!-- Submit Button -->
-                <button type="button" @onclick="EditSitter" class="btn btn-primary">Create Account</button>
+                <button type="button" @onclick="EditSitter" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
-    </AuthorizeView>
 
-</CascadingAuthenticationState>
 @if (_showSuccessMessage)
 {
     <div class="modal-background">
         <div class="modal-content">
             <h2>Hello, @_name!</h2>
-            <p>Your account has been created successfully.</p>
-            <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login</button>
+            <p>Your account has been updated successfully.</p>
+            <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
         </div>
     </div>
 }
+    </AuthorizeView>
+
+</CascadingAuthenticationState>
 
 <style>
+    
     @@font-face {
         font-family: 'LogoFont';
         src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
@@ -124,7 +129,27 @@
         font-style: normal;
     }
 
+    @@font-face {
+        font-family: 'FuturaFont';
+        src: url('fonts/futura.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
 
+    input[type="file"]::-webkit-file-upload-button {
+        color: white;
+        background-color: #ff7e5f;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5em 1em;
+        font-family: 'FuturaFont', sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    input[type="file"]::-webkit-file-upload-button:hover {
+        background-color: #feb47b;
+    }
     h2
     {
         font-size: 3em;
@@ -137,7 +162,7 @@
     label
     {
         color: #222222;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         margin-bottom: 0.1em;
     }
 
@@ -145,81 +170,23 @@
         list-style: none;
     }
 
-    .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        position: relative;
-        overflow: hidden;
-        animation: rotateBackground 25s infinite; /* Apply animation to the main container */
-        background-size: cover;
-        background-position: center;
-    }
-
-    .login-box {
-        display: flex;
-        width: 800px;
-        height: 400px;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-        background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent to see the background */
-    }
-
-    .login-fields {
-        font-family: Futura;
-        color: #222222;
-        width: 50%;
-        padding: 3em;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .welcome-message {
-        width: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Coral/Orange Gradient */
-        color: white;
-        flex-direction: column;
-    }
-
     .welcome-message h1 {
         font-size: 2rem;
-        font-family: "Canela Text";
+        font-family: 'FuturaFont', sans-serif;
         margin: 0;
-    }
-
-    .welcome-image {
-        width: 250px; /* Adjust as needed */
-        height: auto;
-        /*margin-bottom: 1em;*/
-    }
-
-    .form-group {
-        margin-bottom: 1.5em;
     }
 
     .form-control {
         font-size: 1rem;
         padding: 0.375em 0.75em;
-    }
-
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 1em; /* Space between buttons */
+        background-color: #fff2ef;
     }
 
     .btn {
         font-size: 1rem;
         padding: 0.375em 0.75em;
     }
+
 
     @@keyframes rotateBackground {
         0% { background-image: url('http://localhost:[puerto]/images/loginBackgrounds/1.jpg'); }
@@ -241,17 +208,16 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vh;
+        min-height: 100vw;
         min-width: 100vw;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
+        background-color:#fff2ef;
     }
 
     .signup-page-container {
-        max-width: 800px;
-        margin: 63em 0 3em 0;
+        max-width: 50vw;
+        margin: 3em 0 3em 0;
         padding: 2em 2em;
-        background-color: #ffffff;
+        background-color: white;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
@@ -266,7 +232,7 @@
     h2 {
         text-align: center;
         color: #3d3d3d;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         font-size: 1.7rem;
     }
 
@@ -274,7 +240,7 @@
         margin-bottom: 2em;
         padding: 1em;
         border-radius: 10px;
-        background-color: #f9f9f9;
+        background-color: #ffe5df;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -287,21 +253,43 @@
         border-radius: 5px;
         font-size: 1rem;
     }
+    .uploaded-images-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        background-color: #fff2ef;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    }
+
+    .uploaded-images-container img {
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover;
+        border-radius: 5px; 
+    }
 
     input
     {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #fff2ef;
     }
 
     label
     {
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
     }
 
     textarea.form-control {
         resize: vertical;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #fff2ef;
     }
 
     .btn-primary {
@@ -310,11 +298,10 @@
         padding: 0.75em;
         font-size: 1.2rem;
         background-color: #ff7e5f;
-        color: #ffffff;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-family: Futura;
+        font-family: 'FuturaFont', sans-serif;
     }
 
     .btn-primary:hover {
@@ -346,7 +333,6 @@
 </style>
 
 @code {
-    // [Inject] public IHouseSitterService service { get; set; }
     private HouseSitterDto houseSitterProfile;
     private int _userId;
     
@@ -367,9 +353,9 @@
     private List<FileDto> _uploadResults = new();
     private int maxAllowedFiles = 3;
 
-    private void RedirectToLogin()
+    private void RedirectToHome()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo("/view-all-house-profiles");
     }
 
     private async Task EditSitter()
@@ -403,10 +389,10 @@
         {
             HouseSitterDto created = await HouseSitterService.UpdateAsync(updateHouseSitterDto);
             _showSuccessMessage = true;
-            _message = $"House Sitter edited successfully!";
         }
         catch (Exception e)
         {
+            
             Console.WriteLine(e);
             _message = $"Error: {e.Message}";
         }
@@ -581,4 +567,3 @@
     }
 }
 
-}
