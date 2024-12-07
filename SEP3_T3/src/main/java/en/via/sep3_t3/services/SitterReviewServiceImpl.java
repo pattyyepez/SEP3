@@ -24,7 +24,7 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
   @Override
   public void getSitterReview(SitterReviewRequest request, StreamObserver<SitterReviewResponse> responseObserver) {
     try {
-      SitterReview sitterReview = sitterReviewRepository.findById(request.getId());
+      SitterReview sitterReview = sitterReviewRepository.findById(request.getOwnerId(), request.getSitterId());
       SitterReviewResponse response = buildSitterReviewResponse(sitterReview);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
@@ -69,9 +69,6 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
       sitterReview.setComment(request.getComment());
       sitterReview.setDate(LocalDateTime.now());
 
-      int id = sitterReviewRepository.save(sitterReview);
-      sitterReview.setId(id);
-
       SitterReviewResponse response = buildSitterReviewResponse(sitterReview);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
@@ -80,10 +77,30 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
     }
   }
 
+  @Override public void updateSitterReview(UpdateSitterReviewRequest request,
+      StreamObserver<SitterReviewResponse> responseObserver)
+  {
+    try
+    {
+      SitterReview review = new SitterReview();
+      review.setOwner_id(request.getOwnerId());
+      review.setSitter_id(request.getSitterId());
+      review.setRating(request.getRating());
+      review.setComment(request.getComment());
+      review = sitterReviewRepository.update(review);
+      responseObserver.onNext(buildSitterReviewResponse(review));
+      responseObserver.onCompleted();
+    }
+    catch (Exception e)
+    {
+      responseObserver.onError(e);
+    }
+  }
+
   @Override
   public void deleteSitterReview(SitterReviewRequest request, StreamObserver<SitterReviewResponse> responseObserver) {
     try {
-      sitterReviewRepository.deleteById(request.getId());
+      sitterReviewRepository.deleteById(request.getOwnerId(), request.getSitterId());
       responseObserver.onNext(SitterReviewResponse.newBuilder().build());
       responseObserver.onCompleted();
     } catch (Exception e) {
@@ -94,7 +111,6 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
 
   private SitterReviewResponse buildSitterReviewResponse(SitterReview sitterReview) {
     return SitterReviewResponse.newBuilder()
-        .setId(sitterReview.getId())
         .setOwnerId(sitterReview.getOwner_id())
         .setSitterId(sitterReview.getSitter_id())
         .setRating(sitterReview.getRating())

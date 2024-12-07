@@ -1,5 +1,6 @@
 package en.via.sep3_t3.repositories;
 
+import en.via.sep3_t3.domain.HouseReview;
 import en.via.sep3_t3.domain.SitterReview;
 import en.via.sep3_t3.repositoryContracts.ISitterReviewRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,9 +26,9 @@ public class SitterReviewRepository implements ISitterReviewRepository
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public SitterReview findById(int id) {
-    String sql = "SELECT * FROM Sitter_review WHERE id = ?";
-    return jdbcTemplate.queryForObject(sql, new SitterReviewRowMapper(), id);
+  public SitterReview findById(int ownerId, int sitterId) {
+    String sql = "SELECT * FROM Sitter_review WHERE owner_id = ? AND sitter_id = ?";
+    return jdbcTemplate.queryForObject(sql, new SitterReviewRowMapper(), ownerId, sitterId);
   }
 
   public List<SitterReview> findAll() {
@@ -35,34 +36,30 @@ public class SitterReviewRepository implements ISitterReviewRepository
     return jdbcTemplate.query(sql, new SitterReviewRowMapper());
   }
 
-  public int save(SitterReview sitterReview) {
-    KeyHolder keyHolder = new GeneratedKeyHolder();
+  public void save(SitterReview sitterReview)
+  {
     String sql = "INSERT INTO Sitter_review (owner_id, sitter_id, rating, comments, date) VALUES (?, ?, ?, ?, ?)";
-
-    jdbcTemplate.update(connection -> {
-      PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-      ps.setInt(1, sitterReview.getOwner_id());
-      ps.setInt(2, sitterReview.getSitter_id());
-      ps.setInt(3, sitterReview.getRating());
-      ps.setString(4, sitterReview.getComment());
-      ps.setTimestamp(5, new Timestamp(
-          ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()));
-      return ps;
-    }, keyHolder);
-
-    return (int) keyHolder.getKeys().get("id");
+    jdbcTemplate.update(sql, sitterReview.getOwner_id(), sitterReview.getSitter_id(),
+        sitterReview.getRating(), sitterReview.getComment(),
+        new Timestamp(ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()));
   }
 
-  public void deleteById(int id) {
-    String sql = "DELETE FROM Sitter_review WHERE id = ?";
-    jdbcTemplate.update(sql, id);
+  public SitterReview update(SitterReview sitterReview) {
+    String sql = "UPDATE Sitter_review SET rating = ?, comments = ? WHERE owner_id = ? AND sitter_id = ?";
+    jdbcTemplate.update(sql, sitterReview.getRating(), sitterReview.getComment(),
+        sitterReview.getOwner_id(), sitterReview.getSitter_id());
+    return findById(sitterReview.getOwner_id(), sitterReview.getSitter_id());
+  }
+
+  public void deleteById(int ownerId, int sitterId) {
+    String sql = "DELETE FROM Sitter_review WHERE owner_id = ? AND sitter_id = ?";
+    jdbcTemplate.update(sql, ownerId, sitterId);
   }
 
   private static class SitterReviewRowMapper implements RowMapper<SitterReview> {
     @Override
     public SitterReview mapRow(ResultSet rs, int rowNum) throws SQLException {
       SitterReview sitterReview = new SitterReview();
-      sitterReview.setId(rs.getInt("id"));
       sitterReview.setOwner_id(rs.getInt("owner_id"));
       sitterReview.setSitter_id(rs.getInt("sitter_id"));
       sitterReview.setRating(rs.getInt("rating"));

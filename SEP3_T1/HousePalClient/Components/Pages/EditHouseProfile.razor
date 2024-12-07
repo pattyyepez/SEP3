@@ -418,58 +418,23 @@
         }
         
         _pictures = [];
-        long maxFileSize = long.MaxValue;
-        var upload = false;
-
-        using var content = new MultipartFormDataContent();
-
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
         {
-            if (_uploadResults.SingleOrDefault(
-                    f => f.FileName == file.Name) is null)
-            {
-                try
-                {
-                    var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+            using var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
 
-                    fileContent.Headers.ContentType =
-                        new MediaTypeHeaderValue(file.ContentType);
+            content.Add(fileContent, "files", file.Name);
 
-                    content.Add(
-                        content: fileContent,
-                        name: "\"files\"",
-                        fileName: file.Name);
-
-                    upload = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogInformation(
-                        $"{file.Name} not uploaded (Err: 6): {ex.Message}",
-                        file.Name, ex.Message);
-
-                    _uploadResults.Add(
-                        new()
-                        {
-                            FileName = file.Name,
-                            ErrorCode = 6,
-                            Uploaded = false
-                        });
-                }
-            }
-        }
-
-        if (upload)
-        {
             var response = await Http.PostAsync("/Filesave", content);
-
-            var newUploadResults = await response.Content
-                .ReadFromJsonAsync<IList<FileDto>>();
-
-            if (newUploadResults is not null)
+            if (response.IsSuccessStatusCode)
             {
-                _uploadResults = _uploadResults.Concat(newUploadResults).ToList();
-                _pictures.AddRange(newUploadResults.Select(p => p.StoredFileName!).ToList());
+                var result = await response.Content.ReadFromJsonAsync<IList<FileDto>>();
+                _pictures.AddRange(result.Select(p => p.StoredFileName!).ToList());
+            }
+            else
+            {
+                Logger.LogError($"Failed to upload {file.Name}: {response.StatusCode}");
             }
         }
     }
@@ -485,7 +450,7 @@
 
         if (user?.Identity != null && user.Identity.IsAuthenticated && profileId != null)
         {
-            var profile = await HouseProfileService.GetSingleAsync(int.Parse(profileId), false, false);
+            var profile = await HouseProfileService.GetSingleAsync(int.Parse(profileId), false);
             _houseOwnerId = profile.OwnerId;
             _title = profile.Title;
             _description = profile.Description;

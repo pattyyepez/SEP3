@@ -7,7 +7,8 @@ import java.util.List;
 public interface ISitterReviewRepository
 {
   List<SitterReview> findAll();
-  SitterReview findById(int id);
-  int save(SitterReview sitterReview);
-  void deleteById(int id);
+  SitterReview findById(int ownerId, int sitterId);
+  void save(SitterReview sitterReview);
+  SitterReview update(SitterReview sitterReview);
+  void deleteById(int ownerId, int sitterId);
 }

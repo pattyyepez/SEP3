@@ -351,7 +351,7 @@
     List<string> _pictures = [];
     
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
+    private int maxAllowedFiles = 25;
 
     private void RedirectToHome()
     {
@@ -457,7 +457,6 @@
         }
     }
 
-
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     { 
         foreach (var fileToDelete in _pictures)
@@ -469,61 +468,26 @@
 
         }
         _pictures = [];
-        long maxFileSize = long.MaxValue;
-        var upload = false;
-
-        using var content = new MultipartFormDataContent();
-
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
         {
-            if (_uploadResults.SingleOrDefault(
-                    f => f.FileName == file.Name) is null)
-            {
-                try
-                { 
-                    var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+            using var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
 
-                    fileContent.Headers.ContentType =
-                        new MediaTypeHeaderValue(file.ContentType);
+            content.Add(fileContent, "files", file.Name);
 
-                    content.Add(
-                        content: fileContent,
-                        name: "\"files\"",
-                        fileName: file.Name);
-
-                    upload = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogInformation(
-                        $"{file.Name} not uploaded (Err: 6): {ex.Message}",
-                        file.Name, ex.Message);
-
-                    _uploadResults.Add(
-                        new()
-                        {
-                            FileName = file.Name,
-                            ErrorCode = 6,
-                            Uploaded = false
-                        });
-                }
-            }
-        }
-
-        if (upload)
-        {
             var response = await Http.PostAsync("/Filesave", content);
-
-            var newUploadResults = await response.Content
-                .ReadFromJsonAsync<IList<FileDto>>();
-
-            if (newUploadResults is not null)
+            if (response.IsSuccessStatusCode)
             {
-                // _uploadResults = _uploadResults.Concat(newUploadResults).ToList();
-                _pictures.AddRange(newUploadResults.Select(p => p.StoredFileName!).ToList());
+                var result = await response.Content.ReadFromJsonAsync<IList<FileDto>>();
+                _pictures.AddRange(result.Select(p => p.StoredFileName!).ToList());
+            }
+            else
+            {
+                Logger.LogError($"Failed to upload {file.Name}: {response.StatusCode}");
             }
         }
-    }
+    }    
     
     protected override async Task OnInitializedAsync()
     {
@@ -539,7 +503,7 @@
                 var sitterIdClaim = user.FindFirst("Id")?.Value;
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
-                    houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId, false);
+                    houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
                     _profilePictureUrl = houseSitterProfile.ProfilePicture!;
                     _cpr = houseSitterProfile.CPR!;
                     _phone = houseSitterProfile.Phone!;
