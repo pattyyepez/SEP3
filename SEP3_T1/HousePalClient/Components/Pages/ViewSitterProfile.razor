@@ -82,13 +82,20 @@
             <hr class="section-divider"/>
             
             <div>
-                @foreach (var review in _houseSitter.Reviews!)
+                @if (_houseSitter.Reviews!.Any())
                 {
-                    <div>
-                        <p>@review.Owner!.Name - @review.Date</p>
-                        <p>@review.Rating</p>
-                        <p>@review.Comment</p>
-                    </div>
+                    @foreach (var review in _houseSitter.Reviews!)
+                    {
+                        <div>
+                            <p>@review.Owner!.Name - @review.Date</p>
+                            <p>@review.Rating</p>
+                            <p>@review.Comment</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No reviews</p>
                 }
             </div>
             
