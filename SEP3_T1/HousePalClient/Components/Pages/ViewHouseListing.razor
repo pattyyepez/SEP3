@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
+@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -131,14 +132,30 @@
                     <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
                 </div>
 
-                <hr class="section-divider"/>
+            <hr class="section-divider"/>
+            
+            @if (_reviewed != null)
+            {
+                <p> Your past review:</p>
+                <input @bind="_reviewComment" type="number" placeholder="How many stars out of 5?" />
+                <input @bind="_reviewRating" type="text" placeholder="Comment on your experience in this stay" />
+                <p>@_reviewed.Date</p>
+                <button @onclick="CreateReview"> Review </button>
+            }
+            else
+            {
+                <p> Review your stay:</p>
+                <input @bind="_reviewComment" type="number" placeholder="How many stars out of 5?" />
+                <input @bind="_reviewRating" type="text" placeholder="Comment on your experience in this stay" />
+                <button @onclick="CreateReview"> Review </button>
+            }
 
-
-
-                @if (_houseSitter)
-                {
-                    <button @onclick="OnShowModalClick">Apply!</button>
-                }
+            <hr class="section-divider"/>
+            
+            @if (_houseSitter)
+            {
+                <button @onclick="OnShowModalClick">Apply!</button>
+            }
 
                 @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
                 {
@@ -781,6 +798,10 @@
     private string _errorMessage = string.Empty;
     private ApplicationDto? _approvedApplication;
 
+    private HouseReviewDto? _reviewed;
+    private string _reviewComment;
+    private int _reviewRating;
+    
     private int _sitterId;
     
     private void ShowConfirmation()
@@ -860,6 +881,13 @@
             _houseListing.Profile = await HouseProfileService.GetSingleAsync(_houseListing.ProfileId, true);
             _houseListing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(_houseListing.ProfileId).ToList();
         }
+
+        var temp = HouseListingService
+            .GetWaitingForReviewSitter(_sitterId, false);
+        if (_houseSitter && temp.Select(l => l.Id).Contains(_houseListing.Id))
+        {
+            _reviewed = await HouseReviewService.GetSingleAsync(_houseListing.ProfileId, _sitterId, false, false);
+        }
     }
     
 
@@ -903,7 +931,8 @@
     }
     
     private async void CreateApplication()
-    {if (string.IsNullOrWhiteSpace(_message))
+    {
+        if (string.IsNullOrWhiteSpace(_message))
         {
             _errorMessage = "You must provide a message for the house owner.";
             return;
@@ -923,6 +952,20 @@
         _showModal = false;
         _hasApplied = true;
         Navigation.NavigateTo("/view-my-applications"); 
+    }
+
+    private async void CreateReview()
+    {
+        CreateHouseReviewDto review = new CreateHouseReviewDto
+        {
+            ProfileId = _houseListing.ProfileId,
+            SitterId = _sitterId,
+            Comment = _reviewComment,
+            Rating = _reviewRating
+        };
+
+        await HouseReviewService.AddAsync(review);
+        
     }
 
 }

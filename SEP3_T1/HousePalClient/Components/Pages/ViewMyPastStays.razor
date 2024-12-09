@@ -5,130 +5,73 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
+@inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseSitter">
         <Authorized>
-<div class="page-container">
-    <div class="signup-page-container">
-        <h1>My Past Stays</h1>
-        <div class="house-profile-list">
-            <div class="house-profile-item">
-                <div @onclick="OnShowModalClick" class="plus">Filter</div>
-            </div>
-            @if (_houseListings == null || !_houseListings.Any())
-            {
-                <p>No listings found.</p>
-            }
-            else
-            {
-                @foreach (var listing in _houseListings)
-                {
-                    <div class="house-profile-item">
-                        @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+            <div class="page-container">
+                <div class="signup-page-container">
+                    <h1>My Past Stays</h1>
+                    <div class="house-profile-list">
+                        @if (_listingsWaitingForReview == null || !_listingsWaitingForReview.Any())
                         {
-                            <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                            <p>No listings waiting for review found.</p>
                         }
-                        <p>@listing.Profile.Title</p>
-                        <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                        <p>@listing.Profile.Region</p>
-                        <p>@listing.Profile.City</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-</div>
+                        else
+                        {
+                            @foreach (var listing in _listingsWaitingForReview)
+                            {
+                                <div class="house-profile-item">
+                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                    }
+                                    <p>@listing.Profile.Title</p>
+                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                                    <p>@listing.Profile.Region</p>
+                                    <p>@listing.Profile.City</p>
+                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                                </div>
+                            }
+                        }
 
-@if (_showModal)
-{
-    <div class="modal-background">
-        <div class="modal-content">
-            <div class="row">
-                <div class="col-5 col-md-3 text-end">Region:</div>
-                <input class="col-7 col-md-9" @bind="_region"/>
-            </div>
-            <div class="row">
-                <div class="col-5 col-md-3 text-end">City:</div>
-                <input class="col-7 col-md-9" @bind="_city"/>
-            </div>
-            <div class="row">
-                <div class="col-5 col-md-3 text-end">Start date:</div>
-                <input
-                    type="date"
-                    id="start"
-                    name="listing-start"
-                    placeholder="dd-mm-yyyy"
-                    @bind-value="@StartDate"
-                    min="@_minDateStart.ToString("yyyy-MM-dd")"
-                    max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
-            </div>
-            <div class="row">
-                <div class="col-5 col-md-3 text-end">End date:</div>
-                <input
-                    type="date"
-                    id="end"
-                    name="listing-start"
-                    placeholder="dd-mm-yyyy"
-                    @bind-value="@EndDate"
-                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
-                    max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
-            </div>
-            <div class="row">
-                <h3>Amenities:</h3>
-                @if (_amenities is not null)
-                {
-                    <ul>
-                        @foreach (var amenity in _amenities)
+                        <hr class="section-divider"/>
+            
+                        @if (_houseListings == null || !_houseListings.Any())
                         {
-                            <li>
-                                <input type="checkbox" @bind="amenity.Selected"/>
-                                <label>@amenity.Text</label>
-                            </li>
+                            <p>No listings found.</p>
                         }
-                    </ul>
-                }
-            </div>
-            <div class="row">
-                <h3>Chores:</h3>
-                @if (_chores is not null)
-                {
-                    <ul>
-                        @foreach (var chore in _chores)
+                        else
                         {
-                            <li>
-                                <input type="checkbox" @bind="chore.Selected"/>
-                                <label>@chore.Text</label>
-                            </li>
+                            @foreach (var listing in _houseListings)
+                            {
+                                <div class="house-profile-item">
+                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                    }
+                                    <p>@listing.Profile.Title</p>
+                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                                    <p>@listing.Profile.Region</p>
+                                    <p>@listing.Profile.City</p>
+                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                                </div>
+                            }
                         }
-                    </ul>
-                }
+                    </div>
+                </div>
             </div>
-            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
-            <Button Color="ButtonColor.Primary" @onclick="Filter">Find listings</Button>
-        </div>
-    </div>
-}
-        </Authorized>
-    </AuthorizeView>
-    <AuthorizeView>
-        <NotAuthorized>
-            <div class="not-authorized-container">
-                <h2>You must be logged in to view this page.</h2>
-                <p>Please log in.</p>
-                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
-            </div>
-        </NotAuthorized>
-    </AuthorizeView>
-</CascadingAuthenticationState>
-<style>
+            </Authorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
+            
+        <style>
 
     @@font-face {
         font-family: 'LogoFont';
@@ -224,6 +167,13 @@
         width: 100%;
     }
 
+    .section-divider {
+        margin: 2em 0;
+        border: 0;
+        height: 1px;
+        background-color: #ddd;
+    }
+
     .not-authorized-container {
         text-align: center;
         margin-top: 5em;
@@ -268,77 +218,27 @@
     [Inject] private PreloadService PreloadService { get; set; } = default!;
     [Inject] private IApplicationService ApplicationService { get; set; } = default!;
 
-
-    private bool _showModal;
-    private string _region = string.Empty;
-    private string _city = string.Empty;
-    private readonly DateTime _minDateStart = DateTime.Today;
-    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
-    private DateTime _minDateEnd = DateTime.Today;
-    private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
-    private DateTime? _gottenStart;
-    private DateTime? _gottenEnd;
-
-    private MultiSelectList _amenities = default!;
-    private MultiSelectList _chores = default!;
-
+    private int _sitterId;
     private List<HouseListingDto>? _houseListings;
-
-    // Property for Start Date
-    private DateTime? StartDate
-    {
-        get => _gottenStart;
-        set
-        {
-            _gottenStart = value;
-            if (value < DateTime.Today) _gottenStart = DateTime.Today;
-            _minDateEnd = _gottenStart!.Value;
-            if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
-            {
-                _gottenEnd = _gottenStart;
-            }
-        }
-    }
-
-    // Property for End Date
-    private DateTime? EndDate
-    {
-        get => _gottenEnd;
-        set
-        {
-            _gottenEnd = value;
-            if (value < _minDateEnd) _gottenEnd = _minDateEnd;
-        }
-    }
-
-    private void OnShowModalClick()
-    {
-        _showModal = true;
-    }
-
-    private void OnHideModalClick()
-    {
-        _showModal = false;
-    }
+    private List<HouseListingDto>? _listingsWaitingForReview;
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
-        // var authState = await AuthenticationStateProvider
-        //     .GetAuthenticationStateAsync();
-        // var user = authState.User;
-        //
-        // if (user.Identity is null || !user.Identity.IsAuthenticated)
-        // {
-        //     Console.WriteLine("Not authenticated");
-        //     return;
-        // }
-        //
-        // IEnumerable<Claim> claims = user.Claims;
-        // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
+        var authState = await AuthenticationStateProvider
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+
+        IEnumerable<Claim> claims = user.Claims;
+        string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+        _sitterId = int.Parse(userIdAsString);
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -346,74 +246,25 @@
     private async Task LoadAllHouseListings()
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity == null || !user.Identity.IsAuthenticated)
-        {
-            Console.WriteLine("User not authenticated");
-            return;
-        }
-
-        int userId = int.Parse(user.Claims.Single(c => c.Type == "Id").Value);
 
         var confirmedApplications = await Task.Run(() =>
-            ApplicationService.GetApplicationsByUserStatus(userId, "Confirmed", false, false).ToList());
+            ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", false, false).ToList());
 
-        var allListings = await Task.Run(() => 
-            HouseListingService.GetAllByOwnerStatus(userId, "Closed", false, true).ToList());
+        var allListings = await Task.Run(() =>
+            HouseListingService.GetAllByOwnerStatus(_sitterId, "Closed", false, true).ToList());
 
         _houseListings = allListings
             .Where(listing => listing.EndDate < today &&
-                              confirmedApplications.Any(app => app.ListingId == listing.Id)) 
+                              confirmedApplications.Any(app => app.ListingId == listing.Id))
             .ToList();
+
+        _listingsWaitingForReview = HouseListingService.GetWaitingForReviewSitter(_sitterId, true).ToList();
+        _houseListings = _houseListings.Except(_listingsWaitingForReview).ToList();
     }
 
     private void NavigateToDetails(int listingId)
     {
         Navigation.NavigateTo($"/view-house-listing/{listingId}");
-    }
-
-    private async void Filter()
-    {
-        FilteredHouseListingsDto filter = new FilteredHouseListingsDto
-        {
-            City = _city,
-            Region = _region,
-            StartDay = _gottenStart?.Day,
-            StartMonth = _gottenStart?.Month,
-            StartYear = _gottenStart?.Year,
-            EndDay = _gottenEnd?.Day,
-            EndMonth = _gottenEnd?.Month,
-            EndYear = _gottenEnd?.Year,
-        };
-
-        filter.Chores = [];
-        if (_chores.Any())
-            foreach (var chore in _chores)
-            {
-                if (chore.Selected)
-                {
-                    filter.Chores.Add(chore.Text);
-                }
-            }
-
-        filter.Amenities = [];
-        foreach (var amenity in _amenities)
-        {
-            if (amenity.Selected)
-            {
-                filter.Amenities.Add(amenity.Text);
-            }
-        }
-
-        _houseListings = HouseListingService.GetFilteredListings(filter).ToList();
-        await InvokeAsync(StateHasChanged);
-        _showModal = false;
-    }
-    private void NavigateToLogin()
-    {
-        Navigation.NavigateTo("/login");
     }
 
 }
