@@ -20,139 +20,101 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 @* <p>@houseProfile.Title</p> *@
-<div class="profile-container">
-    @if (_houseSitter == null)
-    {
-        <p>Loading house sitter details...</p>
-    }
-    else
-    { 
-        <div class="container sitter-profile">
-            <!-- Carousel Section -->
-            <div class="carousel-container">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseSitter.Pictures.Count; i++)
-                        {
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
-                                    class="@(i == 0 ? "active" : "")"
-                                    aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @i"></button>
-                        }
-                    </div>
-                    <div class="carousel-inner">
-                        @foreach (var image in _houseSitter.Pictures)
-                        {
-                            <div class="carousel-item @(_houseSitter.Pictures.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture" />
-                            </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-            
-            <h1 class="house-title">@_houseSitter.Name</h1>
-            <p class="house-description">@_houseSitter.Biography</p>
-            
-            <hr class="section-divider"/>
-           
-            <h3>Past experience</h3>
-            <p class="house-description">@_houseSitter.Experience</p>
-
-            <hr class="section-divider"/>
-            
-            <div class="skills-section">
-                <h3>Skills</h3>
-                <div class="skills-container">
-                    @foreach (var skill in _houseSitter.Skills)
-                    {
-                        <div class="pill">@skill</div>
-                    }
-                </div>
-            </div>
-
-            <hr class="section-divider"/>
-            
-            <div>
-                @if (_houseSitter.Reviews!.Any())
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <div class="profile-container">
+                @if (_houseSitter == null)
                 {
-                    @foreach (var review in _houseSitter.Reviews!)
-                    {
-                        <div>
-                            <p>@review.Owner!.Name - @review.Date</p>
-                            <p>@review.Rating</p>
-                            <p>@review.Comment</p>
-                        </div>
-                    }
+                    <p>Loading house sitter details...</p>
                 }
                 else
                 {
-                    <p>No reviews</p>
+                    <div class="container sitter-profile">
+                        <!-- Carousel Section -->
+                        <div class="carousel-container">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    @for (int i = 0; i < _houseSitter.Pictures.Count; i++)
+                                    {
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                                class="@(i == 0 ? "active" : "")"
+                                                aria-current="@(i == 0 ? "true" : "false")"
+                                                aria-label="Slide @i"></button>
+                                    }
+                                </div>
+                                <div class="carousel-inner">
+                                    @foreach (var image in _houseSitter.Pictures)
+                                    {
+                                        <div class="carousel-item @(_houseSitter.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                            <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture" />
+                                        </div>
+                                    }
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <h1 class="house-title">@_houseSitter.Name</h1>
+                        <p class="house-description">@_houseSitter.Biography</p>
+
+                        <hr class="section-divider"/>
+
+                        <h3>Past experience</h3>
+                        <p class="house-description">@_houseSitter.Experience</p>
+
+                        <hr class="section-divider"/>
+
+                        <div class="skills-section">
+                            <h3>Skills</h3>
+                            <div class="skills-container">
+                                @foreach (var skill in _houseSitter.Skills)
+                                {
+                                    <div class="pill">@skill</div>
+                                }
+                            </div>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <div>
+                            @if (_houseSitter.Reviews!.Any())
+                            {
+                                @foreach (var review in _houseSitter.Reviews!)
+                                {
+                                    <div>
+                                        <p>@review.Owner!.Name - @review.Date</p>
+                                        <p>@review.Rating</p>
+                                        <p>@review.Comment</p>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>No reviews</p>
+                            }
+                        </div>
+                    </div>
                 }
             </div>
-            
-            
-            @*
-        <div class="chores-amenities-row">
-        <div class="chores-column">
-        <h3>House Chores</h3>
-        <div class="chores-container">
-            @foreach (var chore in _houseProfile.Chores)
-            {
-                <div class="pill">@chore</div>
-            }
-        </div>
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="amenities-column">
-            <h3>House Amenities</h3>
-            <div class="amenities-container">
-                @foreach (var amenity in _houseProfile.Amenities)
-                {
-                    <div class="pill">@amenity</div>
-                }
+        </Authorized>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in to view this account.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
             </div>
-        </div>
-        </div>
-        
-            <hr class="section-divider"/>
-        
-        <!-- House Rules Section -->
-        <h3>House Rules</h3>
-        <ol class="house-rules">
-            @foreach (var rule in _houseProfile.Rules)
-            {
-                <li>@rule</li>
-            }
-        </ol>
-        
-            <hr class="section-divider"/>
-        
-            <!-- Meet the Host Section -->
-            <h3>Meet the Host</h3>
-            <div class="host-section">
-                <img src="https://localhost:7134/Filesave/@_houseProfile.Owner.ProfilePicture.Split('.')[0]/@_houseProfile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
-                <p class="host-bio">@_houseProfile.Owner.Biography</p>
-            </div>
-        
-            <hr class="section-divider"/>
-        
-            <!-- Buttons Section -->
-            <div class="action-buttons">
-                <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">Edit House Profile</button>
-                <button type="button" class="btn btn-secondary" @onclick="DeleteHouseProfile">Delete House Profile</button>
-            </div>*@
-        </div>
-    }
-</div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
 
 <style>
 
@@ -179,26 +141,6 @@
         margin-bottom: 2em;
     }
 
-    .host-section {
-        display: flex;
-        align-items: center;
-        gap: 1.5em;
-    }
-
-    .host-picture {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .host-bio {
-        flex: 1;
-        font-size: 1rem;
-        color: #333;
-        line-height: 1.6;
-    }
-    
     .carousel img { 
         max-height: 32em; 
         object-fit: cover; 
@@ -230,13 +172,6 @@
         margin-top: 1em;
     }
 
-    .house-location {
-        font-size: 1.25rem;
-        color: #3d3d3d;
-        margin-bottom: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
     .house-description {
         font-size: 1rem;
         color: #3d3d3d;
@@ -251,25 +186,6 @@
         background-color: #ddd;
     }
 
-    .chores-amenities-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .chores-column, .amenities-column {
-        flex: 1;
-    }
-
-    .chores-container, .amenities-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-top: 1em;
-    }
-
     .pill {
         background-color: #ff7e5f;
         color: white;
@@ -280,33 +196,48 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .vertical-divider {
-        width: 1px;
-        background-color: #ddd;
-        height: auto;
-        margin: 0 1em;
-    }
-
-    .house-rules {
-        list-style: decimal inside;
-        font-size: 1rem;
-        color: #3d3d3d;
-        line-height: 1.8;
-        margin: 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
     .house-rules li {
         margin-bottom: 0.5em;
     }
 
-    .action-buttons {
-        margin-top: 2em;
-        display: flex;
-        gap: 2em;
-        justify-content: center;
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
 </style>
 
 @code {
@@ -326,5 +257,10 @@
     {
         _houseSitter = await HouseSitterService.GetSingleAsync(ProfileId);
         _houseSitter.Reviews = SitterReviewService.GetAllReviewsForSitter(ProfileId).ToList();
+    }
+    
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
     }
 }
