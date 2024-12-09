@@ -1,5 +1,6 @@
 ﻿@page "/view-all-house-profiles"
 @using System.Security.Claims
+@using DTOs.HouseListing
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
@@ -10,6 +11,7 @@
 @rendermode InteractiveServer
 @inject IHouseProfileService HouseProfileService
 @inject IHouseReviewService HouseReviewService
+@inject IHouseListingService HouseListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="page-container">
@@ -30,9 +32,10 @@
                         {
                             <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                         }
-                        <p>@profile.Title</p>
-                        <p>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(profile.Id)">More Details</button>
+                        <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
+                        <p><i class="fa-solid fa-star"></i>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
+                        <button type="button" class="btn btn-primary" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
+                        <button type="button" class="btn btn-danger" @onclick="() => ShowDeletionConfirmation(profile.Id)">Delete</button>
                     </div>
                 }
             }
@@ -43,6 +46,64 @@
             </div>
         </div>
     </div>
+</div>
+
+<div>
+    @if (_showDeletionConfirmationMessage)
+    {
+        <div class="modal-background">
+            <div class="modal-content">
+                <h3>Are you sure?</h3>
+                <p>Do you really want to delete this house profile? This action cannot be undone.</p>
+                <button class="btn btn-danger" @onclick="DeleteHouseProfile">Yes</button>
+                <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+            </div>
+        </div>
+    }
+
+    @if (_showCreateListingMessage)
+    {
+        <div class="modal-background">
+            <div class="modal-content">
+                <h3>Enter dates for listing:</h3>
+                
+                <label for="startDate">Start Date</label>
+                <input
+                    type="date"
+                    id="startDate"
+                    name="listing-start"
+                    placeholder="dd-mm-yyyy"
+                    class="form-control"
+                    @bind-value="@StartDate"
+                    min="@_minDateStart.ToString("yyyy-MM-dd")"
+                    max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
+                <label for="endDate">End Date</label>
+                
+                <input
+                    type="date"
+                    id="endDate"
+                    name="listing-end"
+                    placeholder="dd-mm-yyyy"
+                    class="form-control"
+                    @bind-value="@EndDate"
+                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                    max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
+                
+                <button class="btn btn-danger" @onclick="CreateListingForProfile">Create</button>
+                <button class="btn btn-secondary" @onclick="CancelCreateListing">Cancel</button>
+            </div>
+        </div>
+    }
+
+    @if (_showSuccessMessage)
+    {
+        <div class="modal-background">
+            <div class="modal-content">
+                <p>@_successMessage</p>
+                <button @onclick="HideSuccessMessage" class="btn btn-primary">Ok</button>
+            </div>
+        </div>
+    }
 </div>
 
 <style>
@@ -115,13 +176,82 @@
         cursor: pointer;
         min-height: 15em;
     }
+
+    .modal-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 4000;
+        overflow: hidden;
+    }
+
+
+    .modal-content {
+        margin-top: 1em;
+        position: relative;
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 450px;
+        width: 100%;
+        z-index: 5000;
+
+        max-height: 90vh;
+        overflow-y: auto;
+    }
     
 </style>
 
 @code {
     [Inject] protected PreloadService PreloadService { get; set; } = default!;
-    private List<HouseProfileDto> houseProfiles = new List<HouseProfileDto>();
-    private int userId = 0;
+    private List<HouseProfileDto> houseProfiles = new();
+    private int _userId;
+    
+    private bool _showDeletionConfirmationMessage;
+    private bool _showCreateListingMessage;
+    private bool _showSuccessMessage;
+    private string _successMessage;
+    private int _profileBeingUsed;
+    
+    private readonly DateTime _minDateStart = DateTime.Today;
+    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
+    private DateTime _minDateEnd = DateTime.Today;
+    private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
+    private DateTime? _gottenStart;
+    private DateTime? _gottenEnd;
+    
+    private DateTime? StartDate
+    {
+        get => _gottenStart;
+        set
+        {
+            _gottenStart = value;
+            if (value < DateTime.Today) _gottenStart = DateTime.Today;
+            _minDateEnd = _gottenStart!.Value;
+            if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
+            {
+                _gottenEnd = _gottenStart;
+            }
+        }
+    }
+    
+    private DateTime? EndDate
+    {
+        get => _gottenEnd;
+        set
+        {
+            _gottenEnd = value;
+            if (value < _minDateEnd) _gottenEnd = _minDateEnd;
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -138,7 +268,7 @@
 
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        userId = int.Parse(userIdAsString);
+        _userId = int.Parse(userIdAsString);
 
         await LoadAllHouseProfiles();
         await InvokeAsync(StateHasChanged);
@@ -147,14 +277,73 @@
 
     private async Task LoadAllHouseProfiles()
     {
-        houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(userId).ToList());
+        houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(_userId).ToList());
         foreach(var profile in houseProfiles)
             profile.Reviews = HouseReviewService.GetAllReviewsForProfile(profile.Id).ToList();
     }
-
-    private void NavigateToDetails(int profileId)
+    
+    private async Task DeleteHouseProfile()
     {
-        Navigation.NavigateTo($"/view-house-profile/{profileId}");
+        if (_profileBeingUsed != null)
+        {
+            _showDeletionConfirmationMessage = false;
+            await HouseProfileService.DeleteAsync(_profileBeingUsed);
+            _successMessage = "The house profile has been deleted successfully!";
+            _showSuccessMessage = true;
+            await LoadAllHouseProfiles();
+        }
+    }
+    
+    private void ShowDeletionConfirmation(int profileId)
+    {
+        _profileBeingUsed = profileId;
+        _showDeletionConfirmationMessage = true;
+        _showSuccessMessage = false;
+    }
+    
+    private void CancelDelete()
+    {
+        _showDeletionConfirmationMessage = false;
+    }
+    
+    private void ShowCreateListingConfirmation(int profileId)
+    {
+        _profileBeingUsed = profileId;
+        _showCreateListingMessage = true;
+        _showSuccessMessage = false;
+    }
+    
+    private void CancelCreateListing()
+    {
+        _showCreateListingMessage = false;
+    }
+
+    private async void CreateListingForProfile()
+    {
+        CreateHouseListingDto listing = new CreateHouseListingDto
+        {
+            ProfileId = _profileBeingUsed,
+            StartDate = DateOnly.FromDateTime(_gottenStart.Value),
+            EndDate = DateOnly.FromDateTime(_gottenEnd.Value)
+        };
+
+        try
+        {
+            _showCreateListingMessage = false;
+            await HouseListingService.AddAsync(listing);
+            _successMessage = $"House Listing for Profile {houseProfiles.Find(p => p.Id == _profileBeingUsed).Title} successfully created.";
+            _showSuccessMessage = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);
+        }
+    }
+
+    private void HideSuccessMessage()
+    {
+        _showSuccessMessage = false;
     }
 
     private void NavigateToCreate()

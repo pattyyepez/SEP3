@@ -1,5 +1,6 @@
 ﻿using DTOs.Application;
 using DTOs.HouseListing;
+using DTOs.HouseProfile;
 using DTOs.HouseSitter;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
@@ -156,6 +157,48 @@ public class HouseListingController : ControllerBase
             Console.WriteLine(ex.Message);
             Console.WriteLine(ex.InnerException);
             Console.WriteLine(ex.StackTrace);
+            return StatusCode(500, $"Error fetching HouseListing: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+        }
+    }
+    
+    [HttpGet("{sitterId}")]
+    public async Task<IActionResult> GetWaitingForReviewBySitter(
+        [FromServices] IHouseReviewRepository reviewRepo,
+        [FromServices] IApplicationRepository applicationRepo,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromQuery] bool includeProfiles,
+        int sitterId)
+    {
+        try
+        {
+            var confirmedApps = applicationRepo.GetAll()
+                .Where(a => a.SitterId == sitterId && a.Status == "Confirmed")
+                .Select(a => a.ListingId)
+                .ToList();
+
+            var reviews = reviewRepo.GetAll()
+                .Where(r => r.SitterId == sitterId)
+                .Select(r => r.ProfileId)
+                .ToList();
+
+            var response = _repo.GetAll().Where(l => confirmedApps.Contains(l.Id) && !reviews.Contains(l.ProfileId) && l.EndDate < DateOnly.FromDateTime(DateTime.Now));
+
+            if (!includeProfiles) return Ok(response.ToList());
+            
+            foreach (var listing in response)
+            {
+                var profile = await profileRepo.GetSingleAsync(listing.ProfileId);
+                listing.Profile = new HouseProfileDto
+                {
+                    Title = profile.Title,
+                    Pictures = profile.Pictures,
+                };
+            }
+
+            return Ok(response.ToList());
+        }
+        catch (Exception ex)
+        {
             return StatusCode(500, $"Error fetching HouseListing: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
         }
     }

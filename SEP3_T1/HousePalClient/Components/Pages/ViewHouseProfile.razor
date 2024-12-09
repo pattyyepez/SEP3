@@ -1,16 +1,15 @@
 ﻿@page "/view-house-profile/{profileId:int}"
+@using System.Security.Claims
 @using DTOs.HouseProfile
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseProfileService HouseProfileService
 @inject IHouseReviewService HouseReviewService
+@inject AuthenticationStateProvider AuthState
 @rendermode InteractiveServer
-
-@attribute [Authorize(Roles = "HouseOwner")]
 
 <head>
     <!-- Add Font Awesome CDN to your head tag -->
@@ -25,7 +24,7 @@
         <p>Loading house profile details...</p>
     }
     else
-    { 
+    {
         <div class="container house-profile">
             <!-- Carousel Section -->
             <div class="carousel-container">
@@ -36,7 +35,8 @@
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                     class="@(i == 0 ? "active" : "")"
                                     aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @i"></button>
+                                    aria-label="Slide @i">
+                            </button>
                         }
                     </div>
                     <div class="carousel-inner">
@@ -57,63 +57,62 @@
                     </button>
                 </div>
             </div>
-        
+
             <!-- House Title and Location -->
-        <h1 class="house-title">@_houseProfile.Title</h1>
-        <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
-        <p class="house-description">@_houseProfile.Description</p>
-        
+            <h1 class="house-title">@_houseProfile.Title</h1>
+            <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
+            <p class="house-description">@_houseProfile.Description</p>
+
             <hr class="section-divider"/>
-        
+
             <!-- House Chores & Amenities Section -->
-        <div class="chores-amenities-row">
-        <div class="chores-column">
-        <h3>House Chores</h3>
-        <div class="chores-container">
-            @foreach (var chore in _houseProfile.Chores)
-            {
-                <div class="pill">@chore</div>
-            }
-        </div>
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="amenities-column">
-            <h3>House Amenities</h3>
-            <div class="amenities-container">
-                @foreach (var amenity in _houseProfile.Amenities)
-                {
-                    <div class="pill">@amenity</div>
-                }
+            <div class="chores-amenities-row">
+                <div class="chores-column">
+                    <h3>House Chores</h3>
+                    <div class="chores-container">
+                        @foreach (var chore in _houseProfile.Chores)
+                        {
+                            <div class="pill">@chore</div>
+                        }
+                    </div>
+                </div>
+                <div class="vertical-divider"></div>
+                <div class="amenities-column">
+                    <h3>House Amenities</h3>
+                    <div class="amenities-container">
+                        @foreach (var amenity in _houseProfile.Amenities)
+                        {
+                            <div class="pill">@amenity</div>
+                        }
+                    </div>
+                </div>
             </div>
-        </div>
-        </div>
-        
+
             <hr class="section-divider"/>
-        
-        <!-- House Rules Section -->
-        <h3>House Rules</h3>
-        <ol class="house-rules">
-            @foreach (var rule in _houseProfile.Rules)
-            {
-                <li>@rule</li>
-            }
-        </ol>
-        
+
+            <!-- House Rules Section -->
+            <h3>House Rules</h3>
+            <ol class="house-rules">
+                @foreach (var rule in _houseProfile.Rules)
+                {
+                    <li>@rule</li>
+                }
+            </ol>
+
             <hr class="section-divider"/>
-        
+
             <!-- Meet the Host Section -->
             <h3>Meet the Host</h3>
             <div class="host-section">
                 <img src="https://localhost:7134/Filesave/@_houseProfile.Owner.ProfilePicture.Split('.')[0]/@_houseProfile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
                 <p class="host-bio">@_houseProfile.Owner.Biography</p>
             </div>
-        
+
             <hr class="section-divider"/>
-        
+
             <!-- Buttons Section -->
             <div class="action-buttons">
                 <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">Edit House Profile</button>
-                <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete House Profile</button>
             </div>
 
             <hr class="section-divider"/>
@@ -136,27 +135,7 @@
                 }
 
             </div>
-
-            <div>
-                @if (_showConfirmationMessage)
-                {
-                <div class="modal-background">
-                    <div class="modal-content">
-                        <h3>Are you sure?</h3>
-                        <p>Do you really want to delete this house profile? This action cannot be undone.</p>
-                        <button class="btn btn-danger" @onclick="DeleteHouseProfile">Yes</button>
-                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
-                    </div>
-                </div>
-                }
-
-                @if (_showSuccessMessage)
-                {
-                <div class="alert alert-success" role="alert">
-                    The house profile has been deleted successfully!
-                </div>
-                }
-</div>
+            
         </div>
     }
 </div>
@@ -332,45 +311,35 @@
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
-    
-    [Parameter] public int ProfileId { get; set; } 
+
+    [Parameter] public int ProfileId { get; set; }
 
     private HouseProfileDto? _houseProfile;
-    private bool _showConfirmationMessage;
-    private bool _showSuccessMessage;
 
     private void EditHouseProfile(int profileId)
     {
         Navigation.NavigateTo($"/edit-house-profile/{profileId}");
     }
 
-    private void ShowConfirmation()
-    {
-        _showConfirmationMessage = true;
-        _showSuccessMessage = false;
-    }
-
-    private async Task DeleteHouseProfile()
-    {
-        if (_houseProfile != null)
-        {
-            _showConfirmationMessage = false;
-            await HouseProfileService.DeleteAsync(_houseProfile.Id);
-            _showSuccessMessage = true;
-            await Task.Delay(2000); 
-            Navigation.NavigateTo("/view-all-house-profiles");
-        }
-    }
-
-    private void CancelDelete()
-    {
-        _showConfirmationMessage = false;
-    }
-
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
+        
+        var authState = await AuthState
+            .GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("Not authenticated");
+            return;
+        }
+
+        IEnumerable<Claim> claims = user.Claims;
+        var userId = int.Parse(claims.Single(c => c.Type == "Id").Value);
         await LoadHouseProfile();
+        if (userId != _houseProfile.OwnerId)
+            Navigation.NavigateTo("/view-all-house-profiles");
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
@@ -380,4 +349,5 @@
         _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true);
         _houseProfile.Reviews = HouseReviewService.GetAllReviewsForProfile(ProfileId).ToList();
     }
+
 }

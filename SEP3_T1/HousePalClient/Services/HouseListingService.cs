@@ -114,6 +114,20 @@ public class HouseListingService : IHouseListingService
             return houseListing.AsQueryable();
         }
         
+        public IQueryable<HouseListingDto> GetWaitingForReviewSitter(int sitterId, bool includeProfiles)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetWaitingForReviewBySitter/{sitterId}?includeProfiles={includeProfiles}").Result;
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var houseListing = JsonConvert.DeserializeObject<List<HouseListingDto>>(jsonResponse);
+
+            return houseListing.AsQueryable();
+        }
+
         public IQueryable<HouseListingDto> GetAllByOwner(int ownerId)
         {
             HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetListingsByOwner/OwnerId?ownerId={ownerId}").Result;
