@@ -13,7 +13,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <CascadingAuthenticationState>
-    <AuthorizeView> 
+    <AuthorizeView Roles="HouseOwner">
+        <Authorized>
 <div class="page-container">
     <div class="signup-page-container">
         @* <p>Hello, @_name!</p> *@
@@ -61,10 +62,9 @@
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(_message))
             {
-                <div>
-                    <label>@_message</label>
-                </div>
+                <div class="alert alert-danger">@_message</div>
             }
+
 
             <!-- Submit Button -->
             <button type="button" @onclick="CreateListing" class="btn btn-primary">Create House Listing</button>
@@ -82,9 +82,17 @@
         </div>
     </div>
 }
-
-</AuthorizeView>
-
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
 </CascadingAuthenticationState>
 <style>
 
@@ -203,7 +211,57 @@
         max-width: 400px;
         width: 100%;
     }
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
 
 </style>
 
@@ -217,7 +275,10 @@
 
     private DateTime? _gottenStart = DateTime.Today;
     private DateTime? _gottenEnd = DateTime.Today;
-    
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
     // Property for Start Date
     private DateTime? StartDate
     {
@@ -262,27 +323,54 @@
         Console.WriteLine(_gottenStart);
         Console.WriteLine(_gottenEnd);
         Console.WriteLine(_gottenProfile.Title);
-        CreateHouseListingDto listing = new CreateHouseListingDto();
-        if (_gottenStart.HasValue && _gottenEnd.HasValue)
+
+        if (!_gottenStart.HasValue || !_gottenEnd.HasValue)
         {
-            listing = new CreateHouseListingDto()
-            {
-                ProfileId = _houseProfiles.Single(p => p.Title == _gottenProfile.Title).Id,
-                StartDate = DateOnly.FromDateTime(_gottenStart.Value),
-                EndDate = DateOnly.FromDateTime(_gottenEnd.Value)
-            };
-        }
-        else
-        {
-            _message = "You must set the dates before creating a listing.";
+            _message = "You must select both start and end dates.";
             return;
         }
-        
+        if (_gottenStart.Value < DateTime.Today || _gottenEnd.Value < DateTime.Today)
+        {
+            _message = "Dates must be in the future. Please select valid dates.";
+            return;
+        }
+
+        if (_gottenStart.Value == DateTime.Today)
+        {
+            _message = "Start date cannot be today. Please select a future date.";
+            return;
+        }
+
+        if ((_gottenEnd.Value - _gottenStart.Value).TotalDays < 2)
+        {
+            _message = "The listing must be at least 2 days long.";
+            return;
+        }
+
+        if (_gottenStart > _gottenEnd)
+        {
+            _message = "The start date must be earlier than the end date.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_gottenProfile.Title))
+        {
+            _message = "You must select a house before creating a listing.";
+            return;
+        }
+
+        var listing = new CreateHouseListingDto
+        {
+            ProfileId = _houseProfiles.Single(p => p.Title == _gottenProfile.Title).Id,
+            StartDate = DateOnly.FromDateTime(_gottenStart.Value),
+            EndDate = DateOnly.FromDateTime(_gottenEnd.Value)
+        };
+
         try
         {
             await HouseListingService.AddAsync(listing);
             _showSuccessMessage = true;
-            _message = $"House Listing created successfully!";
+            _message = "House Listing created successfully!";
         }
         catch (Exception e)
         {
@@ -290,6 +378,8 @@
             _message = $"Error: {e.Message}";
         }
     }
+
+
 
     protected override async Task OnInitializedAsync()
     {

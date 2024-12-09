@@ -131,6 +131,23 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         await _jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new())));
     }
+    public bool HasAccessToResource(int resourceId)
+    {
+        Console.WriteLine("Checking access for resource ID: " + resourceId);
+        var authState = GetAuthenticationStateAsync().Result;
+        var user = authState.User;
+
+        if (!user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine("User is NOT authenticated.");
+            return false;
+        }
+
+        var userIdClaim = user.FindFirst("Id")?.Value;
+        Console.WriteLine("Authenticated user ID: " + userIdClaim);
+        return userIdClaim != null && userIdClaim == resourceId.ToString();
+    }
+
     
         // private readonly HttpClient _httpClient;
     // private ClaimsPrincipal _currentClaimsPrincipal;
@@ -165,6 +182,7 @@ public class SimpleAuthProvider : AuthenticationStateProvider
     //
     //     List<Claim> claims = new List<Claim>
     //     {
+    //         new Claim(ClaimTypes.Email, userDto.Email),
     //         new Claim(ClaimTypes.Email, userDto.Email),
     //         new Claim("Id", userDto.UserId.ToString()),
     //         new Claim(ClaimTypes.MobilePhone, userDto.Phone),

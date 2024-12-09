@@ -22,7 +22,8 @@
 
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
-        @if (_houseOwnerProfile != null)
+                <Authorized>
+                @if (_houseOwnerProfile != null)
         {
             <div class="account-page-owner">
                 <div class="profile-container">
@@ -55,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div>
                 @if (_showConfirmationMessage)
                 {
@@ -81,125 +82,136 @@
         {
             <p>Loading house owner profile...</p>
         }
+        </Authorized>
     </AuthorizeView>
 
     <AuthorizeView Roles="HouseSitter">
-        
-        @if (_houseSitterProfile != null)
-        {
-            <div class="account-page-sitter">
-                <div class="profile-container">
+        <Authorized>
+
+            @if (_houseSitterProfile != null)
+            {
+                <div class="account-page-sitter">
+                    <div class="profile-container">
+                        <div>
+                            <img src="https://localhost:7134/Filesave/@_houseSitterProfile.ProfilePicture.Split('.')[0]/@_houseSitterProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                            <h1 class="user-name"> @_houseSitterProfile.Name</h1>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <div class="info-section">
+                            <h2>Personal Information</h2>
+                            <p><strong>Email:</strong> @_houseSitterProfile.Email</p>
+                            <p><strong>Phone:</strong> @_houseSitterProfile.Phone</p>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <div class="bio-section">
+                            <h2>Biography</h2>
+                            <p>@_houseSitterProfile.Biography</p>
+                        </div>
+
+                        <div class="bio-section">
+                            <h2>Past experience</h2>
+                            <p>@_houseSitterProfile.Experience</p>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <h2>Skills</h2>
+                        <div class="skills-container">
+                            @foreach (var skill in _houseSitterProfile.Skills)
+                            {
+                                <div class="pill">@skill</div>
+                            }
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <div class="carousel-container">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    @for (int i = 0; i < _houseSitterProfile.Pictures.Count; i++)
+                                    {
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                                class="@(i == 0 ? "active" : "")"
+                                                aria-current="@(i == 0 ? "true" : "false")"
+                                                aria-label="Slide @i"></button>
+                                    }
+                                </div>
+                                <div class="carousel-inner">
+                                    @foreach (var image in _houseSitterProfile.Pictures)
+                                    {
+                                        <div class="carousel-item @(_houseSitterProfile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                            <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture"/>
+                                        </div>
+                                    }
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <div class="action-buttons">
+                            @if (_houseOwnerProfile != null)
+                            {
+                                <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary" @onclick="EditAccountHouseSitter">Edit Account</button>
+                            }
+                            <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Account</button>
+                        </div>
+                    </div>
+
                     <div>
-                        <img src="https://localhost:7134/Filesave/@_houseSitterProfile.ProfilePicture.Split('.')[0]/@_houseSitterProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
-                        <h1 class="user-name"> @_houseSitterProfile.Name</h1>
-                    </div>
-
-                    <hr class="section-divider"/>
-
-                    <div class="info-section">
-                        <h2>Personal Information</h2>
-                        <p><strong>Email:</strong> @_houseSitterProfile.Email</p>
-                        <p><strong>Phone:</strong> @_houseSitterProfile.Phone</p>
-                    </div>
-
-                    <hr class="section-divider"/>
-
-                    <div class="bio-section">
-                        <h2>Biography</h2>
-                        <p>@_houseSitterProfile.Biography</p>
-                    </div>
-
-                    <div class="bio-section">
-                        <h2>Past experience</h2>
-                        <p>@_houseSitterProfile.Experience</p>
-                    </div>
-
-                    <hr class="section-divider"/>
-
-                    <h2>Skills</h2>
-                    <div class="skills-container">
-                        @foreach (var skill in _houseSitterProfile.Skills)
+                        @if (_showConfirmationMessage)
                         {
-                            <div class="pill">@skill</div>
-                        }
-                    </div>
-
-                    <hr class="section-divider"/>
-                    
-                    <div class="carousel-container">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                @for (int i = 0; i < _houseSitterProfile.Pictures.Count; i++)
-                                {
-                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
-                                            class="@(i == 0 ? "active" : "")"
-                                            aria-current="@(i == 0 ? "true" : "false")"
-                                            aria-label="Slide @i"></button>
-                                }
+                            <div class="modal-background">
+                                <div class="modal-content">
+                                    <h3>Are you sure?</h3>
+                                    <p>Do you really want to delete your account? This action cannot be undone.</p>
+                                    <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
+                                    <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                                </div>
                             </div>
-                            <div class="carousel-inner">
-                                @foreach (var image in _houseSitterProfile.Pictures)
-                                {
-                                    <div class="carousel-item @(_houseSitterProfile.Pictures.IndexOf(image) == 0 ? "active" : "")">
-                                        <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Sitter Picture" />
-                                    </div>
-                                }
+                        }
+
+                        @if (_showSuccessMessage)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                Your account has been deleted successfully!
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <hr class="section-divider"/>
-
-                    <div class="action-buttons">
-                        @if (_houseOwnerProfile != null)
-                        {
-                            <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
                         }
-                        else
-                        {
-                            <button type="button" class="btn btn-primary" @onclick="EditAccountHouseSitter">Edit Account</button>
-                        }
-                        <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Account</button>
                     </div>
                 </div>
-
-                <div>
-                    @if (_showConfirmationMessage)
-                    {
-                    <div class="modal-background">
-                        <div class="modal-content">
-                            <h3>Are you sure?</h3>
-                            <p>Do you really want to delete your account? This action cannot be undone.</p>
-                            <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
-                            <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
-                        </div>
-                    </div>
-                    }
-
-                    @if (_showSuccessMessage)
-                    {
-                    <div class="alert alert-success" role="alert">
-                        Your account has been deleted successfully!
-                    </div>
-                    }
+            }
+            else
+            {
+                <p>Loading house sitter profile...</p>
+            }
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView>
+        <NotAuthorized>
+                <div class="not-authorized-container">
+                    <h2>You must be logged in to view this page.</h2>
+                    <p>Please log in to view this account.</p>
+                    <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
                 </div>
-            </div>
-        }
-        else
-        {
-            <p>Loading house sitter profile...</p>
-        }
+        </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
-
 <style>
 
     @@font-face {
@@ -350,16 +362,56 @@
     .modal-content button {
         margin: 10px;
     }
-    
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
 </style>
 
 @code {
     private HouseOwnerDto? _houseOwnerProfile;
     private HouseSitterDto? _houseSitterProfile;
+    private bool _hasAccess = false;
     private bool _showConfirmationMessage = false;
     private bool _showSuccessMessage = false;
-
-    protected override async Task OnInitializedAsync()
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }    protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState?.User;
@@ -389,6 +441,7 @@
             Console.WriteLine("User is NOT authenticated.");
         }
     }
+
 
     private void EditAccountHouseOwner()
     {

@@ -71,9 +71,7 @@
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(_message))
             {
-                <div>
-                    <label>@_message</label>
-                </div>
+            <div class="alert alert-danger">@_message</div>
             }
 
             <!-- Submit Button -->
@@ -326,7 +324,19 @@
         min-width: 120px;
     }
 
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
 
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
 </style>
 
 @code {
@@ -381,11 +391,66 @@
 
     private async Task CreateOwner()
     {
+        
         _message = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(_email))
+        {
+            _message = "Email is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_password))
+        {
+            _message = "Password is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_confirmPassword))
+        {
+            _message = "Please confirm your password.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_name))
+        {
+            _message = "Name is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_cpr))
+        {
+            _message = "CPR number is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_phone))
+        {
+            _message = "Phone number is required.";
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(_address))
+        {
+            _message = "Address is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_biography))
+        {
+            _message = "Biography is required.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_profilePictureUrl))
+        {
+            _message = "You must upload a profile picture.";
+            return;
+        }
+        
 
         if (_password != _confirmPassword)
         {
-            _message = "Passwords do not match";
+            _message = "Passwords do not match.";
             return;
         }
 

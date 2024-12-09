@@ -24,180 +24,181 @@
 </head>
 
 <CascadingAuthenticationState>
-    <AuthorizeView Roles="HouseOwner">
-<div class="listing-container">
-    @if (_houseListing == null)
-    {
-        <p>Loading house listing details...</p>
-    }
-    else
-    {
-        <div class="container house-profile">
-            <!-- Carousel Section -->
-            <div class="carousel-container">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseListing.Profile!.Pictures!.Count; i++)
-                        {
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
-                                    class="@(i == 0 ? "active" : "")"
-                                    aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @i">
-                            </button>
-                        }
-                    </div>
-                    <div class="carousel-inner">
-                        @foreach (var image in _houseListing.Profile.Pictures)
-                        {
-                            <div class="carousel-item @(_houseListing.Profile.Pictures.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
-                            </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="info-section">
-
-                <div class="text-content">
-                    <!-- House Title and Location -->
-                    <h1 class="house-title">@_houseListing.Profile.Title</h1>
-                    <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseListing.Profile.City, @_houseListing.Profile.Region</h2>
-                    <p class="house-description">@_houseListing.Profile.Description</p>
-                </div>
-
-                <div class="dates">
-                    <p>
-                        <strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")
-                    </p>
-                    <p>
-                        <strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")
-                    </p>
-                </div>
-
-            </div>
-
-            <hr class="section-divider"/>
-
-            <!-- House Chores & Amenities Section -->
-            <div class="chores-amenities-row">
-                <div class="chores-column">
-                    <h3>House Chores</h3>
-                    <div class="chores-container">
-                        @foreach (var chore in _houseListing.Profile!.Chores!)
-                        {
-                            <div class="pill">@chore</div>
-                        }
-                    </div>
-                </div>
-                <div class="vertical-divider"></div>
-                <div class="amenities-column">
-                    <h3>House Amenities</h3>
-                    <div class="amenities-container">
-                        @foreach (var amenity in _houseListing.Profile!.Amenities!)
-                        {
-                            <div class="pill">@amenity</div>
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <hr class="section-divider"/>
-
-            <!-- House Rules Section -->
-            <h3>House Rules</h3>
-            <ol class="house-rules">
-                @foreach (var rule in _houseListing.Profile!.Rules!)
-                {
-                    <li>@rule</li>
-                }
-            </ol>
-
-            <hr class="section-divider"/>
-
-            <!-- Meet the Host Section -->
-            <h3>Meet the Host</h3>
-            <div class="host-section">
-                <img src="https://localhost:7134/Filesave/@_houseListing.Profile!.Owner!.ProfilePicture!.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
-                <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
-            </div>
-
-            <hr class="section-divider"/>
-            
-            
-            
-            @if (_houseSitter)
-            {
-                <button @onclick="OnShowModalClick">Apply!</button>
-            }
-
-            @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
-            {
-                <div class="card green">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="https://localhost:7134/Filesave/@_approvedApplication!.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
-                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
-                                <p class="card-text">
-                                    <small class="text-muted">@_approvedApplication.Date</small>
-                                </p>
-
-                                <h4>This is a confirmed listing</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                
-                <div class="applications-section">
-                    
-                    <h3>Applications for this listing: </h3>
-
-                    @if (_applications != null)
-                    {
-                        @if (_approvedApplication != null)
-                        {
-                            <div class="card green">
-                                <div class="card-img-container">
-                                    <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" alt="Sitter's profile picture">
-                                </div>
-                                
-                                <div class="card-body">
-                                    <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
-                                    <p class="card-text" style="font-style: italic">@_approvedApplication.Sitter.Name has to confirm their stay before @(_approvedApplication.Date.Day + 3)/@_approvedApplication.Date.Month/@_approvedApplication.Date.Year.</p>
-                                    <p class="card-text">
-                                        <small>@_approvedApplication.Date</small>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <hr class="section-divider"/>
-                        }
-
-                        @foreach (var application in _applications) 
-                        {
-                            @if (!application.Equals(_approvedApplication))
+<AuthorizeView Roles="HouseOwner">
+    <Authorized>
+    <div class="listing-container">
+        @if (_houseListing == null)
+        {
+            <p>Loading house listing details...</p>
+        }
+        else
+        {
+            <div class="container house-profile">
+                <!-- Carousel Section -->
+                <div class="carousel-container">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @for (int i = 0; i < _houseListing.Profile!.Pictures!.Count; i++)
                             {
-                                <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : "")">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                        class="@(i == 0 ? "active" : "")"
+                                        aria-current="@(i == 0 ? "true" : "false")"
+                                        aria-label="Slide @i">
+                                </button>
+                            }
+                        </div>
+                        <div class="carousel-inner">
+                            @foreach (var image in _houseListing.Profile.Pictures)
+                            {
+                                <div class="carousel-item @(_houseListing.Profile.Pictures.IndexOf(image) == 0 ? "active" : "")">
+                                    <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
+                                </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+
+                    <div class="text-content">
+                        <!-- House Title and Location -->
+                        <h1 class="house-title">@_houseListing.Profile.Title</h1>
+                        <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseListing.Profile.City, @_houseListing.Profile.Region</h2>
+                        <p class="house-description">@_houseListing.Profile.Description</p>
+                    </div>
+
+                    <div class="dates">
+                        <p>
+                            <strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")
+                        </p>
+                        <p>
+                            <strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")
+                        </p>
+                    </div>
+
+                </div>
+
+                <hr class="section-divider"/>
+
+                <!-- House Chores & Amenities Section -->
+                <div class="chores-amenities-row">
+                    <div class="chores-column">
+                        <h3>House Chores</h3>
+                        <div class="chores-container">
+                            @foreach (var chore in _houseListing.Profile!.Chores!)
+                            {
+                                <div class="pill">@chore</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="amenities-column">
+                        <h3>House Amenities</h3>
+                        <div class="amenities-container">
+                            @foreach (var amenity in _houseListing.Profile!.Amenities!)
+                            {
+                                <div class="pill">@amenity</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="section-divider"/>
+
+                <!-- House Rules Section -->
+                <h3>House Rules</h3>
+                <ol class="house-rules">
+                    @foreach (var rule in _houseListing.Profile!.Rules!)
+                    {
+                        <li>@rule</li>
+                    }
+                </ol>
+
+                <hr class="section-divider"/>
+
+                <!-- Meet the Host Section -->
+                <h3>Meet the Host</h3>
+                <div class="host-section">
+                    <img src="https://localhost:7134/Filesave/@_houseListing.Profile!.Owner!.ProfilePicture!.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
+                    <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
+                </div>
+
+                <hr class="section-divider"/>
+
+
+
+                @if (_houseSitter)
+                {
+                    <button @onclick="OnShowModalClick">Apply!</button>
+                }
+
+                @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
+                {
+                    <div class="card green">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="https://localhost:7134/Filesave/@_approvedApplication!.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
+                                    <p class="card-text">@_approvedApplication.Sitter.Phone</p>
+                                    <p class="card-text">@_approvedApplication.Sitter.Email</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">@_approvedApplication.Date</small>
+                                    </p>
+
+                                    <h4>This is a confirmed listing</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+
+                    <div class="applications-section">
+
+                        <h3>Applications for this listing: </h3>
+
+                        @if (_applications != null)
+                        {
+                            @if (_approvedApplication != null)
+                            {
+                                <div class="card green">
+                                    <div class="card-img-container">
+                                        <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" alt="Sitter's profile picture">
+                                    </div>
+
+                                    <div class="card-body">
+                                        <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
+                                        <p class="card-text" style="font-style: italic">@_approvedApplication.Sitter.Name has to confirm their stay before @(_approvedApplication.Date.Day + 3)/@_approvedApplication.Date.Month/@_approvedApplication.Date.Year.</p>
+                                        <p class="card-text">
+                                            <small>@_approvedApplication.Date</small>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <hr class="section-divider"/>
+                            }
+
+                            @foreach (var application in _applications)
+                            {
+                                @if (!application.Equals(_approvedApplication))
+                                {
+                                    <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : "")">
                                         <div class="card-img-container">
                                             <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
                                         </div>
-                                        
+
                                         <div class="card-body">
                                             <a href="https://localhost:7262/view-sitter-profile/@application.SitterId"><h5 class="card-title">@application.Sitter.Name</h5></a>
                                             <p class="card-text" style="font-style: italic">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
@@ -205,69 +206,71 @@
                                             <p class="card-text">
                                                 <small>@application.Date</small>
                                             </p>
-                                            
-                                            
+
+
                                             @if (_approvedApplication == null && application.Status == "Pending")
-                                            { 
+                                            {
                                                 <div class="card-buttons">
                                                     <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
                                                     <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
                                                 </div>
                                             }
-                                            </div>
-                                </div>
+                                        </div>
+                                    </div>
+                                }
                             }
                         }
+                    </div>
+                }
+
+                <hr class="section-divider"/>
+
+                <!-- Buttons Section -->
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Listing</button>
+                </div>
+
+                <div>
+                    @if (_showConfirmationMessage)
+                    {
+                        <div class="modal-background">
+                            <div class="modal-content">
+                                <h3>Are you sure?</h3>
+                                <p>Do you really want to delete this listing? This action cannot be undone.</p>
+                                <button class="btn btn-danger" @onclick="DeleteHouseListing">Yes</button>
+                                <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                            </div>
+                        </div>
+                    }
+
+                    @if (_showSuccessMessage)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            The house listing has been deleted successfully!
+                        </div>
                     }
                 </div>
-            }
-
-            <hr class="section-divider"/>
-
-            <!-- Buttons Section -->
-            <div class="action-buttons">
-                <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Listing</button>
             </div>
+        }
+    </div>
 
-            <div>
-                @if (_showConfirmationMessage)
-                {
-                <div class="modal-background">
-                    <div class="modal-content">
-                        <h3>Are you sure?</h3>
-                        <p>Do you really want to delete this listing? This action cannot be undone.</p>
-                        <button class="btn btn-danger" @onclick="DeleteHouseListing">Yes</button>
-                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
-                    </div>
+    @if (_showModal)
+    {
+        <div class="modal-background">
+            <div class="modal-content">
+                <div class="row">
+                    <label for="message" class="col-5 col-md-3 text-end" required>Message for House Owner:</label>
+                    <textarea id="message" class="col-7 col-md-9" @bind="_message"></textarea>
                 </div>
-                }
-
-                @if (_showSuccessMessage)
-                {
-                <div class="alert alert-success" role="alert">
-                    The house listing has been deleted successfully!
-                </div>
-                }
+                <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+                <Button Color="ButtonColor.Primary" @onclick="CreateApplication">Apply</Button>
             </div>
         </div>
     }
-</div>
-
-@if (_showModal)
-{
-<div class="modal-background">
-    <div class="modal-content">
-        <div class="row">
-            <label for="message" class="col-5 col-md-3 text-end" required>Message for House Owner:</label>
-            <textarea id="message" class="col-7 col-md-9" @bind="_message"></textarea>
-        </div>
-        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
-        <Button Color="ButtonColor.Primary" @onclick="CreateApplication">Apply</Button>
-    </div>
-</div>
-}
-    </AuthorizeView>
-    <AuthorizeView Roles="HouseSitter">
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="HouseSitter">
+    <Authorized>
         <div class="listing-container">
             @if (_houseListing == null)
             {
@@ -374,7 +377,7 @@
                 </div>
 
                 <hr class="section-divider"/>
-
+                
                 @if (_hasApplied)
                 {
                 <p class="alert alert-info">You have already applied for this listing.</p>
@@ -416,6 +419,11 @@
                     <div class="modal-content">
                         <h3>Send Application</h3>
                         <textarea @bind="_message" class="form-control" placeholder="Write your message..."></textarea>
+                        <!-- Display Message if exists -->
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                        <div class="alert alert-danger">@_errorMessage</div>
+                        }
                         <button class="btn btn-secondary" @onclick="OnHideModalClick">Close</button>
                         <button class="btn btn-primary" @onclick="CreateApplication">Send</button>
                     </div>
@@ -424,8 +432,17 @@
             </div>
             }
         </div>
+    </Authorized>
+</AuthorizeView>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in to view this house profile.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+            </div>
+        </NotAuthorized>
     </AuthorizeView>
-
 </CascadingAuthenticationState>
 
 <style>
@@ -699,6 +716,58 @@
         color: #3d3d3d;
         margin-bottom: 0.5em;
     }
+
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
 </style>
 
 @code {
@@ -713,6 +782,7 @@
     private bool _showModal;
     private string _message = string.Empty;
     private string _successMessage = string.Empty;
+    private string _errorMessage = string.Empty;
     private ApplicationDto? _approvedApplication;
 
     private int _sitterId;
@@ -722,7 +792,10 @@
         _showConfirmationMessage = true;
         _showSuccessMessage = false;
     }
-
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/");
+    }
     private async Task DeleteHouseListing()
     {
         if (_houseListing != null)
@@ -834,7 +907,11 @@
     }
     
     private async void CreateApplication()
-    {
+    {if (string.IsNullOrWhiteSpace(_message))
+        {
+            _errorMessage = "You must provide a message for the house owner.";
+            return;
+        }
         if (_hasApplied)
         {
             return;

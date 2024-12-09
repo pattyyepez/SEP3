@@ -17,7 +17,8 @@
 @rendermode InteractiveServer
 
 <CascadingAuthenticationState>
-    <AuthorizeView>
+    <AuthorizeView Roles="HouseOwner">
+        <Authorized>
     <div class="page-container">
     <div class="signup-page-container">
         <h1>Create Your House Profile</h1>
@@ -113,10 +114,9 @@
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(_message))
             {
-                <div>
-                    <label>@_message</label>
-                </div>
+                <div class="alert alert-danger">@_message</div>
             }
+
 
             <!-- Submit Button -->
             <button type="button" @onclick="CreateProfile" class="btn btn-primary">Create House Profile</button>
@@ -134,8 +134,15 @@
         </div>
     </div>
 }
+        </Authorized>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in to create a house profile.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+            </div>
+        </NotAuthorized>
     </AuthorizeView>
-
 </CascadingAuthenticationState>
 
 <style>
@@ -261,6 +268,7 @@
     input
     {
         font-family: 'FuturaFont', sans-serif;
+        background-color: #fff2ef;
     }
 
     textarea .form-control {
@@ -314,7 +322,60 @@
         padding: 0;
         margin: 0;
     }
-    
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
+
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+
 </style>
 
 @code {
@@ -338,6 +399,11 @@
     private void RedirectToHome()
     {
         Navigation.NavigateTo("/view-all-house-profiles");
+    }
+    
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
     }
 
     private async Task CreateProfile()
@@ -378,7 +444,20 @@
                 createHouseProfileDto.Amenities.Add(amenity.Text);
             }
         }
-        
+        if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) || 
+            string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) || 
+            string.IsNullOrWhiteSpace(_address))
+        {
+            _message = "All fields are required. Please fill in all the details.";
+            return;
+        }
+
+        if (_pictures.Count < 3)
+        {
+            _message = "Please upload at least 3 pictures.";
+            return;
+        }
+
         try
         {
             await HouseProfileService.AddAsync(createHouseProfileDto);
