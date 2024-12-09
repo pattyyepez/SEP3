@@ -142,24 +142,20 @@
 
                 @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
                 {
-                    <div class="card green">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
+                    <div class="applications-section">
+                        <div class="card green">
+                            <div class="card-img-container">
                                 <img src="https://localhost:7134/Filesave/@_approvedApplication!.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
                             </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">@_approvedApplication.Sitter.Name</h5>
-                                    <p class="card-text">@_approvedApplication.Sitter.Phone</p>
-                                    <p class="card-text">@_approvedApplication.Sitter.Email</p>
-                                    <p class="card-text">
-                                        <small class="text-muted">@_approvedApplication.Date</small>
-                                    </p>
-
-                                    <h4>This is a confirmed listing</h4>
-                                </div>
+                            
+                            <div class="card-body">
+                                <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
+                                <p class="card-text" style="font-style: italic">You can now contact @_approvedApplication.Sitter.Name about their stay:</p>
+                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
+                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
+                                
                             </div>
-                        </div>
+                            </div>
                     </div>
                 }
                 else
@@ -841,7 +837,7 @@
 
     private async Task LoadApplications()
     {
-        var allApplications = ApplicationService.GetApplicationsByListing(ListingId, true).ToList();
+        var allApplications = ApplicationService.GetApplicationsByListing(ListingId, "", true).ToList();
         _applications = _houseSitter
             ? allApplications.Where(a => a.SitterId == _sitterId).ToList() 
             : allApplications;

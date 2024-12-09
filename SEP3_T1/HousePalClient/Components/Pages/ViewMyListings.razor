@@ -1,6 +1,7 @@
 ﻿@page "/view-my-listings"
 @using System.Security.Claims
 @using DTOs.HouseListing
+@using DTOs.Application
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -8,54 +9,194 @@
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
+@inject IApplicationService ApplicationService
 @inject IHouseListingService HouseListingService
+@inject ISitterReviewService SitterReviewService
+@inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
         <Authorized>
-<div class="page-container">
-    <div class="signup-page-container">
-        <h1>My Listings</h1>
-
-        <div class="house-profile-list">
-        @if (_houseListings == null || !_houseListings.Any())
-        {
-            <p>No listings found.</p>
-        }
-        else
-        {
             
-                @foreach (var listing in _houseListings)
+            <div class="listings-container">
+
+                @if (_houseListings == null || !_houseListings.Any())
                 {
-                        <div class="house-profile-item">
-                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                            {
-                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                            }
-                            <p>@listing.Profile.Title</p>
-                            <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                            @if (listing.Applications!.Any(a => a.Status == "Approved"))
-                            {
-                                <p>Waiting for @listing.Applications!.Single(a => a.Status == "Approved").Sitter!.Name's confirmation</p>
-                            }
-                            else
-                            {
-                                <p>Applications: @listing.Applications!.Count()</p>
-                            }
-                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                        </div>
-                    
+                    <p>No listings found.</p>
                 }
-        }
-        <div class="house-profile-item">
-            <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
-        </div>
-        
-        </div>
-    </div>
-</div>
+                else
+                {
+                    @foreach (var listing in _houseListings)
+                    {
+                        <div class="listing-container">
+                            <!-- Left Side: House Information -->
+                            <div class="house-info">
+                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-image"/>
+                                <h2 class="listing-title">@listing.Profile.Title</h2>
+                                <p class="listing-dates">@listing.StartDate.ToShortDateString() - @listing.EndDate.ToShortDateString()</p>
+                                <button class="btn delete-btn" @*@onclick=""*@>Delete Listing</button>
+                            </div>
+
+                            <!-- Right Side: Applicants -->
+                            <div class="applicants-container">
+
+                                @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
+                                {
+                                    <div class="applications-section">
+                                        <div class="card green">
+                                            <div class="card-img-container">
+                                                <img src="https://localhost:7134/Filesave/@_approvedApplication!.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
+                                            </div>
+
+                                            <div class="card-body">
+                                                <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
+                                                <p class="card-text" style="font-style: italic">You can now contact @_approvedApplication.Sitter.Name about their stay:</p>
+                                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
+                                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { 
+                                    <div class="applicants-scroll">
+
+                                        <h3>Applications for this listing: </h3>
+
+                                        @if (listing.Applications != null)
+                                        {
+                                            @if (_approvedApplication != null)
+                                            {
+                                                <div class="card green">
+                                                    <div class="card-img-container">
+                                                        <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" alt="Sitter's profile picture">
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
+                                                        <p class="card-text" style="font-style: italic">@_approvedApplication.Sitter.Name has to confirm their stay before @(_approvedApplication.Date.Day + 3)/@_approvedApplication.Date.Month/@_approvedApplication.Date.Year.</p>
+                                                        <p class="card-text">
+                                                            <small>@_approvedApplication.Date</small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            @foreach (var application in listing.Applications)
+                                            {
+                                                @if (!application.Equals(_approvedApplication))
+                                                {
+                                                    <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : "")">
+                                                        <div class="card-img-container">
+                                                            <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <div class="title-rating">
+                                                                <a href="https://localhost:7262/view-sitter-profile/@application.SitterId"><h5>@application.Sitter.Name</h5></a>
+                                                                <p><i class="fa-solid fa-star"></i> @(application.Sitter.Reviews!.Any() ? application.Sitter!.Reviews!.Select(r => r.Rating).Average() : "No reviews")</p>
+                                                            </div>
+                                                            
+                                                            <p class="card-text" style="font-style: italic">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
+                                                            
+                                                            <p class="card-text">
+                                                                <small>@application.Date</small>
+                                                            </p>                                                            
+                                                            @if (!listing.Applications.Any(a => a.Status == "Confirmed" || a.Status == "Approved") && application.Status == "Pending")
+                                                            {
+                                                                <div class="card-buttons">
+                                                                    <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
+                                                                    <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                }                                
+                                
+                                
+                                @*<div class="applicants-scroll">
+
+                                    @foreach (var applicant in listing.Applicants)
+                                    {
+                                        <div class="applicant-container">
+                                            <!-- Applicant Picture -->
+                                            <div class="applicant-picture">
+                                                <img src="@applicant.PictureUrl" alt="Applicant Picture"/>
+                                            </div>
+                                            <!-- Applicant Details -->
+                                            <div class="applicant-details">
+                                                <h3 class="applicant-name">@applicant.Name</h3>
+                                                <p class="applicant-message">"@applicant.Message"</p>
+                                                <div class="applicant-info">
+                                                    <span class="rating">⭐ @applicant.Rating</span>
+                                                    <span class="application-date">@applicant.ApplicationDate.ToString("MMM dd, yyyy hh:mm tt")</span>
+                                                </div>
+                                                <!-- Action Buttons -->
+                                                <div class="action-buttons">
+                                                    <button class="btn accept-btn" @onclick="() => AcceptApplicant(applicant.Id)">Accept</button>
+                                                    <button class="btn reject-btn" @onclick="() => RejectApplicant(applicant.Id)">Reject</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>*@
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            
+            @*<div class="page-container">
+                <div class="signup-page-container">
+                    <h1>My Listings</h1>
+
+                    <div class="house-profile-list">
+                        @if (_houseListings == null || !_houseListings.Any())
+                        {
+                            <p>No listings found.</p>
+                        }
+                        else
+                        {
+                            @foreach (var listing in _houseListings)
+                            {
+                                <div class="house-profile-item">
+                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                    }
+
+                                    <p>@listing.Profile.Title</p>
+                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+
+                                    @if (listing.Applications!.Any(a => a.Status == "Approved"))
+                                    {
+                                        <p>Waiting for @listing.Applications!.Single(a => a.Status == "Approved").Sitter!.Name's confirmation</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Applications: @listing.Applications!.Count()</p>
+                                    }
+
+                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                                </div>
+                            }
+                        }
+                        <div class="house-profile-item">
+                            <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
         </Authorized>
-    </AuthorizeView>
+        </AuthorizeView>
+   
+    
+    
     <AuthorizeView>
         <NotAuthorized>
             <div class="not-authorized-container">
@@ -96,48 +237,9 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .house-profile-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5em;
-        justify-content: center;
-    }
-
-    .house-profile-item {
-        width: 15em;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        padding: 0 0 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-profile-item div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 95%;
-        height: 95%;
-    }
-
-    .house-profile-img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 10px 10px 0 0;
-        display: block;
-    }
-
     p {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
-        margin: 1em;
-    }
-
-    .plus {
-        cursor: pointer;
-        min-height: 15em;
     }
     .not-authorized-container {
         text-align: center;
@@ -177,10 +279,233 @@
     .not-authorized-container .btn:hover {
         background-color: #feb47b;
     }
+
+    .applications-section{
+        /*padding: 0.85em;*/
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .card {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        border-radius: 12px;
+        font-family: 'FuturaFont', sans-serif;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+        border-style: none;
+        margin: 0.75em;
+        background-color: white;
+        color: #3d3d3d;
+    }
+
+    .card-text{
+        font-size: 1em;
+        margin-bottom: 0;
+    }
+
+    .card a{
+        color: #3d3d3d;
+        margin-bottom: 0;
+    }
+
+    .card a:hover{
+        color: blue;
+    }
+
+    .card.green a{
+        color: white;
+    }
+
+    .card.green a:hover{
+        color: blue;
+    }
+
+    .card.rejected{
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .card.rejected a{
+        color: white;
+    }
+
+    .card.rejected a:hover{
+        color: blue;
+    }
+
+    .card.green{
+        background-color: green;
+        color: white;
+    }
+
+    .card-img-container{
+        flex: 0 0 200px;
+        height: 200px;
+        margin: 1em;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .card-img-container img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-text{
+        margin-bottom: 0.15em;
+    }
+    
+    .title-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-content: flex-start;
+        gap: 1em;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5em;
+        margin-top: 0.5em;
+        font-size: 1.15em;
+    }
+
+    .listings-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5em;
+        padding: 1em;
+        background-color: white;
+        min-height: 100vh;
+    }
+
+    /* Individual Listing Container */
+    .listing-container {
+        display: flex;
+        justify-content: space-around;
+        width: 85%;
+        border-radius: 15px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 1.5em;
+    }
+
+    /* Left Side: House Info */
+    .house-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 35%;
+    }
+
+    .house-image {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin-bottom: 1em;
+    }
+
+    .listing-title {
+        font-size: 1.5rem;
+        color: #3d3d3d;
+        margin-bottom: 0.5em;
+        text-align: center;
+        font-family: 'LogoFont', sans-serif;
+    }
+
+    .listing-dates {
+        font-size: 1rem;
+        color: #777;
+        margin-bottom: 1em;
+        text-align: center;
+    }
+
+    .delete-btn {
+        background-color: #ff7e5f;
+        color: #fff;
+        border: none;
+        padding: 0.75em 1.5em;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+        background-color: #feb47b;
+        color: white;
+    }
+
+    /* Right Side: Applicants */
+    .applicants-container {
+        flex: 0 0 60%;
+        display: flex;
+        flex-direction: column;
+        border-left: 2px solid #f0f0f0;
+        justify-content: center;
+        padding-left: 1em;
+    }
+
+    .applicants-scroll {
+        max-height: 500px; 
+        overflow-y: auto;
+        padding-right: 0.5em; 
+    }
+    
+    .applicants-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .applicants-scroll::-webkit-scrollbar-thumb {
+        background: #ff7e5f; 
+        border-radius: 4px;
+    }
+
+    .applicants-scroll::-webkit-scrollbar-thumb:hover {
+        background: #feb47b; 
+    }
+
+    .applicants-scroll::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    h3 {
+        font-family: 'FuturaFont', sans-serif;
+        color: #ff7e5f;
+        margin-bottom: 0.5em;
+        text-align: center;
+    }
+
 </style>
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
+    private bool _showConfirmationMessage;
+    private bool _showSuccessMessage;
+    private HouseListingDto? _houseListing;
+    private List<ApplicationDto>? _applications;
+    private bool _houseSitter;
+    private bool _hasApplied;
+    private bool _showModal;
+    private string _message = string.Empty;
+    private string _successMessage = string.Empty;
+    private string _errorMessage = string.Empty;
+    private ApplicationDto? _approvedApplication;
+    private int _sitterId;
+    
     private List<HouseListingDto>? _houseListings;
     private int _userId;
 
@@ -203,6 +528,7 @@
         _userId = int.Parse(userIdAsString);
         
         await LoadUpcomingHouseListings();
+        await LoadApplications();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
@@ -215,6 +541,25 @@
         _houseListings = allListings
             .Where(listing => listing.StartDate > today)
             .ToList();
+    }
+    
+    private async Task LoadApplications()
+    {
+        foreach (var listing in _houseListings)
+        {
+            listing.Applications = new();
+            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
+            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Approved", true).ToList());
+            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Pending", true).ToList());
+            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Rejected", true).ToList());
+
+            foreach (var application in listing.Applications)
+            {
+                application.Sitter!.Reviews = SitterReviewService.GetAllReviewsForSitter(application.SitterId).ToList();
+            }
+
+            //_approvedApplication = _applications.Any(a => a.Status == "Approved") ? _applications.SingleOrDefault(a => a.Status == "Approved") : _applications.SingleOrDefault(a => a.Status == "Confirmed");
+        }
     }
 
 
@@ -230,6 +575,34 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
+    }
+    
+    private async void ApproveApplication(ApplicationDto application)
+    {
+        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
+        {
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
+            Status = "Approved"
+        };
+
+        await ApplicationService.UpdateAsync(updatedApplication);
+        await LoadApplications();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void RejectApplication(ApplicationDto application)
+    {
+        UpdateApplicationDto update = new UpdateApplicationDto
+        {
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
+            Status = "Rejected"
+        };
+
+        await ApplicationService.UpdateAsync(update);
+        await LoadApplications();
+        await InvokeAsync(StateHasChanged);
     }
 
 }

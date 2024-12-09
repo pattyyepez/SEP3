@@ -88,9 +88,9 @@ public class ApplicationService : IApplicationService
             return application.AsQueryable();
         }
 
-        public IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, bool includeSitter)
+        public IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, string status, bool includeSitter)
         {
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplication/{listingId}?includeSitter={includeSitter}").Result;
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationByListing/{listingId}/{status}?includeSitter={includeSitter}").Result;
 
             response.EnsureSuccessStatusCode();
 

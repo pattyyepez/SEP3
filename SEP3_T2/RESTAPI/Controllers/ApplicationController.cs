@@ -81,15 +81,19 @@ public class ApplicationController : ControllerBase
     }
     
     // GET: https://localhost:7134/api/Application/GetApplication/{listingId}
-    [HttpGet("{listingId}")]
-    public async Task<IActionResult> GetApplication(int listingId,
+    [HttpGet("{listingId:int}/{status}")]
+    public async Task<IActionResult> GetApplicationByListing(
+        int listingId, string status,
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeSitter)
     {
         try
         {
             var response = _repo.GetAll().Where(a => a.ListingId == listingId);
-
+            
+            if(!string.IsNullOrWhiteSpace(status))
+                response = response.Where(a => a.Status == status);
+                
             foreach (var application in response)
             {
                 if (includeSitter)
