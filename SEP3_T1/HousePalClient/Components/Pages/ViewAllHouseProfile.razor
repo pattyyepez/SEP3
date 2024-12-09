@@ -14,98 +14,110 @@
 @inject IHouseListingService HouseListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<div class="page-container">
-    <div class="signup-page-container">
-        <h1>My Houses</h1>
 
-        <div class="house-profile-list">
-            @if (houseProfiles == null || !houseProfiles.Any())
-            {
-                <p>No house profiles found.</p>
-            }
-            else
-            {
-                @foreach (var profile in houseProfiles)
-                {
-                    <div class="house-profile-item">
-                        @if (profile.Pictures != null && profile.Pictures.Any())
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseOwner">
+        <Authorized>
+            <div class="page-container">
+                <div class="signup-page-container">
+                    <h1>My Houses</h1>
+
+                    <div class="house-profile-list">
+                        @if (houseProfiles == null || !houseProfiles.Any())
                         {
-                            <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                            <p>No house profiles found.</p>
                         }
-                        <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
-                        <p><i class="fa-solid fa-star"></i>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
-                        <button type="button" class="btn btn-danger" @onclick="() => ShowDeletionConfirmation(profile.Id)">Delete</button>
+                        else
+                        {
+                            @foreach (var profile in houseProfiles)
+                            {
+                                <div class="house-profile-item">
+                                    @if (profile.Pictures != null && profile.Pictures.Any())
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                    }
+                                    <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
+                                    <p><i class="fa-solid fa-star"></i>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
+                                    <button type="button" class="btn btn-primary" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
+                                    <button type="button" class="btn btn-danger" @onclick="() => ShowDeletionConfirmation(profile.Id)">Delete</button>
+                                </div>
+                            }
+                        }
+                        <div class="house-profile-item">
+                            <div @onclick="NavigateToCreate" class="plus">
+                                <i class="fa-solid fa-plus fa-2xl"></i>
+                            </div>
+                        </div>
                     </div>
-                }
-            }
-            <div class="house-profile-item">
-                <div @onclick="NavigateToCreate" class="plus">
-                    <i class="fa-solid fa-plus fa-2xl"></i>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <div>
+                @if (_showDeletionConfirmationMessage)
+                {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h3>Are you sure?</h3>
+                        <p>Do you really want to delete this house profile? This action cannot be undone.</p>
+                        <button class="btn btn-danger" @onclick="DeleteHouseProfile">Yes</button>
+                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                    </div>
+                </div>
+                }
 
-<div>
-    @if (_showDeletionConfirmationMessage)
-    {
-        <div class="modal-background">
-            <div class="modal-content">
-                <h3>Are you sure?</h3>
-                <p>Do you really want to delete this house profile? This action cannot be undone.</p>
-                <button class="btn btn-danger" @onclick="DeleteHouseProfile">Yes</button>
-                <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                @if (_showCreateListingMessage)
+                {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h3>Enter dates for listing:</h3>
+
+                        <label for="startDate">Start Date</label>
+                        <input
+                            type="date"
+                            id="startDate"
+                            name="listing-start"
+                            placeholder="dd-mm-yyyy"
+                            class="form-control"
+                            @bind-value="@StartDate"
+                            min="@_minDateStart.ToString("yyyy-MM-dd")"
+                            max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
+                        <label for="endDate">End Date</label>
+
+                        <input
+                            type="date"
+                            id="endDate"
+                            name="listing-end"
+                            placeholder="dd-mm-yyyy"
+                            class="form-control"
+                            @bind-value="@EndDate"
+                            min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                            max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
+
+                        <button class="btn btn-danger" @onclick="CreateListingForProfile">Create</button>
+                        <button class="btn btn-secondary" @onclick="CancelCreateListing">Cancel</button>
+                    </div>
+                </div>
+                }
+
+                @if (_showSuccessMessage)
+                {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <p>@_successMessage</p>
+                        <button @onclick="HideSuccessMessage" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+                }
             </div>
-        </div>
-    }
-
-    @if (_showCreateListingMessage)
-    {
-        <div class="modal-background">
-            <div class="modal-content">
-                <h3>Enter dates for listing:</h3>
-                
-                <label for="startDate">Start Date</label>
-                <input
-                    type="date"
-                    id="startDate"
-                    name="listing-start"
-                    placeholder="dd-mm-yyyy"
-                    class="form-control"
-                    @bind-value="@StartDate"
-                    min="@_minDateStart.ToString("yyyy-MM-dd")"
-                    max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
-                <label for="endDate">End Date</label>
-                
-                <input
-                    type="date"
-                    id="endDate"
-                    name="listing-end"
-                    placeholder="dd-mm-yyyy"
-                    class="form-control"
-                    @bind-value="@EndDate"
-                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
-                    max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
-                
-                <button class="btn btn-danger" @onclick="CreateListingForProfile">Create</button>
-                <button class="btn btn-secondary" @onclick="CancelCreateListing">Cancel</button>
+        </Authorized>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
             </div>
-        </div>
-    }
-
-    @if (_showSuccessMessage)
-    {
-        <div class="modal-background">
-            <div class="modal-content">
-                <p>@_successMessage</p>
-                <button @onclick="HideSuccessMessage" class="btn btn-primary">Ok</button>
-            </div>
-        </div>
-    }
-</div>
-
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 <style>
     
     @@font-face {
@@ -162,8 +174,10 @@
     
     .house-profile-img {
         width: 100%;
-        height: auto;
+        height: 200px;
+        object-fit: cover;
         border-radius: 10px 10px 0 0;
+        display: block;
     }
 
     p {
@@ -177,6 +191,40 @@
         min-height: 15em;
     }
 
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
     .modal-background {
         position: absolute;
         top: 0;
@@ -190,7 +238,6 @@
         z-index: 4000;
         overflow: hidden;
     }
-
 
     .modal-content {
         margin-top: 1em;
@@ -350,5 +397,8 @@
     {
         Navigation.NavigateTo("/create-house-profile");
     }
-
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
 }

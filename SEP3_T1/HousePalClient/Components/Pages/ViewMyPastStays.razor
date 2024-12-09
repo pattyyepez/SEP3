@@ -12,61 +12,66 @@
 @inject IHouseProfileService HouseProfileService
 @inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
-<div class="page-container">
-    <div class="signup-page-container">
-        <h1>My Past Stays</h1>
-        <div class="house-profile-list">
-            @if (_listingsWaitingForReview == null || !_listingsWaitingForReview.Any())
-            {
-                <p>No listings waiting for review found.</p>
-            }
-            else
-            {
-                @foreach (var listing in _listingsWaitingForReview)
-                {
-                    <div class="house-profile-item">
-                        @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseSitter">
+        <Authorized>
+            <div class="page-container">
+                <div class="signup-page-container">
+                    <h1>My Past Stays</h1>
+                    <div class="house-profile-list">
+                        @if (_listingsWaitingForReview == null || !_listingsWaitingForReview.Any())
                         {
-                            <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                            <p>No listings waiting for review found.</p>
                         }
-                        <p>@listing.Profile.Title</p>
-                        <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                        <p>@listing.Profile.Region</p>
-                        <p>@listing.Profile.City</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                    </div>
-                }
-            }
+                        else
+                        {
+                            @foreach (var listing in _listingsWaitingForReview)
+                            {
+                                <div class="house-profile-item">
+                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                    }
+                                    <p>@listing.Profile.Title</p>
+                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                                    <p>@listing.Profile.Region</p>
+                                    <p>@listing.Profile.City</p>
+                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                                </div>
+                            }
+                        }
 
-            <hr class="section-divider"/>
+                        <hr class="section-divider"/>
             
-            @if (_houseListings == null || !_houseListings.Any())
-            {
-                <p>No listings found.</p>
-            }
-            else
-            {
-                @foreach (var listing in _houseListings)
-                {
-                    <div class="house-profile-item">
-                        @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                        @if (_houseListings == null || !_houseListings.Any())
                         {
-                            <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                            <p>No listings found.</p>
                         }
-                        <p>@listing.Profile.Title</p>
-                        <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                        <p>@listing.Profile.Region</p>
-                        <p>@listing.Profile.City</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                        else
+                        {
+                            @foreach (var listing in _houseListings)
+                            {
+                                <div class="house-profile-item">
+                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
+                                    }
+                                    <p>@listing.Profile.Title</p>
+                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                                    <p>@listing.Profile.Region</p>
+                                    <p>@listing.Profile.City</p>
+                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
+                                </div>
+                            }
+                        }
                     </div>
-                }
-            }
-        </div>
-    </div>
-</div>
-
-<style>
+                </div>
+            </div>
+            </Authorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
+            
+        <style>
 
     @@font-face {
         font-family: 'LogoFont';
@@ -122,8 +127,10 @@
 
     .house-profile-img {
         width: 100%;
-        height: auto;
+        height: 200px;
+        object-fit: cover;
         border-radius: 10px 10px 0 0;
+        display: block;
     }
 
     p {
@@ -166,6 +173,45 @@
         height: 1px;
         background-color: #ddd;
     }
+
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
 </style>
 
 @code {
@@ -197,7 +243,6 @@
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
-
     private async Task LoadAllHouseListings()
     {
         var today = DateOnly.FromDateTime(DateTime.Today);

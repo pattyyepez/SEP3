@@ -14,8 +14,10 @@
 @rendermode InteractiveServer
 @page "/edit-account-sitter"
 
+
 <CascadingAuthenticationState>
-    <AuthorizeView> 
+    <AuthorizeView Roles="HouseSitter">
+        <Authorized>
     <div class="page-container">
         <div class="signup-page-container">
             <h1>Update Your Account</h1>
@@ -94,9 +96,7 @@
                 <!-- Display Message if exists -->
                 @if (!string.IsNullOrEmpty(_message))
                 {
-                    <div>
-                        <label>@_message</label>
-                    </div>
+                <div class="alert alert-danger">@_message</div>
                 }
 
                 <!-- Submit Button -->
@@ -115,8 +115,17 @@
         </div>
     </div>
 }
+        </Authorized>
     </AuthorizeView>
-
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
 </CascadingAuthenticationState>
 
 <style>
@@ -208,16 +217,18 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vw;
-        min-width: 100vw;
-        background-color:#fff2ef;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        background-color: white;
     }
 
     .signup-page-container {
         max-width: 50vw;
         margin: 3em 0 3em 0;
         padding: 2em 2em;
-        background-color: white;
+        background-color: #fff2ef;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
@@ -330,6 +341,58 @@
         max-width: 400px;
         width: 100%;
     }
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
+
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
 </style>
 
 @code {
@@ -357,10 +420,58 @@
     {
         Navigation.NavigateTo("/view-all-house-profiles");
     }
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
 
     private async Task EditSitter()
     {
+
         _message = string.Empty;
+        
+
+        if (string.IsNullOrWhiteSpace(_name))
+        {
+            _message = "Name is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_cpr))
+        {
+            _message = "CPR number is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_phone))
+        {
+            _message = "Phone number is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_biography))
+        {
+            _message = "Biography is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_experiences))
+        {
+            _message = "Relevant experiences are required.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_profilePictureUrl))
+        {
+            _message = "You must upload a profile picture.";
+            return;
+        }
+
+        if (_pictures.Count < 3)
+        {
+            _message = "You must upload at least 3 pictures.";
+            return;
+        }
         
         var updateHouseSitterDto = new UpdateHouseSitterDto()
         {

@@ -104,13 +104,14 @@
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(_message))
             {
-                <div>
-                    <label>@_message</label>
-                </div>
+            <div class="alert alert-danger">@_message</div>
             }
 
             <!-- Submit Button -->
-            <button type="button" @onclick="CreateSitter" class="btn btn-primary">Create Account</button>
+            <div class="button-group">
+                <button type="button" @onclick="CreateSitter" class="btn btn-primary">Create Account</button>
+                <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+            </div>
         </form>
     </div>
 </div>
@@ -124,7 +125,19 @@
         </div>
     </div>
 }
-
+@if (_showCancelConfirmation)
+{
+<div class="modal-background">
+    <div class="modal-content">
+        <h2>Confirmation</h2>
+        <p>Are you sure you want to cancel? All changes will be lost.</p>
+        <div class="modal-actions">
+            <button @onclick="ConfirmCancel" class="btn btn-primary">Yes</button>
+            <button @onclick="CloseCancelModal" class="btn btn-secondary">No</button>
+        </div>
+    </div>
+</div>
+}
 <style>
     @@font-face {
         font-family: 'LogoFont';
@@ -187,6 +200,22 @@
         font-family: 'FuturaFont', sans-serif;
         font-weight: bold;
         margin: 0;
+    }
+    .btn-secondary {
+        display: inline-block;
+        padding: 0.75em;
+        font-size: 1.2rem;
+        background-color: #ccc;
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 1em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .btn-secondary:hover {
+        background-color: #aaa;
     }
 
     .form-section label
@@ -274,12 +303,67 @@
         border-radius: 50%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+    .button-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+
 
     .uploaded-images-container img {
         width: 100px;
         height: 100px;
         object-fit: cover;
         border-radius: 5px;
+    }
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        font-family: 'FuturaFont', sans-serif;
+
+    }
+
+    .modal-actions {
+        margin-top: 1em;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .modal-actions .btn {
+        min-width: 120px;
+    }
+
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
     }
 </style>
 
@@ -295,12 +379,43 @@
     private string _message = string.Empty;
     private string _profilePictureUrl = string.Empty;
     private bool _showSuccessMessage = false;
-    
+    private bool _showCancelConfirmation = false;
+
     private List<FileDto> _uploadResults = new();
     private int maxAllowedFiles = 25;
 
     MultiSelectList skills;
     List<string> _pictures = [];
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
+
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
+    private void ConfirmCancel()
+    {
+        _email = string.Empty;
+        _password = string.Empty;
+        _confirmPassword = string.Empty;
+        _name = string.Empty;
+        _cpr = string.Empty;
+        _phone = string.Empty;
+        _biography = string.Empty;
+        _experiences = string.Empty;
+        _message = string.Empty;
+        _profilePictureUrl = string.Empty;
+        _pictures.Clear();
+        
+
+        _showSuccessMessage = false;
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo("/");
+
+    }
+
 
     private void RedirectToLogin()
     {
@@ -309,11 +424,78 @@
 
     private async Task CreateSitter()
     {
-        _message = string.Empty;
         
+        _message = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(_email))
+        {
+            _message = "Email is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_password))
+        {
+            _message = "Password is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_confirmPassword))
+        {
+            _message = "Please confirm your password.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_name))
+        {
+            _message = "Name is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_cpr))
+        {
+            _message = "CPR number is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_phone))
+        {
+            _message = "Phone number is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_biography))
+        {
+            _message = "Biography is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_experiences))
+        {
+            _message = "Relevant experiences are required.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_profilePictureUrl))
+        {
+            _message = "You must upload a profile picture.";
+            return;
+        }
+
+        if (_pictures.Count < 3)
+        {
+            _message = "You must upload at least 3 pictures.";
+            return;
+        }
+
+        if (skills.All(s => !s.Selected))
+        {
+            _message = "You must select at least one skill.";
+            return;
+        }
+
         if (_password != _confirmPassword)
         {
-            _message = "Passwords do not match";
+            _message = "Passwords do not match.";
             return;
         }
         

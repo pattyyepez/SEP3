@@ -18,6 +18,13 @@
                         <EditForm Model="_loginModel" Context="formContext">
                             <DataAnnotationsValidator/>
 
+                            @if (!string.IsNullOrEmpty(_errorMessage))
+                            {
+                            <div class="alert alert-danger">
+                                @_errorMessage
+                            </div>
+                            }
+
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <InputText id="username" @bind-Value="_loginModel.Username" class="form-control" placeholder="Enter username"/>
@@ -151,44 +158,52 @@
          80% { background-image: url('images/loginBackgrounds/5.jpg'); }
         100% { background-image: url('images/loginBackgrounds/1.jpg'); }
     }
+    .alert {
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        border-radius: 0.375em;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
 </style>
 
 @code {
     private readonly LoginModel _loginModel = new();
+    private string? _errorMessage;
 
     private async Task HandleLoginClick()
     {
         try
         {
+            _errorMessage = null; 
+
             await ((SimpleAuthProvider)AuthProvider).Login(_loginModel.Username, _loginModel.Password);
-            var authState = await AuthProvider
-                .GetAuthenticationStateAsync();
+            var authState = await AuthProvider.GetAuthenticationStateAsync();
             var user = authState.User;
-            
+
             if (user.Identity is null || !user.Identity.IsAuthenticated)
             {
-                Console.WriteLine("Not authenticated");
+                _errorMessage = "Invalid username or password.";
                 return;
             }
-            
-            IEnumerable<Claim> claims = user.Claims;
-            string userRole = claims.Single(c => c.Type == ClaimTypes.Role).Value;
 
-            switch (userRole)
-            {
-                case "HouseOwner": 
-                    Navigation.NavigateTo("/view-all-house-profiles");
-                    break;
-                case "HouseSitter": 
-                    Navigation.NavigateTo("/browse-listings");
-                    break;
-            }
+            string userRole = user.Claims.Single(c => c.Type == ClaimTypes.Role).Value;
+
+            Navigation.NavigateTo(userRole == "HouseOwner" ? "/view-all-house-profiles" : "/browse-listings");
         }
-        catch (Exception e)
+        catch
         {
-            Console.WriteLine($"Login failed: {e.Message}");
+            _errorMessage = "Login failed. Please try again.";
         }
     }
+
 
     private void HandleSignUpClick()
     {
@@ -198,7 +213,7 @@
 
     private class LoginModel
     {
-        public string Username { get; set; } = "niels.jensen@gmail.com";
+        public string Username { get; set; } = "camille.larsen@gmail.com";
         public string Password { get; set; } = "12345";
     }
 

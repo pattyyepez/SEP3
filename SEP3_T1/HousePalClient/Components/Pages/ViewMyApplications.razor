@@ -13,6 +13,9 @@
 @inject IHouseListingService ListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="HouseSitter">
+        <Authorized>
 <div class="page-container">
     <div class="signup-page-container">
         <h1>My Applications</h1>
@@ -29,7 +32,7 @@
                     <div class="card mb-3" style="max-width: 540px;">
                         <div class="row no-gutters">
                             <div class="col-md-4">
-                                @* <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="..."> *@
+                                 <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="..."> 
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -54,6 +57,18 @@
         }
     </div>
 </div>
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
 <style>
 
@@ -124,12 +139,55 @@
     .plus {
         cursor: pointer;
     }
+
+    .not-authorized-container {
+        text-align: center;
+        margin-top: 5em;
+        padding: 2em;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .not-authorized-container h2 {
+        color: #ff7e5f;
+        font-family: 'LogoFont', sans-serif;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .not-authorized-container p {
+        font-family: 'FuturaFont', sans-serif;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 1.5em;
+    }
+
+    .not-authorized-container .btn {
+        font-size: 1em;
+        padding: 0.75em 1.5em;
+        font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+    }
+
+    .not-authorized-container .btn:hover {
+        background-color: #feb47b;
+    }
 </style>
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
     private List<ApplicationDto>? _applications;
     private int _userId;
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
 
     protected override async Task OnInitializedAsync()
     {
