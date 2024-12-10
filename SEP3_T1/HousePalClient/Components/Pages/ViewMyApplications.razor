@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
+@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -18,7 +19,7 @@
         <Authorized>
 <div class="page-container">
     <div class="signup-page-container">
-        <h1>My Applications</h1>
+        <h1>My Applications:</h1>
 
         @if (_applications == null || !_applications.Any())
         {
@@ -29,29 +30,66 @@
             <div class="applications-section">
                 @foreach (var application in _applications)
                 {
-                    
-                    
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                 <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="..."> 
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <p>@application.Listing!.Profile!.Title</p>
-                                    <p>@application.Listing.StartDate.ToString("dd/M/yyyy") - @application.Listing.EndDate.ToString("dd/M/yyyy")</p>
-                                    <p>@application.Status</p>
-                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(application.ListingId)">More Details</button>
-                                </div>
-                                @if (application.Status == "Approved")
-                                {
-                                    <div class="card-buttons">
-                                        <Button Color="ButtonColor.Success" @onclick="() => ConfirmApplication(application)">Confirm</Button>
-                                        <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel</Button>
-                                    </div>
-                                }
+                    <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : ""))">
+                        
+                        <div class="card-img-container">
+                            <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
+                        </div>
 
+                        <div class="card-body">
+                            <div class="title-rating">
+                                <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
+                                @*<div class="stars">
+                                    @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
+                                    {
+                                        @foreach (var star in GetStars(application.Listing.Profile.Reviews))
+                                        {
+                                            <span class="@star"></span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div><span>No reviews</span></div>
+                                    }
+                                </div> ADD STAAAAAAAARS*@
                             </div>
+
+                            <p class="card-text">
+                                Your application:
+                            </p>
+                            
+                            <div class="card application">
+                                <div class="card-body">
+                                    <h5 class="card-title">@application.Message</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">@application.Date</small>
+                                    </p>
+                                </div>
+                            </div>
+                            @if (application.Status is "Pending")
+                            {
+                                <p class="card-title" style="font-style: italic">The Owner of this listing is reviewing your application.</p>
+                            } else if (application.Status == "Approved")
+                            {
+
+                                <p class="card-title" style="font-style: italic">You have been approved for this listing. Confirm or cancel your stay:</p>
+                                
+                                <br/>
+                                <div class="card-buttons">
+                                    <Button Color="ButtonColor.Primary" @onclick="() => ConfirmApplication(application)">Confirm</Button>
+                                    <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel</Button>
+                                </div>
+                            }
+                            
+                            else if (application.Status == "Rejected")
+                            {
+                            <p class="card-title" style="font-style: italic">Your application for this listing has been rejected. </p>
+                            }
+                            else if (application.Status == "Canceled")
+                            {
+                                <p class="card-title" style="font-style: italic">You have canceled this stay. </p>
+                            }
+                            
                         </div>
                     </div>
                 }
@@ -91,7 +129,7 @@
     h1 {
         text-align: center;
         color: #ff7e5f;
-        margin-bottom: 1em;
+        margin-bottom: 0.2em;
         font-family: 'LogoFont', sans-serif;
     }
 
@@ -151,7 +189,10 @@
 
     .card-buttons {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
+        gap: 1.5em;
+        margin-top: 0.5em;
+        font-size: 1.15em;
     }
 
     .card {
@@ -160,12 +201,28 @@
         flex-direction: row;
         border-radius: 12px;
         font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
         border-style: none;
         margin: 0.75em;
         overflow: hidden;
-        width: 600px;
+        width: 60em;
         background-color: white;
+        color: #3d3d3d;
+    }
+
+    .card.application{
+        width: 40em;
+        margin-bottom: 0;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-text{
+        font-size: 1em;
+        margin-bottom: 0;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
     }
 
@@ -190,6 +247,10 @@
         color: white;
     }
 
+    .card.rejected .card-text{
+        color: white;
+    }
+
     .card.rejected a{
         color: white;
     }
@@ -200,6 +261,10 @@
 
     .card.green{
         background-color: green;
+        color: white;
+    }
+
+    .card.green .card-text{
         color: white;
     }
 
