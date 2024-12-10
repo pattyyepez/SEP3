@@ -31,7 +31,7 @@
                             <!-- House Information -->
                             <div class="house-info">
                                 <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-image"/>
-                                <h2 class="listing-title">@listing.Profile.Title</h2>
+                                <h2 class="listing-title"><a href="https://localhost:7262/view-listing/@listing.Id" target="_blank">@listing.Profile.Title</a></h2>
                                 <p class="listing-dates">@listing.StartDate.ToShortDateString() - @listing.EndDate.ToShortDateString()</p>
                                 <button class="btn delete-btn" @onclick="() => DeleteListing(listing)">Delete Listing</button>
                             </div>
@@ -47,7 +47,7 @@
                                         {
                                             if (application.Status is "Confirmed")
                                             {
-                                                <div class="card green">
+                                                <div class="card">
                                                     <div class="card-img-container">
                                                         <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
                                                     </div>
@@ -55,11 +55,11 @@
                                                     <div class="card-body">
                                                         <div class="title-rating">
                                                             <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank"><h5>@application.Sitter.Name</h5></a>
-                                                            <p><i class="fa-solid fa-star"></i> @(application.Sitter.Reviews!.Any() ? application.Sitter!.Reviews!.Select(r => r.Rating).Average() : "No reviews")</p>
                                                         </div>
-                                                    
 
-                                                        <p class="card-text"><small>@application.Date</small></p>
+                                                        <p class="card-text contact" style="font-style: italic">
+                                                            @application.Sitter.Name finished their stay at your house.
+                                                        </p>
                                                     
                                                     </div>
                                                 </div>
