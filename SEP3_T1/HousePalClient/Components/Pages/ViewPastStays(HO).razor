@@ -1,11 +1,10 @@
 ﻿@page "/view-my-past-stays-ho"
 @using System.Security.Claims
 @using DTOs.HouseListing
-@using DTOs.Application
+@using DTOs.SitterReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @layout MainLayout
 
 @inject NavigationManager Navigation
@@ -33,7 +32,6 @@
                                 <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-image"/>
                                 <h2 class="listing-title"><a href="https://localhost:7262/view-listing/@listing.Id" target="_blank">@listing.Profile.Title</a></h2>
                                 <p class="listing-dates">@listing.StartDate.ToShortDateString() - @listing.EndDate.ToShortDateString()</p>
-                                <button class="btn delete-btn" @onclick="() => DeleteListing(listing)">Delete Listing</button>
                             </div>
 
                             <!-- Applicants Information -->
@@ -60,6 +58,28 @@
                                                         <p class="card-text contact" style="font-style: italic">
                                                             @application.Sitter.Name finished their stay at your house.
                                                         </p>
+                                                        
+                                                        <div>
+                                                            @if (application.Sitter.Reviews.Any())
+                                                            {
+                                                                <h3>Your past review of this sitter: </h3>
+
+                                                                <div class="stars">
+                                                                    @foreach (var star in GetStars(application.Sitter.Reviews.Single()))
+                                                                    {
+                                                                    <span class="@star"></span>
+                                                                    }
+                                                                </div>
+                                                                <p>@application.Sitter.Reviews.Single().Comment</p>
+                                                                <p>@application.Sitter.Reviews.Single().Date</p>
+                                                                
+                                                                <button @onclick="() => ShowEditReview(application.SitterId)">Edit Review</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button @onclick="() => ShowCreateReview(application.SitterId)">Create Review</button>
+                                                            }
+                                                        </div>
                                                     
                                                     </div>
                                                 </div>
@@ -76,6 +96,33 @@
                     }
                 }
             </div>
+
+            @if (_showModal)
+            {
+            <div class="modal-background">
+                <div class="modal-content">
+                    @if (_creatingReview)
+                    {
+                        <h3>Create review for sitter</h3>
+                        <input @bind="_reviewComment" type="text" placeholder="Comment on the sitter's performance" required/>
+                        <input @bind="_reviewRating" type="number" placeholder="Rate the sitter (out of 5)" required/>
+
+                        <button class="btn btn-primary" @onclick="CreateReview">Create Review</button>
+                        <button class="btn btn-secondary" @onclick="CancelCreateReview">Close</button>
+                    }
+                    else
+                    {
+                        <h3>Edit review for sitter</h3>
+                        <input @bind="_reviewComment" type="text" placeholder="Comment on the sitter's performance" required/>
+                        <input @bind="_reviewRating" type="number" placeholder="Rate the sitter (out of 5)" required/>
+
+                        <button class="btn btn-primary" @onclick="EditReview">Save Edit</button>
+                        <button class="btn btn-secondary" @onclick="CancelEditReview">Close</button>
+                    }
+                </div>
+            </div>
+            }
+            
         </Authorized>
     </AuthorizeView>
 
@@ -211,22 +258,6 @@
         text-align: center;
     }
 
-    .delete-btn {
-        background-color: #ff7e5f;
-        color: #fff;
-        border: none;
-        padding: 0.75em 1.5em;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s ease;
-    }
-
-    .delete-btn:hover {
-        background-color: #feb47b;
-        color: white;
-    }
-
     /* Right Side: Applicants */
     .applicants-container {
         flex: 0 0 60%;
@@ -289,36 +320,7 @@
     .card a:hover {
         color: blue;
     }
-
-    /* Status Specific Card Styles */
-    .card.green {
-        background-color: green;
-        color: white;
-    }
-
-    .card.green .card-text,
-    .card.green a {
-        color: white;
-    }
-
-    .card.green a:hover {
-        color: blue;
-    }
-
-    .card.rejected {
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .card.rejected .card-text,
-    .card.rejected a {
-        color: white;
-    }
-
-    .card.rejected a:hover {
-        color: blue;
-    }
-
+    
     /* Card Image Styling */
     .card-img-container {
         flex: 0 0 200px;
@@ -340,51 +342,12 @@
         flex-direction: column;
     }
 
-    .card-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 1.5em;
-        margin-top: 0.5em;
-        font-size: 1.15em;
-    }
-
     /* Title and Rating Section */
     .title-rating {
         display: flex;
         justify-content: flex-start;
         align-content: flex-start;
         gap: 1em;
-    }
-
-    /* Button Styles */
-    .btn-success {
-        background-color: #28a745;
-        color: white;
-        border-radius: 5px;
-        padding: 0.5em 1.5em;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        border-radius: 5px;
-        padding: 0.5em 1.5em;
-    }
-
-    .btn-success:hover {
-        background-color: #218838;
-    }
-
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
-
-    /* Applications Section */
-    .applications-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5em;
     }
 
     h3 {
@@ -394,11 +357,48 @@
         text-align: center;
     }
 
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 300px;
+    }
+    
+    .modal-content button {
+        margin: 10px;
+    }
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
+
 </style>
 
 @code {
     private List<HouseListingDto>? _houseListings;
     private int _userId;
+    private int _sitterIdForReview;
+    private string? _reviewComment = string.Empty;
+    private int? _reviewRating = null;
+    
+    private bool _showModal = false;
+    private bool _creatingReview = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -426,7 +426,8 @@
 
     private async Task LoadUpcomingHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true));
+        var allListings = new List<HouseListingDto>();
+        allListings.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true)));
         var today = DateOnly.FromDateTime(DateTime.Today);
 
         _houseListings = allListings
@@ -441,65 +442,97 @@
             listing.Applications = new();
             listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
 
-            foreach (var application in listing.Applications)
+            var temp = listing.Applications.SingleOrDefault();
+
+            temp!.Sitter!.Reviews = new();
+            try
             {
-                application.Sitter!.Reviews = SitterReviewService.GetAllReviewsForSitter(application.SitterId).ToList();
+                temp.Sitter!.Reviews.Add(await SitterReviewService.GetSingleAsync(_userId, temp.SitterId, false, false));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
             }
         }
+    }
+    
+    private void ShowCreateReview(int sitterId)
+    {
+        _sitterIdForReview = sitterId;
+        _creatingReview = true;
+        _showModal = true;
+    }
+
+    private void CancelCreateReview()
+    {
+        _showModal = false;
+    }
+    
+    private void ShowEditReview(int sitterId)
+    {
+        _sitterIdForReview = sitterId;
+        _creatingReview = false;
+        _showModal = true;
+    }
+
+    private void CancelEditReview()
+    {
+        _showModal = false;
+    }
+
+    private async Task CreateReview()
+    {
+        PreloadService.Show();
+        CreateSitterReviewDto review = new CreateSitterReviewDto
+        {
+            OwnerId = _userId,
+            SitterId = _sitterIdForReview,
+            Comment = _reviewComment,
+            Rating = _reviewRating.Value
+        };
+
+        await SitterReviewService.AddAsync(review);
+        await LoadUpcomingHouseListings();
+        await LoadApplications();
+        _showModal = false;
+        await InvokeAsync(StateHasChanged);
+        PreloadService.Hide();
+    }
+    
+    private async Task EditReview()
+    {
+        PreloadService.Show();
+        UpdateSitterReviewDto review = new UpdateSitterReviewDto()
+        {
+            OwnerId = _userId,
+            SitterId = _sitterIdForReview,
+            Comment = _reviewComment,
+            Rating = _reviewRating.Value
+        };
+
+        await SitterReviewService.UpdateAsync(review);
+        await LoadUpcomingHouseListings();
+        await LoadApplications();
+        _showModal = false;
+        await InvokeAsync(StateHasChanged);
+        PreloadService.Hide();
     }
 
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
     }
-
-    private void NavigateToDetails(int listingId)
+    
+    private List<string> GetStars(SitterReviewDto? review)
     {
-        Navigation.NavigateTo($"/view-house-listing/{listingId}");
-    }
+        var stars = new List<string>();
 
-    private async void ApproveApplication(ApplicationDto application)
-    {
-        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
-        {
-            ListingId = application.ListingId,
-            SitterId = application.SitterId,
-            Status = "Approved"
-        };
+        int fullStars = review.Rating;
+        int emptyStars = 5 - fullStars;
 
-        await ApplicationService.UpdateAsync(updatedApplication);
-        await LoadApplications();
-        await InvokeAsync(StateHasChanged);
-    }
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
 
-    private async void RejectApplication(ApplicationDto application)
-    {
-        UpdateApplicationDto update = new UpdateApplicationDto
-        {
-            ListingId = application.ListingId,
-            SitterId = application.SitterId,
-            Status = "Rejected"
-        };
-
-        await ApplicationService.UpdateAsync(update);
-        await LoadApplications();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private string GetApplicationStatusText(ApplicationDto application)
-    {
-        return application.Status switch
-        {
-            "Pending" => application.Message,
-            "Approved" => $"{application.Sitter.Name} has to confirm their stay.",
-            "Rejected" => "You have rejected this applicant.",
-            "Canceled" => $"{application.Sitter.Name} has canceled their stay.",
-            _ => string.Empty
-        };
-    }
-
-    private async void DeleteListing(HouseListingDto listing)
-    {
-        // Logic to delete listing
+        return stars;
     }
 }
