@@ -13,9 +13,9 @@ public class DataSourceConfig {
   @Bean
   public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres?currentSchema=housePal");
+    dataSource.setUrl("jdbc:postgresql://localhost:5432/housepaldb?currentSchema=housePal");
     dataSource.setUsername("postgres");
-    dataSource.setPassword("ViaViaVia");
+    dataSource.setPassword("calculadora11");
     return dataSource;
   }
 
