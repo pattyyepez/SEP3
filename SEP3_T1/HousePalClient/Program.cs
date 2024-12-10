@@ -26,7 +26,6 @@ builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, SimpleAuthProvider>();
 
-builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
     AddCookie(options =>
     {
@@ -36,6 +35,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.MaxAge = TimeSpan.FromMinutes(90);
         options.AccessDeniedPath = "/";
     });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

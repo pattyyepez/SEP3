@@ -90,6 +90,7 @@ public class SitterReviewController : ControllerBase
                 var temp = await ownerRepo.GetSingleAsync(review.OwnerId);
                 review.Owner = new HouseOwnerDto
                 {
+                    ProfilePicture = temp.ProfilePicture,
                     Name = temp.Name,
                 };
             }

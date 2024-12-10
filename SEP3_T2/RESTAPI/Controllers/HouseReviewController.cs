@@ -91,6 +91,7 @@ public class HouseReviewController : ControllerBase
                 var temp = await sitterRepo.GetSingleAsync(review.SitterId);
                 review.Sitter = new HouseSitterDto
                 {
+                    ProfilePicture = temp.ProfilePicture,
                     Name = temp.Name,
                 };
             }
