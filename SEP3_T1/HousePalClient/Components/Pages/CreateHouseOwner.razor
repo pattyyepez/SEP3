@@ -24,30 +24,42 @@
                 <h2>Account Information</h2>
 
                 <label>Email:</label>
-                <input type="email" class="form-control" placeholder="Enter your email" @bind="_email" required/>
+                <input type="email" class="form-control"
+                       placeholder="Enter your email" @bind="_email" required/>
 
                 <label>Password:</label>
-                <input type="password" class="form-control" placeholder="Create a password" @bind="_password" required/>
+                <input type="password" class="form-control"
+                       placeholder="Create a password" @bind="_password"
+                       required/>
 
                 <label>Confirm Password:</label>
-                <input type="password" class="form-control" placeholder="Confirm your password" @bind="_confirmPassword" required/>
+                <input type="password" class="form-control"
+                       placeholder="Confirm your password"
+                       @bind="_confirmPassword" required/>
             </div>
 
             <!-- Personal Information Fields -->
             <div class="form-section">
                 <h2>Personal Information</h2>
-                
+
                 <label>Name:</label>
-                <input type="text" class="form-control" placeholder="Enter your name" @bind="_name" required/>
+                <input type="text" class="form-control"
+                       placeholder="Enter your name" @bind="_name" required/>
 
                 <label>CPR Number:</label>
-                <input type="text" class="form-control" placeholder="Enter your CPR number" @bind="_cpr" required/>
+                <input type="text" class="form-control"
+                       placeholder="Enter your CPR number" @bind="_cpr"
+                       required/>
 
                 <label>Phone Number:</label>
-                <input type="tel" class="form-control" placeholder="Enter your phone number" @bind="_phone" required/>
+                <input type="tel" class="form-control"
+                       placeholder="Enter your phone number" @bind="_phone"
+                       required/>
 
                 <label>Home Address:</label>
-                <input type="text" class="form-control" placeholder="Enter your home address" @bind="_address" required/>
+                <input type="text" class="form-control"
+                       placeholder="Enter your home address" @bind="_address"
+                       required/>
             </div>
 
             <!-- Introduction Section -->
@@ -55,15 +67,20 @@
                 <h2>Introduce Yourself</h2>
 
                 <label>Short Introduction:</label>
-                <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="_biography" required></textarea>
+                <textarea class="form-control" rows="4"
+                          placeholder="Write a brief introduction"
+                          @bind="_biography" required></textarea>
                 <label>Upload a Profile Picture:</label>
-                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
+                <InputFile OnChange="OnInputProfilePictureChange"
+                           accept="image/*" class="form-control"/>
 
                 @if (!string.IsNullOrEmpty(_profilePictureUrl))
                 {
-                    <hr/>
-                    <p>Uploaded picture:</p>
-                <img class="profile-picture" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                <hr/>
+                <p>Uploaded picture:</p>
+                <img class="profile-picture"
+                     src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]"
+                     alt="Uploaded picture"/>
                 }
 
             </div>
@@ -76,8 +93,12 @@
 
             <!-- Submit Button -->
             <div class="button-group">
-                <button type="button" @onclick="CreateOwner" class="btn btn-primary">Create Account</button>
-                <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+                <button type="button" @onclick="CreateOwner"
+                        class="btn btn-primary">Create Account
+                </button>
+                <button type="button" @onclick="OpenCancelModal"
+                        class="btn btn-secondary">Cancel
+                </button>
             </div>
 
         </form>
@@ -85,13 +106,14 @@
 </div>
 @if (_showSuccessMessage)
 {
-    <div class="modal-background">
-        <div class="modal-content">
-            <h2>Hello, @_name!</h2>
-            <p>Your account has been created successfully.</p>
-            <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login</button>
-        </div>
+<div class="modal-background">
+    <div class="modal-content">
+        <h2>Hello, @_name!</h2>
+        <p>Your account has been created successfully.</p>
+        <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login
+        </button>
     </div>
+</div>
 }
 @if (_showCancelConfirmation)
 {
@@ -100,8 +122,10 @@
         <h2>Confirmation</h2>
         <p>Are you sure you want to cancel? All changes will be lost.</p>
         <div class="modal-actions">
-            <button @onclick="ConfirmCancel" class="btn btn-primary">Yes</button>
-            <button @onclick="CloseCancelModal" class="btn btn-secondary">No</button>
+            <button @onclick="ConfirmCancel" class="btn btn-primary">Yes
+            </button>
+            <button @onclick="CloseCancelModal" class="btn btn-secondary">No
+            </button>
         </div>
     </div>
 </div>
@@ -110,15 +134,17 @@
 
 <style>
 
-    @@font-face {
+    @@font-face
+    {
         font-family: 'LogoFont';
-        src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
+        src: url('http://localhost:[puerto]/fonts/logo-font.ttf'
         ) format('truetype');
         font-weight: normal;
         font-style: normal;
     }
 
-    @@font-face {
+    @@font-face
+    {
         font-family: 'FuturaFont';
         src: url('fonts/futura.ttf') format('truetype');
         font-weight: normal;
@@ -139,7 +165,8 @@
 
     }
 
-    .signup-page-container {
+    .signup-page-container
+    {
         max-width: 50vw;
         margin: 3em 0 3em 0;
         padding: 2em 2em;
@@ -148,7 +175,8 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .signup-page-container h1 {
+    .signup-page-container h1
+    {
         font-size: 3em;
         color: #ff7e5f;
         font-family: 'LogoFont', sans-serif;
@@ -156,7 +184,8 @@
         margin-bottom: 0.5em;
     }
 
-    .form-section {
+    .form-section
+    {
         margin-bottom: 2em;
         padding: 1em;
         border-radius: 10px;
@@ -164,7 +193,8 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .form-section h2 {
+    .form-section h2
+    {
         text-align: center;
         font-size: 2rem;
         color: #3d3d3d;
@@ -172,7 +202,9 @@
         font-weight: bold;
         margin: 0;
     }
-     h2 {
+
+    h2
+    {
         text-align: center;
         font-size: 2rem;
         color: #3d3d3d;
@@ -188,13 +220,15 @@
         margin-bottom: 0.1em;
     }
 
-    .btn {
+    .btn
+    {
         font-size: 1rem;
         padding: 0.375em 0.75em;
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .form-control {
+    .form-control
+    {
         width: 100%;
         padding: 0.75em;
         margin-top: 0.5em;
@@ -209,12 +243,14 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    textarea .form-control {
+    textarea .form-control
+    {
         resize: vertical;
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .btn-primary {
+    .btn-primary
+    {
         display: block;
         width: 100%;
         padding: 0.75em;
@@ -227,11 +263,13 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover
+    {
         background-color: #feb47b;
     }
 
-    .modal-background {
+    .modal-background
+    {
         position: fixed;
         top: 0;
         left: 0;
@@ -245,7 +283,8 @@
         overflow: hidden;
     }
 
-    .modal-content {
+    .modal-content
+    {
         background-color: #fff;
         padding: 2em;
         border-radius: 8px;
@@ -255,20 +294,25 @@
         width: 100%;
     }
 
-    .profile-picture {
+    .profile-picture
+    {
         width: 150px;
         height: 150px;
         object-fit: cover;
         border-radius: 50%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-    .uploaded-images-container img {
+
+    .uploaded-images-container img
+    {
         width: 100px;
         height: 100px;
         object-fit: cover;
         border-radius: 5px;
     }
-    .btn-secondary {
+
+    .btn-secondary
+    {
         display: inline-block;
         padding: 0.75em;
         font-size: 1.2rem;
@@ -281,15 +325,20 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .btn-secondary:hover {
+    .btn-secondary:hover
+    {
         background-color: #aaa;
     }
-    .button-group {
+
+    .button-group
+    {
         display: flex;
         justify-content: flex-end;
         gap: 1rem;
     }
-    .modal-background {
+
+    .modal-background
+    {
         position: fixed;
         top: 0;
         left: 0;
@@ -302,7 +351,8 @@
         z-index: 1000;
     }
 
-    .modal-content {
+    .modal-content
+    {
         background-color: #fff;
         padding: 2em;
         border-radius: 8px;
@@ -314,17 +364,20 @@
 
     }
 
-    .modal-actions {
+    .modal-actions
+    {
         margin-top: 1em;
         display: flex;
         justify-content: space-around;
     }
 
-    .modal-actions .btn {
+    .modal-actions .btn
+    {
         min-width: 120px;
     }
 
-    .alert {
+    .alert
+    {
         padding: 1em;
         margin-bottom: 1em;
         border: 1px solid transparent;
@@ -332,7 +385,8 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .alert-danger {
+    .alert-danger
+    {
         color: #721c24;
         background-color: #f8d7da;
         border-color: #f5c6cb;
@@ -340,202 +394,202 @@
 </style>
 
 @code {
-    private string _email = string.Empty;
-    private string _password = string.Empty;
-    private string _confirmPassword = string.Empty;
-    private string _name = string.Empty;
-    private string _cpr = string.Empty;
-    private string _phone = string.Empty;
-    private string _address = string.Empty;
-    private string _biography = string.Empty;
-    private string _message = string.Empty;
-    private string _profilePictureUrl = string.Empty;
-    private bool _showSuccessMessage = false;
-    
-    private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
-    private bool _showCancelConfirmation = false;
+private string _email = string.Empty;
+private string _password = string.Empty;
+private string _confirmPassword = string.Empty;
+private string _name = string.Empty;
+private string _cpr = string.Empty;
+private string _phone = string.Empty;
+private string _address = string.Empty;
+private string _biography = string.Empty;
+private string _message = string.Empty;
+private string _profilePictureUrl = string.Empty;
+private bool _showSuccessMessage = false;
 
-    private void RedirectToLogin()
-    {
-        Navigation.NavigateTo("/login");
-    }
-    private void OpenCancelModal()
-    {
-        _showCancelConfirmation = true;
-    }
+private List<FileDto> _uploadResults = new();
+private int maxAllowedFiles = 3;
+private bool _showCancelConfirmation = false;
 
-    private void CloseCancelModal()
-    {
-        _showCancelConfirmation = false;
-    }
+private void RedirectToLogin()
+{
+Navigation.NavigateTo("/login");
+}
+private void OpenCancelModal()
+{
+_showCancelConfirmation = true;
+}
 
-    private void ConfirmCancel()
-    {
-        _email = string.Empty;
-        _password = string.Empty;
-        _confirmPassword = string.Empty;
-        _name = string.Empty;
-        _cpr = string.Empty;
-        _phone = string.Empty;
-        _address = string.Empty;
-        _biography = string.Empty;
-        _message = string.Empty;
-        _profilePictureUrl = string.Empty;
+private void CloseCancelModal()
+{
+_showCancelConfirmation = false;
+}
 
-        _showSuccessMessage = false;
+private void ConfirmCancel()
+{
+_email = string.Empty;
+_password = string.Empty;
+_confirmPassword = string.Empty;
+_name = string.Empty;
+_cpr = string.Empty;
+_phone = string.Empty;
+_address = string.Empty;
+_biography = string.Empty;
+_message = string.Empty;
+_profilePictureUrl = string.Empty;
 
-        _showCancelConfirmation = false;
-        Navigation.NavigateTo("/");
-    }
+_showSuccessMessage = false;
 
-    private async Task CreateOwner()
-    {
-        
-        _message = string.Empty;
+_showCancelConfirmation = false;
+Navigation.NavigateTo("/");
+}
 
-        if (string.IsNullOrWhiteSpace(_email))
-        {
-            _message = "Email is required.";
-            return;
-        }
+private async Task CreateOwner()
+{
 
-        if (string.IsNullOrWhiteSpace(_password))
-        {
-            _message = "Password is required.";
-            return;
-        }
+_message = string.Empty;
 
-        if (string.IsNullOrWhiteSpace(_confirmPassword))
-        {
-            _message = "Please confirm your password.";
-            return;
-        }
+if (string.IsNullOrWhiteSpace(_email))
+{
+_message = "Email is required.";
+return;
+}
 
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
+if (string.IsNullOrWhiteSpace(_password))
+{
+_message = "Password is required.";
+return;
+}
 
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
+if (string.IsNullOrWhiteSpace(_confirmPassword))
+{
+_message = "Please confirm your password.";
+return;
+}
 
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-        if (string.IsNullOrWhiteSpace(_address))
-        {
-            _message = "Address is required.";
-            return;
-        }
+if (string.IsNullOrWhiteSpace(_name))
+{
+_message = "Name is required.";
+return;
+}
 
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
+if (string.IsNullOrWhiteSpace(_cpr))
+{
+_message = "CPR number is required.";
+return;
+}
 
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
-        
+if (string.IsNullOrWhiteSpace(_phone))
+{
+_message = "Phone number is required.";
+return;
+}
+if (string.IsNullOrWhiteSpace(_address))
+{
+_message = "Address is required.";
+return;
+}
 
-        if (_password != _confirmPassword)
-        {
-            _message = "Passwords do not match.";
-            return;
-        }
+if (string.IsNullOrWhiteSpace(_biography))
+{
+_message = "Biography is required.";
+return;
+}
 
-        var createHouseOwnerDto = new CreateHouseOwnerDto
-        {
-            Name = _name,
-            Email = _email,
-            Password = _password,
-            ProfilePicture = _profilePictureUrl,
-            CPR = _cpr,
-            Phone = _phone,
-            Address = _address,
-            Biography = _biography
-        };
-
-        try
-        {
-            HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
-            _showSuccessMessage = true;
-            _message = $"House Owner created successfully!";
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
-        }
-    }
+if (string.IsNullOrEmpty(_profilePictureUrl))
+{
+_message = "You must upload a profile picture.";
+return;
+}
 
 
-    private async Task OnInputProfilePictureChange(InputFileChangeEventArgs e)
-    {
-        if (!string.IsNullOrEmpty(_profilePictureUrl))
-            await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
+if (_password != _confirmPassword)
+{
+_message = "Passwords do not match.";
+return;
+}
 
-        long maxFileSize = long.MaxValue;
-        var upload = false;
+var createHouseOwnerDto = new CreateHouseOwnerDto
+{
+Name = _name,
+Email = _email,
+Password = _password,
+ProfilePicture = _profilePictureUrl,
+CPR = _cpr,
+Phone = _phone,
+Address = _address,
+Biography = _biography
+};
 
-        using var content = new MultipartFormDataContent();
+try
+{
+HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
+_showSuccessMessage = true;
+_message = $"House Owner created successfully!";
+}
+catch (Exception e)
+{
+Console.WriteLine(e);
+_message = $"Error: {e.Message}";
+}
+}
 
-        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
-        if (_uploadResults.SingleOrDefault(
-                f => f.FileName == file.Name) is null)
-        {
-            try
-            {
-                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
 
-                fileContent.Headers.ContentType =
-                    new MediaTypeHeaderValue(file.ContentType);
+private async Task OnInputProfilePictureChange(InputFileChangeEventArgs e)
+{
+if (!string.IsNullOrEmpty(_profilePictureUrl))
+await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
 
-                content.Add(
-                    content: fileContent,
-                    name: "\"files\"",
-                    fileName: file.Name);
+long maxFileSize = long.MaxValue;
+var upload = false;
 
-                upload = true;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogInformation(
-                    $"{file.Name} not uploaded (Err: 6): {ex.Message}",
-                    file.Name, ex.Message);
+using var content = new MultipartFormDataContent();
 
-                _uploadResults.Add(
-                    new()
-                    {
-                        FileName = file.Name,
-                        ErrorCode = 6,
-                        Uploaded = false
-                    });
-            }
-        }
+var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+if (_uploadResults.SingleOrDefault(
+f => f.FileName == file.Name) is null)
+{
+try
+{
+var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
 
-        if (upload)
-        {
-            var response = await Http.PostAsync("/Filesave", content);
+fileContent.Headers.ContentType =
+new MediaTypeHeaderValue(file.ContentType);
 
-            var newUploadResults = await response.Content
-                .ReadFromJsonAsync<IList<FileDto>>();
+content.Add(
+content: fileContent,
+name: "\"files\"",
+fileName: file.Name);
 
-            if (newUploadResults is not null)
-            {
-                _profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
-            }
-        }
-    }
+upload = true;
+}
+catch (Exception ex)
+{
+Logger.LogInformation(
+$"{file.Name} not uploaded (Err: 6): {ex.Message}",
+file.Name, ex.Message);
+
+_uploadResults.Add(
+new()
+{
+FileName = file.Name,
+ErrorCode = 6,
+Uploaded = false
+});
+}
+}
+
+if (upload)
+{
+var response = await Http.PostAsync("/Filesave", content);
+
+var newUploadResults = await response.Content
+.ReadFromJsonAsync<IList<FileDto>>();
+
+if (newUploadResults is not null)
+{
+_profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
+}
+}
+}
 
 }

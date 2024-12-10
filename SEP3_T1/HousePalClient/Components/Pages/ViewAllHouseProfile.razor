@@ -38,8 +38,10 @@
                                     }
                                     <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
                                     <p><i class="fa-solid fa-star"></i>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
-                                    <button type="button" class="btn btn-primary" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
                                     <button type="button" class="btn btn-danger" @onclick="() => ShowDeletionConfirmation(profile.Id)">Delete</button>
+                                    <button type="button" class="btn btn-info" @onclick="() => EditHouseProfile(profile.Id)">Edit</button>
+                                    <br/>
+                                    <button type="button" class="btn btn-success" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
                                 </div>
                             }
                         }
@@ -397,6 +399,12 @@
     {
         Navigation.NavigateTo("/create-house-profile");
     }
+    
+    private void EditHouseProfile(int profileId)
+    {
+        Navigation.NavigateTo($"/edit-house-profile/{profileId}");
+    }
+    
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");

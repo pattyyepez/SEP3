@@ -36,7 +36,7 @@
             <!-- Personal Information Fields -->
             <div class="form-section">
                 <h2>Personal Information</h2>
-                
+
                 <label>Name:</label>
                 <input type="text" class="form-control" placeholder="Enter your name" @bind="_name" required/>
 
@@ -53,7 +53,7 @@
 
                 <label>Short Introduction:</label>
                 <textarea class="form-control" rows="4" placeholder="Write a brief introduction" @bind="_biography" required></textarea>
-                
+
                 <label>Relevant experiences:</label>
                 <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
@@ -64,10 +64,10 @@
                 {
                     <hr/>
                     <p>Uploaded picture:</p>
-                <img class="profile-picture" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
+                    <img class="profile-picture" src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]" alt="Uploaded picture"/>
                     <hr/>
                 }
-                
+
                 <label>Upload At Least 3 Pictures:</label>
                 <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
 
@@ -82,14 +82,14 @@
                         }
                     </div>
                 }
-                
+
             </div>
 
             <div class="form-section">
                 <h2>Skills</h2>
-            
+
                 <ul>
-                    @foreach(var item in skills)
+                    @foreach (var item in skills)
                     {
                         <li>
                             <input type="checkbox" @bind="item.Selected"/>
@@ -98,13 +98,13 @@
                     }
                 </ul>
 
-            
+
             </div>
 
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(_message))
             {
-            <div class="alert alert-danger">@_message</div>
+                <div class="alert alert-danger">@_message</div>
             }
 
             <!-- Submit Button -->
@@ -127,16 +127,16 @@
 }
 @if (_showCancelConfirmation)
 {
-<div class="modal-background">
-    <div class="modal-content">
-        <h2>Confirmation</h2>
-        <p>Are you sure you want to cancel? All changes will be lost.</p>
-        <div class="modal-actions">
-            <button @onclick="ConfirmCancel" class="btn btn-primary">Yes</button>
-            <button @onclick="CloseCancelModal" class="btn btn-secondary">No</button>
+    <div class="modal-background">
+        <div class="modal-content">
+            <h2>Confirmation</h2>
+            <p>Are you sure you want to cancel? All changes will be lost.</p>
+            <div class="modal-actions">
+                <button @onclick="ConfirmCancel" class="btn btn-primary">Yes</button>
+                <button @onclick="CloseCancelModal" class="btn btn-secondary">No</button>
+            </div>
         </div>
     </div>
-</div>
 }
 <style>
     @@font-face {
@@ -386,6 +386,7 @@
 
     MultiSelectList skills;
     List<string> _pictures = [];
+
     private void OpenCancelModal()
     {
         _showCancelConfirmation = true;
@@ -395,6 +396,7 @@
     {
         _showCancelConfirmation = false;
     }
+
     private void ConfirmCancel()
     {
         _email = string.Empty;
@@ -408,12 +410,11 @@
         _message = string.Empty;
         _profilePictureUrl = string.Empty;
         _pictures.Clear();
-        
+
 
         _showSuccessMessage = false;
         _showCancelConfirmation = false;
         Navigation.NavigateTo("/");
-
     }
 
 
@@ -424,7 +425,6 @@
 
     private async Task CreateSitter()
     {
-        
         _message = string.Empty;
 
         if (string.IsNullOrWhiteSpace(_email))
@@ -498,7 +498,7 @@
             _message = "Passwords do not match.";
             return;
         }
-        
+
         var createHouseSitterDto = new CreateHouseSitterDto()
         {
             Name = _name,
@@ -512,7 +512,8 @@
         };
 
         createHouseSitterDto.Skills = [];
-        foreach (var skill in skills){
+        foreach (var skill in skills)
+        {
             if (skill.Selected)
             {
                 createHouseSitterDto.Skills.Add(skill.Text);
@@ -520,7 +521,7 @@
         }
 
         createHouseSitterDto.Pictures = _pictures;
-        
+
         try
         {
             HouseSitterDto created = await Service.AddAsync(createHouseSitterDto);
@@ -538,7 +539,7 @@
     {
         if (!string.IsNullOrEmpty(_profilePictureUrl))
             await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
-        
+
         var upload = false;
 
         using var content = new MultipartFormDataContent();
@@ -593,15 +594,15 @@
 
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
-    { 
+    {
         foreach (var fileToDelete in _pictures)
         {
             if (!string.IsNullOrEmpty(fileToDelete))
             {
                 await Http.DeleteAsync($"/Filesave/{fileToDelete.Split('.')[0]}/{fileToDelete.Split('.')[1]}");
             }
-        
         }
+
         _pictures = [];
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
         {
@@ -629,5 +630,5 @@
         skills = new MultiSelectList(Service.GetAllSkills());
         await InvokeAsync(StateHasChanged);
     }
-    
+
 }

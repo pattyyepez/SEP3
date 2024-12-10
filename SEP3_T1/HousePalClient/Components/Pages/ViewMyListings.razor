@@ -32,7 +32,7 @@
                             <!-- Left Side: House Information -->
                             <div class="house-info">
                                 <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-image"/>
-                                <h2 class="listing-title">@listing.Profile.Title</h2>
+                                <h2 class="listing-title"><a href="https://localhost:7262/view-listing/@listing.Id">@listing.Profile.Title</a></h2>
                                 <p class="listing-dates">@listing.StartDate.ToShortDateString() - @listing.EndDate.ToShortDateString()</p>
                                 <button class="btn delete-btn" @*@onclick=""*@>Delete Listing</button>
                             </div>
@@ -565,7 +565,7 @@
 
     private void NavigateToDetails(int listingId)
     {
-        Navigation.NavigateTo($"/view-house-listing/{listingId}");
+        Navigation.NavigateTo($"/view-listing/{listingId}");
     }
     
     private void NavigateToCreate()

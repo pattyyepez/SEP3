@@ -13,60 +13,73 @@
 @inject IHouseProfileService HouseProfileService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseSitter">
         <Authorized>
-        <div class="page-container">
-    
-            <div class="filter-title">
-                <h2>Find a House to Sit:</h2>
-                <button type="button" class="btn btn-primary filter" @onclick="OnShowModalClick"><i class="fa-solid fa-sliders"></i> Filter</button>
-            </div>
+            <div class="page-container">
 
-            <div class="house-profile-list">
+                <div class="filter-title">
+                    <h2>Find a House to Sit:</h2>
+                    <button type="button" class="btn btn-primary filter"
+                            @onclick="OnShowModalClick"><i
+                            class="fa-solid fa-sliders"></i> Filter
+                    </button>
+                </div>
 
-                @if (_houseListings == null || !_houseListings.Any())
-                {
+                <div class="house-profile-list">
+
+                    @if (_houseListings == null || !_houseListings.Any())
+                    {
                     <p>No listings found.</p>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     @foreach (var listing in _houseListings)
                     {
-                        <div class="house-profile-item">
-                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                            {
-                                <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                            }
-                            <p>@listing.Profile.Title</p>
-                            <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                            <p>@listing.Profile.Region</p>
-                            <p>@listing.Profile.City</p>
-                            <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                        </div>
+                    <div class="house-profile-item">
+                        @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                        {
+                        <img
+                            src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]"
+                            alt="House Picture" class="house-profile-img"/>
+                        }
+                        <p>@listing.Profile.Title</p>
+                        <p>@listing.StartDate.ToString("dd/M/yyyy")
+                            - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                        <p>@listing.Profile.Region</p>
+                        <p>@listing.Profile.City</p>
+                        <button type="button" class="btn btn-primary"
+                                @onclick="() => NavigateToDetails(listing.Id)">
+                            More Details
+                        </button>
+                    </div>
                     }
-                }
+                    }
+                </div>
             </div>
-        </div>
 
-        @if (_showModal)
-        {
+            @if (_showModal)
+            {
             <div class="modal-background">
                 <div class="modal-content">
-            
-                    <button class="close-button" @onclick="OnHideModalClick"><i class="fa-solid fa-xmark"></i></button>
-            
+
+                    <button class="close-button" @onclick="OnHideModalClick"><i
+                            class="fa-solid fa-xmark"></i></button>
+
                     <h2>Filter Listings</h2>
-            
+
                     <div class="form-group">
                         <label for="region">Region</label>
-                        <input id="region" class="form-control" @bind="_region" placeholder="Enter Region"/>
+                        <input id="region" class="form-control" @bind="_region"
+                               placeholder="Enter Region"/>
                     </div>
 
                     <div class="form-group">
                         <label for="city">City</label>
-                        <input id="city" class="form-control" @bind="_city" placeholder="Enter City"/>
+                        <input id="city" class="form-control" @bind="_city"
+                               placeholder="Enter City"/>
                     </div>
 
                     <hr class="section-divider"/>
@@ -103,15 +116,16 @@
                     <div class="form-group checkbox">
                         @if (_amenities is not null)
                         {
-                            <div class="amenities-container">
-                                @foreach (var amenity in _amenities)
-                                {
-                                    <div class="pill">
-                                        <input type="checkbox" id="@amenity" @bind="amenity.Selected"/>
-                                        <label for="@amenity">@amenity.Text</label>
-                                    </div>
-                                }
+                        <div class="amenities-container">
+                            @foreach (var amenity in _amenities)
+                            {
+                            <div class="pill">
+                                <input type="checkbox" id="@amenity"
+                                       @bind="amenity.Selected"/>
+                                <label for="@amenity">@amenity.Text</label>
                             </div>
+                            }
+                        </div>
                         }
                     </div>
 
@@ -119,25 +133,28 @@
                     <div class="form-group checkbox">
                         @if (_chores is not null)
                         {
-                            <div class="amenities-container">
-                                @foreach (var chore in _chores)
-                                {
-                                    <div class="pill">
-                                        <input type="checkbox" id="@chore" @bind="chore.Selected"/>
-                                        <label for="@chore">@chore.Text</label>
-                                    </div>
-                                }
+                        <div class="amenities-container">
+                            @foreach (var chore in _chores)
+                            {
+                            <div class="pill">
+                                <input type="checkbox" id="@chore"
+                                       @bind="chore.Selected"/>
+                                <label for="@chore">@chore.Text</label>
                             </div>
+                            }
+                        </div>
                         }
                     </div>
 
                     <hr class="section-divider"/>
 
-                    <Button Color="ButtonColor.Primary" @onclick="Filter">Find listings</Button>
-            
+                    <Button Color="ButtonColor.Primary" @onclick="Filter">Find
+                        listings
+                    </Button>
+
                 </div>
             </div>
-        }
+            }
         </Authorized>
     </AuthorizeView>
     <AuthorizeView>
@@ -145,7 +162,9 @@
             <div class="not-authorized-container">
                 <h2>You must be logged in to view this page.</h2>
                 <p>Please log in.</p>
-                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log
+                    In
+                </button>
             </div>
         </NotAuthorized>
     </AuthorizeView>
@@ -153,35 +172,40 @@
 
 <style>
 
-    @@font-face {
+    @@font-face
+    {
         font-family: 'LogoFont';
         src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
     }
 
-    @@font-face {
+    @@font-face
+    {
         font-family: 'FuturaFont';
         src: url('fonts/futura.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
     }
 
-    .amenities-container{
+    .amenities-container
+    {
         display: flex;
         flex-wrap: wrap;
         gap: 1em;
         margin-bottom: 0.5em;
     }
-    
-    h3 {
+
+    h3
+    {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         margin-top: 0.1em;
         font-size: 1.5rem;
     }
 
-    .pill {
+    .pill
+    {
         background-color: #ff7e5f;
         color: white;
         padding: 0.5em 1em;
@@ -190,44 +214,51 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         font-family: 'FuturaFont', sans-serif;
     }
-    .house-profile-img {
+
+    .house-profile-img
+    {
         width: 100%;
         height: 200px;
-        object-fit: cover; 
+        object-fit: cover;
         border-radius: 10px 10px 0 0;
-        display: block; 
+        display: block;
     }
 
 
-    .filter-title{
+    .filter-title
+    {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
         justify-content: space-between;
         margin-bottom: 1em;
     }
-    
 
-    h2 {
+
+    h2
+    {
         color: #ff7e5f;
         margin-bottom: 1rem;
         font-family: 'LogoFont', sans-serif;
     }
 
-    .btn {
+    .btn
+    {
         font-size: 0.85em;
         padding: 0.375em 0.75em;
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .house-profile-list {
+    .house-profile-list
+    {
         display: flex;
         flex-wrap: wrap;
         gap: 1.5em;
         justify-content: center;
     }
 
-    .house-profile-item {
+    .house-profile-item
+    {
         width: 15em;
         background-color: #ffffff;
         border-radius: 10px;
@@ -237,24 +268,28 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .house-profile-item div {
+    .house-profile-item div
+    {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 95%;
         height: 95%;
     }
-    
 
-    p {
+
+    p
+    {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         margin: 1em;
     }
-    .page-container {
+
+    .page-container
+    {
         width: 100%;
         max-width: 100%;
-        overflow-x: hidden; 
+        overflow-x: hidden;
         overflow-y: hidden;
         margin: 0 auto;
         height: 100%;
@@ -262,7 +297,8 @@
     }
 
 
-    .modal-background {
+    .modal-background
+    {
         position: absolute;
         top: 0;
         left: 0;
@@ -273,13 +309,14 @@
         justify-content: center;
         align-items: center;
         z-index: 4000;
-        overflow: hidden; 
+        overflow: hidden;
     }
 
 
-    .modal-content {
-        margin-top: 1em; 
-        position: relative; 
+    .modal-content
+    {
+        margin-top: 1em;
+        position: relative;
         background-color: #fff;
         padding: 2em;
         border-radius: 12px;
@@ -294,17 +331,20 @@
     }
 
 
-    .btn.btn-primary.filter{
-        background-color:#ff7e5f;
+    .btn.btn-primary.filter
+    {
+        background-color: #ff7e5f;
         font-size: 0.55em;
         border-style: none;
     }
 
-    .btn.btn-primary.filter:hover{
-        background-color:#feb47b;
+    .btn.btn-primary.filter:hover
+    {
+        background-color: #feb47b;
     }
 
-    .close-button {
+    .close-button
+    {
         position: absolute;
         top: 0.5em;
         right: 0.5em;
@@ -315,38 +355,44 @@
         cursor: pointer;
     }
 
-    .close-button:hover {
+    .close-button:hover
+    {
         color: #ff7e5f;
     }
 
-    .filter-title {
+    .filter-title
+    {
         font-size: 2rem;
         color: #333;
         text-align: center;
         margin-bottom: 1.5em;
     }
 
-    .filter-form {
+    .filter-form
+    {
         display: flex;
         flex-direction: column;
         gap: 1.5em;
     }
 
-    .form-group {
+    .form-group
+    {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .form-group.checkbox{
+    .form-group.checkbox
+    {
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 0.5em;
     }
-    
-    .form-control {
+
+    .form-control
+    {
         padding: 0.5em;
         font-size: 1rem;
         border: 1px solid #ddd;
@@ -355,16 +401,20 @@
         margin-bottom: 0.5em;
     }
 
-    .form-control:focus {
+    .form-control:focus
+    {
         border-color: #ff7e5f;
         box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
     }
 
-    .date-group {
+    .date-group
+    {
         display: flex;
         flex-direction: column;
     }
-    .not-authorized-container {
+
+    .not-authorized-container
+    {
         text-align: center;
         margin-top: 5em;
         padding: 2em;
@@ -373,21 +423,24 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .not-authorized-container h2 {
+    .not-authorized-container h2
+    {
         color: #ff7e5f;
         font-family: 'LogoFont', sans-serif;
         font-size: 2em;
         margin-bottom: 0.5em;
     }
 
-    .not-authorized-container p {
+    .not-authorized-container p
+    {
         font-family: 'FuturaFont', sans-serif;
         color: #333;
         font-size: 1.2em;
         margin-bottom: 1.5em;
     }
 
-    .not-authorized-container .btn {
+    .not-authorized-container .btn
+    {
         font-size: 1em;
         padding: 0.75em 1.5em;
         font-family: 'FuturaFont', sans-serif;
@@ -398,7 +451,8 @@
         cursor: pointer;
     }
 
-    .not-authorized-container .btn:hover {
+    .not-authorized-container .btn:hover
+    {
         background-color: #feb47b;
     }
 
@@ -421,138 +475,138 @@
 </style>
 
 @code {
-    [Inject] private PreloadService PreloadService { get; set; } = default!;
+[Inject] private PreloadService PreloadService { get; set; } = default!;
 
-    private bool _showModal;
-    private string _region = string.Empty;
-    private string _city = string.Empty;
-    private readonly DateTime _minDateStart = DateTime.Today;
-    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
-    private DateTime _minDateEnd = DateTime.Today;
-    private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
-    private DateTime? _gottenStart;
-    private DateTime? _gottenEnd;
+private bool _showModal;
+private string _region = string.Empty;
+private string _city = string.Empty;
+private readonly DateTime _minDateStart = DateTime.Today;
+private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
+private DateTime _minDateEnd = DateTime.Today;
+private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
+private DateTime? _gottenStart;
+private DateTime? _gottenEnd;
 
-    private MultiSelectList _amenities = default!;
-    private MultiSelectList _chores = default!;
+private MultiSelectList _amenities = default!;
+private MultiSelectList _chores = default!;
 
-    private List<HouseListingDto>? _houseListings;
+private List<HouseListingDto>? _houseListings;
 
-    // Property for Start Date
-    private DateTime? StartDate
-    {
-        get => _gottenStart;
-        set
-        {
-            _gottenStart = value;
-            if (value < DateTime.Today) _gottenStart = DateTime.Today;
-            _minDateEnd = _gottenStart!.Value;
-            if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
-            {
-                _gottenEnd = _gottenStart;
-            }
-        }
-    }
-    private void NavigateToLogin()
-    {
-        Navigation.NavigateTo("/login");
-    }
-    // Property for End Date
-    private DateTime? EndDate
-    {
-        get => _gottenEnd;
-        set
-        {
-            _gottenEnd = value;
-            if (value < _minDateEnd) _gottenEnd = _minDateEnd;
-        }
-    }
+// Property for Start Date
+private DateTime? StartDate
+{
+get => _gottenStart;
+set
+{
+_gottenStart = value;
+if (value < DateTime.Today) _gottenStart = DateTime.Today;
+_minDateEnd = _gottenStart!.Value;
+if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
+{
+_gottenEnd = _gottenStart;
+}
+}
+}
+private void NavigateToLogin()
+{
+Navigation.NavigateTo("/login");
+}
+// Property for End Date
+private DateTime? EndDate
+{
+get => _gottenEnd;
+set
+{
+_gottenEnd = value;
+if (value < _minDateEnd) _gottenEnd = _minDateEnd;
+}
+}
 
-    private void OnShowModalClick()
-    {
-        _showModal = true;
-    }
+private void OnShowModalClick()
+{
+_showModal = true;
+}
 
-    private void OnHideModalClick()
-    {
-        _showModal = false;
-    }
+private void OnHideModalClick()
+{
+_showModal = false;
+}
 
-    protected override async Task OnInitializedAsync()
-    {
-        PreloadService.Show();
-        _houseListings = new List<HouseListingDto>();
-        // var authState = await AuthenticationStateProvider
-        //     .GetAuthenticationStateAsync();
-        // var user = authState.User;
-        //
-        // if (user.Identity is null || !user.Identity.IsAuthenticated)
-        // {
-        //     Console.WriteLine("Not authenticated");
-        //     return;
-        // }
-        //
-        // IEnumerable<Claim> claims = user.Claims;
-        // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
-        await LoadAllHouseListings();
-        await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
-    }
+protected override async Task OnInitializedAsync()
+{
+PreloadService.Show();
+_houseListings = new List<HouseListingDto>();
+// var authState = await AuthenticationStateProvider
+//     .GetAuthenticationStateAsync();
+// var user = authState.User;
+//
+// if (user.Identity is null || !user.Identity.IsAuthenticated)
+// {
+//     Console.WriteLine("Not authenticated");
+//     return;
+// }
+//
+// IEnumerable<Claim> claims = user.Claims;
+// string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+_amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+_chores = new MultiSelectList(HouseProfileService.GetAllChores());
+await LoadAllHouseListings();
+await InvokeAsync(StateHasChanged);
+PreloadService.Hide();
+}
 
-    private async Task LoadAllHouseListings()
-    {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
-        var today = DateOnly.FromDateTime(DateTime.Today);
+private async Task LoadAllHouseListings()
+{
+var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
+var today = DateOnly.FromDateTime(DateTime.Today);
 
-        _houseListings = allListings
-            .Where(listing => listing.StartDate > today)
-            .ToList();
-    }
+_houseListings = allListings
+.Where(listing => listing.StartDate > today)
+.ToList();
+}
 
 
 
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-house-listing/{listingId}");
-    }
+private void NavigateToDetails(int listingId)
+{
+Navigation.NavigateTo($"/view-listing/{listingId}");
+}
 
-    private async void Filter()
-    {
-        FilteredHouseListingsDto filter = new FilteredHouseListingsDto
-        {
-            City = _city,
-            Region = _region,
-            StartDay = _gottenStart?.Day,
-            StartMonth = _gottenStart?.Month,
-            StartYear = _gottenStart?.Year,
-            EndDay = _gottenEnd?.Day,
-            EndMonth = _gottenEnd?.Month,
-            EndYear = _gottenEnd?.Year,
-        };
+private async void Filter()
+{
+FilteredHouseListingsDto filter = new FilteredHouseListingsDto
+{
+City = _city,
+Region = _region,
+StartDay = _gottenStart?.Day,
+StartMonth = _gottenStart?.Month,
+StartYear = _gottenStart?.Year,
+EndDay = _gottenEnd?.Day,
+EndMonth = _gottenEnd?.Month,
+EndYear = _gottenEnd?.Year,
+};
 
-        filter.Chores = [];
-        if (_chores.Any())
-            foreach (var chore in _chores)
-            {
-                if (chore.Selected)
-                {
-                    filter.Chores.Add(chore.Text);
-                }
-            }
+filter.Chores = [];
+if (_chores.Any())
+foreach (var chore in _chores)
+{
+if (chore.Selected)
+{
+filter.Chores.Add(chore.Text);
+}
+}
 
-        filter.Amenities = [];
-        foreach (var amenity in _amenities)
-        {
-            if (amenity.Selected)
-            {
-                filter.Amenities.Add(amenity.Text);
-            }
-        }
+filter.Amenities = [];
+foreach (var amenity in _amenities)
+{
+if (amenity.Selected)
+{
+filter.Amenities.Add(amenity.Text);
+}
+}
 
-        _houseListings = HouseListingService.GetFilteredListings(filter).ToList();
-        await InvokeAsync(StateHasChanged);
-        _showModal = false;
-    }
+_houseListings = HouseListingService.GetFilteredListings(filter).ToList();
+await InvokeAsync(StateHasChanged);
+_showModal = false;
+}
 }

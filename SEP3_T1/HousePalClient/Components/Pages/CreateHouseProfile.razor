@@ -19,121 +19,121 @@
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
         <Authorized>
-    <div class="page-container">
-    <div class="signup-page-container">
-        <h1>Create Your House Profile</h1>
+            <div class="page-container">
+                <div class="signup-page-container">
+                    <h1>Create Your House Profile</h1>
 
-        <form class="house-profile-form" @onsubmit="CreateProfile">
-            <!-- House Profile Information Fields -->
-            <div class="form-section">
-                <h2>House Information</h2>
+                    <form class="house-profile-form" @onsubmit="CreateProfile">
+                        <!-- House Profile Information Fields -->
+                        <div class="form-section">
+                            <h2>House Information</h2>
 
-                <label>Title:</label>
-                <input type="text" class="form-control" placeholder="Enter title" @bind="_title" required/>
-                
-                <label>Description:</label>
-                <textarea class="form-control" rows="4" placeholder="Describe your house" @bind="_description" required></textarea>
+                            <label>Title:</label>
+                            <input type="text" class="form-control" placeholder="Enter title" @bind="_title" required/>
 
-                <label>City:</label>
-                <input type="text" class="form-control" placeholder="Enter city" @bind="_city" required/>
+                            <label>Description:</label>
+                            <textarea class="form-control" rows="4" placeholder="Describe your house" @bind="_description" required></textarea>
 
-                <label>Region:</label>
-                <input type="text" class="form-control" placeholder="Enter region" @bind="_region" required/>
+                            <label>City:</label>
+                            <input type="text" class="form-control" placeholder="Enter city" @bind="_city" required/>
 
-                <label>Address:</label>
-                <input type="text" class="form-control" placeholder="Enter address" @bind="_address" required/>
+                            <label>Region:</label>
+                            <input type="text" class="form-control" placeholder="Enter region" @bind="_region" required/>
+
+                            <label>Address:</label>
+                            <input type="text" class="form-control" placeholder="Enter address" @bind="_address" required/>
+                        </div>
+
+                        <!-- Amenities, Chores, and Rules Section -->
+                        <div class="form-section">
+                            <h2>Details</h2>
+
+                            <h3>Amenities:</h3>
+                            @if (_amenities is not null)
+                            {
+                                <ul>
+                                    @foreach (var amenity in _amenities)
+                                    {
+                                        <li>
+                                            <input type="checkbox" @bind="amenity.Selected"/>
+                                            <label>@amenity.Text</label>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                            <h3>Chores:</h3>
+                            @if (_chores is not null)
+                            {
+                                <ul>
+                                    @foreach (var chore in _chores)
+                                    {
+                                        <li>
+                                            <input type="checkbox" @bind="chore.Selected"/>
+                                            <label>@chore.Text</label>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+
+                            <h3>Rules:</h3>
+                            @if (_rules is not null)
+                            {
+                                <ul>
+                                    @foreach (var rule in _rules)
+                                    {
+                                        <li>
+                                            <input type="checkbox" @bind="rule.Selected"/>
+                                            <label>@rule.Text</label>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+
+                        <!-- Upload Pictures Section -->
+                        <div class="form-section">
+                            <h2>Upload Pictures</h2>
+
+                            <label>Upload At Least 3 Pictures:</label>
+                            <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
+
+                            @if (_pictures.Count != 0)
+                            {
+                                <hr/>
+                                <p>Uploaded pictures:</p>
+                                <div class="uploaded-images-container">
+                                    @foreach (var picture in _pictures)
+                                    {
+                                        <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Display Message if exists -->
+                        @if (!string.IsNullOrEmpty(_message))
+                        {
+                            <div class="alert alert-danger">@_message</div>
+                        }
+
+
+                        <!-- Submit Button -->
+                        <button type="button" @onclick="CreateProfile" class="btn btn-primary">Create House Profile</button>
+                    </form>
+                </div>
             </div>
 
-            <!-- Amenities, Chores, and Rules Section -->
-            <div class="form-section">
-                <h2>Details</h2>
-
-                <h3>Amenities:</h3>
-                @if (_amenities is not null)
-                {
-                    <ul>
-                        @foreach (var amenity in _amenities)
-                        {
-                            <li>
-                                <input type="checkbox" @bind="amenity.Selected"/>
-                                <label>@amenity.Text</label>
-                            </li>
-                        }
-                    </ul>
-                }
-
-                <h3>Chores:</h3>
-                @if (_chores is not null)
-                {
-                    <ul>
-                        @foreach (var chore in _chores)
-                        {
-                            <li>
-                                <input type="checkbox" @bind="chore.Selected"/>
-                                <label>@chore.Text</label>
-                            </li>
-                        }
-                    </ul>
-                }
-
-                <h3>Rules:</h3>
-                @if (_rules is not null)
-                {
-                    <ul>
-                        @foreach (var rule in _rules)
-                        {
-                            <li>
-                                <input type="checkbox" @bind="rule.Selected"/>
-                                <label>@rule.Text</label>
-                            </li>
-                        }
-                    </ul>
-                }
-            </div>
-
-            <!-- Upload Pictures Section -->
-            <div class="form-section">
-                <h2>Upload Pictures</h2>
-
-                <label>Upload At Least 3 Pictures:</label>
-                <InputFile OnChange="OnInputFileChange" accept="image/*" class="form-control" multiple/>
-
-                @if (_pictures.Count != 0)
-                {
-                    <hr/>
-                    <p>Uploaded pictures:</p>
-                    <div class="uploaded-images-container">
-                        @foreach (var picture in _pictures)
-                        {
-                            <img src="https://localhost:7134/Filesave/@picture.Split('.')[0]/@picture.Split('.')[1]" alt="Uploaded picture"/>
-                        }
-                    </div>
-                }
-            </div>
-
-            <!-- Display Message if exists -->
-            @if (!string.IsNullOrEmpty(_message))
+            @if (_showSuccessMessage)
             {
-                <div class="alert alert-danger">@_message</div>
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h2>Profile Created!</h2>
+                        <p> @_name, your house profile has been created successfully.</p>
+                        <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
+                    </div>
+                </div>
             }
-
-
-            <!-- Submit Button -->
-            <button type="button" @onclick="CreateProfile" class="btn btn-primary">Create House Profile</button>
-        </form>
-    </div>
-</div>
-
-@if (_showSuccessMessage)
-{
-    <div class="modal-background">
-        <div class="modal-content">
-            <h2>Profile Created!</h2>
-            <p> @_name, your house profile has been created successfully.</p>
-            <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
-        </div>
-    </div>
-}
         </Authorized>
         <NotAuthorized>
             <div class="not-authorized-container">
@@ -392,7 +392,7 @@
     private MultiSelectList? _amenities = null;
     private MultiSelectList? _chores = null;
     private MultiSelectList? _rules = null;
-    
+
     private List<FileDto> _uploadResults = new();
     private int maxAllowedFiles = 3;
 
@@ -400,7 +400,7 @@
     {
         Navigation.NavigateTo("/view-all-house-profiles");
     }
-    
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
@@ -420,32 +420,36 @@
             Address = _address,
             Pictures = _pictures
         };
-        
+
         createHouseProfileDto.Chores = [];
-        foreach (var chore in _chores){
+        foreach (var chore in _chores)
+        {
             if (chore.Selected)
-            { 
+            {
                 createHouseProfileDto.Chores.Add(chore.Text);
             }
         }
-        
+
         createHouseProfileDto.Rules = [];
-        foreach (var rule in _rules){
+        foreach (var rule in _rules)
+        {
             if (rule.Selected)
-            { 
+            {
                 createHouseProfileDto.Rules.Add(rule.Text);
             }
         }
-        
+
         createHouseProfileDto.Amenities = [];
-        foreach (var amenity in _amenities){
+        foreach (var amenity in _amenities)
+        {
             if (amenity.Selected)
-            { 
+            {
                 createHouseProfileDto.Amenities.Add(amenity.Text);
             }
         }
-        if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) || 
-            string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) || 
+
+        if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) ||
+            string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) ||
             string.IsNullOrWhiteSpace(_address))
         {
             _message = "All fields are required. Please fill in all the details.";
@@ -478,7 +482,7 @@
             if (!string.IsNullOrEmpty(fileToDelete))
                 await Http.DeleteAsync($"/Filesave/{fileToDelete.Split('.')[0]}/{fileToDelete.Split('.')[1]}");
         }
-        
+
         _pictures = [];
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
         {
@@ -505,7 +509,7 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState?.User;
-        
+
         if (user?.Identity != null && user.Identity.IsAuthenticated)
         {
             var houseOwnerIdClaim = user.FindFirst(c => c.Type == "Id");
@@ -513,7 +517,7 @@
             {
                 _houseOwnerId = int.Parse(houseOwnerIdClaim.Value);
             }
-        
+
             var nameClaim = user.FindFirst(ClaimTypes.Name);
             if (nameClaim != null)
             {
@@ -524,15 +528,16 @@
         {
             _message = "User not authenticated.";
         }
-        
+
         _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
         _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         _rules = new MultiSelectList(HouseProfileService.GetAllRules());
         await InvokeAsync(StateHasChanged);
     }
-    
+
     private class File
     {
         public string? Name { get; set; }
     }
+
 }
