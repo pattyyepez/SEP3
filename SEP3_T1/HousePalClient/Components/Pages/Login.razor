@@ -178,6 +178,22 @@
     private readonly LoginModel _loginModel = new();
     private string? _errorMessage;
 
+    protected override async void OnInitialized()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is null || !user.Identity.IsAuthenticated)
+        {
+            _errorMessage = "Invalid username or password.";
+            return;
+        }
+
+        string userRole = user.Claims.Single(c => c.Type == ClaimTypes.Role).Value;
+
+        Navigation.NavigateTo(userRole == "HouseOwner" ? "/view-all-house-profiles" : "/browse-listings");
+    }
+
     private async Task HandleLoginClick()
     {
         try
