@@ -4,6 +4,7 @@
 @using DTOs.Application
 @using DTOs.HouseListing
 @using DTOs.HouseReview
+@using DTOs.SitterReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -153,6 +154,18 @@
                         <hr class="section-divider"/>
 
                         <!-- Review section -->
+                        
+                        <div class="house-average">
+                            <h3>House Rating:</h3>
+                            <div class="average-stars">
+                                @foreach (var star in GetHouseAverage().Stars)
+                                {
+                                <span class="@star"></span>
+                                }
+                            </div>
+                        </div>
+
+
                         <div>
                             @if (_houseListing.Profile.Reviews != null && _houseListing.Profile.Reviews.Any())
                             {
@@ -619,7 +632,21 @@
         background-color: #f8d7da;
         border-color: #f5c6cb;
     }
-    
+    .house-average {
+        text-align: center;
+        font-family: 'FuturaFont', sans-serif;
+        font-size: 1em;
+    }
+
+    .average-stars {
+        display: inline-flex;
+        gap: 0.2em;
+        margin-top: 0.1em;
+        font-size: 2rem;
+        color: #ff7e5f;
+    }
+
+
 </style>
 
 @code {
@@ -641,6 +668,30 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/");
+    }
+
+    private (double Average, List<string> Stars) GetHouseAverage()
+    {
+        if (_houseListing?.Profile.Reviews == null || !_houseListing.Profile.Reviews.Any())
+        {
+            return (0, new List<string> { "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star" });
+        }
+
+        double averageRating = _houseListing.Profile.Reviews.Average(r => r.Rating);
+
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        var stars = new List<string>();
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return (averageRating, stars);
     }
 
     protected override async Task OnInitializedAsync()
