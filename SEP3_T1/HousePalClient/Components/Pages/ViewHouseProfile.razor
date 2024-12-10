@@ -1,6 +1,7 @@
 ﻿@page "/view-house-profile/{profileId:int}"
 @using System.Security.Claims
 @using DTOs.HouseProfile
+@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -148,23 +149,52 @@
 
             <hr class="section-divider"/>
 
-            <div>
-                @if (_houseProfile.Reviews!.Any())
-                {
-                    @foreach (var review in _houseProfile.Reviews!)
-                    {
-                        <div>
-                            <p>@review.Sitter!.Name - @review.Date</p>
-                            <p>@review.Rating</p>
-                            <p>@review.Comment</p>
-                        </div>
-                    }
-                }
-                else
-                {
-                    <p>No reviews</p>
-                }
 
+            <!-- Review section -->
+
+            <div class="house-average">
+                <h3>House Rating:</h3>
+                <div class="average-stars">
+                    @foreach (var star in GetHouseAverage().Stars)
+                    {
+                    <span class="@star"></span>
+                    }
+                </div>
+            </div>
+
+
+            <div>
+                @if (_houseProfile.Reviews != null && _houseProfile.Reviews.Any())
+                {
+                <div class="reviews-section">
+                    <div class="reviews-container">
+                        @foreach (var review in _houseProfile.Reviews)
+                        {
+                        <div class="card">
+                            <div class="card-img-container">
+                                <img src="https://localhost:7134/Filesave/@review.Sitter!.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]"
+                                     class="card-img" alt="Reviewer Profile Picture">
+                            </div>
+
+                            <div class="card-body">
+                                <div class="title-rating">
+                                    <h5>@review.Sitter.Name</h5>
+                                    <div class="stars">
+                                        @foreach (var star in GetStars(review))
+                                        {
+                                        <span class="@star"></span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <p class="card-text">@review.Comment</p>
+                                <p class="card-text"><small class="text-muted">@review.Date</small></p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
             </div>
             
         </div>
@@ -411,6 +441,76 @@
     .not-authorized-container .btn:hover {
         background-color: #feb47b;
     }
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
+
+    .fa-star {
+        font-size: 1em;
+    }
+
+    .fa-star-half-alt {
+        font-size: 1em;
+        align-self: center;
+    }
+
+    .fa-star-o {
+        font-size: 1em;
+        color: lightgray;
+    }
+
+    .reviews-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0;
+        /*overflow: hidden; !* Keeps the section neat *!*/
+    }
+
+    .reviews-container {
+        display: flex;
+        gap: 1rem; /* Adds space between cards */
+        overflow-x: auto; /* Enables horizontal scrolling */
+        scroll-behavior: smooth; /* Smooth scrolling */
+        padding: 1rem;
+        scrollbar-width: thin; /* For Firefox */
+        scrollbar-color: #ff7e5f transparent; /* For Firefox */
+    }
+    .reviews-container::-webkit-scrollbar {
+        width: 8px;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-thumb {
+        background: #ff7e5f;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-thumb:hover {
+        background: #feb47b;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 4px;
+    }
+
+    .house-average {
+        text-align: center;
+        font-family: 'FuturaFont', sans-serif;
+        font-size: 1em;
+    }
+
+    .average-stars {
+        display: inline-flex;
+        gap: 0.2em;
+        margin-top: 0.1em;
+        font-size: 2rem;
+        color: #ff7e5f;
+    }
 </style>
 
 @code {
@@ -421,6 +521,30 @@
     private HouseProfileDto? _houseProfile;
     private bool _showConfirmationModal = false;
     private bool _showSuccessMessage = false;
+
+    private (double Average, List<string> Stars) GetHouseAverage()
+    {
+        if (_houseProfile?.Reviews == null || !_houseProfile.Reviews.Any())
+        {
+            return (0, new List<string> { "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star" });
+        }
+
+        double averageRating = _houseProfile.Reviews.Average(r => r.Rating);
+
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        var stars = new List<string>();
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return (averageRating, stars);
+    }
 
     private void ShowConfirmationModal()
     {
@@ -495,5 +619,16 @@
     {
         Navigation.NavigateTo("/login");
     }
+    private List<string> GetStars(HouseReviewDto? review)
+    {
+        var stars = new List<string>();
 
+        int fullStars = review.Rating;
+        int emptyStars = 5 - fullStars;
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
+    }
 }
