@@ -1,4 +1,4 @@
-﻿@page "/view-my-listings"
+﻿@page "/view-confirmed-stays"
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.Application
@@ -33,7 +33,6 @@
                                 <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-image"/>
                                 <h2 class="listing-title">@listing.Profile.Title</h2>
                                 <p class="listing-dates">@listing.StartDate.ToShortDateString() - @listing.EndDate.ToShortDateString()</p>
-                                <button class="btn delete-btn" @onclick="() => DeleteListing(listing)">Delete Listing</button>
                             </div>
 
                             <!-- Applicants Information -->
@@ -41,41 +40,34 @@
                                 <div class="applicants-scroll">
                                     @if (listing.Applications != null && listing.Applications.Any())
                                     {
-                                        <h3>Applications for this listing:</h3>
+                                        <h3>Your House Sitter for this Stay:</h3>
 
                                         @foreach (var application in listing.Applications)
                                         {
-                                            <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : ""))">
-                                                <div class="card-img-container">
-                                                    <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
-                                                </div>
-
-                                                <div class="card-body">
-                                                    <div class="title-rating">
-                                                        <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank"><h5>@application.Sitter.Name</h5></a>
-                                                        <p><i class="fa-solid fa-star"></i> @(application.Sitter.Reviews!.Any() ? application.Sitter!.Reviews!.Select(r => r.Rating).Average() : "No reviews")</p>
+                                            if (application.Status is "Confirmed")
+                                            {
+                                                <div class="card green">
+                                                    <div class="card-img-container">
+                                                        <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
                                                     </div>
 
-                                                    <p class="card-text" style="font-style: italic">
-                                                        @GetApplicationStatusText(application)
-                                                    </p>
-
-                                                    <p class="card-text"><small>@application.Date</small></p>
-
-                                                    @if (!listing.Applications.Any(a => a.Status == "Confirmed" || a.Status == "Approved") && application.Status == "Pending")
-                                                    {
-                                                        <div class="card-buttons">
-                                                            <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
-                                                            <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
+                                                    <div class="card-body">
+                                                        <div class="title-rating">
+                                                            <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank"><h5>@application.Sitter.Name</h5></a>
+                                                            <p><i class="fa-solid fa-star"></i> @(application.Sitter.Reviews!.Any() ? application.Sitter!.Reviews!.Select(r => r.Rating).Average() : "No reviews")</p>
                                                         </div>
-                                                    }
+                                                    
+
+                                                        <p class="card-text"><small>@application.Date</small></p>
+                                                    
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        <h3>You have no applications for this listing</h3>
+                                        <h3>You have no House Sitter for this Stay.</h3>
                                     }
                                 </div>
                             </div>
@@ -433,11 +425,11 @@
 
     private async Task LoadUpcomingHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Open", true, true));
+        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true));
         var today = DateOnly.FromDateTime(DateTime.Today);
 
         _houseListings = allListings
-            .Where(listing => listing.StartDate >= today)
+            .Where(listing => listing.StartDate > today)
             .ToList();
     }
 
@@ -447,9 +439,6 @@
         {
             listing.Applications = new();
             listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Approved", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Pending", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Rejected", true).ToList());
 
             foreach (var application in listing.Applications)
             {
@@ -461,55 +450,5 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
-    }
-
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-house-listing/{listingId}");
-    }
-
-    private async void ApproveApplication(ApplicationDto application)
-    {
-        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
-        {
-            ListingId = application.ListingId,
-            SitterId = application.SitterId,
-            Status = "Approved"
-        };
-
-        await ApplicationService.UpdateAsync(updatedApplication);
-        await LoadApplications();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private async void RejectApplication(ApplicationDto application)
-    {
-        UpdateApplicationDto update = new UpdateApplicationDto
-        {
-            ListingId = application.ListingId,
-            SitterId = application.SitterId,
-            Status = "Rejected"
-        };
-
-        await ApplicationService.UpdateAsync(update);
-        await LoadApplications();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private string GetApplicationStatusText(ApplicationDto application)
-    {
-        return application.Status switch
-        {
-            "Pending" => application.Message,
-            "Approved" => $"{application.Sitter.Name} has to confirm their stay.",
-            "Rejected" => "You have rejected this applicant.",
-            "Canceled" => $"{application.Sitter.Name} has canceled their stay.",
-            _ => string.Empty
-        };
-    }
-
-    private async void DeleteListing(HouseListingDto listing)
-    {
-        // Logic to delete listing
     }
 }
