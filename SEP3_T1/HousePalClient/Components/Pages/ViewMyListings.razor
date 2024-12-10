@@ -2,6 +2,8 @@
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.Application
+@using DTOs.HouseReview
+@using DTOs.SitterReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -39,161 +41,79 @@
 
                             <!-- Right Side: Applicants -->
                             <div class="applicants-container">
+                                
+                                <div class="applicants-scroll">
+                                        
+                                    @if (listing.Applications != null && listing.Applications.Any())
+                                    {
+                                        <h3>Applications for this listing:</h3>
 
-                                @if (_approvedApplication != null && _approvedApplication.Status == "Confirmed")
-                                {
-                                    <div class="applications-section">
-                                        <div class="card green">
-                                            <div class="card-img-container">
-                                                <img src="https://localhost:7134/Filesave/@_approvedApplication!.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Sitter's profile picture">
-                                            </div>
-
-                                            <div class="card-body">
-                                                <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
-                                                <p class="card-text" style="font-style: italic">You can now contact @_approvedApplication.Sitter.Name about their stay:</p>
-                                                <p class="card-text">@_approvedApplication.Sitter.Phone</p>
-                                                <p class="card-text">@_approvedApplication.Sitter.Email</p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                else
-                                { 
-                                    <div class="applicants-scroll">
-
-                                        <h3>Applications for this listing: </h3>
-
-                                        @if (listing.Applications != null)
+                                        @foreach (var application in listing.Applications)
                                         {
-                                            @if (_approvedApplication != null)
-                                            {
-                                                <div class="card green">
-                                                    <div class="card-img-container">
-                                                        <img src="https://localhost:7134/Filesave/@_approvedApplication.Sitter!.ProfilePicture!.Split('.')[0]/@_approvedApplication.Sitter.ProfilePicture.Split('.')[1]" alt="Sitter's profile picture">
-                                                    </div>
-
-                                                    <div class="card-body">
-                                                        <a href="https://localhost:7262/view-sitter-profile/@_approvedApplication.SitterId"><h5 class="card-title">@_approvedApplication.Sitter.Name</h5></a>
-                                                        <p class="card-text" style="font-style: italic">@_approvedApplication.Sitter.Name has to confirm their stay before @(_approvedApplication.Date.Day + 3)/@_approvedApplication.Date.Month/@_approvedApplication.Date.Year.</p>
-                                                        <p class="card-text">
-                                                            <small>@_approvedApplication.Date</small>
-                                                        </p>
-                                                    </div>
+                                            <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : ""))">
+                                                <div class="card-img-container">
+                                                    <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
                                                 </div>
-                                            }
 
-                                            @foreach (var application in listing.Applications)
-                                            {
-                                                @if (!application.Equals(_approvedApplication))
-                                                {
-                                                    <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : "")">
-                                                        <div class="card-img-container">
-                                                            <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
-                                                        </div>
-
-                                                        <div class="card-body">
-                                                            <div class="title-rating">
-                                                                <a href="https://localhost:7262/view-sitter-profile/@application.SitterId"><h5>@application.Sitter.Name</h5></a>
-                                                                <p><i class="fa-solid fa-star"></i> @(application.Sitter.Reviews!.Any() ? application.Sitter!.Reviews!.Select(r => r.Rating).Average() : "No reviews")</p>
-                                                            </div>
-                                                            
-                                                            <p class="card-text" style="font-style: italic">@(application.Status is "Canceled" ? $"{application.Sitter.Name} has canceled their application." : application.Message)</p>
-                                                            
-                                                            <p class="card-text">
-                                                                <small>@application.Date</small>
-                                                            </p>                                                            
-                                                            @if (!listing.Applications.Any(a => a.Status == "Confirmed" || a.Status == "Approved") && application.Status == "Pending")
+                                                <div class="card-body">
+                                                    <div class="title-rating">
+                                                        <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank"><h5>@application.Sitter.Name</h5></a>
+                                                        <div class="stars">
+                                                            @if (application.Sitter.Reviews != null && application.Sitter.Reviews.Any())
                                                             {
-                                                                <div class="card-buttons">
-                                                                    <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
-                                                                    <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
-                                                                </div>
+                                                                @foreach (var star in GetStars(application.Sitter.Reviews))
+                                                                {
+                                                                    <span class="@star"></span>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <div><span>No reviews</span></div>
                                                             }
                                                         </div>
                                                     </div>
-                                                }
-                                            }
-                                        }
-                                    </div>
-                                }                                
-                                
-                                
-                                @*<div class="applicants-scroll">
 
-                                    @foreach (var applicant in listing.Applicants)
-                                    {
-                                        <div class="applicant-container">
-                                            <!-- Applicant Picture -->
-                                            <div class="applicant-picture">
-                                                <img src="@applicant.PictureUrl" alt="Applicant Picture"/>
-                                            </div>
-                                            <!-- Applicant Details -->
-                                            <div class="applicant-details">
-                                                <h3 class="applicant-name">@applicant.Name</h3>
-                                                <p class="applicant-message">"@applicant.Message"</p>
-                                                <div class="applicant-info">
-                                                    <span class="rating">⭐ @applicant.Rating</span>
-                                                    <span class="application-date">@applicant.ApplicationDate.ToString("MMM dd, yyyy hh:mm tt")</span>
+                                                    @if (application.Status is "Pending")
+                                                    {
+                                                        <p class="card-text" style="font-style: italic">@(application.Message)</p>
+                                                    } else if (application.Status is "Approved")
+                                                    {
+                                                        <p class="card-text" style="font-style: italic">@(application.Sitter.Name) has to confirm their stay.</p> 
+                                                    } else if (application.Status is "Rejected")
+                                                    {
+                                                        <p class="card-text" style="font-style: italic">You have rejected this applicant.</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="card-text" style="font-style: italic">@(application.Sitter.Name) has canceled their stay.</p>  
+                                                    }
+                                                            
+                                                    <p class="card-text">
+                                                        <small>@application.Date</small>
+                                                    </p>                                                            
+                                                    @if (!listing.Applications.Any(a => a.Status == "Confirmed" || a.Status == "Approved") && application.Status == "Pending")
+                                                    {
+                                                        <div class="card-buttons">
+                                                            <Button Color="ButtonColor.Success" class="approve" @onclick="() => ApproveApplication(application)">Approve</Button>
+                                                            <Button Color="ButtonColor.Danger" @onclick="() => RejectApplication(application)">Reject</Button>
+                                                        </div>
+                                                    }
                                                 </div>
-                                                <!-- Action Buttons -->
-                                                <div class="action-buttons">
-                                                    <button class="btn accept-btn" @onclick="() => AcceptApplicant(applicant.Id)">Accept</button>
-                                                    <button class="btn reject-btn" @onclick="() => RejectApplicant(applicant.Id)">Reject</button>
-                                                </div>
                                             </div>
-                                        </div>
+                                        }
                                     }
-                                </div>*@
+                                    else
+                                    {
+                                        <h3>You have no applications for this listing</h3>
+                                    }
+                                </div>
                             </div>
                         </div>
                     }
                 }
             </div>
-            
-            @*<div class="page-container">
-                <div class="signup-page-container">
-                    <h1>My Listings</h1>
-
-                    <div class="house-profile-list">
-                        @if (_houseListings == null || !_houseListings.Any())
-                        {
-                            <p>No listings found.</p>
-                        }
-                        else
-                        {
-                            @foreach (var listing in _houseListings)
-                            {
-                                <div class="house-profile-item">
-                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                                    {
-                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                                    }
-
-                                    <p>@listing.Profile.Title</p>
-                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-
-                                    @if (listing.Applications!.Any(a => a.Status == "Approved"))
-                                    {
-                                        <p>Waiting for @listing.Applications!.Single(a => a.Status == "Approved").Sitter!.Name's confirmation</p>
-                                    }
-                                    else
-                                    {
-                                        <p>Applications: @listing.Applications!.Count()</p>
-                                    }
-
-                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                                </div>
-                            }
-                        }
-                        <div class="house-profile-item">
-                            <div @onclick="NavigateToCreate" class="plus"><i class="fa-solid fa-plus fa-2xl"></i></div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
         </Authorized>
-        </AuthorizeView>
+    </AuthorizeView>
    
     
     
@@ -236,11 +156,7 @@
         padding: 0.375em 0.75em;
         font-family: 'FuturaFont', sans-serif;
     }
-
-    p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-    }
+    
     .not-authorized-container {
         text-align: center;
         margin-top: 5em;
@@ -304,6 +220,8 @@
     .card-text{
         font-size: 1em;
         margin-bottom: 0;
+        font-family: 'FuturaFont', sans-serif;
+        color: #3d3d3d;
     }
 
     .card a{
@@ -313,6 +231,15 @@
 
     .card a:hover{
         color: blue;
+    }
+
+    .card.green{
+        background-color: green;
+        color: white;
+    }
+
+    .card.green .card-text{
+        color: white;
     }
 
     .card.green a{
@@ -327,6 +254,10 @@
         background-color: #dc3545;
         color: white;
     }
+    
+    .card.rejected .card-text{
+        color: white;
+    }
 
     .card.rejected a{
         color: white;
@@ -334,11 +265,6 @@
 
     .card.rejected a:hover{
         color: blue;
-    }
-
-    .card.green{
-        background-color: green;
-        color: white;
     }
 
     .card-img-container{
@@ -368,8 +294,34 @@
     .title-rating {
         display: flex;
         justify-content: flex-start;
-        align-content: flex-start;
+        align-items: center;
+        align-content: center;
         gap: 1em;
+        margin-bottom: 0.5em;
+        
+    }
+    
+    .title-rating h5 {
+        margin-bottom: 0;
+    }   
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
+
+    .fa-star {
+        font-size: 1em;
+    }
+
+    .fa-star-half-alt {
+        font-size: 1em;
+        align-self: center;
+    }
+
+    .fa-star-o {
+        font-size: 1em;
+        color: lightgray;
     }
 
     .card-buttons {
@@ -448,6 +400,7 @@
         color: white;
     }
 
+
     /* Right Side: Applicants */
     .applicants-container {
         flex: 0 0 60%;
@@ -503,11 +456,35 @@
     private string _message = string.Empty;
     private string _successMessage = string.Empty;
     private string _errorMessage = string.Empty;
-    private ApplicationDto? _approvedApplication;
     private int _sitterId;
     
     private List<HouseListingDto>? _houseListings;
     private int _userId;
+
+    private List<string> GetStars(List<SitterReviewDto>? reviews)
+    {
+        var stars = new List<string>();
+        if (reviews == null || !reviews.Any())
+        {
+            stars.AddRange(Enumerable.Repeat("fa-regular fa-star", 5));
+            return stars;
+        }
+
+        double averageRating = reviews.Select(r => r.Rating).Average();
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -539,7 +516,7 @@
         var today = DateOnly.FromDateTime(DateTime.Today); 
 
         _houseListings = allListings
-            .Where(listing => listing.StartDate > today)
+            .Where(listing => listing.StartDate >= today)
             .ToList();
     }
     
