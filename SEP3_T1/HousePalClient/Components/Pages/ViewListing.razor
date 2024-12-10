@@ -142,7 +142,30 @@
                             {
                                 @foreach (var review in _houseListing.Profile.Reviews)
                                 {
-                                    
+                                    <div class="card mb-3" style="max-width: 540px;">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                                <img src="https://localhost:7134/Filesave/@review.Sitter.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Reviewer Profile Picture">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <div class="card-title">
+                                                        <div class="title-rating">
+                                                            <a href="https://localhost:7262/view-sitter-profile/@review.SitterId" target="_blank"><h5>@review.Sitter.Name</h5></a>
+                                                            <div class="stars">
+                                                                @foreach (var star in GetStars(review))
+                                                                {
+                                                                <span class="@star"></span>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="card-text">@review.Comment</p>
+                                                    <p class="card-text"><small class="text-muted">@review.Date</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
                             }
                         </div>
@@ -515,6 +538,24 @@
         background-color: #f8d7da;
         border-color: #f5c6cb;
     }
+
+    .title-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+        margin-bottom: 0.5em;
+    }
+
+    .title-rating h5 {
+        margin-bottom: 0;
+    }
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
 </style>
 
 @code {
@@ -530,11 +571,7 @@
     private string _message = string.Empty;
     private string _successMessage = string.Empty;
     private string _errorMessage = string.Empty;
-
-    private HouseReviewDto? _reviewed;
-    private string _reviewComment;
-    private int _reviewRating;
-
+    
     private int _sitterId;
 
     private void NavigateToLogin()
@@ -575,6 +612,7 @@
         _sitterApplication = ApplicationService
             .GetApplicationsByUserStatus(_sitterId, " ", false, false)
             .SingleOrDefault(a => a.ListingId == ListingId);
+        if (_sitterApplication != null) _hasApplied = true;
     }
 
     private async Task LoadHouseListingDetails()
@@ -582,13 +620,6 @@
         _houseListing = await HouseListingService.GetSingleAsync(ListingId, true);
         _houseListing.Profile.Owner = await HouseOwnerService.GetSingleAsync(_houseListing.Profile.OwnerId);
         _houseListing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(_houseListing.ProfileId).ToList();
-
-        var temp = HouseListingService
-            .GetWaitingForReviewSitter(_sitterId, false);
-        if (_houseSitter && temp.Select(l => l.Id).Contains(_houseListing.Id))
-        {
-            _reviewed = await HouseReviewService.GetSingleAsync(_houseListing.ProfileId, _sitterId, false, false);
-        }
     }
 
     private void OnShowModalClick()
@@ -627,18 +658,18 @@
         _hasApplied = true;
         Navigation.NavigateTo("/view-my-applications");
     }
-
-    private async void CreateReview()
+    
+    private List<string> GetStars(HouseReviewDto? review)
     {
-        CreateHouseReviewDto review = new CreateHouseReviewDto
-        {
-            ProfileId = _houseListing.ProfileId,
-            SitterId = _sitterId,
-            Comment = _reviewComment,
-            Rating = _reviewRating
-        };
+        var stars = new List<string>();
 
-        await HouseReviewService.AddAsync(review);
+        int fullStars = review.Rating;
+        int emptyStars = 5 - fullStars;
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
     }
 
 }
