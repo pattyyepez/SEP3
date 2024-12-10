@@ -1,8 +1,7 @@
-﻿@page "/view-all-house-profiles"
+﻿@page "/view-my-houses"
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.HouseProfile
-@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -11,7 +10,6 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseProfileService HouseProfileService
-@inject IHouseReviewService HouseReviewService
 @inject IHouseListingService HouseListingService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -38,15 +36,6 @@
                                         <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                                     }
                                     <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
-                                    <p class="stars">
-                                        @foreach (var star in GetStars(profile.Reviews))
-                                        {
-                                        <span class="@star"></span>
-                                        }
-                                    </p>
-                                    <button type="button" class="btn btn-danger" @onclick="() => ShowDeletionConfirmation(profile.Id)">Delete</button>
-                                    <button type="button" class="btn btn-info" @onclick="() => EditHouseProfile(profile.Id)">Edit</button>
-                                    <br/>
                                     <button type="button" class="btn btn-success" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
                                 </div>
                             }
@@ -60,60 +49,50 @@
                 </div>
             </div>
             <div>
-                @if (_showDeletionConfirmationMessage)
-                {
-                <div class="modal-background">
-                    <div class="modal-content">
-                        <h3>Are you sure?</h3>
-                        <p>Do you really want to delete this house profile? This action cannot be undone.</p>
-                        <button class="btn btn-danger" @onclick="DeleteHouseProfile">Yes</button>
-                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
-                    </div>
-                </div>
-                }
-
                 @if (_showCreateListingMessage)
                 {
                 <div class="modal-background">
                     <div class="modal-content">
-                        <h3>Enter dates for listing:</h3>
+                        <button class="close-button" @onclick="CancelCreateListing"><i class="fa-solid fa-xmark"></i></button>
 
-                        <label for="startDate">Start Date</label>
-                        <input
-                            type="date"
-                            id="startDate"
-                            name="listing-start"
-                            placeholder="dd-mm-yyyy"
-                            class="form-control"
-                            @bind-value="@StartDate"
-                            min="@_minDateStart.ToString("yyyy-MM-dd")"
-                            max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
-                        <label for="endDate">End Date</label>
+                        <h2>Create Listing</h2>
 
-                        <input
-                            type="date"
-                            id="endDate"
-                            name="listing-end"
-                            placeholder="dd-mm-yyyy"
-                            class="form-control"
-                            @bind-value="@EndDate"
-                            min="@_minDateEnd.ToString("yyyy-MM-dd")"
-                            max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
+                        <div class="form-group date-group">
+                            <label for="startDate">Start Date</label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                class="form-control"
+                                @bind-value="@StartDate"
+                                min="@_minDateStart.ToString("yyyy-MM-dd")"
+                                max="@_maxDateStart.ToString("yyyy-MM-dd")" />
+                        </div>
 
-                        <button class="btn btn-danger" @onclick="CreateListingForProfile">Create</button>
-                        <button class="btn btn-secondary" @onclick="CancelCreateListing">Cancel</button>
+                        <div class="form-group date-group">
+                            <label for="endDate">End Date</label>
+                            <input
+                                type="date"
+                                id="endDate"
+                                class="form-control"
+                                @bind-value="@EndDate"
+                                min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                                max="@_maxDateEnd.ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        <button class="btn btn-primary" @onclick="CreateListingForProfile">Create</button>
                     </div>
                 </div>
                 }
 
+
                 @if (_showSuccessMessage)
                 {
-                <div class="modal-background">
-                    <div class="modal-content">
-                        <p>@_successMessage</p>
-                        <button @onclick="HideSuccessMessage" class="btn btn-primary">Ok</button>
+                    <div class="modal-background">
+                        <div class="modal-content">
+                            <p>@_successMessage</p>
+                            <button @onclick="HideSuccessMessage" class="btn btn-primary">Ok</button>
+                        </div>
                     </div>
-                </div>
                 }
             </div>
         </Authorized>
@@ -127,6 +106,93 @@
     </AuthorizeView>
 </CascadingAuthenticationState>
 <style>
+    
+    h2 {
+        font-family: 'LogoFont', sans-serif;
+        color: #ff7e5f;
+    }
+    
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .close-button:hover {
+        color: #ff7e5f;
+    }
+
+    .form-group {
+        margin-bottom: 1em;
+        text-align: left;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.5em;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .form-control:focus {
+        border-color: #ff7e5f;
+        box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
+    }
+
+    .btn-primary {
+        background-color: #ff7e5f;
+        color: #fff;
+        border: none;
+        padding: 0.5em 1em;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #feb47b;
+    }
+
+    .house-profile-item p a {
+        font-size: 1.5em; 
+        font-weight: bold;
+        text-align: center;
+        display: inline-block;
+    }
+    .house-profile-item p a:hover {
+        color: #ff7e5f;
+    } 
+
     
     @@font-face {
         font-family: 'LogoFont';
@@ -153,6 +219,9 @@
         font-size: 0.85em;
         padding: 0.375em 0.75em;
         font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        cursor: pointer;
+        border: none;
     }
 
     .house-profile-list {
@@ -179,7 +248,7 @@
         width: 95%;
         height: 95%;
     }
-    
+
     .house-profile-img {
         width: 100%;
         height: 200px;
@@ -193,7 +262,7 @@
         color: #3d3d3d;
         margin: 1em;
     }
-    
+
     .plus {
         cursor: pointer;
         min-height: 15em;
@@ -232,7 +301,7 @@
         border-radius: 5px;
         cursor: pointer;
     }
-    
+
     .modal-background {
         position: absolute;
         top: 0;
@@ -262,57 +331,25 @@
         max-height: 90vh;
         overflow-y: auto;
     }
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
 
-    
 </style>
 
 @code {
     [Inject] protected PreloadService PreloadService { get; set; } = default!;
     private List<HouseProfileDto> houseProfiles = new();
     private int _userId;
-    
-    private bool _showDeletionConfirmationMessage;
     private bool _showCreateListingMessage;
     private bool _showSuccessMessage;
     private string _successMessage;
     private int _profileBeingUsed;
-    
     private readonly DateTime _minDateStart = DateTime.Today;
     private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
     private DateTime _minDateEnd = DateTime.Today;
     private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
     private DateTime? _gottenStart;
     private DateTime? _gottenEnd;
-    
-    private List<string> GetStars(List<HouseReviewDto>? reviews)
-    {
-        var stars = new List<string>();
-        if (reviews == null || !reviews.Any())
-        {
-            stars.AddRange(Enumerable.Repeat("fa-regular fa-star", 5));
-            return stars;
-        }
 
-        double averageRating = reviews.Select(r => r.Rating).Average();
-        int fullStars = (int)Math.Floor(averageRating);
-        bool hasHalfStar = (averageRating % 1 >= 0.5);
-        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
-        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
-
-        if (hasHalfStar)
-        {
-            stars.Add("fa-solid fa-star-half-alt");
-        }
-        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
-
-        return stars;
-    }
-    
     private DateTime? StartDate
     {
         get => _gottenStart;
@@ -327,7 +364,7 @@
             }
         }
     }
-    
+
     private DateTime? EndDate
     {
         get => _gottenEnd;
@@ -363,44 +400,19 @@
     private async Task LoadAllHouseProfiles()
     {
         houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(_userId).ToList());
-        foreach(var profile in houseProfiles)
-            profile.Reviews = HouseReviewService.GetAllReviewsForProfile(profile.Id).ToList();
     }
-    
-    private async Task DeleteHouseProfile()
-    {
-        if (_profileBeingUsed != null)
-        {
-            _showDeletionConfirmationMessage = false;
-            await HouseProfileService.DeleteAsync(_profileBeingUsed);
-            _successMessage = "The house profile has been deleted successfully!";
-            _showSuccessMessage = true;
-            await LoadAllHouseProfiles();
-        }
-    }
-    
-    private void ShowDeletionConfirmation(int profileId)
-    {
-        _profileBeingUsed = profileId;
-        _showDeletionConfirmationMessage = true;
-        _showSuccessMessage = false;
-    }
-    
-    private void CancelDelete()
-    {
-        _showDeletionConfirmationMessage = false;
-    }
-    
+
     private void ShowCreateListingConfirmation(int profileId)
     {
         _profileBeingUsed = profileId;
         _showCreateListingMessage = true;
         _showSuccessMessage = false;
     }
-    
+
     private void CancelCreateListing()
     {
         _showCreateListingMessage = false;
+        StateHasChanged(); 
     }
 
     private async void CreateListingForProfile()
@@ -435,12 +447,8 @@
     {
         Navigation.NavigateTo("/create-house-profile");
     }
-    
-    private void EditHouseProfile(int profileId)
-    {
-        Navigation.NavigateTo($"/edit-house-profile/{profileId}");
-    }
-    
+
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");

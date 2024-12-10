@@ -29,6 +29,40 @@
     }
     else
     {
+    <!-- Confirmation Modal -->
+    @if (_showConfirmationModal)
+    {
+    <div class="modal-background">
+        <div class="modal-content">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this house profile? This action cannot be undone.</p>
+            <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+            <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+        </div>
+    </div>
+    }
+
+    <!-- Success Message -->
+    @if (_showSuccessMessage)
+    {
+    <div class="alert alert-success" role="alert">
+        <strong>Success!</strong> The house profile has been deleted.
+        <button type="button" class="btn-close" aria-label="Close" @onclick="HideSuccessMessage"></button>
+    </div>
+    }
+
+    <!-- Top Buttons -->
+    <div class="top-buttons">
+        <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">
+            <i class="fa-solid fa-pen"></i> Edit
+        </button>
+        <button type="button" class="btn btn-danger" @onclick="ShowConfirmationModal">
+            <i class="fa-solid fa-trash"></i> Delete
+        </button>
+    </div>
+    
+    <hr class="section-divider"/>
+
         <div class="container house-profile">
             <!-- Carousel Section -->
             <div class="carousel-container">
@@ -114,13 +148,6 @@
 
             <hr class="section-divider"/>
 
-            <!-- Buttons Section -->
-            <div class="action-buttons">
-                <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">Edit House Profile</button>
-            </div>
-
-            <hr class="section-divider"/>
-
             <div>
                 @if (_houseProfile.Reviews!.Any())
                 {
@@ -170,6 +197,11 @@
         font-weight: normal;
         font-style: normal;
     }
+    h2 {
+        font-family: 'LogoFont', sans-serif;
+        color: #ff7e5f;
+    }
+    
     
     h3 {
         font-family: 'LogoFont', sans-serif;
@@ -198,6 +230,8 @@
         font-size: 1rem;
         color: #333;
         line-height: 1.6;
+        font-family: 'FuturaFont', sans-serif;
+
     }
     
     .carousel img { 
@@ -289,13 +323,7 @@
     .house-rules li {
         margin-bottom: 0.5em;
     }
-
-    .action-buttons {
-        margin-top: 2em;
-        display: flex;
-        gap: 2em;
-        justify-content: center;
-    }
+    
     .modal-background {
         position: fixed;
         top: 0;
@@ -316,10 +344,34 @@
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         width: 300px;
+        font-family: 'FuturaFont', sans-serif;
+
     }
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 300px;
+        font-family: 'FuturaFont', sans-serif;
+    }
+    .modal-content h3 {
+        font-family: 'LogoFont', sans-serif;
+        color: #ff7e5f;
+    }
+    
     .modal-content button {
         margin: 10px; 
+        border: none;
+        background-color: #ff7e5f;
+        font-family: 'FuturaFont', sans-serif;
     }
+    .btn {
+        border: none;
+        background-color: #ff7e5f;
+        font-family: 'FuturaFont', sans-serif;
+        }
 
     .not-authorized-container {
         text-align: center;
@@ -367,12 +419,49 @@
     [Parameter] public int ProfileId { get; set; }
 
     private HouseProfileDto? _houseProfile;
+    private bool _showConfirmationModal = false;
+    private bool _showSuccessMessage = false;
+
+    private void ShowConfirmationModal()
+    {
+        _showConfirmationModal = true;
+    }
+
+    private void CancelDelete()
+    {
+        _showConfirmationModal = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (_houseProfile != null)
+        {
+            try
+            {
+                await HouseProfileService.DeleteAsync(_houseProfile.Id);
+                _showConfirmationModal = false;
+                _showSuccessMessage = true;
+                Navigation.NavigateTo("/view-my-houses");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting house profile: {ex.Message}");
+            }
+        }
+    }
+
+    private void HideSuccessMessage()
+    {
+        _showSuccessMessage = false;
+        Navigation.NavigateTo("/view-my-houses");
+    }
+
 
     private void EditHouseProfile(int profileId)
     {
         Navigation.NavigateTo($"/edit-house-profile/{profileId}");
     }
-
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
@@ -391,7 +480,7 @@
         var userId = int.Parse(claims.Single(c => c.Type == "Id").Value);
         await LoadHouseProfile();
         if (userId != _houseProfile.OwnerId)
-            Navigation.NavigateTo("/view-all-house-profiles");
+            Navigation.NavigateTo("/view-my-houses");
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
