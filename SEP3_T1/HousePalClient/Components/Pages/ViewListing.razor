@@ -140,33 +140,34 @@
                         <div>
                             @if (_houseListing.Profile.Reviews != null && _houseListing.Profile.Reviews.Any())
                             {
-                                @foreach (var review in _houseListing.Profile.Reviews)
-                                {
-                                    <div class="card mb-3" style="max-width: 540px;">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-4">
-                                                <img src="https://localhost:7134/Filesave/@review.Sitter.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]" class="card-img" alt="Reviewer Profile Picture">
-                                            </div>
-                                            <div class="col-md-8">
+                                <div class="reviews-section">
+                                    <div class="reviews-container">
+                                        @foreach (var review in _houseListing.Profile.Reviews)
+                                        {
+                                            <div class="card">
+                                                <div class="card-img-container">
+                                                    <img src="https://localhost:7134/Filesave/@review.Sitter!.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]" 
+                                                         class="card-img" alt="Reviewer Profile Picture">
+                                                </div>
+
                                                 <div class="card-body">
-                                                    <div class="card-title">
-                                                        <div class="title-rating">
-                                                            <a href="https://localhost:7262/view-sitter-profile/@review.SitterId" target="_blank"><h5>@review.Sitter.Name</h5></a>
-                                                            <div class="stars">
-                                                                @foreach (var star in GetStars(review))
-                                                                {
+                                                    <div class="title-rating">
+                                                        <h5>@review.Sitter.Name</h5>
+                                                        <div class="stars">
+                                                            @foreach (var star in GetStars(review))
+                                                            {
                                                                 <span class="@star"></span>
-                                                                }
-                                                            </div>
+                                                            }
                                                         </div>
                                                     </div>
+
                                                     <p class="card-text">@review.Comment</p>
                                                     <p class="card-text"><small class="text-muted">@review.Date</small></p>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
-                                }
+                                    </div>
                             }
                         </div>
                         
@@ -393,54 +394,34 @@
     .house-rules li {
         margin-bottom: 0.5em;
     }
-    
+
     .card {
-        display: flex;
+        flex: 0 0 35em;
         align-items: center;
         flex-direction: row;
         border-radius: 12px;
         font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
         border-style: none;
         margin: 0.75em;
-        overflow: hidden;
-        width: 600px;
         background-color: white;
         color: #3d3d3d;
+        width: 35em;
     }
-    
-    .card a{
+
+    .card-text{
+        font-size: 1em;
+        margin-bottom: 0;
+        font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
     }
 
-    .card a:hover{
-        color: blue;
-    }
-
-    .card.green a{
-        color: white;
-    }
-
-    .card.green a:hover{
-        color: blue;
-    }
-    
-    .card.rejected{
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .card.rejected a{
-        color: white;
-    }
-
-    .card.rejected a:hover{
-        color: blue;
-    }
-
-    .card.green{
-        background-color: green;
-        color: white;
+    .card-img-container{
+        flex: 0 0 200px;
+        height: 200px;
+        margin: 1em;
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     .card-img-container img{
@@ -448,11 +429,85 @@
         height: 100%;
         object-fit: cover;
     }
-    
+
     .card-body {
         flex: 1;
         display: flex;
         flex-direction: column;
+    }
+
+    .card-text{
+        margin-bottom: 0.15em;
+    }
+
+    .title-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+        margin-bottom: 0.5em;
+
+    }
+
+    .title-rating h5 {
+        margin-bottom: 0;
+    }
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
+
+    .fa-star {
+        font-size: 1em;
+    }
+
+    .fa-star-half-alt {
+        font-size: 1em;
+        align-self: center;
+    }
+
+    .fa-star-o {
+        font-size: 1em;
+        color: lightgray;
+    }
+
+    .reviews-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0;
+        /*overflow: hidden; !* Keeps the section neat *!*/
+    }
+
+    .reviews-container {
+        display: flex;
+        gap: 1rem; /* Adds space between cards */
+        overflow-x: auto; /* Enables horizontal scrolling */
+        scroll-behavior: smooth; /* Smooth scrolling */
+        padding: 1rem;
+        scrollbar-width: thin; /* For Firefox */
+        scrollbar-color: #ff7e5f transparent; /* For Firefox */
+    }
+    .reviews-container::-webkit-scrollbar {
+        width: 8px;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-thumb {
+        background: #ff7e5f;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-thumb:hover {
+        background: #feb47b;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 4px;
     }
 
     .modal-background {
@@ -538,24 +593,7 @@
         background-color: #f8d7da;
         border-color: #f5c6cb;
     }
-
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-    }
-
-    .title-rating h5 {
-        margin-bottom: 0;
-    }
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
+    
 </style>
 
 @code {

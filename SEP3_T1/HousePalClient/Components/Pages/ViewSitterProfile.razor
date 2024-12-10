@@ -2,6 +2,7 @@
 @using DTOs.HouseSitter
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
+@using DTOs.SitterReview
 @using Microsoft.AspNetCore.Components
 @using Services
 @layout MainLayout
@@ -13,13 +14,10 @@
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<head>
+
     <!-- Add Font Awesome CDN to your head tag -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-@* <p>@houseProfile.Title</p> *@
+    
 <CascadingAuthenticationState>
     <AuthorizeView>
         <Authorized>
@@ -85,16 +83,36 @@
                         <hr class="section-divider"/>
 
                         <div>
-                            @if (_houseSitter.Reviews!.Any())
+                            @if (_houseSitter.Reviews! != null &&_houseSitter.Reviews!.Any())
                             {
-                                @foreach (var review in _houseSitter.Reviews!)
-                                {
-                                    <div>
-                                        <p>@review.Owner!.Name - @review.Date</p>
-                                        <p>@review.Rating</p>
-                                        <p>@review.Comment</p>
+                                <div class="reviews-section">
+                                    <div class="reviews-container">
+                                        @foreach (var review in _houseSitter.Reviews!)
+                                        {
+                                            <div class="card">
+                                                <div class="card-img-container">
+                                                    <img src="https://localhost:7134/Filesave/@review.Owner!.ProfilePicture.Split('.')[0]/@review.Owner.ProfilePicture.Split('.')[1]" 
+                                                         class="card-img" alt="Reviewer Profile Picture">
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <div class="title-rating">
+                                                        <h5>@review.Owner.Name</h5>
+                                                        <div class="stars">
+                                                            @foreach (var star in GetStars(review))
+                                                            {
+                                                                <span class="@star"></span>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="card-text">@review.Comment</p>
+                                                    <p class="card-text"><small class="text-muted">@review.Date</small></p>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
-                                }
+                                </div>
                             }
                             else
                             {
@@ -162,7 +180,7 @@
     }
     
     .skills-section {
-        display: flex;
+        flex: 1;
     }
 
     .skills-container {
@@ -238,6 +256,122 @@
     .not-authorized-container .btn:hover {
         background-color: #feb47b;
     }
+
+    .card {
+        flex: 0 0 35em;
+        align-items: center;
+        flex-direction: row;
+        border-radius: 12px;
+        font-family: 'FuturaFont', sans-serif;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+        border-style: none;
+        margin: 0.75em;
+        background-color: white;
+        color: #3d3d3d;
+        width: 35em;
+    }
+
+    .card-text{
+        font-size: 1em;
+        margin-bottom: 0;
+        font-family: 'FuturaFont', sans-serif;
+        color: #3d3d3d;
+    }
+
+    .card-img-container{
+        flex: 0 0 200px;
+        height: 200px;
+        margin: 1em;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .card-img-container img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-text{
+        margin-bottom: 0.15em;
+    }
+
+    .title-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+        margin-bottom: 0.5em;
+
+    }
+
+    .title-rating h5 {
+        margin-bottom: 0;
+    }
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
+
+    .fa-star {
+        font-size: 1em;
+    }
+
+    .fa-star-half-alt {
+        font-size: 1em;
+        align-self: center;
+    }
+
+    .fa-star-o {
+        font-size: 1em;
+        color: lightgray;
+    }
+
+    .reviews-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0;
+        /*overflow: hidden; !* Keeps the section neat *!*/
+    }
+
+    .reviews-container {
+        display: flex;
+        gap: 1rem; /* Adds space between cards */
+        overflow-x: auto; /* Enables horizontal scrolling */
+        scroll-behavior: smooth; /* Smooth scrolling */
+        padding: 1rem;
+        scrollbar-width: thin; /* For Firefox */
+        scrollbar-color: #ff7e5f transparent; /* For Firefox */
+    }
+    .reviews-container::-webkit-scrollbar {
+        width: 8px;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-thumb {
+        background: #ff7e5f;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-thumb:hover {
+        background: #feb47b;
+        border-radius: 4px;
+    }
+
+    .reviews-container::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 4px;
+    }
+    
 </style>
 
 @code {
@@ -263,4 +397,21 @@
     {
         Navigation.NavigateTo("/login");
     }
+    
+    private List<string> GetStars(SitterReviewDto? review)
+    {
+        var stars = new List<string>();
+
+        int fullStars = review.Rating;
+        int emptyStars = 5 - fullStars;
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
+    }
+    
+    private ElementReference reviewsContainer;
+    
+    
 }
