@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.HouseProfile
+@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -37,7 +38,12 @@
                                         <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                                     }
                                     <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
-                                    <p><i class="fa-solid fa-star"></i>@(profile.Reviews!.Any() ? profile.Reviews.Select(r => r.Rating).Average() : "No reviews")</p>
+                                    <p class="stars">
+                                        @foreach (var star in GetStars(profile.Reviews))
+                                        {
+                                        <span class="@star"></span>
+                                        }
+                                    </p>
                                     <button type="button" class="btn btn-primary" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
                                     <button type="button" class="btn btn-danger" @onclick="() => ShowDeletionConfirmation(profile.Id)">Delete</button>
                                 </div>
@@ -254,6 +260,11 @@
         max-height: 90vh;
         overflow-y: auto;
     }
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
+    }
+
     
 </style>
 
@@ -274,6 +285,31 @@
     private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
     private DateTime? _gottenStart;
     private DateTime? _gottenEnd;
+    
+    private List<string> GetStars(List<HouseReviewDto>? reviews)
+    {
+        var stars = new List<string>();
+        if (reviews == null || !reviews.Any())
+        {
+            stars.AddRange(Enumerable.Repeat("fa-regular fa-star", 5));
+            return stars;
+        }
+
+        double averageRating = reviews.Select(r => r.Rating).Average();
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
+    }
     
     private DateTime? StartDate
     {
