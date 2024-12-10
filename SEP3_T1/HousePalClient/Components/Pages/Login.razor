@@ -196,7 +196,7 @@
 
             string userRole = user.Claims.Single(c => c.Type == ClaimTypes.Role).Value;
 
-            Navigation.NavigateTo(userRole == "HouseOwner" ? "/view-all-house-profiles" : "/browse-listings");
+            Navigation.NavigateTo(userRole == "HouseOwner" ? "/view-my-houses" : "/browse-listings");
         }
         catch
         {

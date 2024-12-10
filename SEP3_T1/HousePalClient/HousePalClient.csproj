@@ -27,4 +27,9 @@
       <Content Remove="Components\Pages\HouseOwnerPage.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Components\Pages\HouseSitter\" />
+      <Folder Include="Components\Pages\Shared\" />
+    </ItemGroup>
+
 </Project>
