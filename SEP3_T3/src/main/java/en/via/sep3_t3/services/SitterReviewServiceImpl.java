@@ -68,11 +68,13 @@ public class SitterReviewServiceImpl extends SitterReviewServiceGrpc.SitterRevie
       sitterReview.setRating(request.getRating());
       sitterReview.setComment(request.getComment());
       sitterReview.setDate(LocalDateTime.now());
+      sitterReviewRepository.save(sitterReview);
 
       SitterReviewResponse response = buildSitterReviewResponse(sitterReview);
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
