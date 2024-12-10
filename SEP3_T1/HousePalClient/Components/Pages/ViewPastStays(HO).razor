@@ -430,7 +430,7 @@
         var today = DateOnly.FromDateTime(DateTime.Today);
 
         _houseListings = allListings
-            .Where(listing => listing.StartDate <= today)
+            .Where(listing => listing.EndDate < today)
             .ToList();
     }
 
