@@ -22,66 +22,72 @@
 
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
-                <Authorized>
-                @if (_houseOwnerProfile != null)
-        {
-            <div class="account-page-owner">
-                <div class="profile-container">
-                    <div>
-                        <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
-                        <h1 class="user-name"> @_houseOwnerProfile.Name</h1>
-                    </div>
+        <Authorized>
+            @if (_houseOwnerProfile != null)
+            {
+                <div class="account-page-owner">
+                    <div class="profile-container">
+                        <div>
+                            <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                            <h1 class="user-name"> @_houseOwnerProfile.Name</h1>
+                        </div>
 
-                    <hr class="section-divider"/>
+                        <hr class="section-divider"/>
 
-                    <div class="info-section">
-                        <h2>Personal Information</h2>
-                        <p><strong>Email:</strong> @_houseOwnerProfile.Email</p>
-                        <p><strong>Phone:</strong> @_houseOwnerProfile.Phone</p>
-                        <p><strong>Address:</strong> @_houseOwnerProfile.Address</p>
-                    </div>
+                        <div class="info-section">
+                            <h2>Personal Information</h2>
+                            <p>
+                                <strong>Email:</strong> @_houseOwnerProfile.Email
+                            </p>
+                            <p>
+                                <strong>Phone:</strong> @_houseOwnerProfile.Phone
+                            </p>
+                            <p>
+                                <strong>Address:</strong> @_houseOwnerProfile.Address
+                            </p>
+                        </div>
 
-                    <hr class="section-divider"/>
+                        <hr class="section-divider"/>
 
-                    <div class="bio-section">
-                        <h2>Biography</h2>
-                        <p>@_houseOwnerProfile.Biography</p>
-                    </div>
+                        <div class="bio-section">
+                            <h2>Biography</h2>
+                            <p>@_houseOwnerProfile.Biography</p>
+                        </div>
 
-                    <hr class="section-divider"/>
+                        <hr class="section-divider"/>
 
-                    <div class="action-buttons">
-                        <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
-                        <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Account</button>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                @if (_showConfirmationMessage)
-                {
-                    <div class="modal-background">
-                        <div class="modal-content">
-                            <h3>Are you sure?</h3>
-                            <p>Do you really want to delete your account? This action cannot be undone.</p>
-                            <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
-                            <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-primary" @onclick="EditAccountHouseOwner">Edit Account</button>
+                            <button type="button" class="btn btn-secondary" @onclick="ShowConfirmation">Delete Account</button>
                         </div>
                     </div>
-                }
+                </div>
 
-                @if (_showSuccessMessage)
-                {
-                    <div class="alert alert-success" role="alert">
-                        Your account has been deleted successfully!
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <p>Loading house owner profile...</p>
-        }
+                <div>
+                    @if (_showConfirmationMessage)
+                    {
+                        <div class="modal-background">
+                            <div class="modal-content">
+                                <h3>Are you sure?</h3>
+                                <p>Do you really want to delete your account? This action cannot be undone.</p>
+                                <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
+                                <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                            </div>
+                        </div>
+                    }
+
+                    @if (_showSuccessMessage)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            Your account has been deleted successfully!
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Loading house owner profile...</p>
+            }
         </Authorized>
     </AuthorizeView>
 
@@ -101,8 +107,12 @@
 
                         <div class="info-section">
                             <h2>Personal Information</h2>
-                            <p><strong>Email:</strong> @_houseSitterProfile.Email</p>
-                            <p><strong>Phone:</strong> @_houseSitterProfile.Phone</p>
+                            <p>
+                                <strong>Email:</strong> @_houseSitterProfile.Email
+                            </p>
+                            <p>
+                                <strong>Phone:</strong> @_houseSitterProfile.Phone
+                            </p>
                         </div>
 
                         <hr class="section-divider"/>
@@ -137,7 +147,8 @@
                                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
                                                 class="@(i == 0 ? "active" : "")"
                                                 aria-current="@(i == 0 ? "true" : "false")"
-                                                aria-label="Slide @i"></button>
+                                                aria-label="Slide @i">
+                                        </button>
                                     }
                                 </div>
                                 <div class="carousel-inner">
@@ -204,11 +215,11 @@
     </AuthorizeView>
     <AuthorizeView>
         <NotAuthorized>
-                <div class="not-authorized-container">
-                    <h2>You must be logged in to view this page.</h2>
-                    <p>Please log in to view this account.</p>
-                    <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
-                </div>
+            <div class="not-authorized-container">
+                <h2>You must be logged in to view this page.</h2>
+                <p>Please log in to view this account.</p>
+                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+            </div>
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
@@ -405,13 +416,15 @@
 @code {
     private HouseOwnerDto? _houseOwnerProfile;
     private HouseSitterDto? _houseSitterProfile;
-    private bool _hasAccess = false;
     private bool _showConfirmationMessage = false;
     private bool _showSuccessMessage = false;
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
-    }    protected override async Task OnInitializedAsync()
+    }
+
+    protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState?.User;
@@ -474,10 +487,12 @@
         _showConfirmationMessage = true;
         _showSuccessMessage = false;
     }
+
     private void CancelDelete()
     {
         _showConfirmationMessage = false;
     }
+
     private void HandleLogout()
     {
         if (AuthProvider is SimpleAuthProvider simpleAuthProvider)

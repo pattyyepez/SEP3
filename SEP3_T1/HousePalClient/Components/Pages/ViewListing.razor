@@ -78,14 +78,30 @@
                                 <p class="house-description">@_houseListing.Profile.Description</p>
                             </div>
 
-                            <div class="dates">
-                                <p>
-                                    <strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/M/yyyy")
-                                </p>
-                                <p>
-                                    <strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/M/yyyy")
-                                </p>
+
+                            <div class="date-apply">
+                                <div class="dates">
+                                    <p>
+                                        <strong>Start Date: </strong>@_houseListing.StartDate.ToString("dd/MM/yyyy")
+                                    </p>
+                                    <p>
+                                        <strong>End Date: </strong>@_houseListing.EndDate.ToString("dd/MM/yyyy")
+                                    </p>
+                                    @if (_houseSitter)
+                                    {
+                                    @if (_hasApplied)
+                                    {
+                                    <p class="alert alert-info">You have already applied for this listing.</p>
+                                    }
+                                    else
+                                    {
+                                    <button class="btn btn-primary" @onclick="OnShowModalClick">Apply for Listing</button>
+                                    }
+                                    }
+                                    
+                                </div>
                             </div>
+
 
                         </div>
 
@@ -177,15 +193,6 @@
         </AuthorizeView>
         <AuthorizeView Roles="HouseSitter">
             <Authorized>
-                @if (_hasApplied)
-                {
-                    <p class="alert alert-info">You have already applied for this listing.</p>
-                }
-                else
-                {
-                    <button class="btn btn-primary" @onclick="OnShowModalClick"> Apply </button>
-                }
-
                 @if (_sitterApplication != null)
                 {
                     <div class="card mb-3">
@@ -241,7 +248,16 @@
 </CascadingAuthenticationState>
 
 <style>
-    @@font-face {
+    .alert {
+        margin: 5em;
+        background-color: #ff7e5f; 
+        color: white;
+    }
+.date-apply
+{ width: 280px;
+    }
+
+        @@font-face {
         font-family: 'LogoFont';
         src: url('fonts/logo-font.ttf') format('truetype');
         font-weight: normal;
@@ -271,15 +287,23 @@
     .text-content {
         flex: 2;
     }
+    .btn {
+        margin-top: 0.5em;
+        font-size: 1em;
+        width: 100%;
+        background-color: #ff7e5f;
+        border: none;
+        color: white;
+    }
     
     .dates {
         flex: 0.65;
-        background-color: #ff7e5f;
+        background-color: #FFBFAF;
         padding: 1em;
         border-radius: 10px;
         text-align: center;
         font-family: 'FuturaFont', sans-serif;
-        color: white;
+        color: black;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
@@ -529,7 +553,9 @@
         border-radius: 8px;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 300px;
+        width: 500px;
+        align-items: center;
+        font-family: 'FuturaFont', sans-serif;
     }
     
     .modal-content button {
