@@ -42,7 +42,7 @@
                                             <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
                                             <h5 class="card-text">
                                                 <i class="fa-solid fa-location-dot"></i> @application.Listing.Profile.Address, @application.Listing.Profile.City, @application.Listing.Profile.Region
-                                                </h5>
+                                            </h5>
                                         </div>
                                         
                                         <p class="card-text">
@@ -361,30 +361,16 @@
         var today = DateOnly.FromDateTime(DateTime.Today);
         
         _applications = new List<ApplicationDto>();
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Confirmed", true, true).ToList()));
+        _applications!.AddRange(
+            await Task.Run(() => 
+                ApplicationService.GetApplicationsByUserStatus(_userId, "Confirmed", true, true)
+                    .Where(a => a.Listing.EndDate > today)
+                    .ToList()));
 
         foreach (var application in _applications)
         {
             application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
         }
-
-
-
-
-        /*
-        var confirmedApplications = await Task.Run(() =>
-            ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", false, false).ToList());
-
-        var allListings = await Task.Run(() =>
-            HouseListingService.GetAllByOwnerStatus(_sitterId, "Closed", false, true).ToList());
-
-        _houseListings = allListings
-            .Where(listing => listing.EndDate < today &&
-                              confirmedApplications.Any(app => app.ListingId == listing.Id))
-            .ToList();
-
-        _listingsWaitingForReview = HouseListingService.GetWaitingForReviewSitter(_sitterId, true).ToList();
-        _houseListings = _houseListings.Except(_listingsWaitingForReview).ToList();*/
     }
 
     private void NavigateToDetails(int listingId)

@@ -450,10 +450,10 @@
     private int _userId;
     private int _sitterIdForReview;
     private string? _reviewComment = string.Empty;
-    private int? _reviewRating = null;
+    private int? _reviewRating;
     
-    private bool _showModal = false;
-    private bool _creatingReview = false;
+    private bool _showModal;
+    private bool _creatingReview;
 
     protected override async Task OnInitializedAsync()
     {

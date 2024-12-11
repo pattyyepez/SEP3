@@ -1,6 +1,8 @@
 ﻿@page "/view-past-stays-hs"
 @using System.Security.Claims
+@using DTOs.Application
 @using DTOs.HouseListing
+@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -8,8 +10,7 @@
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-@inject IHouseListingService HouseListingService
-@inject IHouseProfileService HouseProfileService
+@inject IHouseOwnerService HouseOwnerService
 @inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <CascadingAuthenticationState>
@@ -19,58 +20,107 @@
                 <div class="signup-page-container">
                     <h1>My Past Stays</h1>
                     <div class="house-profile-list">
-                        @if (_listingsWaitingForReview == null || !_listingsWaitingForReview.Any())
-                        {
-                            <p>No listings waiting for review found.</p>
-                        }
-                        else
-                        {
-                            @foreach (var listing in _listingsWaitingForReview)
-                            {
-                                <div class="house-profile-item">
-                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                                    {
-                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                                    }
-                                    <p>@listing.Profile.Title</p>
-                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                                    <p>@listing.Profile.Region</p>
-                                    <p>@listing.Profile.City</p>
-                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                                </div>
-                            }
-                        }
-
-                        <hr class="section-divider"/>
             
-                        @if (_houseListings == null || !_houseListings.Any())
+                        @if (_applications == null || !_applications.Any())
                         {
                             <p>No listings found.</p>
                         }
                         else
                         {
-                            @foreach (var listing in _houseListings)
-                            {
-                                <div class="house-profile-item">
-                                    @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                                    {
-                                        <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
-                                    }
-                                    <p>@listing.Profile.Title</p>
-                                    <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                                    <p>@listing.Profile.Region</p>
-                                    <p>@listing.Profile.City</p>
-                                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToDetails(listing.Id)">More Details</button>
-                                </div>
-                            }
+                            <div class="applications-section">
+                                @foreach (var application in _applications)
+                                {
+                                    <div class="card">
+
+                                        <div class="card-img-container">
+                                            <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="title-rating">
+                                                <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
+                                                <h5 class="card-text">
+                                                    <i class="fa-solid fa-location-dot"></i> @application.Listing.Profile.Address, @application.Listing.Profile.City, @application.Listing.Profile.Region
+                                                </h5>
+                                            </div>
+
+                                            <div class="button-container">
+                                                @if (application.Listing.Profile.Reviews.Any())
+                                                {
+                                                    <h6>Your past review of this sitter: </h6>
+
+                                                    <div class="stars">
+                                                        @foreach (var star in GetStars(application.Listing.Profile.Reviews.Single()))
+                                                        {
+                                                            <span class="@star"></span>
+                                                        }
+                                                    </div>
+                                                    <p>@application.Listing.Profile.Reviews.Single().Comment</p>
+                                                    <p>@application.Listing.Profile.Reviews.Single().Date</p>
+
+                                                    <button class="btn" @onclick="() => ShowEditReview(application.Listing.Profile.Id)">Edit Review</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn" @onclick="() => ShowCreateReview(application.Listing.Profile.Id)">Create Review</button>
+                                                }
+                                            </div>
+                                        
+                                            <p class="card-text">
+                                                Your Stay will be starting on the @application.Listing.StartDate 
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         }
                     </div>
                 </div>
             </div>
-            </Authorized>
+
+            @if (_showModal)
+            {
+            <div class="modal-background">
+                <div class="modal-content">
+                    @if (_creatingReview)
+                    {
+                    <h3>Create review for sitter</h3>
+                    <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
+                    <select @bind="_reviewRating" class="review-rating-select" required>
+                        <option value="" disabled selected>Rate the sitter (out of 5)</option>
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+
+                    <button class="btn btn-primary" @onclick="CreateReview">Create Review</button>
+                    <button class="btn btn-secondary" @onclick="CancelCreateReview">Close</button>
+                    }
+                    else
+                    {
+                    <h3>Edit review for sitter</h3>
+                    <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
+                    <select @bind="_reviewRating" class="review-rating-select" required>
+                        <option value="" disabled selected>Rate the sitter (out of 5)</option>
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+
+                    <button class="btn btn-primary" @onclick="EditReview">Save Edit</button>
+                    <button class="btn btn-secondary" @onclick="CancelEditReview">Close</button>
+                    }
+                </div>
+            </div>
+            }
+        </Authorized>
         </AuthorizeView>
     </CascadingAuthenticationState>
-            
+
 <style>
 
     @@font-face {
@@ -90,14 +140,25 @@
     h1 {
         text-align: center;
         color: #ff7e5f;
-        margin-bottom: 1em;
+        margin-bottom: 0.2em;
         font-family: 'LogoFont', sans-serif;
     }
 
-    .btn {
-        font-size: 0.85em;
+    .btn
+    {
+        font-size: 1em;
+        color: white;
         padding: 0.375em 0.75em;
         font-family: 'FuturaFont', sans-serif;
+        background-color: #ff7e5f;
+        border: none;
+        margin-top: 1em;
+        width: 50%;
+
+    }
+    .btn:hover {
+        background-color: #feb47b;
+        cursor: pointer;
     }
 
     .house-profile-list {
@@ -127,10 +188,8 @@
 
     .house-profile-img {
         width: 100%;
-        height: 200px;
-        object-fit: cover;
+        height: auto;
         border-radius: 10px 10px 0 0;
-        display: block;
     }
 
     p {
@@ -143,35 +202,134 @@
         cursor: pointer;
     }
 
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
+    .applications-section{
+        padding: 0.85em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-buttons {
         display: flex;
         justify-content: center;
+        gap: 1.5em;
+        margin-top: 0.5em;
+        font-size: 1.15em;
+    }
+
+    .card {
+        display: flex;
         align-items: center;
-        z-index: 1000;
+        flex-direction: row;
+        border-radius: 12px;
+        font-family: 'FuturaFont', sans-serif;
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+        border-style: none;
+        margin: 0.75em;
+        overflow: hidden;
+        width: 60em;
+        background-color: white;
+        color: #3d3d3d;
+    }
+
+    .card.application{
+        width: 40em;
+        margin-bottom: 0;
+    }
+
+    .card-title {
+        font-size: 1.3em;
+    }
+
+    .card-text{
+        font-size: 1.15em;
+        margin: 0;
+        font-family: 'FuturaFont', sans-serif;
+        color: #3d3d3d;
+    }
+
+    .card-text p{
+        line-height: 1.5;
+    }
+
+    .card a{
+        color: #3d3d3d;
+    }
+
+    .card a:hover{
+        color: blue;
+    }
+
+    .card.green a{
+        color: white;
+    }
+
+    .card.green a:hover{
+        color: blue;
+    }
+
+    .card.rejected{
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .card.rejected .card-text{
+        color: white;
+    }
+
+    .card.rejected a{
+        color: white;
+    }
+
+    .card.rejected a:hover{
+        color: blue;
+    }
+
+    .card.green{
+        background-color: green;
+        color: white;
+    }
+
+    .card.green .card-text{
+        color: white;
+    }
+
+    .title-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+        margin-bottom: 0.5em;
+
+    }
+
+    .title-rating h5 {
+        margin-bottom: 0;
+    }
+
+    .card-img-container{
+        flex: 0 0 200px;
+        height: 200px;
+        margin: 1em;
+        border-radius: 8px;
         overflow: hidden;
     }
 
-    .modal-content {
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 400px;
+    .card-img-container img{
         width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
-    .section-divider {
-        margin: 2em 0;
-        border: 0;
-        height: 1px;
-        background-color: #ddd;
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        margin-bottom: 0em;
     }
 
     .not-authorized-container {
@@ -188,6 +346,20 @@
         font-family: 'LogoFont', sans-serif;
         font-size: 2em;
         margin-bottom: 0.5em;
+        text-align: center;
+    }
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
     }
 
     .not-authorized-container p {
@@ -197,9 +369,24 @@
         margin-bottom: 1.5em;
     }
 
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
+    .modal-content button {
+        margin: 10px;
+    }
+    .review-textarea {
+        width: 100%;
+        height: 100px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1rem;
+        font-family: 'FuturaFont', sans-serif;
+        resize: vertical;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .review-rating-select {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
         font-family: 'FuturaFont', sans-serif;
         background-color: #ff7e5f;
         color: white;
@@ -219,8 +406,15 @@
     [Inject] private IApplicationService ApplicationService { get; set; } = default!;
 
     private int _sitterId;
-    private List<HouseListingDto>? _houseListings;
+    private List<ApplicationDto>? _applications;
     private List<HouseListingDto>? _listingsWaitingForReview;
+    
+    private int _profileIdForReview;
+    private string? _reviewComment = string.Empty;
+    private int? _reviewRating;
+    
+    private bool _showModal;
+    private bool _creatingReview;
 
     protected override async Task OnInitializedAsync()
     {
@@ -230,7 +424,7 @@
             .GetAuthenticationStateAsync();
         var user = authState.User;
         
-        _houseListings = new List<HouseListingDto>();
+        _applications = new List<ApplicationDto>();
         
         if (user.Identity is null || !user.Identity.IsAuthenticated)
         {
@@ -242,32 +436,129 @@
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _sitterId = int.Parse(userIdAsString);
         
-        await LoadAllHouseListings();
+        await LoadAllApplications();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
-    private async Task LoadAllHouseListings()
+    
+    private async Task LoadAllApplications()
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
+        
+        _applications = new List<ApplicationDto>();
+        _applications!.AddRange(
+            await Task.Run(() => 
+                ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", true, true)
+                    .Where(a => a.Listing.EndDate < today)
+                    .ToList()));
 
-        var confirmedApplications = await Task.Run(() =>
-            ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", false, false).ToList());
+        foreach (var application in _applications)
+        {
+            application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
+            application.Listing.Profile.Reviews = new ();
+            try
+            {
+                Console.WriteLine(application.Listing.Profile.Id + " " + application.SitterId);
+                application.Listing.Profile.Reviews.Add(await HouseReviewService.GetSingleAsync(application.Listing.Profile.Id, application.SitterId, false, false));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("No review");
+            }
+        }
+    }
+    
+        private void ShowCreateReview(int profileId)
+    {
+        _profileIdForReview = profileId;
+        _reviewComment = string.Empty; 
+        _reviewRating = null; 
+        _creatingReview = true;
+        _showModal = true;
+    }
 
-        var allListings = await Task.Run(() =>
-            HouseListingService.GetAllByOwnerStatus(_sitterId, "Closed", false, true).ToList());
+    private void CancelCreateReview()
+    {
+        _showModal = false;
+    }
+    
+    private void ShowEditReview(int profileId)
+    {
+        _profileIdForReview = profileId;
+        var existingReview = _applications
+            .FirstOrDefault(app => app.SitterId == _sitterId)?.Sitter?.Reviews.SingleOrDefault();
+        
+        if (existingReview != null)
+        {
+            _reviewComment = existingReview.Comment; 
+            _reviewRating = existingReview.Rating;  
+        }
+        else
+        {
+            _reviewComment = string.Empty;
+            _reviewRating = null;
+        }
+        _creatingReview = false;
+        _showModal = true;
+    }
 
-        _houseListings = allListings
-            .Where(listing => listing.EndDate < today &&
-                              confirmedApplications.Any(app => app.ListingId == listing.Id))
-            .ToList();
+    private void CancelEditReview()
+    {
+        _showModal = false;
+    }
 
-        _listingsWaitingForReview = HouseListingService.GetWaitingForReviewSitter(_sitterId, true).ToList();
-        _houseListings = _houseListings.Except(_listingsWaitingForReview).ToList();
+    private async Task CreateReview()
+    {
+        PreloadService.Show();
+        CreateHouseReviewDto review = new CreateHouseReviewDto
+        {
+            ProfileId = _profileIdForReview,
+            SitterId = _sitterId,
+            Comment = _reviewComment,
+            Rating = _reviewRating.Value
+        };
+
+        await HouseReviewService.AddAsync(review);
+        await LoadAllApplications();
+        _showModal = false;
+        await InvokeAsync(StateHasChanged);
+        PreloadService.Hide();
+    }
+    
+    private async Task EditReview()
+    {
+        PreloadService.Show();
+        UpdateHouseReviewDto review = new UpdateHouseReviewDto()
+        {
+            ProfileId = _profileIdForReview,
+            SitterId = _sitterId,
+            Comment = _reviewComment,
+            Rating = _reviewRating.Value
+        };
+
+        await HouseReviewService.UpdateAsync(review);
+        await LoadAllApplications();
+        _showModal = false;
+        await InvokeAsync(StateHasChanged);
+        PreloadService.Hide();
     }
 
     private void NavigateToDetails(int listingId)
     {
         Navigation.NavigateTo($"/view-listing/{listingId}");
+    }
+    
+    private List<string> GetStars(HouseReviewDto? review)
+    {
+        var stars = new List<string>();
+
+        int fullStars = review.Rating;
+        int emptyStars = 5 - fullStars;
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
     }
 
 }
