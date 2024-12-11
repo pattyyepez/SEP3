@@ -91,8 +91,8 @@
                                     @if (_houseSitter)
                                     {
                                     @if (_hasApplied)
-                                    {
-                                    <p class="alert alert-info">You have already applied for this listing.</p>
+                                    { <button class="btn btn-primary" @onclick="NavigateToApplications">You have already applied for this listing</button>
+
                                     }
                                     else
                                     {
@@ -206,21 +206,6 @@
         </AuthorizeView>
         <AuthorizeView Roles="HouseSitter">
             <Authorized>
-                @if (_sitterApplication != null)
-                {
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">@_sitterApplication.Message</h5>
-                            <p class="card-text">
-                                <strong>Status:</strong> @_sitterApplication.Status
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">@_sitterApplication.Date</small>
-                            </p>
-                        </div>
-                    </div>
-                }
-
                 @if (!string.IsNullOrEmpty(_successMessage))
                 {
                     <div class="alert alert-success" role="alert">
@@ -308,6 +293,11 @@
         border: none;
         color: white;
     }
+    .btn:hover
+    {
+        background-color: #feb47b;
+        }
+    
     
     .dates {
         flex: 0.65;
@@ -669,7 +659,10 @@
     {
         Navigation.NavigateTo("/");
     }
-
+    private void NavigateToApplications()
+    {
+        Navigation.NavigateTo("/view-my-applications");
+    }
     private (double Average, List<string> Stars) GetHouseAverage()
     {
         if (_houseListing?.Profile.Reviews == null || !_houseListing.Profile.Reviews.Any())
@@ -750,12 +743,6 @@
 
     private async void CreateApplication()
     {
-        if (string.IsNullOrWhiteSpace(_message))
-        {
-            _errorMessage = "You must provide a message for the house owner.";
-            return;
-        }
-
         if (_hasApplied)
         {
             return;

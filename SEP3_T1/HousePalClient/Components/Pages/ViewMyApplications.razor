@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
+@using DTOs.HouseProfile
 @using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
@@ -12,6 +13,7 @@
 @rendermode InteractiveServer
 @inject IApplicationService ApplicationService
 @inject IHouseListingService ListingService
+@inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <CascadingAuthenticationState>
@@ -38,20 +40,22 @@
 
                                     <div class="card-body">
                                         <div class="title-rating">
-                                            <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
-                                            @*<div class="stars">
-                                            @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
-                                            {
-                                                @foreach (var star in GetStars(application.Listing.Profile.Reviews))
+                                            <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank">
+                                                <h5>@application.Listing.Profile.Title</h5>
+                                            </a>
+                                            <div class="average-stars">
+                                                @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
                                                 {
-                                                    <span class="@star"></span>
+                                                    @foreach (var star in GetHouseAverage(application.Listing.Profile).Stars)
+                                                    {
+                                                        <span class="@star"></span>
+                                                    }
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <div><span>No reviews</span></div>
-                                            }
-                                    </div> ADD STAAAAAAAARS*@
+                                                else
+                                                {
+                                                    <span>No reviews available</span>
+                                                }
+                                            </div>
                                         </div>
 
                                         @if (application.Status is "Pending")
@@ -63,6 +67,7 @@
                                             <p class="card-title" style="font-style: italic">Your application for this listing was approved: </p>
                                         }
                                         else if (application.Status == "Rejected")
+                                            
                                         {
                                             <p class="card-title" style="font-style: italic">Your application for this listing has been rejected: </p>
                                         }
@@ -388,7 +393,30 @@
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
+    
+    private (double Average, List<string> Stars) GetHouseAverage(HouseProfileDto profile)
+    {
+        if (profile.Reviews == null || !profile.Reviews.Any())
+        {
+            return (0, new List<string> { "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star" });
+        }
 
+        double averageRating = profile.Reviews.Average(r => r.Rating);
+
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        var stars = new List<string>();
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return (averageRating, stars);
+    }
     private async Task LoadAllApplications()
     {
         _applications = new List<ApplicationDto>();
@@ -396,13 +424,12 @@
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Approved", true, true).ToList()));
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Rejected", true, true).ToList()));
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Canceled", true, true).ToList()));
-    }
 
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-listing/{listingId}");
+        foreach (var application in _applications)
+        {
+            application.Listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(application.Listing.Profile.Id).ToList();
+        }
     }
-    
 
     private async Task ConfirmApplication(ApplicationDto application)
     {
