@@ -1,6 +1,7 @@
 ﻿@page "/browse-listings"
 @using System.Security.Claims
 @using DTOs.HouseListing
+@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
@@ -37,24 +38,34 @@
                     else
                     {
                     @foreach (var listing in _houseListings)
-                    {
-                    <div class="house-profile-item">
-                        @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
-                        {
-                        <img
-                            src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]"
-                            alt="House Picture" class="house-profile-img"/>
-                        }
-                        <p>@listing.Profile.Title</p>
-                        <p>@listing.StartDate.ToString("dd/M/yyyy")
-                            - @listing.EndDate.ToString("dd/M/yyyy")</p>
-                        <p>@listing.Profile.Region</p>
-                        <p>@listing.Profile.City</p>
-                        <button type="button" class="btn btn-primary"
-                                @onclick="() => NavigateToDetails(listing.Id)">
-                            More Details
-                        </button>
-                    </div>
+                    { 
+                        <div class="house-profile-item">
+                            @if (listing.Profile!.Pictures != null && listing.Profile.Pictures.Any())
+                            {
+                                <img
+                                    src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]"
+                                    alt="House Picture" class="house-profile-img"/>
+                            }
+                            <h3><a href="https://localhost:7262/view-listing/@listing.Id" target="_blank"> @listing.Profile.Title</a></h3>
+
+                            @*<div class="stars">
+                                @if (listing.Profile.Reviews != null && listing.Profile.Reviews.Any())
+                                {
+                                    @foreach (var star in GetStars(listing.Profile.Reviews))
+                                    {
+                                        <span class="@star"></span>
+                                    }
+                                }
+                                else
+                                {
+                                    <div><span>No reviews</span></div>
+                                }
+                            </div>*@
+
+                            <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
+                            <p>@listing.Profile.Region, @listing.Profile.City</p>
+                        </div>
+
                     }
                     }
                 </div>
@@ -261,7 +272,7 @@
 
     .house-profile-item
     {
-        width: 15em;
+        width: 20em;
         background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -270,6 +281,16 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
+    .house-profile-item a
+    {
+        color: #3d3d3d;
+    }
+
+    .house-profile-item a:hover
+    {
+        color: blue;
+    }
+    
     .house-profile-item div
     {
         display: flex;
@@ -278,13 +299,12 @@
         width: 95%;
         height: 95%;
     }
-
-
+    
     p
     {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
-        margin: 1em;
+        margin: 0.2em;
     }
 
     .page-container
@@ -458,157 +478,185 @@
         background-color: #feb47b;
     }
 
+    .stars {
+        display: inline-block;
+        gap: 0.2em;
+        position: relative;
+        z-index: 1;
+        clear: both;
+        margin-top: 0;   
+    }
 
-    /*    .btn {
-            padding: 0.75em;
-            font-size: 1rem;
-            color: #fff;
-            background-color: #ff7e5f;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-    
-        .btn:hover {
-            background-color: #e56c4f;
-        }*/
+    .fa-star {
+        font-size: 1em;
+    }
+
+    .fa-star-half-alt {
+        font-size: 1em;
+        align-self: center;
+    }
+
+    .fa-star-o {
+        font-size: 1em;
+        color: lightgray;
+    }
 
 </style>
 
 @code {
-[Inject] private PreloadService PreloadService { get; set; } = default!;
+    [Inject] private PreloadService PreloadService { get; set; } = default!;
 
-private bool _showModal;
-private string _region = string.Empty;
-private string _city = string.Empty;
-private readonly DateTime _minDateStart = DateTime.Today;
-private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
-private DateTime _minDateEnd = DateTime.Today;
-private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
-private DateTime? _gottenStart;
-private DateTime? _gottenEnd;
+    private bool _showModal;
+    private string _region = string.Empty;
+    private string _city = string.Empty;
+    private readonly DateTime _minDateStart = DateTime.Today;
+    private readonly DateTime _maxDateStart = DateTime.Today.AddYears(5);
+    private DateTime _minDateEnd = DateTime.Today;
+    private DateTime _maxDateEnd = DateTime.Today.AddYears(5);
+    private DateTime? _gottenStart;
+    private DateTime? _gottenEnd;
 
-private MultiSelectList _amenities = default!;
-private MultiSelectList _chores = default!;
+    private MultiSelectList _amenities = default!;
+    private MultiSelectList _chores = default!;
 
-private List<HouseListingDto>? _houseListings;
+    private List<HouseListingDto>? _houseListings;
 
-// Property for Start Date
-private DateTime? StartDate
-{
-get => _gottenStart;
-set
-{
-_gottenStart = value;
-if (value < DateTime.Today) _gottenStart = DateTime.Today;
-_minDateEnd = _gottenStart!.Value;
-if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
-{
-_gottenEnd = _gottenStart;
-}
-}
-}
-private void NavigateToLogin()
-{
-Navigation.NavigateTo("/login");
-}
-// Property for End Date
-private DateTime? EndDate
-{
-get => _gottenEnd;
-set
-{
-_gottenEnd = value;
-if (value < _minDateEnd) _gottenEnd = _minDateEnd;
-}
-}
+    // Property for Start Date
+    private DateTime? StartDate
+    {
+    get => _gottenStart;
+    set
+    {
+    _gottenStart = value;
+    if (value < DateTime.Today) _gottenStart = DateTime.Today;
+    _minDateEnd = _gottenStart!.Value;
+    if (_gottenEnd.HasValue && _gottenStart.HasValue && _gottenEnd < _gottenStart)
+    {
+    _gottenEnd = _gottenStart;
+    }
+    }
+    }
+    private void NavigateToLogin()
 
-private void OnShowModalClick()
-{
-_showModal = true;
-}
+    {
+    Navigation.NavigateTo("/login");
+    }
+    // Property for End Date
+    private DateTime? EndDate
+    {
+    get => _gottenEnd;
+    set
+    {
+    _gottenEnd = value;
+    if (value < _minDateEnd) _gottenEnd = _minDateEnd;
+    }
+    }
 
-private void OnHideModalClick()
-{
-_showModal = false;
-}
+    private void OnShowModalClick()
+    {
+    _showModal = true;
+    }
 
-protected override async Task OnInitializedAsync()
-{
-PreloadService.Show();
-_houseListings = new List<HouseListingDto>();
-// var authState = await AuthenticationStateProvider
-//     .GetAuthenticationStateAsync();
-// var user = authState.User;
-//
-// if (user.Identity is null || !user.Identity.IsAuthenticated)
-// {
-//     Console.WriteLine("Not authenticated");
-//     return;
-// }
-//
-// IEnumerable<Claim> claims = user.Claims;
-// string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-_amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-_chores = new MultiSelectList(HouseProfileService.GetAllChores());
-await LoadAllHouseListings();
-await InvokeAsync(StateHasChanged);
-PreloadService.Hide();
-}
+    private void OnHideModalClick()
+    {
+    _showModal = false;
+    }
 
-private async Task LoadAllHouseListings()
-{
-var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
-var today = DateOnly.FromDateTime(DateTime.Today);
+    protected override async Task OnInitializedAsync()
+    {
+    PreloadService.Show();
+    _houseListings = new List<HouseListingDto>();
+    // var authState = await AuthenticationStateProvider
+    //     .GetAuthenticationStateAsync();
+    // var user = authState.User;
+    //
+    // if (user.Identity is null || !user.Identity.IsAuthenticated)
+    // {
+    //     Console.WriteLine("Not authenticated");
+    //     return;
+    // }
+    //
+    // IEnumerable<Claim> claims = user.Claims;
+    // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
+    _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+    _chores = new MultiSelectList(HouseProfileService.GetAllChores());
+    await LoadAllHouseListings();
+    await InvokeAsync(StateHasChanged);
+    PreloadService.Hide();
+    }
 
-_houseListings = allListings
-.Where(listing => listing.StartDate > today)
-.ToList();
-}
+    private async Task LoadAllHouseListings()
+    {
+    var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
+    var today = DateOnly.FromDateTime(DateTime.Today);
+
+    _houseListings = allListings
+    .Where(listing => listing.StartDate > today)
+    .ToList();
+    }
 
 
 
-private void NavigateToDetails(int listingId)
-{
-Navigation.NavigateTo($"/view-listing/{listingId}");
-}
+    private void NavigateToDetails(int listingId)
+    {
+    Navigation.NavigateTo($"/view-listing/{listingId}");
+    }
 
-private async void Filter()
-{
-FilteredHouseListingsDto filter = new FilteredHouseListingsDto
-{
-City = _city,
-Region = _region,
-StartDay = _gottenStart?.Day,
-StartMonth = _gottenStart?.Month,
-StartYear = _gottenStart?.Year,
-EndDay = _gottenEnd?.Day,
-EndMonth = _gottenEnd?.Month,
-EndYear = _gottenEnd?.Year,
-};
+    private async void Filter()
+    {
+    FilteredHouseListingsDto filter = new FilteredHouseListingsDto
+    {
+    City = _city,
+    Region = _region,
+    StartDay = _gottenStart?.Day,
+    StartMonth = _gottenStart?.Month,
+    StartYear = _gottenStart?.Year,
+    EndDay = _gottenEnd?.Day,
+    EndMonth = _gottenEnd?.Month,
+    EndYear = _gottenEnd?.Year,
+    };
 
-filter.Chores = [];
-if (_chores.Any())
-foreach (var chore in _chores)
-{
-if (chore.Selected)
-{
-filter.Chores.Add(chore.Text);
-}
-}
+    filter.Chores = [];
+    if (_chores.Any())
+    foreach (var chore in _chores)
+    {
+    if (chore.Selected)
+    {
+    filter.Chores.Add(chore.Text);
+    }
+    }
 
-filter.Amenities = [];
-foreach (var amenity in _amenities)
-{
-if (amenity.Selected)
-{
-filter.Amenities.Add(amenity.Text);
-}
-}
+    filter.Amenities = [];
+    foreach (var amenity in _amenities)
+    {
+    if (amenity.Selected)
+    {
+    filter.Amenities.Add(amenity.Text);
+    }
+    }
 
-_houseListings = HouseListingService.GetFilteredListings(filter).ToList();
-await InvokeAsync(StateHasChanged);
-_showModal = false;
-}
+    _houseListings = HouseListingService.GetFilteredListings(filter).ToList();
+    await InvokeAsync(StateHasChanged);
+    _showModal = false;
+    }
+
+    private List<string> GetStars(List<HouseReviewDto>? reviews)
+    {
+        var stars = new List<string>();
+
+        double averageRating = reviews.Select(r => r.Rating).Average();
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
+    }
 }
