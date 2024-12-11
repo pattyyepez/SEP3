@@ -163,6 +163,7 @@ public class ApplicationController : ControllerBase
                                 application.Listing.Profile =
                                     new HouseProfileDto
                                     {
+                                        Id = profile.Id,
                                         Title = profile.Title,
                                         Pictures = profile.Pictures,
                                     };

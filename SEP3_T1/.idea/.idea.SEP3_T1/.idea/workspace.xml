@@ -9,30 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="stars for house listing">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/CreateHouseSitter.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseProfile.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/EditHouseSitter.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseListing.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewHouseProfile.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyAccount.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewSitterProfile.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewSitterProfile.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewListing.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyApplications.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyApplications.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseProfileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseReviewService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseSitterService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/ServiceContracts/IHouseSitterService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseProfileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseReviewService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseReviewService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Services/HouseSitterService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Services/HouseSitterService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseSitterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseSitterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/profile3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/sitter5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/sitter55.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Development/unsafe_uploads/sitter555.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SEP3_T2/SEP3_T2.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/SEP3_T2.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,19 +40,13 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/pattyyepez/SEP3_T1.git&quot;,
-    &quot;accountId&quot;: &quot;ec3bbf66-4ee3-4a2f-bb67-db82a75d42e9&quot;
+    &quot;url&quot;: &quot;https://github.com/pattyyepez/SEP3&quot;,
+    &quot;accountId&quot;: &quot;1352df1c-bf5d-4827-b124-3d43404b0a38&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/24372012c6c94138bf3f496e104366ffc8f918/7d/5325f34e/DefaultInterpolatedStringHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f756609c93104d12b4c2d24605eb00101a6920/da/d439a208/HttpResponseMessage.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/497a7533411fefdadb19a5f233635ae9f3e173098c7a9bf65a37c4d8cab4c1/CascadingAuthenticationState.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7beca651b1af466d51e879c74afac8ebca741c3e99965ead1e70bb60811c3054/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c333538d8f8419e6653f459a98486459a863b8a4b30ff6beb6ead8d7d7ae477/AuthorizeView.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eddc51a49dddbdbde4ba2ca25b90ace5a2b5c63fd7d9ea946adb53ab61da735/AuthenticationStateProvider.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewHouseListing.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewHouseListing.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/patty/SEP3/SEP3_T1/HousePalClient/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/patty/SEP3/SEP3_T1/HousePalClient/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
@@ -91,7 +67,7 @@
     &quot;.NET Launch Settings Profile.HousePalClient: https.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/CreateHouseOwner.razor&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/patty/SEP3/SEP3_T1&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -197,6 +173,8 @@
       <workItem from="1732867667772" duration="8835000" />
       <workItem from="1733123800654" duration="24484000" />
       <workItem from="1733562395950" duration="1709000" />
+      <workItem from="1733815556064" duration="36128000" />
+      <workItem from="1733901751474" duration="1071000" />
     </task>
     <task id="LOCAL-00001" summary="initial T3 commit, for now just being able to retrieve any house owner using the ID">
       <option name="closed" value="true" />
@@ -422,7 +400,79 @@
       <option name="project" value="LOCAL" />
       <updated>1733486629945</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="review stars, and small changes">
+      <option name="closed" value="true" />
+      <created>1733820093689</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1733820093689</updated>
+    </task>
+    <task id="LOCAL-00030" summary="all house profile changes">
+      <option name="closed" value="true" />
+      <created>1733825248028</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1733825248028</updated>
+    </task>
+    <task id="LOCAL-00031" summary="house profile and my houses">
+      <option name="closed" value="true" />
+      <created>1733830197735</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1733830197735</updated>
+    </task>
+    <task id="LOCAL-00032" summary="listings confirmation">
+      <option name="closed" value="true" />
+      <created>1733831751078</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1733831751078</updated>
+    </task>
+    <task id="LOCAL-00033" summary="apply changes">
+      <option name="closed" value="true" />
+      <created>1733837811373</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1733837811373</updated>
+    </task>
+    <task id="LOCAL-00034" summary="hover">
+      <option name="closed" value="true" />
+      <created>1733838047774</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1733838047774</updated>
+    </task>
+    <task id="LOCAL-00035" summary="ff">
+      <option name="closed" value="true" />
+      <created>1733838266142</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1733838266142</updated>
+    </task>
+    <task id="LOCAL-00036" summary="past stays changes">
+      <option name="closed" value="true" />
+      <created>1733848320566</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1733848320566</updated>
+    </task>
+    <task id="LOCAL-00037" summary="stars for house listing">
+      <option name="closed" value="true" />
+      <created>1733850281320</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1733850281320</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,15 +517,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="web decor" />
-    <MESSAGE value="heres your DEADline MARIA." />
-    <MESSAGE value="nothing works" />
-    <MESSAGE value="whyyyyy" />
-    <MESSAGE value="T1 auth conundrum" />
-    <MESSAGE value="making name work" />
-    <MESSAGE value="merging" />
-    <MESSAGE value="hu" />
-    <MESSAGE value="huh" />
     <MESSAGE value="final try" />
     <MESSAGE value="some funny stuff :}" />
     <MESSAGE value="Sending and deleting pictures, integrating it into all the different classes that require it️⁉️" />
@@ -492,38 +533,15 @@
     <MESSAGE value="starting work on reviews, you can now view a sitters average review score when they apply for a listing " />
     <MESSAGE value="Being able to cancel an approved application as a house sitter" />
     <MESSAGE value="continuing with reviews and making the web api better ⁉️" />
-    <option name="LAST_COMMIT_MESSAGE" value="continuing with reviews and making the web api better ⁉️" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/HousePalClient/Auth/SimpleAuthProvider.cs</url>
-          <line>26</line>
-          <properties documentPath="C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\Auth\SimpleAuthProvider.cs" containingFunctionPresentation="Method 'GetAuthenticationStateAsync'">
-            <startOffsets>
-              <option value="676" />
-            </startOffsets>
-            <endOffsets>
-              <option value="699" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/HousePalClient/Auth/SimpleAuthProvider.cs</url>
-          <line>33</line>
-          <properties documentPath="C:\Users\domin\OneDrive\Desktop\SEP3\SEP3_T1\HousePalClient\Auth\SimpleAuthProvider.cs" containingFunctionPresentation="Method 'GetAuthenticationStateAsync'">
-            <startOffsets>
-              <option value="902" />
-            </startOffsets>
-            <endOffsets>
-              <option value="940" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="review stars, and small changes" />
+    <MESSAGE value="all house profile changes" />
+    <MESSAGE value="house profile and my houses" />
+    <MESSAGE value="listings confirmation" />
+    <MESSAGE value="apply changes" />
+    <MESSAGE value="hover" />
+    <MESSAGE value="ff" />
+    <MESSAGE value="past stays changes" />
+    <MESSAGE value="stars for house listing" />
+    <option name="LAST_COMMIT_MESSAGE" value="stars for house listing" />
   </component>
 </project>

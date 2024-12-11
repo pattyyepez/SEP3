@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
+@using DTOs.HouseProfile
 @using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
@@ -12,91 +13,96 @@
 @rendermode InteractiveServer
 @inject IApplicationService ApplicationService
 @inject IHouseListingService ListingService
+@inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseSitter">
         <Authorized>
-<div class="page-container">
-    <div class="signup-page-container">
-        <h1>My Applications:</h1>
+            <div class="page-container">
+                <div class="signup-page-container">
+                    <h1>My Applications:</h1>
 
-        @if (_applications == null || !_applications.Any())
-        {
-            <p>No applications found.</p>
-        }
-        else
-        {
-            <div class="applications-section">
-                @foreach (var application in _applications)
-                {
-                    <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : ""))">
+                    @if (_applications == null || !_applications.Any())
+                    {
+                        <p>No applications found.</p>
+                    }
+                    else
+                    {
+                        <div class="applications-section">
+                            @foreach (var application in _applications)
+                            {
+                                <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : ""))">
                         
-                        <div class="card-img-container">
-                            <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
-                        </div>
+                                    <div class="card-img-container">
+                                        <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
+                                    </div>
 
-                        <div class="card-body">
-                            <div class="title-rating">
-                                <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
-                                @*<div class="stars">
-                                    @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
-                                    {
-                                        @foreach (var star in GetStars(application.Listing.Profile.Reviews))
+                                    <div class="card-body">
+                                        <div class="title-rating">
+                                            <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank">
+                                                <h5>@application.Listing.Profile.Title</h5>
+                                            </a>
+                                            <div class="average-stars">
+                                                @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
+                                                {
+                                                    @foreach (var star in GetHouseAverage(application.Listing.Profile).Stars)
+                                                    {
+                                                        <span class="@star"></span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>No reviews available</span>
+                                                }
+                                            </div>
+
+                                        </div>
+
+
+                                        <p class="card-text">
+                                            Your application:
+                                        </p>
+                            
+                                        <div class="card application">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@application.Message</h5>
+                                                <p class="card-text">
+                                                    <small class="text-muted">@application.Date</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @if (application.Status is "Pending")
                                         {
-                                            <span class="@star"></span>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <div><span>No reviews</span></div>
-                                    }
-                                </div> ADD STAAAAAAAARS*@
-                            </div>
+                                            <p class="card-title" style="font-style: italic">The Owner of this listing is reviewing your application.</p>
+                                        } else if (application.Status == "Approved")
+                                        {
 
-                            <p class="card-text">
-                                Your application:
-                            </p>
-                            
-                            <div class="card application">
-                                <div class="card-body">
-                                    <h5 class="card-title">@application.Message</h5>
-                                    <p class="card-text">
-                                        <small class="text-muted">@application.Date</small>
-                                    </p>
-                                </div>
-                            </div>
-                            @if (application.Status is "Pending")
-                            {
-                                <p class="card-title" style="font-style: italic">The Owner of this listing is reviewing your application.</p>
-                            } else if (application.Status == "Approved")
-                            {
-
-                                <p class="card-title" style="font-style: italic">You have been approved for this listing. Confirm or cancel your stay:</p>
+                                            <p class="card-title" style="font-style: italic">You have been approved for this listing. Confirm or cancel your stay:</p>
                                 
-                                <br/>
-                                <div class="card-buttons">
-                                    <Button Color="ButtonColor.Primary" @onclick="() => ConfirmApplication(application)">Confirm</Button>
-                                    <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel</Button>
+                                            <br/>
+                                            <div class="card-buttons">
+                                                <Button Color="ButtonColor.Primary" @onclick="() => ConfirmApplication(application)">Confirm</Button>
+                                                <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel</Button>
+                                            </div>
+                                        }
+                            
+                                        else if (application.Status == "Rejected")
+                                        {
+                                            <p class="card-title" style="font-style: italic">Your application for this listing has been rejected. </p>
+                                        }
+                                        else if (application.Status == "Canceled")
+                                        {
+                                            <p class="card-title" style="font-style: italic">You have canceled this stay. </p>
+                                        }
+                            
+                                    </div>
                                 </div>
                             }
-                            
-                            else if (application.Status == "Rejected")
-                            {
-                            <p class="card-title" style="font-style: italic">Your application for this listing has been rejected. </p>
-                            }
-                            else if (application.Status == "Canceled")
-                            {
-                                <p class="card-title" style="font-style: italic">You have canceled this stay. </p>
-                            }
-                            
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        }
-    </div>
-</div>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView>
@@ -358,7 +364,30 @@
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
+    
+    private (double Average, List<string> Stars) GetHouseAverage(HouseProfileDto profile)
+    {
+        if (profile.Reviews == null || !profile.Reviews.Any())
+        {
+            return (0, new List<string> { "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star" });
+        }
 
+        double averageRating = profile.Reviews.Average(r => r.Rating);
+
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        var stars = new List<string>();
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return (averageRating, stars);
+    }
     private async Task LoadAllApplications()
     {
         _applications = new List<ApplicationDto>();
@@ -366,16 +395,11 @@
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Approved", true, true).ToList()));
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Rejected", true, true).ToList()));
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Canceled", true, true).ToList()));
-    }
 
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-listing/{listingId}");
-    }
-    
-    private void NavigateToCreate()
-    {
-        Navigation.NavigateTo("/create-house-listing");
+        foreach (var application in _applications)
+        {
+            application.Listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(application.Listing.Profile.Id).ToList();
+        }
     }
 
     private async Task ConfirmApplication(ApplicationDto application)
