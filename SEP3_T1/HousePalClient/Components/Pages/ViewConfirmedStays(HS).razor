@@ -358,13 +358,33 @@
     private async Task LoadAllApplications()
     {
         Console.WriteLine(_userId);
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        
         _applications = new List<ApplicationDto>();
         _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Confirmed", true, true).ToList()));
-        _applications.Sort((x,y) => DateTime.Compare(x.Date, y.Date));
+
         foreach (var application in _applications)
         {
             application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
         }
+
+
+
+
+        /*
+        var confirmedApplications = await Task.Run(() =>
+            ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", false, false).ToList());
+
+        var allListings = await Task.Run(() =>
+            HouseListingService.GetAllByOwnerStatus(_sitterId, "Closed", false, true).ToList());
+
+        _houseListings = allListings
+            .Where(listing => listing.EndDate < today &&
+                              confirmedApplications.Any(app => app.ListingId == listing.Id))
+            .ToList();
+
+        _listingsWaitingForReview = HouseListingService.GetWaitingForReviewSitter(_sitterId, true).ToList();
+        _houseListings = _houseListings.Except(_listingsWaitingForReview).ToList();*/
     }
 
     private void NavigateToDetails(int listingId)

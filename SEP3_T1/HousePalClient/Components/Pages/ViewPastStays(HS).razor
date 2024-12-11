@@ -225,11 +225,13 @@
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
-        _houseListings = new List<HouseListingDto>();
+       
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
-
+        
+        _houseListings = new List<HouseListingDto>();
+        
         if (user.Identity is null || !user.Identity.IsAuthenticated)
         {
             Console.WriteLine("Not authenticated");
@@ -239,6 +241,7 @@
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _sitterId = int.Parse(userIdAsString);
+        
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
