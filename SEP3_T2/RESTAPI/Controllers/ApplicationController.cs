@@ -1,4 +1,5 @@
-﻿using DTOs.Application;
+﻿using System.Globalization;
+using DTOs.Application;
 using DTOs.HouseListing;
 using DTOs.HouseProfile;
 using Microsoft.AspNetCore.Mvc;
@@ -164,7 +165,11 @@ public class ApplicationController : ControllerBase
                                     new HouseProfileDto
                                     {
                                         Title = profile.Title,
+                                        Address = profile.Address,
                                         Pictures = profile.Pictures,
+                                        OwnerId = profile.OwnerId,
+                                        City = profile.City,
+                                        Region = profile.Region
                                     };
                             }
                         }

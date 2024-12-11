@@ -1,4 +1,4 @@
-﻿@page "/view-my-applications"
+﻿@page "/view-confirmed-stays-hs"
 @using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
@@ -12,6 +12,7 @@
 @rendermode InteractiveServer
 @inject IApplicationService ApplicationService
 @inject IHouseListingService ListingService
+@inject IHouseOwnerService HouseOwnerService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <CascadingAuthenticationState>
@@ -19,14 +20,14 @@
         <Authorized>
             <div class="page-container">
                 <div class="signup-page-container">
-                    <h1>My Applications:</h1>
+                    <h1>Your Confirmed Stays:</h1>
 
                     @if (_applications == null || !_applications.Any())
                     {
-                        <p>No applications found.</p>
+                        <p>No stays found.</p>
                     }
                     else
-                    {
+                    { 
                         <div class="applications-section">
                             @foreach (var application in _applications)
                             {
@@ -39,55 +40,30 @@
                                     <div class="card-body">
                                         <div class="title-rating">
                                             <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
-                                            @*<div class="stars">
-                                            @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
-                                            {
-                                                @foreach (var star in GetStars(application.Listing.Profile.Reviews))
-                                                {
-                                                    <span class="@star"></span>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <div><span>No reviews</span></div>
-                                            }
-                                    </div> ADD STAAAAAAAARS*@
-                                        </div>
-
-                                        @if (application.Status is "Pending")
-                                        {
-                                            <p class="card-title" style="font-style: italic">The Owner of this listing is reviewing your application:</p>
-                                        }
-                                        else if (application.Status == "Approved")
-                                        {
-                                            <p class="card-title" style="font-style: italic">Your application for this listing was approved: </p>
-                                        }
-                                        else if (application.Status == "Rejected")
-                                        {
-                                            <p class="card-title" style="font-style: italic">Your application for this listing has been rejected: </p>
-                                        }
-                                        else if (application.Status == "Canceled")
-                                        {
-                                            <p class="card-title" style="font-style: italic">You have canceled this stay. </p>
-                                        }
-
-                                        <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : "")) application">
-                                            <div class="card-body">
-                                                <h5 class="card-title">@application.Message</h5>
-                                                <p class="card-text">
-                                                    <small>@application.Date</small>
-                                                </p>
-                                            </div>
+                                            <h5 class="card-text">
+                                                <i class="fa-solid fa-location-dot"></i> @application.Listing.Profile.Address, @application.Listing.Profile.City, @application.Listing.Profile.Region
+                                                </h5>
                                         </div>
                                         
-                                        @if(application.Status == "Approved")
-                                        {
-                                            <div class="card-buttons">
-                                                <Button Color="ButtonColor.None" class="approve-button" @onclick="() => ConfirmApplication(application)">Confirm Stay</Button>
-                                                <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel Stay</Button>
-                                            </div>
-                                        }
+                                        <p class="card-text">
+                                            Your Stay will be starting on the @application.Listing.StartDate 
+                                        </p>
                                         
+                                        <br/>
+                                        
+                                        <p class="card-text" style="text-indent: 1em;">
+                                            Contact @application.Listing.Profile.Owner.Name to organize your stay:
+                                        </p>
+
+                                        <p class="card-text" style="text-indent: 1em;">
+                                            <i class="fa-solid fa-envelope"></i>   @application.Listing.Profile.Owner.Email
+                                        </p>
+
+                                        <p class="card-text" style="text-indent: 1em;">
+                                            <i class="fa-solid fa-phone"></i>   @application.Listing.Profile.Owner.Phone
+                                        </p>
+                                        
+
                                     </div>
                                 </div>
                             }
@@ -171,6 +147,7 @@
     p {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
+        margin: 1em;
     }
 
     .plus {
@@ -188,18 +165,8 @@
         display: flex;
         justify-content: center;
         gap: 1.5em;
-        margin: 0.5em;
+        margin-top: 0.5em;
         font-size: 1.15em;
-    }
-    
-    .approve-button {
-        background-color: green;
-        color: white;
-    }
-
-    .approve-button:hover {
-        background-color: #007300;
-        color: white;
     }
 
     .card {
@@ -223,19 +190,18 @@
     }
 
     .card-title {
-        font-size: 1rem;
-        margin-bottom: 0.1em;
-    }
-    
-    .card-body {
-        margin-bottom: 0em;
+        font-size: 1.3em;
     }
 
     .card-text{
-        font-size: 1em;
+        font-size: 1.15em;
         margin: 0;
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
+    }
+
+    .card-text p{
+        line-height: 1.5;
     }
 
     .card a{
@@ -280,6 +246,20 @@
         color: white;
     }
 
+    .title-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: center;
+        gap: 1em;
+        margin-bottom: 0.5em;
+
+    }
+
+    .title-rating h5 {
+        margin-bottom: 0;
+    }
+
     .card-img-container{
         flex: 0 0 200px;
         height: 200px;
@@ -302,20 +282,6 @@
     
     .card-body {
         margin-bottom: 0em;
-    }
-
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-
-    }
-
-    .title-rating h5 {
-        margin-bottom: 0;
     }
 
     .not-authorized-container {
@@ -391,11 +357,14 @@
 
     private async Task LoadAllApplications()
     {
+        Console.WriteLine(_userId);
         _applications = new List<ApplicationDto>();
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Pending", true, true).ToList()));
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Approved", true, true).ToList()));
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Rejected", true, true).ToList()));
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Canceled", true, true).ToList()));
+        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Confirmed", true, true).ToList()));
+        _applications.Sort((x,y) => DateTime.Compare(x.Date, y.Date));
+        foreach (var application in _applications)
+        {
+            application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
+        }
     }
 
     private void NavigateToDetails(int listingId)
