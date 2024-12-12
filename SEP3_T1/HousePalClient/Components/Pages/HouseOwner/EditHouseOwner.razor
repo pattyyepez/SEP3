@@ -4,7 +4,6 @@
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseOwnerService HouseOwnerService
@@ -65,7 +64,10 @@
                         }
 
                         <!-- Submit Button -->
-                        <button type="button" @onclick="EditOwner" class="btn btn-primary">Update</button>
+                        <div class="button-group">
+                            <button type="submit" @onclick="EditOwner" class="btn btn-primary">Update</button>
+                            <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -78,6 +80,24 @@
                         <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
                     </div>
                 </div>
+            }
+
+            @if (_showCancelConfirmation)
+            {
+            <div class="modal-background">
+                <div class="modal-content">
+                    <h2>Confirmation</h2>
+                    <p>Are you sure you want to cancel? All changes will be lost.</p>
+                    <div class="modal-actions">
+                        <button @onclick="ConfirmCancel" class="btn btn-primary">
+                            Yes
+                        </button>
+                        <button @onclick="CloseCancelModal" class="btn btn-secondary">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
             }
         </Authorized>
     </AuthorizeView>
@@ -325,7 +345,7 @@
 </style>
 
 @code {
-    private HouseOwnerDto houseOwner;
+    private HouseOwnerDto? _houseOwner;
     private int _userId;
 
     private string _name = string.Empty;
@@ -337,11 +357,11 @@
 
     private string _message = string.Empty;
     private string _profilePictureUrl = string.Empty;
-    private bool _showSuccessMessage = false;
+    private bool _showSuccessMessage;
 
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
-
+    private bool _showCancelConfirmation;
+    
     private void RedirectToHome()
     {
         Navigation.NavigateTo("/view-all-house-profiles");
@@ -351,6 +371,32 @@
     {
         Navigation.NavigateTo("/login");
     }
+    
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
+
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
+
+    private void ConfirmCancel()
+    {
+        _name = string.Empty;
+        _cpr = string.Empty;
+        _phone = string.Empty;
+        _address = string.Empty;
+        _biography = string.Empty;
+        _message = string.Empty;
+        _profilePictureUrl = string.Empty;
+
+        _showSuccessMessage = false;
+
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo("/view-my-account");
+    }
 
     private async Task EditOwner()
     {
@@ -359,9 +405,9 @@
         var updateHouseOwnerDto = new UpdateHouseOwnerDto()
         {
             UserId = _userId,
-            Name = houseOwner.Name,
-            Email = houseOwner.Email,
-            Password = houseOwner.Password,
+            Name = _houseOwner.Name,
+            Email = _houseOwner.Email,
+            Password = _houseOwner.Password,
             ProfilePicture = _profilePictureUrl,
             CPR = _cpr,
             Phone = _phone,
@@ -377,8 +423,8 @@
         }
         catch (Exception e)
         {
-            var message = e.Message.Split('"')[4];
-            _message = message.Remove(message.Length-1);
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 
@@ -392,7 +438,7 @@
 
         using var content = new MultipartFormDataContent();
 
-        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
         if (_uploadResults.SingleOrDefault(
                 f => f.FileName == file.Name) is null)
         {
@@ -443,7 +489,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
+        var user = authState.User;
 
         if (user?.Identity != null && user.Identity.IsAuthenticated)
         {
@@ -452,13 +498,13 @@
                 var ownerIdClaim = user.FindFirst("Id")?.Value;
                 if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
                 {
-                    houseOwner = await HouseOwnerService.GetSingleAsync(ownerId);
-                    _cpr = houseOwner.CPR;
-                    _phone = houseOwner.Phone;
-                    _name = houseOwner.Name;
-                    _biography = houseOwner.Biography;
-                    _profilePictureUrl = houseOwner.ProfilePicture;
-                    _address = houseOwner.Address;
+                    _houseOwner = await HouseOwnerService.GetSingleAsync(ownerId);
+                    _cpr = _houseOwner.CPR!;
+                    _phone = _houseOwner.Phone!;
+                    _name = _houseOwner.Name!;
+                    _biography = _houseOwner.Biography!;
+                    _profilePictureUrl = _houseOwner.ProfilePicture!;
+                    _address = _houseOwner.Address!;
                     _userId = ownerId;
                 }
             }

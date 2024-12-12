@@ -6,7 +6,6 @@
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Mvc.Rendering
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
@@ -20,7 +19,7 @@
                 <div class="signup-page-container">
                     <h1>My Past Stays</h1>
                     <div class="house-profile-list">
-            
+
                         @if (_applications == null || !_applications.Any())
                         {
                             <p>No listings found.</p>
@@ -38,7 +37,9 @@
 
                                         <div class="card-body">
                                             <div class="title-rating">
-                                                <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
+                                                <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank">
+                                                    <h5>@application.Listing.Profile.Title</h5>
+                                                </a>
                                                 <h5 class="card-text">
                                                     <i class="fa-solid fa-location-dot"></i> @application.Listing.Profile.Address, @application.Listing.Profile.City, @application.Listing.Profile.Region
                                                 </h5>
@@ -76,7 +77,7 @@
                                                     <button class="btn" @onclick="() => ShowCreateReview(application.Listing.Profile.Id)">Create Review</button>
                                                 }
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 }
@@ -88,46 +89,52 @@
 
             @if (_showModal)
             {
-            <div class="modal-background">
-                <div class="modal-content">
-                    @if (_creatingReview)
-                    {
-                    <h3>Create review for sitter</h3>
-                    <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
-                    <select @bind="_reviewRating" class="review-rating-select" required>
-                        <option value="" disabled selected>Rate the sitter (out of 5)</option>
-                        <option value="1">1 - Poor</option>
-                        <option value="2">2 - Fair</option>
-                        <option value="3">3 - Good</option>
-                        <option value="4">4 - Very Good</option>
-                        <option value="5">5 - Excellent</option>
-                    </select>
+                <div class="modal-background">
+                    <div class="modal-content">
+                        @if (_creatingReview)
+                        {
+                            <form @onsubmit="CreateReview">
 
-                    <button class="btn btn-primary" @onclick="CreateReview">Create Review</button>
-                    <button class="btn btn-secondary" @onclick="CancelCreateReview">Close</button>
-                    }
-                    else
-                    {
-                    <h3>Edit review for sitter</h3>
-                    <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
-                    <select @bind="_reviewRating" class="review-rating-select" required>
-                        <option value="" disabled selected>Rate the sitter (out of 5)</option>
-                        <option value="1">1 - Poor</option>
-                        <option value="2">2 - Fair</option>
-                        <option value="3">3 - Good</option>
-                        <option value="4">4 - Very Good</option>
-                        <option value="5">5 - Excellent</option>
-                    </select>
+                                <h3>Create review for sitter</h3>
+                                <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
+                                <select @bind="_reviewRating" class="review-rating-select" required>
+                                    <option value="" disabled selected>Rate the sitter (out of 5)</option>
+                                    <option value="1">1 - Poor</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
 
-                    <button class="btn btn-primary" @onclick="EditReview">Save Edit</button>
-                    <button class="btn btn-secondary" @onclick="CancelEditReview">Close</button>
-                    }
+                                <button type="submit" class="btn btn-primary">Create Review</button>
+                                <button class="btn btn-secondary" @onclick="CancelCreateReview">Close</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form @onsubmit="EditReview">
+
+                                <h3>Edit review for sitter</h3>
+                                <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
+                                <select @bind="_reviewRating" class="review-rating-select" required>
+                                    <option value="" disabled selected>Rate the sitter (out of 5)</option>
+                                    <option value="1">1 - Poor</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-primary">Save Edit</button>
+                                <button class="btn btn-secondary" @onclick="CancelEditReview">Close</button>
+                            </form>
+                        }
+                    </div>
                 </div>
-            </div>
             }
         </Authorized>
-        </AuthorizeView>
-    </CascadingAuthenticationState>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
 <style>
 
@@ -366,24 +373,24 @@
     private int _sitterId;
     private List<ApplicationDto>? _applications;
     private List<HouseListingDto>? _listingsWaitingForReview;
-    
+
     private int _profileIdForReview;
     private string? _reviewComment = string.Empty;
     private int? _reviewRating;
-    
+
     private bool _showModal;
     private bool _creatingReview;
 
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
-       
+
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
-        
+
         _applications = new List<ApplicationDto>();
-        
+
         if (user.Identity is null || !user.Identity.IsAuthenticated)
         {
             Console.WriteLine("Not authenticated");
@@ -393,19 +400,19 @@
         IEnumerable<Claim> claims = user.Claims;
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _sitterId = int.Parse(userIdAsString);
-        
+
         await LoadAllApplications();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
-    
+
     private async Task LoadAllApplications()
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
-        
+
         _applications = new List<ApplicationDto>();
         _applications!.AddRange(
-            await Task.Run(() => 
+            await Task.Run(() =>
                 ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", true, true)
                     .Where(a => a.Listing.EndDate < today)
                     .ToList()));
@@ -413,7 +420,7 @@
         foreach (var application in _applications)
         {
             application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
-            application.Listing.Profile.Reviews = new ();
+            application.Listing.Profile.Reviews = new();
             try
             {
                 Console.WriteLine(application.Listing.Profile.Id + " " + application.SitterId);
@@ -425,13 +432,13 @@
             }
         }
     }
-    
-        private void ShowCreateReview(int profileId)
+
+    private void ShowCreateReview(int profileId)
     {
         Console.WriteLine(profileId);
         _profileIdForReview = profileId;
-        _reviewComment = string.Empty; 
-        _reviewRating = null; 
+        _reviewComment = string.Empty;
+        _reviewRating = null;
         _creatingReview = true;
         _showModal = true;
     }
@@ -440,23 +447,24 @@
     {
         _showModal = false;
     }
-    
+
     private void ShowEditReview(int profileId)
     {
         _profileIdForReview = profileId;
         var existingReview = _applications
             .FirstOrDefault(app => app.SitterId == _sitterId)?.Sitter?.Reviews.SingleOrDefault();
-        
+
         if (existingReview != null)
         {
-            _reviewComment = existingReview.Comment; 
-            _reviewRating = existingReview.Rating;  
+            _reviewComment = existingReview.Comment;
+            _reviewRating = existingReview.Rating;
         }
         else
         {
             _reviewComment = string.Empty;
             _reviewRating = null;
         }
+
         _creatingReview = false;
         _showModal = true;
     }
@@ -483,7 +491,7 @@
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
-    
+
     private async Task EditReview()
     {
         PreloadService.Show();
@@ -506,7 +514,7 @@
     {
         Navigation.NavigateTo($"/view-listing/{listingId}");
     }
-    
+
     private List<string> GetStars(HouseReviewDto? review)
     {
         var stars = new List<string>();

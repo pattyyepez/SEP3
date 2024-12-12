@@ -60,7 +60,7 @@ public class HouseListingServiceImpl extends HouseListingServiceGrpc.HouseListin
       houseListing.setProfile_id(request.getProfileId());
       houseListing.setStartDate(new Date(request.getStartDate()));
       houseListing.setEndDate(new Date(request.getEndDate()));
-      houseListing.setStatus(request.getStatus());
+      houseListing.setStatus("Open");
 
       int id = houseListingRepository.save(houseListing);
       houseListing.setId(id);

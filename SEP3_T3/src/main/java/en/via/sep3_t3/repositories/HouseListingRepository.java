@@ -35,13 +35,14 @@ public class HouseListingRepository implements IHouseListingRepository
 
   public int save(HouseListing houseListing) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    String sql = "INSERT INTO House_listing (profile_id, startDate, endDate, status) VALUES (?, ?, ?, 'Open')";
+    String sql = "INSERT INTO House_listing (profile_id, startDate, endDate, status) VALUES (?, ?, ?, ?)";
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       ps.setInt(1, houseListing.getProfile_id());
       ps.setTimestamp(2, new Timestamp(houseListing.getStartDate().getTime()));
       ps.setTimestamp(3, new Timestamp(houseListing.getEndDate().getTime()));
+      ps.setString(4, houseListing.getStatus());
       return ps;
     }, keyHolder);
 

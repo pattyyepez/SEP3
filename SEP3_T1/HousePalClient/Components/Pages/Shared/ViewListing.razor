@@ -218,14 +218,16 @@
                     <div class="modal-background">
                         <div class="modal-content">
                             <h3>Send Application</h3>
-                            <textarea @bind="_message" class="form-control" placeholder="Write your message..."></textarea>
-                            <!-- Display Message if exists -->
-                            @if (!string.IsNullOrEmpty(_errorMessage))
-                            {
+                            <form @onsubmit="CreateApplication">
+                                <textarea @bind="_message" class="form-control" placeholder="Write your message..." required></textarea>
+                                <!-- Display Message if exists -->
+                                @if (!string.IsNullOrEmpty(_errorMessage))
+                                {
                                 <div class="alert alert-danger">@_errorMessage</div>
-                            }
-                            <button class="btn btn-secondary" @onclick="OnHideModalClick">Close</button>
-                            <button class="btn btn-primary" @onclick="CreateApplication">Send</button>
+                                }
+                                <button class="btn btn-secondary" @onclick="OnHideModalClick">Close</button>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </form>
                         </div>
                     </div>
                 }
