@@ -44,31 +44,39 @@
                                                 </h5>
                                             </div>
 
+
                                             <div class="button-container">
                                                 @if (application.Listing.Profile.Reviews.Any())
                                                 {
-                                                    <h6>Your past review of this sitter: </h6>
+                                                    <p class="card-text contact" style="font-style: italic">
+                                                        Your past review of @application.Listing.Profile.Title:
+                                                    </p>
 
-                                                    <div class="stars">
-                                                        @foreach (var star in GetStars(application.Listing.Profile.Reviews.Single()))
-                                                        {
-                                                            <span class="@star"></span>
-                                                        }
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="stars">
+                                                                @foreach (var star in GetStars(application.Listing.Profile.Reviews.Single()))
+                                                                {
+                                                                    <span class="@star"></span>
+                                                                }
+                                                            </div>
+                                                            <p>@application.Listing.Profile.Reviews.Single().Comment</p>
+                                                            <p>@application.Listing.Profile.Reviews.Single().Date</p>
+                                                        </div>
                                                     </div>
-                                                    <p>@application.Listing.Profile.Reviews.Single().Comment</p>
-                                                    <p>@application.Listing.Profile.Reviews.Single().Date</p>
 
                                                     <button class="btn" @onclick="() => ShowEditReview(application.Listing.Profile.Id)">Edit Review</button>
                                                 }
                                                 else
                                                 {
+                                                    <p class="card-text contact" style="font-style: italic">
+                                                        You have finished your stay at @application.Listing.Profile.Title
+                                                    </p>
+
                                                     <button class="btn" @onclick="() => ShowCreateReview(application.Listing.Profile.Id)">Create Review</button>
                                                 }
                                             </div>
-                                        
-                                            <p class="card-text">
-                                                Your Stay will be starting on the @application.Listing.StartDate 
-                                            </p>
+                                            
                                         </div>
                                     </div>
                                 }
@@ -161,46 +169,12 @@
         cursor: pointer;
     }
 
-    .house-profile-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5em;
-        justify-content: center;
-    }
-
-    .house-profile-item {
-        width: 15em;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        padding: 0 0 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-profile-item div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 95%;
-        height: 95%;
-    }
-
-    .house-profile-img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px 10px 0 0;
-    }
-
     p {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         margin: 1em;
     }
-
-    .plus {
-        cursor: pointer;
-    }
+    
 
     .applications-section{
         padding: 0.85em;
@@ -232,11 +206,6 @@
         color: #3d3d3d;
     }
 
-    .card.application{
-        width: 40em;
-        margin-bottom: 0;
-    }
-
     .card-title {
         font-size: 1.3em;
     }
@@ -258,40 +227,6 @@
 
     .card a:hover{
         color: blue;
-    }
-
-    .card.green a{
-        color: white;
-    }
-
-    .card.green a:hover{
-        color: blue;
-    }
-
-    .card.rejected{
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .card.rejected .card-text{
-        color: white;
-    }
-
-    .card.rejected a{
-        color: white;
-    }
-
-    .card.rejected a:hover{
-        color: blue;
-    }
-
-    .card.green{
-        background-color: green;
-        color: white;
-    }
-
-    .card.green .card-text{
-        color: white;
     }
 
     .title-rating {
@@ -362,6 +297,19 @@
         z-index: 1000;
     }
 
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 500px;
+        align-items: center;
+        font-family: 'FuturaFont', sans-serif;
+    }
+
+
     .not-authorized-container p {
         font-family: 'FuturaFont', sans-serif;
         color: #333;
@@ -385,19 +333,29 @@
     }
     .review-rating-select {
         width: 100%;
+        width: 100%;
         padding: 10px;
         font-size: 1rem;
         font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
+        border: 1px solid #ccc;
         border-radius: 5px;
-        cursor: pointer;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
+    .review-rating-select:focus {
+        border-color: #ff7e5f;
+        outline: none;
+        box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
     }
 
     .not-authorized-container .btn:hover {
         background-color: #feb47b;
+    }
+
+    .stars {
+        display: inline-flex;
+        gap: 0.2em;
     }
 </style>
 
@@ -470,6 +428,7 @@
     
         private void ShowCreateReview(int profileId)
     {
+        Console.WriteLine(profileId);
         _profileIdForReview = profileId;
         _reviewComment = string.Empty; 
         _reviewRating = null; 
