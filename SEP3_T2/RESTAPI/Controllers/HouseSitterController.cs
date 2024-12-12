@@ -1,6 +1,7 @@
 ﻿using DTOs;
 using DTOs.HouseSitter;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class HouseSitterController : ControllerBase
+public class HouseSitterController : ControllerBase, IHouseSitterController
 {
     private readonly IHouseSitterRepository _repo;
 

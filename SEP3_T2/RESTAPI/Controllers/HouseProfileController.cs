@@ -2,12 +2,13 @@
 using DTOs.HouseProfile;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class HouseProfileController : ControllerBase
+public class HouseProfileController : ControllerBase, IHouseProfileController
 {
     private readonly IHouseProfileRepository _repo;
 

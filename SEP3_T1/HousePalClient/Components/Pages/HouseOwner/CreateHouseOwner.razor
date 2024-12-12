@@ -4,7 +4,6 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using MediaTypeHeaderValue = System.Net.Http.Headers.MediaTypeHeaderValue
-@using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
 @inject IHouseOwnerService HouseOwnerService
@@ -23,8 +22,8 @@
             <div class="form-section">
                 <h2>Account Information</h2>
 
-                <label>Email:</label>
-                <input type="email" class="form-control"
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email"
                        placeholder="Enter your email" @bind="_email" required/>
 
                 <label>Password:</label>
@@ -76,11 +75,11 @@
 
                 @if (!string.IsNullOrEmpty(_profilePictureUrl))
                 {
-                <hr/>
-                <p>Uploaded picture:</p>
-                <img class="profile-picture"
-                     src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]"
-                     alt="Uploaded picture"/>
+                    <hr/>
+                    <p>Uploaded picture:</p>
+                    <img class="profile-picture"
+                         src="https://localhost:7134/Filesave/@_profilePictureUrl.Split('.')[0]/@_profilePictureUrl.Split('.')[1]"
+                         alt="Uploaded picture"/>
                 }
 
             </div>
@@ -88,16 +87,17 @@
             <!-- Display Message if exists -->
             @if (!string.IsNullOrEmpty(_message))
             {
-            <div class="alert alert-danger">@_message</div>
+                <div class="alert alert-danger">@_message</div>
             }
 
             <!-- Submit Button -->
             <div class="button-group">
-                <button type="button" @onclick="CreateOwner"
-                        class="btn btn-primary">Create Account
+                <button type="submit" class="btn btn-primary">
+                    Create Account
                 </button>
                 <button type="button" @onclick="OpenCancelModal"
-                        class="btn btn-secondary">Cancel
+                        class="btn btn-secondary">
+                    Cancel
                 </button>
             </div>
 
@@ -106,29 +106,32 @@
 </div>
 @if (_showSuccessMessage)
 {
-<div class="modal-background">
-    <div class="modal-content">
-        <h2>Hello, @_name!</h2>
-        <p>Your account has been created successfully.</p>
-        <button @onclick="RedirectToLogin" class="btn btn-primary">Go to Login
-        </button>
-    </div>
-</div>
-}
-@if (_showCancelConfirmation)
-{
-<div class="modal-background">
-    <div class="modal-content">
-        <h2>Confirmation</h2>
-        <p>Are you sure you want to cancel? All changes will be lost.</p>
-        <div class="modal-actions">
-            <button @onclick="ConfirmCancel" class="btn btn-primary">Yes
-            </button>
-            <button @onclick="CloseCancelModal" class="btn btn-secondary">No
+    <div class="modal-background">
+        <div class="modal-content">
+            <h2>Hello, @_name!</h2>
+            <p>Your account has been created successfully.</p>
+            <button @onclick="RedirectToLogin" class="btn btn-primary">
+                Go to Login
             </button>
         </div>
     </div>
-</div>
+}
+@if (_showCancelConfirmation)
+{
+    <div class="modal-background">
+        <div class="modal-content">
+            <h2>Confirmation</h2>
+            <p>Are you sure you want to cancel? All changes will be lost.</p>
+            <div class="modal-actions">
+                <button @onclick="ConfirmCancel" class="btn btn-primary">
+                    Yes
+                </button>
+                <button @onclick="CloseCancelModal" class="btn btn-secondary">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
 }
 
 
@@ -394,202 +397,148 @@
 </style>
 
 @code {
-private string _email = string.Empty;
-private string _password = string.Empty;
-private string _confirmPassword = string.Empty;
-private string _name = string.Empty;
-private string _cpr = string.Empty;
-private string _phone = string.Empty;
-private string _address = string.Empty;
-private string _biography = string.Empty;
-private string _message = string.Empty;
-private string _profilePictureUrl = string.Empty;
-private bool _showSuccessMessage = false;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _confirmPassword = string.Empty;
+    private string _name = string.Empty;
+    private string _cpr = string.Empty;
+    private string _phone = string.Empty;
+    private string _address = string.Empty;
+    private string _biography = string.Empty;
+    private string _message = string.Empty;
+    private string _profilePictureUrl = string.Empty;
+    private bool _showSuccessMessage;
 
-private List<FileDto> _uploadResults = new();
-private int maxAllowedFiles = 3;
-private bool _showCancelConfirmation = false;
+    private readonly List<FileDto> _uploadResults = [];
+    private bool _showCancelConfirmation;
 
-private void RedirectToLogin()
-{
-Navigation.NavigateTo("/login");
-}
-private void OpenCancelModal()
-{
-_showCancelConfirmation = true;
-}
+    private void RedirectToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
 
-private void CloseCancelModal()
-{
-_showCancelConfirmation = false;
-}
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
 
-private void ConfirmCancel()
-{
-_email = string.Empty;
-_password = string.Empty;
-_confirmPassword = string.Empty;
-_name = string.Empty;
-_cpr = string.Empty;
-_phone = string.Empty;
-_address = string.Empty;
-_biography = string.Empty;
-_message = string.Empty;
-_profilePictureUrl = string.Empty;
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
 
-_showSuccessMessage = false;
+    private void ConfirmCancel()
+    {
+        _email = string.Empty;
+        _password = string.Empty;
+        _confirmPassword = string.Empty;
+        _name = string.Empty;
+        _cpr = string.Empty;
+        _phone = string.Empty;
+        _address = string.Empty;
+        _biography = string.Empty;
+        _message = string.Empty;
+        _profilePictureUrl = string.Empty;
 
-_showCancelConfirmation = false;
-Navigation.NavigateTo("/");
-}
+        _showSuccessMessage = false;
 
-private async Task CreateOwner()
-{
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo("/");
+    }
 
-_message = string.Empty;
+    private async Task CreateOwner()
+    {
+        _message = string.Empty;
 
-if (string.IsNullOrWhiteSpace(_email))
-{
-_message = "Email is required.";
-return;
-}
+        if (_password != _confirmPassword)
+        {
+            _message = "Passwords do not match.";
+            return;
+        }
 
-if (string.IsNullOrWhiteSpace(_password))
-{
-_message = "Password is required.";
-return;
-}
+        var createHouseOwnerDto = new CreateHouseOwnerDto
+        {
+            Name = _name,
+            Email = _email,
+            Password = _password,
+            ProfilePicture = _profilePictureUrl,
+            CPR = _cpr,
+            Phone = _phone,
+            Address = _address,
+            Biography = _biography
+        };
 
-if (string.IsNullOrWhiteSpace(_confirmPassword))
-{
-_message = "Please confirm your password.";
-return;
-}
-
-if (string.IsNullOrWhiteSpace(_name))
-{
-_message = "Name is required.";
-return;
-}
-
-if (string.IsNullOrWhiteSpace(_cpr))
-{
-_message = "CPR number is required.";
-return;
-}
-
-if (string.IsNullOrWhiteSpace(_phone))
-{
-_message = "Phone number is required.";
-return;
-}
-if (string.IsNullOrWhiteSpace(_address))
-{
-_message = "Address is required.";
-return;
-}
-
-if (string.IsNullOrWhiteSpace(_biography))
-{
-_message = "Biography is required.";
-return;
-}
-
-if (string.IsNullOrEmpty(_profilePictureUrl))
-{
-_message = "You must upload a profile picture.";
-return;
-}
+        try
+        {
+            await HouseOwnerService.AddAsync(createHouseOwnerDto);
+            _showSuccessMessage = true;
+            _message = $"House Owner created successfully!";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            var message = e.Message.Split('"')[4];
+            _message = message.Remove(message.Length-1);
+        }
+    }
 
 
-if (_password != _confirmPassword)
-{
-_message = "Passwords do not match.";
-return;
-}
+    private async Task OnInputProfilePictureChange(InputFileChangeEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(_profilePictureUrl))
+            await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
 
-var createHouseOwnerDto = new CreateHouseOwnerDto
-{
-Name = _name,
-Email = _email,
-Password = _password,
-ProfilePicture = _profilePictureUrl,
-CPR = _cpr,
-Phone = _phone,
-Address = _address,
-Biography = _biography
-};
+        long maxFileSize = long.MaxValue;
+        var upload = false;
 
-try
-{
-HouseOwnerDto created = await HouseOwnerService.AddAsync(createHouseOwnerDto);
-_showSuccessMessage = true;
-_message = $"House Owner created successfully!";
-}
-catch (Exception e)
-{
-Console.WriteLine(e);
-_message = $"Error: {e.Message}";
-}
-}
+        using var content = new MultipartFormDataContent();
 
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
+        if (_uploadResults.SingleOrDefault(
+                f => f.FileName == file!.Name) is null)
+        {
+            try
+            {
+                var fileContent = new StreamContent(file!.OpenReadStream(maxFileSize));
 
-private async Task OnInputProfilePictureChange(InputFileChangeEventArgs e)
-{
-if (!string.IsNullOrEmpty(_profilePictureUrl))
-await Http.DeleteAsync($"/Filesave/{_profilePictureUrl.Split('.')[0]}/{_profilePictureUrl.Split('.')[1]}");
+                fileContent.Headers.ContentType =
+                    new MediaTypeHeaderValue(file.ContentType);
 
-long maxFileSize = long.MaxValue;
-var upload = false;
+                content.Add(
+                    content: fileContent,
+                    name: "\"files\"",
+                    fileName: file.Name);
 
-using var content = new MultipartFormDataContent();
+                upload = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogInformation(
+                    $"{file!.Name} not uploaded (Err: 6): {ex.Message}",
+                    file.Name, ex.Message);
 
-var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
-if (_uploadResults.SingleOrDefault(
-f => f.FileName == file.Name) is null)
-{
-try
-{
-var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                _uploadResults.Add(
+                    new FileDto
+                    {
+                        FileName = file.Name,
+                        ErrorCode = 6,
+                        Uploaded = false
+                    });
+            }
+        }
 
-fileContent.Headers.ContentType =
-new MediaTypeHeaderValue(file.ContentType);
+        if (upload)
+        {
+            var response = await Http.PostAsync("/Filesave", content);
 
-content.Add(
-content: fileContent,
-name: "\"files\"",
-fileName: file.Name);
+            var newUploadResults = await response.Content
+                .ReadFromJsonAsync<IList<FileDto>>();
 
-upload = true;
-}
-catch (Exception ex)
-{
-Logger.LogInformation(
-$"{file.Name} not uploaded (Err: 6): {ex.Message}",
-file.Name, ex.Message);
-
-_uploadResults.Add(
-new()
-{
-FileName = file.Name,
-ErrorCode = 6,
-Uploaded = false
-});
-}
-}
-
-if (upload)
-{
-var response = await Http.PostAsync("/Filesave", content);
-
-var newUploadResults = await response.Content
-.ReadFromJsonAsync<IList<FileDto>>();
-
-if (newUploadResults is not null)
-{
-_profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
-}
-}
-}
+            if (newUploadResults is not null)
+            {
+                _profilePictureUrl = newUploadResults.FirstOrDefault()!.StoredFileName!;
+            }
+        }
+    }
 
 }

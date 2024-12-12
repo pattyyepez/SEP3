@@ -6,13 +6,10 @@ import en.via.sep3_t3.repositoryContracts.IApplicationRepository;
 import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -87,6 +84,7 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -98,6 +96,8 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(ApplicationResponse.newBuilder().build());
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
+
       responseObserver.onError(e);
     }
   }

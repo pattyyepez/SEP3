@@ -1,4 +1,6 @@
 using DTOs;
+using DTOs.Files;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
@@ -9,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 [Route("[controller]")]
 public class FilesaveController(
     IHostEnvironment env, ILogger<FilesaveController> logger) 
-    : ControllerBase
+    : ControllerBase, IFilesaveController
 {
     
     [HttpPost]
