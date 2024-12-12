@@ -57,10 +57,12 @@
                                                 }
                                             </div>
                                         </div>
+                                        
+                                        <p class="card-text">@application.Listing.StartDate - @application.Listing.EndDate</p>
 
                                         @if (application.Status is "Pending")
                                         {
-                                            <p class="card-title" style="font-style: italic">The Owner of this listing is reviewing your application:</p>
+                                            <p class="card-title" style="font-style: italic">The owner of this listing is reviewing your application:</p>
                                         }
                                         else if (application.Status == "Approved")
                                         {
@@ -238,7 +240,7 @@
 
     .card-text{
         font-size: 1em;
-        margin: 0;
+        margin: 0 0 0.3em 0;
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
     }
