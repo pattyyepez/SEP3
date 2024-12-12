@@ -52,29 +52,35 @@
                                                         <div class="title-rating">
                                                             <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank"><h5>@application.Sitter.Name</h5></a>
                                                         </div>
-
-                                                        <p class="card-text contact" style="font-style: italic">
-                                                            @application.Sitter.Name finished their stay at your house.
-                                                        </p>
-
+                                                        
                                                         <div class="button-container">
                                                             @if (application.Sitter.Reviews.Any())
                                                             {
-                                                                <h6>Your past review of this sitter: </h6>
-
-                                                                <div class="stars">
-                                                                    @foreach (var star in GetStars(application.Sitter.Reviews.Single()))
-                                                                    {
-                                                                    <span class="@star"></span>
-                                                                    }
+                                                                <p class="card-text contact" style="font-style: italic">
+                                                                    Your past review of @application.Sitter.Name:
+                                                                </p>
+                                                                
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="stars">
+                                                                            @foreach (var star in GetStars(application.Sitter.Reviews.Single()))
+                                                                            {
+                                                                                <span class="@star"></span>
+                                                                            }
+                                                                        </div>
+                                                                        <p>@application.Sitter.Reviews.Single().Comment</p>
+                                                                        <p>@application.Sitter.Reviews.Single().Date</p>
+                                                                    </div>
                                                                 </div>
-                                                                <p>@application.Sitter.Reviews.Single().Comment</p>
-                                                                <p>@application.Sitter.Reviews.Single().Date</p>
                                                                 
                                                                 <button class="btn" @onclick="() => ShowEditReview(application.SitterId)">Edit Review</button>
                                                             }
                                                             else
                                                             {
+                                                                <p class="card-text contact" style="font-style: italic">
+                                                                    @application.Sitter.Name finished their stay at your house.
+                                                                </p>
+
                                                                 <button class="btn" @onclick="() => ShowCreateReview(application.SitterId)">Create Review</button>
                                                             }
                                                         </div>
