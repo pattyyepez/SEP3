@@ -5,7 +5,6 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
 @inject IHouseSitterService Service
@@ -109,7 +108,7 @@
 
             <!-- Submit Button -->
             <div class="button-group">
-                <button type="button" @onclick="CreateSitter" class="btn btn-primary">Create Account</button>
+                <button type="submit" class="btn btn-primary">Create Account</button>
                 <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
@@ -427,72 +426,6 @@
     {
         _message = string.Empty;
 
-        if (string.IsNullOrWhiteSpace(_email))
-        {
-            _message = "Email is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_password))
-        {
-            _message = "Password is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_confirmPassword))
-        {
-            _message = "Please confirm your password.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_experiences))
-        {
-            _message = "Relevant experiences are required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
-
-        if (_pictures.Count < 3)
-        {
-            _message = "You must upload at least 3 pictures.";
-            return;
-        }
-
-        if (skills.All(s => !s.Selected))
-        {
-            _message = "You must select at least one skill.";
-            return;
-        }
-
         if (_password != _confirmPassword)
         {
             _message = "Passwords do not match.";
@@ -524,14 +457,14 @@
 
         try
         {
-            HouseSitterDto created = await Service.AddAsync(createHouseSitterDto);
+            await Service.AddAsync(createHouseSitterDto);
             _showSuccessMessage = true;
             _message = $"House Sitter created successfully!";
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"')[4];
+            _message = message.Remove(message.Length-1);
         }
     }
 

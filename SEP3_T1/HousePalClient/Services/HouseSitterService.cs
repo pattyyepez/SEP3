@@ -23,7 +23,12 @@ public class HouseSitterService : IHouseSitterService
             
             using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/HouseSitter/CreateHouseSitter", byteContent);
             
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error creating HouseSitter: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -39,7 +44,12 @@ public class HouseSitterService : IHouseSitterService
             
             using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseSitter/UpdateHouseSitter/{houseSitter.UserId}", byteContent);
             
-            response.EnsureSuccessStatusCode();
+                        if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error updating HouseSitter: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -50,14 +60,24 @@ public class HouseSitterService : IHouseSitterService
         {
             using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/HouseSitter/DeleteHouseSitter/{id}");
             
-            response.EnsureSuccessStatusCode();
+                        if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error deleting HouseSitter: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
         }
 
         public async Task<HouseSitterDto> GetSingleAsync(int id)
         {
             using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseSitter/GetHouseSitter/{id}");
 
-            response.EnsureSuccessStatusCode();
+                        if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting single HouseSitter: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -68,7 +88,12 @@ public class HouseSitterService : IHouseSitterService
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseSitter/GetAllHouseSitters").Result;
 
-            response.EnsureSuccessStatusCode();
+                        if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseSitters: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
@@ -82,7 +107,12 @@ public class HouseSitterService : IHouseSitterService
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseSitter/GetAllSkills").Result;
 
-            response.EnsureSuccessStatusCode();
+                        if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseSitter skills: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");

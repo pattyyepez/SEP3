@@ -69,6 +69,7 @@ public class HouseListingServiceImpl extends HouseListingServiceGrpc.HouseListin
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
+      e.printStackTrace();
       responseObserver.onError(e);
     }
   }

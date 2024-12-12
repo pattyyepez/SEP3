@@ -185,7 +185,7 @@
 
         if (user.Identity is null || !user.Identity.IsAuthenticated)
         {
-            _errorMessage = "Invalid username or password.";
+            Console.WriteLine("Not authenticated");
             return;
         }
 

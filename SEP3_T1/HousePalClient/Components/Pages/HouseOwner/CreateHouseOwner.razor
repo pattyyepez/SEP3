@@ -476,7 +476,6 @@
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
             var message = e.Message.Split('"')[4];
             _message = message.Remove(message.Length-1);
         }

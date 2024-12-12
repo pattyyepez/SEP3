@@ -26,32 +26,24 @@ public class ApplicationController : ControllerBase, IApplicationController
         [FromQuery] bool includeListing,
         [FromQuery] bool includeSitter)
     {
-        try
+        var response = _repo.GetAll();
+        if (!includeSitter && !includeListing) return Ok(response);
+
+        var toReturn = new List<ApplicationDto>();
+        foreach (var application in response)
         {
-            var response = _repo.GetAll();
-            if (!includeSitter && !includeListing) return Ok(response);
+            if (includeListing)
+                application.Listing =
+                    await listingRepo.GetSingleAsync(application.ListingId);
 
-            var toReturn = new List<ApplicationDto>();
-            foreach (var application in response)
-            {
-                if (includeListing)
-                    application.Listing =
-                        await listingRepo.GetSingleAsync(application.ListingId);
+            if (includeSitter)
+                application.Sitter =
+                    await sitterRepo.GetSingleAsync(application.SitterId);
 
-                if (includeSitter)
-                    application.Sitter =
-                        await sitterRepo.GetSingleAsync(application.SitterId);
-
-                toReturn.Add(application);
-            }
-
-            return Ok(toReturn.AsQueryable());
+            toReturn.Add(application);
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error fetching all Applications: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+
+        return Ok(toReturn.AsQueryable());
     }
 
     // GET: api/Application/{id}?includeListing=true&includeSitter=true
@@ -62,25 +54,17 @@ public class ApplicationController : ControllerBase, IApplicationController
         [FromQuery] bool includeListing,
         [FromQuery] bool includeSitter)
     {
-        try
-        {
-            var response = await _repo.GetSingleAsync(listingId, sitterId);
+        var response = await _repo.GetSingleAsync(listingId, sitterId);
 
-            if (includeListing)
-                response.Listing = await listingRepo.GetSingleAsync(listingId);
+        if (includeListing)
+            response.Listing = await listingRepo.GetSingleAsync(listingId);
 
-            if (includeSitter)
-                response.Sitter = await sitterRepo.GetSingleAsync(sitterId);
+        if (includeSitter)
+            response.Sitter = await sitterRepo.GetSingleAsync(sitterId);
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error fetching Application: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+        return Ok(response);
     }
-    
+
     // GET: https://localhost:7134/api/Application/GetApplication/{listingId}
     [HttpGet("{listingId:int}/{status}")]
     public async Task<IActionResult> GetApplicationByListing(
@@ -88,29 +72,21 @@ public class ApplicationController : ControllerBase, IApplicationController
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeSitter)
     {
-        try
+        var response = _repo.GetAll().Where(a => a.ListingId == listingId);
+
+        if (!string.IsNullOrWhiteSpace(status))
+            response = response.Where(a => a.Status == status);
+
+        foreach (var application in response)
         {
-            var response = _repo.GetAll().Where(a => a.ListingId == listingId);
-            
-            if(!string.IsNullOrWhiteSpace(status))
-                response = response.Where(a => a.Status == status);
-                
-            foreach (var application in response)
-            {
-                if (includeSitter)
-                    application.Sitter =
-                        await sitterRepo.GetSingleAsync(application.SitterId);
-            }
-            
-            return Ok(response);
+            if (includeSitter)
+                application.Sitter =
+                    await sitterRepo.GetSingleAsync(application.SitterId);
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error fetching Application: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+
+        return Ok(response);
     }
-    
+
 // GET https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}
     [HttpGet("{userId}/{status}")]
     public async Task<IActionResult> GetApplicationsByUser(
@@ -121,81 +97,73 @@ public class ApplicationController : ControllerBase, IApplicationController
         [FromQuery] bool includeProfiles,
         int? userId, string? status)
     {
-        try
+        IQueryable<ApplicationDto> applications = _repo.GetAll();
+
+        if (!string.IsNullOrWhiteSpace(status))
         {
-            IQueryable<ApplicationDto> applications = _repo.GetAll();
-
-            if (!string.IsNullOrWhiteSpace(status))
-            {
-                applications = applications.Where(a => a.Status == status);
-            }
-
-            switch (userId)
-            {
-                case null:
-                    return NotFound();
-                case 0:
-                    return Ok(applications);
-                default:
-                    if (sitterRepo.GetAll().Any(s => s.UserId == userId.Value))
-                    {
-                        applications =
-                            applications.Where(a => a.SitterId == userId.Value);
-
-                        foreach (var application in applications)
-                        {
-                            if (includeListings)
-                            {
-                                var listing = await listingRepo.GetSingleAsync(
-                                    application.ListingId);
-                                application.Listing = new HouseListingDto
-                                {
-                                    StartDate = listing.StartDate,
-                                    EndDate = listing.EndDate,
-                                };
-                            }
-
-                            if (includeProfiles)
-                            {
-                                var profile = await profileRepo.GetSingleAsync(
-                                    (await listingRepo.GetSingleAsync(
-                                        application.ListingId)).ProfileId);
-                                application.Listing ??= new HouseListingDto();
-                                application.Listing.Profile =
-                                    new HouseProfileDto
-                                    {
-                                        Id = profile.Id,
-                                        Title = profile.Title,
-                                        Address = profile.Address,
-                                        Pictures = profile.Pictures,
-                                        OwnerId = profile.OwnerId,
-                                        City = profile.City,
-                                        Region = profile.Region
-                                    };
-                            }
-                        }
-                        
-                        return Ok(applications);
-                    }
-                    
-                    var listings = listingRepo.GetAll();
-                    
-                    listings = listings.Except(listings
-                        .ExceptBy(profileRepo.GetAll()
-                                .Where(p => p.OwnerId == userId)
-                                .Select(p => p.Id),
-                            l => l.ProfileId));
-
-                    applications = applications.Except(applications.ExceptBy(
-                        listings.Select(l => l.Id), a => a.ListingId));
-                    
-                    return Ok(applications);
-            }
+            applications = applications.Where(a => a.Status == status);
         }
-        catch (Exception ex)
+
+        switch (userId)
         {
-            return StatusCode(500,
-                $"Error fetching Application: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
+            case null:
+                return NotFound();
+            case 0:
+                return Ok(applications);
+            default:
+                if (sitterRepo.GetAll().Any(s => s.UserId == userId.Value))
+                {
+                    applications =
+                        applications.Where(a => a.SitterId == userId.Value);
+
+                    foreach (var application in applications)
+                    {
+                        if (includeListings)
+                        {
+                            var listing = await listingRepo.GetSingleAsync(
+                                application.ListingId);
+                            application.Listing = new HouseListingDto
+                            {
+                                StartDate = listing.StartDate,
+                                EndDate = listing.EndDate,
+                            };
+                        }
+
+                        if (includeProfiles)
+                        {
+                            var profile = await profileRepo.GetSingleAsync(
+                                (await listingRepo.GetSingleAsync(
+                                    application.ListingId)).ProfileId);
+                            application.Listing ??= new HouseListingDto();
+                            application.Listing.Profile =
+                                new HouseProfileDto
+                                {
+                                    Id = profile.Id,
+                                    Title = profile.Title,
+                                    Address = profile.Address,
+                                    Pictures = profile.Pictures,
+                                    OwnerId = profile.OwnerId,
+                                    City = profile.City,
+                                    Region = profile.Region
+                                };
+                        }
+                    }
+
+                    return Ok(applications);
+                }
+
+                var listings = listingRepo.GetAll();
+
+                listings = listings.Except(listings
+                    .ExceptBy(profileRepo.GetAll()
+                            .Where(p => p.OwnerId == userId)
+                            .Select(p => p.Id),
+                        l => l.ProfileId));
+
+                applications = applications.Except(applications.ExceptBy(
+                    listings.Select(l => l.Id), a => a.ListingId));
+
+                return Ok(applications);
         }
     }
 
@@ -204,19 +172,8 @@ public class ApplicationController : ControllerBase, IApplicationController
     public async Task<IActionResult> CreateApplication(
         [FromBody] CreateApplicationDto createDto)
     {
-        try
-        {
-            var response = await _repo.AddAsync(createDto);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(
-                $"Error creating Application: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
-
-            return StatusCode(500,
-                $"Error creating Application: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
-        }
+        var response = await _repo.AddAsync(createDto);
+        return Ok(response);
     }
 
     // PUT: api/Application/{id}
@@ -225,17 +182,9 @@ public class ApplicationController : ControllerBase, IApplicationController
         int sitterId,
         [FromBody] UpdateApplicationDto updateDto)
     {
-        try
-        {
-            var response =
-                await _repo.UpdateAsync(listingId, sitterId, updateDto);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error updating HouseListing: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
-        }
+        var response =
+            await _repo.UpdateAsync(listingId, sitterId, updateDto);
+        return Ok(response);
     }
 
     // DELETE: api/Application/{id}
@@ -243,15 +192,7 @@ public class ApplicationController : ControllerBase, IApplicationController
     public async Task<IActionResult> DeleteApplication(int listingId,
         int sitterId)
     {
-        try
-        {
-            await _repo.DeleteAsync(listingId, sitterId);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error deleting Application: {ex.Message}");
-        }
+        await _repo.DeleteAsync(listingId, sitterId);
+        return Ok();
     }
 }

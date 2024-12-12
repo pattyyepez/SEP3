@@ -23,16 +23,17 @@ public class GlobalExceptionHandlerMiddleware : IMiddleware
                 var traceId = Guid.NewGuid();
                 _logger.LogError($"Error occurred while processing the request, TraceId : ${traceId}, Message : ${ex.Message}, StackTrace: ${ex.StackTrace}");
 
+                Console.WriteLine(ex.Message);
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-                var problemDetails = new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-                    Title = "Internal Server Error",
-                    Status = (int)StatusCodes.Status500InternalServerError,
-                    Instance = context.Request.Path,
-                    Detail = $"Internal server error occured, traceId : {traceId}, Message : ${ex.Message}",
-                };
+                // var problemDetails = new ProblemDetails
+                // {
+                //     Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                //     Title = "Internal Server Error",
+                //     Status = (int)StatusCodes.Status500InternalServerError,
+                //     Instance = context.Request.Path,
+                //     Detail = $"Internal server error occured, traceId : {traceId}, Message : ${ex.Message}",
+                // };
                 await context.Response.WriteAsJsonAsync(ex.Message);
             }
         }

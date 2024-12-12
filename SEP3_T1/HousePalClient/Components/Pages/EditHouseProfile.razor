@@ -459,7 +459,8 @@
         }
         catch (Exception e)
         {
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"')[4];
+            _message = message.Remove(message.Length-1);
         }
     }
 

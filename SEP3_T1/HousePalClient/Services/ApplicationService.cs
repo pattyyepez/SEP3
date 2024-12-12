@@ -23,16 +23,11 @@ public class ApplicationService : IApplicationService
             
             using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/Application/CreateApplication", byteContent);
 
-            try
+            if (!response.IsSuccessStatusCode)
             {
-                response.EnsureSuccessStatusCode();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException);
-                Console.WriteLine(ex.StackTrace);
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error creating Application: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
             }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -49,7 +44,12 @@ public class ApplicationService : IApplicationService
             
             using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/UpdateApplication/{application.ListingId}/{application.SitterId}", byteContent);
             
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error updating Application: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -60,14 +60,24 @@ public class ApplicationService : IApplicationService
         {
             using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/Application/DeleteApplication/{listingId}/{sitterId}");
             
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error deleting Application: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
         }
 
         public async Task<ApplicationDto> GetSingleAsync(int listingId, int sitterId)
         {
             using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplication/{listingId}/{sitterId}");
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error getting single Application: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -78,7 +88,12 @@ public class ApplicationService : IApplicationService
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/Application/GetAllApplications").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all Application: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
@@ -92,7 +107,12 @@ public class ApplicationService : IApplicationService
         {
             HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationByListing/{listingId}/{status}?includeSitter={includeSitter}").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting Applications by listing id, status: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
@@ -107,7 +127,12 @@ public class ApplicationService : IApplicationService
         {
             HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}?includeListings={includeListings}&includeProfiles={includeProfiles}").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all Applications by user id, status: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");

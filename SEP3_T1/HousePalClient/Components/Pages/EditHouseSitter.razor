@@ -430,49 +430,6 @@
     {
         _message = string.Empty;
 
-
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_experiences))
-        {
-            _message = "Relevant experiences are required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
-
-        if (_pictures.Count < 3)
-        {
-            _message = "You must upload at least 3 pictures.";
-            return;
-        }
-
         var updateHouseSitterDto = new UpdateHouseSitterDto()
         {
             UserId = _userId,
@@ -492,20 +449,19 @@
         {
             if (skill.Selected)
             {
-                Console.WriteLine(skill.Text);
                 updateHouseSitterDto.Skills.Add(skill.Text);
             }
         }
 
         try
         {
-            HouseSitterDto created = await HouseSitterService.UpdateAsync(updateHouseSitterDto);
+            await HouseSitterService.UpdateAsync(updateHouseSitterDto);
             _showSuccessMessage = true;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"')[4];
+            _message = message.Remove(message.Length-1);
         }
     }
 

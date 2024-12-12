@@ -119,7 +119,7 @@
 
 
                         <!-- Submit Button -->
-                        <button type="button" @onclick="CreateProfile" class="btn btn-primary">Create House Profile</button>
+                        <button type="submit" class="btn btn-primary">Create House Profile</button>
                     </form>
                 </div>
             </div>
@@ -379,21 +379,20 @@
 </style>
 
 @code {
-    private string _title = "poop"; //string.Empty;
-    private string _description = "poop"; //string.Empty;
-    private string _city = "poop"; //string.Empty;
-    private string _region = "poop"; //string.Empty;
-    private string _address = "poop"; //string.Empty;
+    private string _title = string.Empty;
+    private string _description = string.Empty;
+    private string _city = string.Empty;
+    private string _region = string.Empty;
+    private string _address = string.Empty;
     private List<string> _pictures = [];
     private string _message = string.Empty;
     private bool _showSuccessMessage = false;
     private string _name = "";
     private int _houseOwnerId = 0;
-    private MultiSelectList? _amenities = null;
-    private MultiSelectList? _chores = null;
-    private MultiSelectList? _rules = null;
-
-    private List<FileDto> _uploadResults = new();
+    private MultiSelectList? _amenities;
+    private MultiSelectList? _chores;
+    private MultiSelectList? _rules;
+    
     private int maxAllowedFiles = 3;
 
     private void RedirectToHome()
@@ -448,20 +447,6 @@
             }
         }
 
-        // if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) ||
-        //     string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) ||
-        //     string.IsNullOrWhiteSpace(_address))
-        // {
-        //     _message = "All fields are required. Please fill in all the details.";
-        //     return;
-        // }
-        //
-        // if (_pictures.Count < 3)
-        // {
-        //     _message = "Please upload at least 3 pictures.";
-        //     return;
-        // }
-
         try
         {
             await HouseProfileService.AddAsync(createHouseProfileDto);
@@ -470,10 +455,10 @@
         }
         catch (Exception e)
         {
-            _message = e.Message;
+            var message = e.Message.Split('"')[4];
+            _message = message.Remove(message.Length-1);
         }
     }
-
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {

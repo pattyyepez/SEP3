@@ -355,41 +355,6 @@
     private async Task EditOwner()
     {
         _message = string.Empty;
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_address))
-        {
-            _message = "Address is required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
 
         var updateHouseOwnerDto = new UpdateHouseOwnerDto()
         {
@@ -406,14 +371,14 @@
 
         try
         {
-            HouseOwnerDto created = await HouseOwnerService.UpdateAsync(updateHouseOwnerDto);
+            await HouseOwnerService.UpdateAsync(updateHouseOwnerDto);
             _showSuccessMessage = true;
             _message = $"House Owner updated successfully!";
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"')[4];
+            _message = message.Remove(message.Length-1);
         }
     }
 

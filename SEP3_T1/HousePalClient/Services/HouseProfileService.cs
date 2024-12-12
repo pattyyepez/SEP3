@@ -20,14 +20,18 @@ public class HouseProfileService : IHouseProfileService
             var buffer = System.Text.Encoding.UTF8.GetBytes(convertedHouseProfile);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            
+
             using HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7134/api/HouseProfile/CreateHouseProfile", byteContent);
-            
-            response.EnsureSuccessStatusCode();
-    
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error creating HouseProfile: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"{jsonResponse}\n");
-            return JsonConvert.DeserializeObject<HouseProfileDto>(jsonResponse);
+            return JsonConvert.DeserializeObject<HouseProfileDto>(jsonResponse)!;
         }
 
         public async Task<HouseProfileDto> UpdateAsync(UpdateHouseProfileDto houseProfile)
@@ -39,7 +43,12 @@ public class HouseProfileService : IHouseProfileService
             
             using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/HouseProfile/UpdateHouseProfile/{houseProfile.Id}", byteContent);
             
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error updating HouseProfile: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -50,14 +59,24 @@ public class HouseProfileService : IHouseProfileService
         {
             using HttpResponseMessage response = await _httpClient.DeleteAsync($"https://localhost:7134/api/HouseProfile/DeleteHouseProfile/{id}");
             
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error deleting HouseProfile: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
         }
 
         public async Task<HouseProfileDto> GetSingleAsync(int id, bool includeOwner)
         {
             using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetHouseProfile/{id}?includeOwner={includeOwner}");
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error getting a single HouseProfile: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
     
             var jsonResponse = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"{jsonResponse}\n");
@@ -68,69 +87,94 @@ public class HouseProfileService : IHouseProfileService
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseProfile/GetAllHouseProfiles?includeOwner=true").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseProfiles: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
 
             var houseProfile = JsonConvert.DeserializeObject<List<HouseProfileDto>>(jsonResponse);
 
-            return houseProfile.AsQueryable();
+            return houseProfile!.AsQueryable();
         }
         
         public IQueryable<HouseProfileDto> GetAllByOwner(int ownerId)
         {
             HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetProfilesByOwner/OwnerId?ownerId={ownerId}").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseProfiles by owner id: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
 
             var houseProfile = JsonConvert.DeserializeObject<List<HouseProfileDto>>(jsonResponse);
 
-            return houseProfile.AsQueryable();
+            return houseProfile!.AsQueryable();
         }
         
         public IQueryable<string> GetAllChores()
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseProfile/GetAllChores").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseProfile chores: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
 
             var skills = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
 
-            return skills.AsQueryable();
+            return skills!.AsQueryable();
         }
         
         public IQueryable<string> GetAllRules()
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseProfile/GetAllRules").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseProfile rules: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
 
             var skills = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
 
-            return skills.AsQueryable();
+            return skills!.AsQueryable();
         }
         
         public IQueryable<string> GetAllAmenities()
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseProfile/GetAllAmenities").Result;
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting all HouseProfile amenities: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
 
             var jsonResponse = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine($"{jsonResponse}\n");
 
             var skills = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
 
-            return skills.AsQueryable();
+            return skills!.AsQueryable();
         }
 }
