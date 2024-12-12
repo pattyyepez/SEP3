@@ -2,6 +2,7 @@
 using DTOs.HouseListing;
 using DTOs.HouseProfile;
 using DTOs.HouseSitter;
+using DTOs.SitterReview;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 using RESTAPI.ControllerContracts;
@@ -39,6 +40,52 @@ public class HouseListingController : ControllerBase, IHouseListingController
         return Ok(toReturn.AsQueryable());
     }
 
+    [HttpGet("{ownerId}")]
+    public async Task<IActionResult> GetAllDetailedByOwner(
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IApplicationRepository appRepo, 
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromServices] ISitterReviewRepository reviewRepo, 
+        [FromRoute] int ownerId)
+    {
+        var response = _repo.GetAll().Where(l => l.Status == "Open" && l.StartDate >= DateOnly.FromDateTime(DateTime.Today));
+
+        var toReturn = new List<HouseListingDto>();
+
+        foreach (var listing in response)
+        {
+            var tempProfile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            listing.Profile = new HouseProfileDto
+            {
+                OwnerId = tempProfile.OwnerId,
+                Title = tempProfile.Title,
+                Pictures = new List<string>(){tempProfile.Pictures[0]},
+            };
+
+            listing.Applications = appRepo.GetAll()
+                .Where(a => a.ListingId == listing.Id && a.Status != "Confirmed").ToList();
+
+            foreach (var app in listing.Applications)
+            {
+                var tempSitter = await sitterRepo.GetSingleAsync(app.SitterId);
+                app.Sitter = new HouseSitterDto
+                {
+                    UserId = tempSitter.UserId,
+                    Name = tempSitter.Name,
+                    ProfilePicture = tempSitter.ProfilePicture,
+                };
+                
+                app.Sitter.Reviews = reviewRepo.GetAll()
+                    .Where(r => r.SitterId == app.SitterId)
+                    .Select(r => new SitterReviewDto { Rating = r.Rating })
+                    .ToList();
+            }
+
+            toReturn.Add(listing);
+        }
+        return Ok(toReturn.Where(l => l.Profile.OwnerId == ownerId).AsQueryable());
+    }
+
     // GET: api/HouseListing/{id}?includeProfile=true
     [HttpGet("{id}")]
     public async Task<IActionResult> GetHouseListing(int id,
@@ -52,6 +99,104 @@ public class HouseListingController : ControllerBase, IHouseListingController
                 await profileRepo.GetSingleAsync(response.ProfileId);
 
         return Ok(response);
+    }
+
+    [HttpGet ("{ownerId}")]
+    public async Task<IActionResult> GetConfirmedStaysHo(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        int? ownerId)
+    {
+        var response = _repo.GetAll().Where(l => l.Status == "Closed" && l.EndDate > DateOnly.FromDateTime(DateTime.Today));
+
+        var toReturn = new List<HouseListingDto>();
+
+        foreach (var listing in response)
+        {
+            var tempProfile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            listing.Profile = new HouseProfileDto
+            {
+                OwnerId = tempProfile.OwnerId,
+                Title = tempProfile.Title,
+                Pictures = new List<string>(){tempProfile.Pictures[0]},
+            };
+
+            listing.Applications = appRepo.GetAll()
+                .Where(a => a.ListingId == listing.Id && a.Status == "Confirmed").ToList();
+
+            foreach (var app in listing.Applications)
+            {
+                var tempSitter = await sitterRepo.GetSingleAsync(app.SitterId);
+                app.Sitter = new HouseSitterDto
+                {
+                    Name = tempSitter.Name,
+                    ProfilePicture = tempSitter.ProfilePicture,
+                    Email = tempSitter.Email,
+                    Phone = tempSitter.Phone,
+                };
+
+            }
+
+            toReturn.Add(listing);
+        }
+        return Ok(toReturn.Where(l => l.Profile.OwnerId == ownerId).AsQueryable());
+    }
+
+    [HttpGet("{ownerId}")]
+    public async Task<IActionResult> GetPastStaysHo(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo, 
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromServices] ISitterReviewRepository reviewRepo, 
+        [FromRoute] int? ownerId)
+    {
+        var response = _repo.GetAll().Where(l => l.Status == "Closed" && l.EndDate < DateOnly.FromDateTime(DateTime.Today));
+
+        var toReturn = new List<HouseListingDto>();
+
+        foreach (var listing in response)
+        {
+            var tempProfile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            listing.Profile = new HouseProfileDto
+            {
+                OwnerId = tempProfile.OwnerId,
+                Title = tempProfile.Title,
+                Pictures = new List<string>(){tempProfile.Pictures[0]},
+            };
+
+            listing.Applications = appRepo.GetAll()
+                .Where(a => a.ListingId == listing.Id && a.Status == "Confirmed")
+                .Select(a => new ApplicationDto{SitterId = a.SitterId})
+                .ToList();
+
+            foreach (var app in listing.Applications)
+            {
+                var tempSitter = await sitterRepo.GetSingleAsync(app.SitterId);
+                app.Sitter = new HouseSitterDto
+                {
+                    Name = tempSitter.Name,
+                    ProfilePicture = tempSitter.ProfilePicture,
+                };
+
+                try
+                {
+                    var tempReview = await reviewRepo.GetSingleAsync(tempProfile.OwnerId, app.SitterId);
+                    tempReview.Editable = DateOnly.FromDateTime(tempReview.Date) < listing.EndDate;
+                    app.Sitter.Reviews = new List<SitterReviewDto>()
+                    {
+                        tempReview
+                    };
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Did not find review for composite id {tempProfile.OwnerId}, {app.SitterId} when trying to GetPastStaysHo for owner {ownerId}");
+                }
+            }
+
+            toReturn.Add(listing);
+        }
+        return Ok(toReturn.Where(l => l.Profile.OwnerId == ownerId).AsQueryable());
     }
 
     [HttpGet("ProfileId")]

@@ -77,8 +77,8 @@ public class HouseOwnerServiceImpl extends HouseOwnerServiceGrpc.HouseOwnerServi
   @Override
   public void updateHouseOwner(UpdateHouseOwnerRequest request, StreamObserver<HouseOwnerResponse> responseObserver) {
     try {
-      HouseOwner houseOwner = getHouseOwner(request.getName(), request.getEmail(),
-          request.getPassword(), request.getProfilePicture(),
+      HouseOwner houseOwner = getHouseOwner(request.getName(), "email",
+          "password", request.getProfilePicture(),
           request.getCPR(), request.getPhone(),
           request.getIsVerified(), request.getAdminId(),
           request.getAddress(), request.getBiography());

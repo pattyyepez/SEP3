@@ -67,14 +67,30 @@ public class HouseProfileService : IHouseProfileService
             }
         }
 
-        public async Task<HouseProfileDto> GetSingleAsync(int id, bool includeOwner)
+        public async Task<HouseProfileDto> Get(int id)
         {
-            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetHouseProfile/{id}?includeOwner={includeOwner}");
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/Get/{id}");
 
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Error getting a single HouseProfile: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+    
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"{jsonResponse}\n");
+            return JsonConvert.DeserializeObject<HouseProfileDto>(jsonResponse);
+        }
+
+        public async Task<HouseProfileDto> GetDetailed(int id)
+        {
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetDetailed/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error getting a single detailed HouseProfile: {errorContent}");
                 throw new HttpRequestException($"API error: {errorContent}");
             }
     
@@ -104,7 +120,7 @@ public class HouseProfileService : IHouseProfileService
         
         public IQueryable<HouseProfileDto> GetAllByOwner(int ownerId)
         {
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetProfilesByOwner/OwnerId?ownerId={ownerId}").Result;
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseProfile/GetByOwner/{ownerId}").Result;
 
             if (!response.IsSuccessStatusCode)
             {

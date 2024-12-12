@@ -409,33 +409,13 @@
         _userId = int.Parse(userIdAsString);
 
         await LoadUpcomingHouseListings();
-        await LoadApplications();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
     private async Task LoadUpcomingHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true));
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _houseListings = allListings
-            .Where(listing => listing.EndDate > today)
-            .ToList();
-    }
-
-    private async Task LoadApplications()
-    {
-        foreach (var listing in _houseListings)
-        {
-            listing.Applications = new();
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
-
-            foreach (var application in listing.Applications)
-            {
-                application.Sitter!.Reviews = SitterReviewService.GetAllReviewsForSitter(application.SitterId).ToList();
-            }
-        }
+        _houseListings = await Task.Run(() => HouseListingService.GetConfirmedStaysHo(_userId).ToList());
     }
 
     private void NavigateToLogin()

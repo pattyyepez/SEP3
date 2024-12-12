@@ -24,6 +24,8 @@ public interface ISitterReviewController
     // GET: api/SitterReview/GetAllForSitter/{sitterId}
     Task<IActionResult> GetAllForSitter(
         [FromServices] IHouseOwnerRepository ownerRepo, int sitterId);
+    
+    IActionResult GetAverageForSitter(int sitterId);
 
     // POST: api/SitterReview/Create
     Task<IActionResult> Create(

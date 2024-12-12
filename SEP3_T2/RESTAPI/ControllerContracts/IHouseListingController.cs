@@ -10,11 +10,31 @@ public interface IHouseListingController
     Task<IActionResult> GetAllHouseListings(
         [FromServices] IHouseProfileRepository profileRepo,
         [FromQuery] bool includeProfile);
+    
+    Task<IActionResult> GetAllDetailedByOwner(
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromServices] ISitterReviewRepository reviewRepo,
+        [FromRoute] int ownerId);
 
     // GET: api/HouseListing/{id}?includeProfile=true
     Task<IActionResult> GetHouseListing(int id,
         [FromServices] IHouseProfileRepository profileRepo,
         [FromQuery] bool includeProfile);
+
+    Task<IActionResult> GetConfirmedStaysHo(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromRoute] int? profileId);
+    
+    Task<IActionResult> GetPastStaysHo(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromServices] ISitterReviewRepository reviewRepo, 
+        [FromRoute] int? profileId);
 
     Task<IActionResult> GetListingsByProfile([FromQuery] int? profileId);
 

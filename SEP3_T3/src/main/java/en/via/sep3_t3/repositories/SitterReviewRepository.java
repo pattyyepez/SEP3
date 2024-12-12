@@ -45,8 +45,9 @@ public class SitterReviewRepository implements ISitterReviewRepository
   }
 
   public SitterReview update(SitterReview sitterReview) {
-    String sql = "UPDATE Sitter_review SET rating = ?, comments = ? WHERE owner_id = ? AND sitter_id = ?";
+    String sql = "UPDATE Sitter_review SET rating = ?, comments = ?, date = ? WHERE owner_id = ? AND sitter_id = ?";
     jdbcTemplate.update(sql, sitterReview.getRating(), sitterReview.getComment(),
+        new Timestamp(ZonedDateTime.of(sitterReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()),
         sitterReview.getOwner_id(), sitterReview.getSitter_id());
     return findById(sitterReview.getOwner_id(), sitterReview.getSitter_id());
   }

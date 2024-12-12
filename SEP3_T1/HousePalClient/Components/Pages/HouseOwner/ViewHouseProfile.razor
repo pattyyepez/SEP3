@@ -23,183 +23,185 @@
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
         <Authorized>
-<div class="profile-container">
-    @if (_houseProfile == null)
-    {
-        <p>Loading house profile details...</p>
-    }
-    else
-    {
-    <!-- Confirmation Modal -->
-    @if (_showConfirmationModal)
-    {
-    <div class="modal-background">
-        <div class="modal-content">
-            <h3>Confirm Deletion</h3>
-            <p>Are you sure you want to delete this house profile? This action cannot be undone.</p>
-            <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
-            <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
-        </div>
-    </div>
-    }
-
-    <!-- Success Message -->
-    @if (_showSuccessMessage)
-    {
-    <div class="alert alert-success" role="alert">
-        <strong>Success!</strong> The house profile has been deleted.
-        <button type="button" class="btn-close" aria-label="Close" @onclick="HideSuccessMessage"></button>
-    </div>
-    }
-
-    <!-- Top Buttons -->
-    <div class="top-buttons">
-        <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">
-            <i class="fa-solid fa-pen"></i> Edit
-        </button>
-        <button type="button" class="btn btn-danger" @onclick="ShowConfirmationModal">
-            <i class="fa-solid fa-trash"></i> Delete
-        </button>
-    </div>
-    
-    <hr class="section-divider"/>
-
-        <div class="container house-profile">
-            <!-- Carousel Section -->
-            <div class="carousel-container">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseProfile.Pictures!.Count; i++)
-                        {
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
-                                    class="@(i == 0 ? "active" : "")"
-                                    aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @i">
-                            </button>
-                        }
-                    </div>
-                    <div class="carousel-inner">
-                        @foreach (var image in _houseProfile.Pictures!)
-                        {
-                            <div class="carousel-item @(_houseProfile.Pictures!.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
-                            </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- House Title and Location -->
-            <h1 class="house-title">@_houseProfile.Title</h1>
-            <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
-            <p class="house-description">@_houseProfile.Description</p>
-
-            <hr class="section-divider"/>
-
-            <!-- House Chores & Amenities Section -->
-            <div class="chores-amenities-row">
-                <div class="chores-column">
-                    <h3>House Chores</h3>
-                    <div class="chores-container">
-                        @foreach (var chore in _houseProfile.Chores)
-                        {
-                            <div class="pill">@chore</div>
-                        }
-                    </div>
-                </div>
-                <div class="vertical-divider"></div>
-                <div class="amenities-column">
-                    <h3>House Amenities</h3>
-                    <div class="amenities-container">
-                        @foreach (var amenity in _houseProfile.Amenities)
-                        {
-                            <div class="pill">@amenity</div>
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <hr class="section-divider"/>
-
-            <!-- House Rules Section -->
-            <h3>House Rules</h3>
-            <ol class="house-rules">
-                @foreach (var rule in _houseProfile.Rules)
+            <div class="profile-container">
+                @if (_houseProfile == null)
                 {
-                    <li>@rule</li>
+                    <p>Loading house profile details...</p>
                 }
-            </ol>
-
-            <hr class="section-divider"/>
-
-            <!-- Meet the Host Section -->
-            <h3>Meet the Host</h3>
-            <div class="host-section">
-                <img src="https://localhost:7134/Filesave/@_houseProfile.Owner.ProfilePicture.Split('.')[0]/@_houseProfile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
-                <p class="host-bio">@_houseProfile.Owner.Biography</p>
-            </div>
-
-            <hr class="section-divider"/>
-
-
-            <!-- Review section -->
-
-            <div class="house-average">
-                <h3>House Rating:</h3>
-                <div class="average-stars">
-                    @foreach (var star in GetHouseAverage().Stars)
-                    {
-                    <span class="@star"></span>
-                    }
-                </div>
-            </div>
-
-
-            <div>
-                @if (_houseProfile.Reviews != null && _houseProfile.Reviews.Any())
+                else
                 {
-                <div class="reviews-section">
-                    <div class="reviews-container">
-                        @foreach (var review in _houseProfile.Reviews)
-                        {
-                        <div class="card">
-                            <div class="card-img-container">
-                                <img src="https://localhost:7134/Filesave/@review.Sitter!.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]"
-                                     class="card-img" alt="Reviewer Profile Picture">
+                    <!-- Confirmation Modal -->
+                    @if (_showConfirmationModal)
+                    {
+                        <div class="modal-background">
+                            <div class="modal-content">
+                                <h3>Confirm Deletion</h3>
+                                <p>Are you sure you want to delete this house profile? This action cannot be undone.</p>
+                                <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+                                <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
                             </div>
+                        </div>
+                    }
 
-                            <div class="card-body">
-                                <div class="title-rating">
-                                    <h5>@review.Sitter.Name</h5>
-                                    <div class="stars">
-                                        @foreach (var star in GetStars(review))
+                    <!-- Success Message -->
+                    @if (_showSuccessMessage)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <strong>Success!</strong> The house profile has been deleted.
+                            <button type="button" class="btn-close" aria-label="Close" @onclick="HideSuccessMessage"></button>
+                        </div>
+                    }
+
+                    <!-- Top Buttons -->
+                    <div class="top-buttons">
+                        <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button type="button" class="btn btn-danger" @onclick="ShowConfirmationModal">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="container house-profile">
+                        <!-- Carousel Section -->
+                        <div class="carousel-container">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    @for (int i = 0; i < _houseProfile.Pictures!.Count; i++)
+                                    {
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                                class="@(i == 0 ? "active" : "")"
+                                                aria-current="@(i == 0 ? "true" : "false")"
+                                                aria-label="Slide @i">
+                                        </button>
+                                    }
+                                </div>
+                                <div class="carousel-inner">
+                                    @foreach (var image in _houseProfile.Pictures!)
+                                    {
+                                        <div class="carousel-item @(_houseProfile.Pictures!.IndexOf(image) == 0 ? "active" : "")">
+                                            <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
+                                        </div>
+                                    }
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- House Title and Location -->
+                        <h1 class="house-title">@_houseProfile.Title</h1>
+                        <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
+                        <p class="house-description">@_houseProfile.Description</p>
+
+                        <hr class="section-divider"/>
+
+                        <!-- House Chores & Amenities Section -->
+                        <div class="chores-amenities-row">
+                            <div class="chores-column">
+                                <h3>House Chores</h3>
+                                <div class="chores-container">
+                                    @foreach (var chore in _houseProfile.Chores)
+                                    {
+                                        <div class="pill">@chore</div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="vertical-divider"></div>
+                            <div class="amenities-column">
+                                <h3>House Amenities</h3>
+                                <div class="amenities-container">
+                                    @foreach (var amenity in _houseProfile.Amenities)
+                                    {
+                                        <div class="pill">@amenity</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <!-- House Rules Section -->
+                        <h3>House Rules</h3>
+                        <ol class="house-rules">
+                            @foreach (var rule in _houseProfile.Rules)
+                            {
+                                <li>@rule</li>
+                            }
+                        </ol>
+
+                        <hr class="section-divider"/>
+
+                        <!-- Meet the Host Section -->
+                        <h3>Meet the Host</h3>
+                        <div class="host-section">
+                            <img src="https://localhost:7134/Filesave/@_houseProfile.Owner.ProfilePicture.Split('.')[0]/@_houseProfile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
+                            <p class="host-bio">@_houseProfile.Owner.Biography</p>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+
+                        <!-- Review section -->
+
+                        <div class="house-average">
+                            <h3>House Rating:</h3>
+                            <div class="average-stars">
+                                @foreach (var star in GetHouseAverage().Stars)
+                                {
+                                    <span class="@star"></span>
+                                }
+                            </div>
+                        </div>
+
+
+                        <div>
+                            @if (_houseProfile.Reviews != null && _houseProfile.Reviews.Any())
+                            {
+                                <div class="reviews-section">
+                                    <div class="reviews-container">
+                                        @foreach (var review in _houseProfile.Reviews)
                                         {
-                                        <span class="@star"></span>
+                                            <div class="card">
+                                                <div class="card-img-container">
+                                                    <img src="https://localhost:7134/Filesave/@review.Sitter!.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]"
+                                                         class="card-img" alt="Reviewer Profile Picture">
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <div class="title-rating">
+                                                        <h5>@review.Sitter.Name</h5>
+                                                        <div class="stars">
+                                                            @foreach (var star in GetStars(review))
+                                                            {
+                                                                <span class="@star"></span>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="card-text">@review.Comment</p>
+                                                    <p class="card-text">
+                                                        <small class="text-muted">@review.Date</small>
+                                                    </p>
+                                                </div>
+                                            </div>
                                         }
                                     </div>
                                 </div>
-
-                                <p class="card-text">@review.Comment</p>
-                                <p class="card-text"><small class="text-muted">@review.Date</small></p>
-                            </div>
+                            }
                         </div>
-                        }
+
                     </div>
-                </div>
                 }
             </div>
-            
-        </div>
-    }
-</div>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView>
@@ -586,6 +588,7 @@
         {
             stars.Add("fa-solid fa-star-half-alt");
         }
+
         stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
 
         return (averageRating, stars);
@@ -611,7 +614,6 @@
                 _showConfirmationModal = false;
                 _showSuccessMessage = true;
                 Navigation.NavigateTo("/view-my-houses");
-
             }
             catch (Exception ex)
             {
@@ -631,10 +633,11 @@
     {
         Navigation.NavigateTo($"/edit-house-profile/{profileId}");
     }
+
     protected override async Task OnInitializedAsync()
     {
         PreloadService.Show();
-        
+
         var authState = await AuthState
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -656,14 +659,14 @@
 
     private async Task LoadHouseProfile()
     {
-        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true);
-        _houseProfile.Reviews = HouseReviewService.GetAllReviewsForProfile(ProfileId).ToList();
+        _houseProfile = await HouseProfileService.GetDetailed(ProfileId);
     }
-    
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
     }
+
     private List<string> GetStars(HouseReviewDto? review)
     {
         var stars = new List<string>();
@@ -676,4 +679,5 @@
 
         return stars;
     }
+
 }

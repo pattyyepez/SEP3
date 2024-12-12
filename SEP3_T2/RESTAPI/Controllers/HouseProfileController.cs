@@ -1,4 +1,6 @@
-﻿using DTOs.HouseProfile;
+﻿using DTOs.HouseOwner;
+using DTOs.HouseProfile;
+using DTOs.HouseSitter;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 using RESTAPI.ControllerContracts;
@@ -59,37 +61,58 @@ public class HouseProfileController : ControllerBase, IHouseProfileController
 
     // GET: api/HouseProfile/{id}?includeOwner=true
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetHouseProfile(int id,
-        [FromServices] IHouseOwnerRepository ownerRepo,
-        [FromQuery] bool includeOwner)
+    public async Task<IActionResult> Get(int id)
     {
         var response = await _repo.GetSingleAsync(id);
 
-        if (includeOwner)
+        return Ok(response);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetDetailed(
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromServices] IHouseSitterRepository sitterRepo, 
+        [FromServices] IHouseReviewRepository reviewRepo,
+        int id)
+    {
+        var response = await _repo.GetSingleAsync(id);
+        
+        var tempOwner = await ownerRepo.GetSingleAsync(response.OwnerId);
+        response.Owner = new HouseOwnerDto
         {
-            // var temp = await ownerRepo.GetSingleAsync(response.OwnerId);
-            // response.Owner = new HouseOwnerDto
-            // {
-            //     Name = temp.Name,
-            //     
-            // }
-            response.Owner =
-                await ownerRepo.GetSingleAsync(response.OwnerId);
+            Name = tempOwner.Name,
+            Biography = tempOwner.Biography,
+            ProfilePicture = tempOwner.ProfilePicture
+        };
+
+        response.Reviews = reviewRepo.GetAll().Where(r => r.ProfileId == response.Id).ToList();
+
+        foreach (var review in response.Reviews)
+        {
+            var tempSitter = await sitterRepo.GetSingleAsync(review.SitterId);
+            review.Sitter = new HouseSitterDto
+            {
+                UserId = tempSitter.UserId,
+                Name = tempSitter.Name,
+                ProfilePicture = tempSitter.ProfilePicture
+            };
         }
 
         return Ok(response);
     }
 
-    [HttpGet("OwnerId")]
-    public async Task<IActionResult> GetProfilesByOwner(
-        [FromQuery] int? ownerId)
+    [HttpGet("{ownerId}")]
+    public async Task<IActionResult> GetByOwner(
+        [FromRoute] int ownerId)
     {
-        IQueryable<HouseProfileDto> profiles = _repo.GetAll();
-
-        if (ownerId.HasValue)
-        {
-            profiles = profiles.Where(p => p.OwnerId == ownerId.Value);
-        }
+        var profiles = _repo.GetAll()
+            .Where(p => p.OwnerId == ownerId)
+            .Select(p => new HouseProfileDto
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Pictures = new List<string>(){p.Pictures[0]}
+            });
 
         return Ok(profiles);
     }

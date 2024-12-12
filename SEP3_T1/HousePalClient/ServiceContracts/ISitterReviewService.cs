@@ -10,4 +10,5 @@ public interface ISitterReviewService
     Task<SitterReviewDto> GetSingleAsync(int ownerId, int sitterId, bool includeOwner, bool includeSitter);
     IQueryable<SitterReviewDto> GetAll(bool includeOwner, bool includeSitter);
     IQueryable<SitterReviewDto> GetAllReviewsForSitter(int sitterId);
+    double GetAverageForSitter(int sitterId);
 }

@@ -542,7 +542,7 @@
 
         if (user?.Identity != null && user.Identity.IsAuthenticated && ProfileId != null)
         {
-            var profile = await HouseProfileService.GetSingleAsync(int.Parse(ProfileId), false);
+            var profile = await HouseProfileService.Get(int.Parse(ProfileId));
 
             var userId = int.Parse(user.Claims.Single(c => c.Type == "Id").Value);
             if (userId != profile.OwnerId)

@@ -45,8 +45,9 @@ public class HouseReviewRepository implements IHouseReviewRepository
   }
 
   public HouseReview update(HouseReview houseReview) {
-    String sql = "UPDATE House_review SET rating = ?, comments = ? WHERE profile_id = ? AND sitter_id = ?";
+    String sql = "UPDATE House_review SET rating = ?, comments = ?, date = ? WHERE profile_id = ? AND sitter_id = ?";
     jdbcTemplate.update(sql, houseReview.getRating(), houseReview.getComment(),
+        new Timestamp(ZonedDateTime.of(houseReview.getDate(), ZoneId.systemDefault()).toInstant().toEpochMilli()),
         houseReview.getProfile_id(), houseReview.getSitter_id());
     return findById(houseReview.getProfile_id(), houseReview.getSitter_id());
   }

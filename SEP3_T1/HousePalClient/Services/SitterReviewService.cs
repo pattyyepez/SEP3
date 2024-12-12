@@ -121,4 +121,23 @@ public class SitterReviewService : ISitterReviewService
 
             return sitterReview!.AsQueryable();
         }
+
+        public double GetAverageForSitter(int sitterId)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/SitterReview/GetAverageForSitter/{sitterId}").Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting average rating for Sitter: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var sitterReview = JsonConvert.DeserializeObject<double>(jsonResponse);
+
+            return sitterReview!;
+        }
 }

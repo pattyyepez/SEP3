@@ -43,8 +43,6 @@
                                     {
                                         @foreach (var application in listing.Applications)
                                         {
-                                            if (application.Status is "Confirmed")
-                                            {
                                                 <div class="card">
                                                     <div class="card-img-container">
                                                         <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
@@ -58,7 +56,7 @@
                                                         </div>
 
                                                         <div class="button-container">
-                                                            @if (application.Sitter.Reviews.Any())
+                                                            @if (application.Sitter.Reviews != null && application.Sitter.Reviews.Any())
                                                             {
                                                                 <p class="card-text contact" style="font-style: italic">
                                                                     Your past review of @application.Sitter.Name:
@@ -76,8 +74,8 @@
                                                                         <p>@application.Sitter.Reviews.Single().Date</p>
                                                                     </div>
                                                                 </div>
-
-                                                                <button class="btn" @onclick="() => ShowEditReview(application.SitterId)">Edit Review</button>
+                                                                
+                                                                <button class="btn" disabled="@(!application.Sitter.Reviews.First().Editable.Value)" @onclick="() => ShowEditReview(application.SitterId)">Edit Review</button>
                                                             }
                                                             else
                                                             {
@@ -91,7 +89,7 @@
 
                                                     </div>
                                                 </div>
-                                            }
+                                            
                                         }
                                     }
                                     else
@@ -490,42 +488,43 @@
         _userId = int.Parse(userIdAsString);
 
         await LoadUpcomingHouseListings();
-        await LoadApplications();
+        // await LoadApplications();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
     private async Task LoadUpcomingHouseListings()
     {
-        var allListings = new List<HouseListingDto>();
-        allListings.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true)));
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _houseListings = allListings
-            .Where(listing => listing.EndDate < today)
-            .ToList();
+        _houseListings = HouseListingService.GetPastStaysHo(_userId).ToList();
+        // var allListings = new List<HouseListingDto>();
+        // allListings.AddRange(await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Closed", true, true)));
+        // var today = DateOnly.FromDateTime(DateTime.Today);
+        //
+        // _houseListings = allListings
+        //     .Where(listing => listing.EndDate < today)
+        //     .ToList();
     }
 
-    private async Task LoadApplications()
-    {
-        foreach (var listing in _houseListings)
-        {
-            listing.Applications = new();
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
-
-            var temp = listing.Applications.SingleOrDefault();
-
-            temp!.Sitter!.Reviews = new();
-            try
-            {
-                temp.Sitter!.Reviews.Add(await SitterReviewService.GetSingleAsync(_userId, temp.SitterId, false, false));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.StackTrace);
-            }
-        }
-    }
+    // private async Task LoadApplications()
+    // {
+    //     foreach (var listing in _houseListings)
+    //     {
+    //         listing.Applications = new();
+    //         listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
+    //
+    //         var temp = listing.Applications.SingleOrDefault();
+    //
+    //         temp!.Sitter!.Reviews = new();
+    //         try
+    //         {
+    //             temp.Sitter!.Reviews.Add(await SitterReviewService.GetSingleAsync(_userId, temp.SitterId, false, false));
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             Console.WriteLine(ex.StackTrace);
+    //         }
+    //     }
+    // }
 
     private void ShowCreateReview(int sitterId)
     {
@@ -581,7 +580,7 @@
 
         await SitterReviewService.AddAsync(review);
         await LoadUpcomingHouseListings();
-        await LoadApplications();
+        // await LoadApplications();
         _showModal = false;
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -600,7 +599,7 @@
 
         await SitterReviewService.UpdateAsync(review);
         await LoadUpcomingHouseListings();
-        await LoadApplications();
+        // await LoadApplications();
         _showModal = false;
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();

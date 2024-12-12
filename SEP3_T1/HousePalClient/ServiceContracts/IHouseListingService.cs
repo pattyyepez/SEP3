@@ -9,6 +9,9 @@ public interface IHouseListingService
     Task<HouseListingDto> UpdateAsync(UpdateHouseListingDto houseListing);
     Task<HouseListingDto> GetSingleAsync(int id, bool details);
     IQueryable<HouseListingDto> GetAll();
+    IQueryable<HouseListingDto> GetAllDetailedByOwner(int ownerId);
+    IQueryable<HouseListingDto> GetConfirmedStaysHo(int profileId);
+    IQueryable<HouseListingDto> GetPastStaysHo(int profileId);
     IQueryable<HouseListingDto> GetAllByProfile(int profileId);
     IQueryable<HouseListingDto> GetAllByOwner(int ownerId);
     IQueryable<HouseListingDto> GetAllByOwnerStatus(int ownerId, string status, bool includeApplications, bool includeProfiles);

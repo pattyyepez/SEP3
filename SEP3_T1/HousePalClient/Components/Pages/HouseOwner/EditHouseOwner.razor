@@ -1,4 +1,5 @@
 ﻿@using System.Net.Http.Headers
+@using System.Security.Claims
 @using DTOs
 @using DTOs.HouseOwner
 @using HousePalClient.Components.Layout
@@ -345,7 +346,6 @@
 </style>
 
 @code {
-    private HouseOwnerDto? _houseOwner;
     private int _userId;
 
     private string _name = string.Empty;
@@ -405,9 +405,7 @@
         var updateHouseOwnerDto = new UpdateHouseOwnerDto()
         {
             UserId = _userId,
-            Name = _houseOwner.Name,
-            Email = _houseOwner.Email,
-            Password = _houseOwner.Password,
+            Name = _name,
             ProfilePicture = _profilePictureUrl,
             CPR = _cpr,
             Phone = _phone,
@@ -498,13 +496,12 @@
                 var ownerIdClaim = user.FindFirst("Id")?.Value;
                 if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
                 {
-                    _houseOwner = await HouseOwnerService.GetSingleAsync(ownerId);
-                    _cpr = _houseOwner.CPR!;
-                    _phone = _houseOwner.Phone!;
-                    _name = _houseOwner.Name!;
-                    _biography = _houseOwner.Biography!;
-                    _profilePictureUrl = _houseOwner.ProfilePicture!;
-                    _address = _houseOwner.Address!;
+                    _cpr = user.FindFirst("CPR")!.Value;
+                    _phone = user.FindFirst(ClaimTypes.MobilePhone)!.Value;
+                    _name = user.FindFirst(ClaimTypes.Name)!.Value;
+                    _biography = user.FindFirst("Biography")!.Value;
+                    _profilePictureUrl = user.FindFirst("ProfilePicture")!.Value;
+                    _address = user.FindFirst("Address")!.Value;
                     _userId = ownerId;
                 }
             }
