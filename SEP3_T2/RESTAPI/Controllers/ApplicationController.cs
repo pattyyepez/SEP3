@@ -1,15 +1,15 @@
-﻿using System.Globalization;
-using DTOs.Application;
+﻿using DTOs.Application;
 using DTOs.HouseListing;
 using DTOs.HouseProfile;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ApplicationController : ControllerBase
+public class ApplicationController : ControllerBase, IApplicationController
 {
     private readonly IApplicationRepository _repo;
 

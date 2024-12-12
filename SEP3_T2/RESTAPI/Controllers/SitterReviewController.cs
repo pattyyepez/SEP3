@@ -2,12 +2,13 @@
 using DTOs.SitterReview;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class SitterReviewController : ControllerBase
+public class SitterReviewController : ControllerBase, ISitterReviewController
 {
     private readonly ISitterReviewRepository _repo;
 

@@ -1,8 +1,7 @@
 package en.via.sep3_t3.repoDataValidationProxies;
 
-import en.via.sep3_t3.domain.HouseOwner;
-import en.via.sep3_t3.domain.User;
-import en.via.sep3_t3.repositoryContracts.IHouseOwnerRepository;
+import en.via.sep3_t3.domain.SitterReview;
+import en.via.sep3_t3.repositoryContracts.ISitterReviewRepository;
 import io.grpc.Metadata;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -19,49 +18,45 @@ import java.util.List;
 
 @Service
 @Primary
-public class HouseOwnerValProxy implements IHouseOwnerRepository
+public class SitterReviewValProxy implements ISitterReviewRepository
 {
-  private final IHouseOwnerRepository repo;
+
+  private final ISitterReviewRepository repo;
   private final ArrayList<Field> fields;
 
-  public HouseOwnerValProxy(@Qualifier("HouseOwnerBase") IHouseOwnerRepository repo){
+  public SitterReviewValProxy(@Qualifier("SitterReviewBase") ISitterReviewRepository repo){
     this.repo = repo;
     this.fields = new ArrayList<>();
-    fields.addAll(List.of(User.class.getDeclaredFields()));
-    fields.addAll(List.of(HouseOwner.class.getDeclaredFields()));
+    fields.addAll(List.of(SitterReview.class.getDeclaredFields()));
     fields.forEach(field -> field.setAccessible(true));
   }
 
-  @Override public List<HouseOwner> findAll()
+  @Override public List<SitterReview> findAll()
   {
     return repo.findAll();
   }
 
-  @Override public HouseOwner findById(int id)
-  {
+  @Override public SitterReview findById(int owner_id, int sitter_id) {
     try{
-      return repo.findById(id);
+      return repo.findById(owner_id, sitter_id);
     }
     catch (EmptyResultDataAccessException e){
-      throw getException(e.getMessage(), "HouseOwner with the ID '" + id + "' does not exist.");
+      throw getException(e.getMessage(), "SitterReview with the composite ID '" + owner_id + ", " + sitter_id + "' does not exist.");
     }
   }
 
-  @Override public int save(HouseOwner houseOwner)
+  @Override public void save(SitterReview review)
   {
     try{
       for (Field field : fields){
-        if(field.getType().isAssignableFrom(String.class) &&
-            ((String) field.get(houseOwner)).isBlank()
+        if(field.getType().isAssignableFrom(String.class) && field.get(review) != null &&
+            ((String) field.get(review)).isBlank()
         ){
-          if(field.getName().equals("profilePicture"))
-            throw getException("", "Please upload a profile picture before creating an account.");
-
-          throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new account.");
+          throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new sitter review.");
         }
 
       }
-      return repo.save(houseOwner);
+      repo.save(review);
     }
     catch (IllegalAccessException e)
     {
@@ -69,7 +64,7 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     }
     catch (DuplicateKeyException e)
     {
-      throw getException(e.getMessage(), "The email '" + houseOwner.getEmail() + "' is already in use. Please use a different email.");
+      throw getException(e.getMessage(), "HouseOwner with Id '"+review.getOwner_id()+"' has already reviewed the HouseSitter with Id '"+review.getSitter_id()+"'.");
     }
     catch (DataIntegrityViolationException e)
     {
@@ -77,26 +72,25 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     }
   }
 
-  @Override public void update(HouseOwner houseOwner)
+  @Override public SitterReview update(SitterReview review)
   {
     try{
       for (Field field : fields){
-        if(field.getType().isAssignableFrom(String.class) &&
-            ((String) field.get(houseOwner)).isBlank()
+        if(field.getType().isAssignableFrom(String.class) && field.get(review) != null &&
+            ((String) field.get(review)).isBlank()
         ){
-          throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new account.");
+          throw getException("", "Field '" + field.getName() + "' cannot be left blank when updating a sitter review.");
         }
 
       }
-
-      repo.update(houseOwner);
+      return repo.update(review);
     }
     catch (EmptyResultDataAccessException e){
-      throw getException(e.getMessage(), "HouseOwner with the ID '" + houseOwner.getUserId() + "' does not exist.");
+      throw getException(e.getMessage(), "SitterReview with the composite ID '" + review.getOwner_id() +", " + review.getSitter_id() + "' does not exist.");
     }
     catch (DuplicateKeyException e)
     {
-      throw getException(e.getMessage(), "The email '" + houseOwner.getEmail() + "' is already in use.");
+      throw getException(e.getMessage(), "HouseOwner with Id '"+review.getOwner_id()+"' has already reviewed the HouseSitter with Id '"+review.getSitter_id()+"'.");
     }
     catch (DataIntegrityViolationException e)
     {
@@ -108,13 +102,13 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     }
   }
 
-  @Override public void deleteById(int id)
+  @Override public void deleteById(int owner_id, int sitter_id)
   {
     try{
-      repo.deleteById(id);
+      repo.deleteById(owner_id, sitter_id);
     }
     catch (EmptyResultDataAccessException e){
-      throw getException(e.getMessage(), "HouseOwner with the ID '" + id + "' does not exist.");
+      throw getException(e.getMessage(), "SitterReview with the composite ID '" + owner_id + ", " + sitter_id + "' does not exist.");
     }
   }
 

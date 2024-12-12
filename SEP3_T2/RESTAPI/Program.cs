@@ -1,5 +1,7 @@
 using DatabaseRepositories;
+using Microsoft.OpenApi.Models;
 using RepositoryContracts;
+using RESTAPI.ExceptionHandling;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,18 +20,29 @@ builder.Services.AddScoped<IHouseReviewRepository, HouseReviewRepository>();
 builder.Services.AddScoped<ISitterReviewRepository, SitterReviewRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
+builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "LearnWebAPI", Version = "v1" });
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "LearnWebAPI v1"));
 }
 
-app.UseHttpsRedirection();
-
+app.UseRouting();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseAuthorization();
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 

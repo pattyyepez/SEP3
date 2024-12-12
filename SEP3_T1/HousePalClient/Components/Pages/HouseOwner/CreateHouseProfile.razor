@@ -448,19 +448,19 @@
             }
         }
 
-        if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) ||
-            string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) ||
-            string.IsNullOrWhiteSpace(_address))
-        {
-            _message = "All fields are required. Please fill in all the details.";
-            return;
-        }
-
-        if (_pictures.Count < 3)
-        {
-            _message = "Please upload at least 3 pictures.";
-            return;
-        }
+        // if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) ||
+        //     string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) ||
+        //     string.IsNullOrWhiteSpace(_address))
+        // {
+        //     _message = "All fields are required. Please fill in all the details.";
+        //     return;
+        // }
+        //
+        // if (_pictures.Count < 3)
+        // {
+        //     _message = "Please upload at least 3 pictures.";
+        //     return;
+        // }
 
         try
         {
@@ -470,7 +470,7 @@
         }
         catch (Exception e)
         {
-            _message = $"Error: {e.Message}";
+            _message = e.Message;
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using DTOs.HouseOwner;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 [ApiController]
     [Route("api/[controller]")]
-    public class HouseOwnerController : ControllerBase
+    public class HouseOwnerController : ControllerBase, IHouseOwnerController
     {
         private readonly IHouseOwnerRepository _repo;
 
@@ -55,15 +56,15 @@ using System.Threading.Tasks;
         [HttpPost]
         public async Task<IActionResult> CreateHouseOwner([FromBody] CreateHouseOwnerDto createDto)
         {
-            try
-            {
+            // try
+            // {
                 var response = await _repo.AddAsync(createDto);
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error creating HouseOwner: {ex.Message}");
-            }
+            // }
+            // catch (Exception ex)
+            // {
+            //     return StatusCode(500, $"Error creating HouseOwner: {ex.Message}");
+            // }
         }
 
         // PUT: api/houseowner/{id}
