@@ -18,8 +18,8 @@
     <AuthorizeView Roles="HouseOwner">
         <Authorized>
             <div class="page-container">
-                <div class="signup-page-container">
-                    <h1>My Houses</h1>
+                <div class="myhouses-page-container">
+                    <h1 class="subtitle">My Houses</h1>
 
                     <div class="house-profile-list">
                         @if (houseProfiles == null || !houseProfiles.Any())
@@ -35,8 +35,8 @@
                                     {
                                         <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                                     }
-                                    <p><a href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
-                                    <button type="button" class="btn btn-success" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
+                                    <p><a class="link-title" href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
+                                    <button type="button" class="orange-button" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
                                 </div>
                             }
                         }
@@ -51,37 +51,37 @@
             <div>
                 @if (_showCreateListingMessage)
                 {
-                <div class="modal-background">
-                    <div class="modal-content">
-                        <button class="close-button" @onclick="CancelCreateListing"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="modal-background">
+                        <div class="modal-content">
+                            <button class="close-button" @onclick="CancelCreateListing"><i class="fa-solid fa-xmark"></i></button>
 
-                        <h2>Create Listing</h2>
+                            <h2 class="subtitle">Create Listing</h2>
 
-                        <div class="form-group date-group">
-                            <label for="startDate">Start Date</label>
-                            <input
-                                type="date"
-                                id="startDate"
-                                class="form-control"
-                                @bind-value="@StartDate"
-                                min="@_minDateStart.ToString("yyyy-MM-dd")"
-                                max="@_maxDateStart.ToString("yyyy-MM-dd")" />
+                            <div class="form-group date-group">
+                                <label for="startDate">Start Date</label>
+                                <input
+                                    type="date"
+                                    id="startDate"
+                                    class="form-control"
+                                    @bind-value="@StartDate"
+                                    min="@_minDateStart.ToString("yyyy-MM-dd")"
+                                    max="@_maxDateStart.ToString("yyyy-MM-dd")" />
+                            </div>
+
+                            <div class="form-group date-group">
+                                <label for="endDate">End Date</label>
+                                <input
+                                    type="date"
+                                    id="endDate"
+                                    class="form-control"
+                                    @bind-value="@EndDate"
+                                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                                    max="@_maxDateEnd.ToString("yyyy-MM-dd")" />
+                            </div>
+
+                            <button class="orange-button" @onclick="CreateListingForProfile">Create</button>
                         </div>
-
-                        <div class="form-group date-group">
-                            <label for="endDate">End Date</label>
-                            <input
-                                type="date"
-                                id="endDate"
-                                class="form-control"
-                                @bind-value="@EndDate"
-                                min="@_minDateEnd.ToString("yyyy-MM-dd")"
-                                max="@_maxDateEnd.ToString("yyyy-MM-dd")" />
-                        </div>
-
-                        <button class="btn btn-primary" @onclick="CreateListingForProfile">Create</button>
                     </div>
-                </div>
                 }
 
 
@@ -98,244 +98,15 @@
         </Authorized>
         <NotAuthorized>
             <div class="not-authorized-container">
-                <h2>You must be logged in to view this page.</h2>
+                <h2 class="subtitle">You must be logged in to view this page.</h2>
                 <p>Please log in.</p>
                 <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
             </div>
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
+
 <style>
-    
-    h2 {
-        font-family: 'LogoFont', sans-serif;
-        color: #ff7e5f;
-    }
-    
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .close-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: #333;
-        cursor: pointer;
-    }
-
-    .close-button:hover {
-        color: #ff7e5f;
-    }
-
-    .form-group {
-        margin-bottom: 1em;
-        text-align: left;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.5em;
-        font-size: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-    }
-
-    .form-control:focus {
-        border-color: #ff7e5f;
-        box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
-    }
-
-    .btn-primary {
-        background-color: #ff7e5f;
-        color: #fff;
-        border: none;
-        padding: 0.5em 1em;
-        border-radius: 8px;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-    .btn-primary:hover {
-        background-color: #feb47b;
-    }
-
-    .house-profile-item p a {
-        font-size: 1.5em; 
-        color:  #3d3d3d;
-        text-align: center;
-        display: inline-block;
-    }
-    .house-profile-item p a:hover {
-        color: blue;
-    } 
-
-    
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    h1 {
-        text-align: center;
-        color: #ff7e5f;
-        margin-bottom: 1em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .btn {
-        font-size: 0.85em;
-        padding: 0.375em 0.75em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        cursor: pointer;
-        border: none;
-    }
-
-    .btn:hover {
-        background-color: #feb47b;
-    }
-
-    .house-profile-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5em;
-        justify-content: center;
-    }
-
-    .house-profile-item {
-        width: 15em;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        padding: 0 0 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-profile-item div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 95%;
-        height: 95%;
-    }
-
-    .house-profile-img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 10px 10px 0 0;
-        display: block;
-    }
-
-    p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-        margin: 1em;
-    }
-
-    .plus {
-        cursor: pointer;
-        min-height: 15em;
-    }
-
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .modal-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 4000;
-        overflow: hidden;
-    }
-
-    .modal-content {
-        margin-top: 1em;
-        position: relative;
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 450px;
-        width: 100%;
-        z-index: 5000;
-
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-
 </style>
 
 @code {

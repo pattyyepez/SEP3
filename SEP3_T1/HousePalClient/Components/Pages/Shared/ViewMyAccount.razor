@@ -223,27 +223,14 @@
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
+
 <style>
-
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('http://localhost:[puerto]/fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+    
     .carousel-inner img {
         width: 100%;
         height: 550px; 
         object-fit: cover; 
     }
-
     .account-page-owner {
         display: flex;
         flex-direction: column;
@@ -266,7 +253,7 @@
         background-color: white;
     }
     
-    .profile-container {
+    .account-page-owner .profile-container, .account-page-sitter .profile-container {
         max-width: 50vw;
         margin: 3em 0 3em 0;
         padding: 2em 2em;
@@ -275,14 +262,6 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         text-align: center;
         font-family: 'FuturaFont', sans-serif;
-    }
-
-    .carousel-container {
-        margin-bottom: 2em;
-    }
-    
-    .profile-container {
-        margin-bottom: 1.5em;
     }
 
     .profile-img {
@@ -325,92 +304,14 @@
         gap: 2em;
         justify-content: center;
     }
-
-    .section-divider {
-        margin: 2em 0;
-        border: 0;
-        height: 1px;
-        background-color: #ddd;
-    }
-
-    .pill {
-        background-color: #ff7e5f;
-        color: white;
-        padding: 0.5em 1em;
-        border-radius: 50px;
-        font-size: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'FuturaFont', sans-serif;
-    }
-
+    
     .skills-container {
         display: flex;
         flex-wrap: wrap;
         gap: 1em;
         margin-top: 1em;
     }
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 300px;
-    }
-    .modal-content button {
-        margin: 10px;
-    }
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
+    
 </style>
 
 @code {

@@ -28,7 +28,7 @@
 </head>
 
 <CascadingAuthenticationState>
-    <div class="listing-container">
+    <div class="view-listing-container">
         <AuthorizeView>
             <Authorized>
                 @if (_houseListing == null)
@@ -91,12 +91,12 @@
                                     @if (_houseSitter)
                                     {
                                     @if (_hasApplied)
-                                    { <button class="btn btn-primary" @onclick="NavigateToApplications">You have already applied for this listing</button>
+                                    { <button class="orange-button" @onclick="NavigateToApplications">You have already applied for this listing</button>
 
                                     }
                                     else
                                     {
-                                    <button class="btn btn-primary" @onclick="OnShowModalClick">Apply for Listing</button>
+                                    <button class="orange-button" @onclick="OnShowModalClick">Apply for Listing</button>
                                     }
                                     }
                                     
@@ -111,7 +111,7 @@
                         <!-- House Chores & Amenities Section -->
                         <div class="chores-amenities-row">
                             <div class="chores-column">
-                                <h3>House Chores</h3>
+                                <h3 class="house-sections">House Chores</h3>
                                 <div class="chores-container">
                                     @foreach (var chore in _houseListing.Profile!.Chores!)
                                     {
@@ -121,7 +121,7 @@
                             </div>
                             <div class="vertical-divider"></div>
                             <div class="amenities-column">
-                                <h3>House Amenities</h3>
+                                <h3 class="house-sections">House Amenities</h3>
                                 <div class="amenities-container">
                                     @foreach (var amenity in _houseListing.Profile!.Amenities!)
                                     {
@@ -134,7 +134,7 @@
                         <hr class="section-divider"/>
 
                         <!-- House Rules Section -->
-                        <h3>House Rules</h3>
+                        <h3 class="house-sections">House Rules</h3>
                         <ol class="house-rules">
                             @foreach (var rule in _houseListing.Profile!.Rules!)
                             {
@@ -145,7 +145,7 @@
                         <hr class="section-divider"/>
 
                         <!-- Meet the Host Section -->
-                        <h3>Meet the Host</h3>
+                        <h3 class="house-sections">Meet the Host</h3>
                         <div class="host-section">
                             <img src="https://localhost:7134/Filesave/@_houseListing.Profile!.Owner!.ProfilePicture!.Split('.')[0]/@_houseListing.Profile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
                             <p class="host-bio">@_houseListing.Profile.Owner.Biography</p>
@@ -156,7 +156,7 @@
                         <!-- Review section -->
                         
                         <div class="house-average">
-                            <h3>House Rating:</h3>
+                            <h3 class="house-sections">House Rating:</h3>
                             <div class="average-stars">
                                 @foreach (var star in GetHouseAverage().Stars)
                                 {
@@ -215,9 +215,9 @@
 
                 @if (_showModal)
                 {
-                    <div class="modal-background">
-                        <div class="modal-content">
-                            <h3>Send Application</h3>
+                    <div class="modal-background-apply">
+                        <div class="modal-content-apply">
+                            <h3 class="house-sections">Send Application</h3>
                             <textarea @bind="_message" class="form-control" placeholder="Write your message..."></textarea>
                             <!-- Display Message if exists -->
                             @if (!string.IsNullOrEmpty(_errorMessage))
@@ -239,404 +239,13 @@
             <div class="not-authorized-container">
                 <h2>You must be logged in to view this page.</h2>
                 <p>Please log in to view this house profile.</p>
-                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+                <button class="btn orange-button" @onclick="NavigateToLogin">Log In</button>
             </div>
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
 <style>
-    .alert {
-        margin: 5em;
-        background-color: #ff7e5f; 
-        color: white;
-    }
-.date-apply
-{ width: 280px;
-    }
-
-        @@font-face {
-        font-family: 'LogoFont';
-        src: url('fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #3d3d3d;
-    }
-    
-    .info-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 2em;
-        margin-top: 1.5em;
-    }
-    
-    .text-content {
-        flex: 2;
-    }
-    .btn {
-        margin-top: 0.5em;
-        font-size: 1em;
-        width: 100%;
-        background-color: #ff7e5f;
-        border: none;
-        color: white;
-    }
-    .btn:hover
-    {
-        background-color: #feb47b;
-        }
-    
-    
-    .dates {
-        flex: 0.65;
-        background-color: #FFBFAF;
-        padding: 1em;
-        border-radius: 10px;
-        text-align: center;
-        font-family: 'FuturaFont', sans-serif;
-        color: black;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .dates p{
-        margin: 0.5em 0;
-    }
-    
-
-    .carousel-container {
-        margin-bottom: 2em;
-    }
-
-    .host-section {
-        display: flex;
-        align-items: center;
-        gap: 1.5em;
-    }
-
-    .host-picture {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .host-bio {
-        flex: 1;
-        font-size: 1rem;
-        color: #333;
-        line-height: 1.6;
-    }
-
-    .carousel img {
-        max-height: 32em;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-
-    .house-title {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 0.5em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .house-location {
-        font-size: 1.25rem;
-        color: #3d3d3d;
-        margin-bottom: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-description {
-        font-size: 1rem;
-        color: #3d3d3d;
-        margin-bottom: 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .section-divider {
-        margin: 2em 0;
-        border: 0;
-        height: 1px;
-        background-color: #ddd;
-    }
-
-    .chores-amenities-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .chores-column, .amenities-column {
-        flex: 1;
-    }
-
-    .chores-container, .amenities-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-top: 1em;
-    }
-
-    .pill {
-        background-color: #ff7e5f;
-        color: white;
-        padding: 0.5em 1em;
-        border-radius: 50px;
-        font-size: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .vertical-divider {
-        width: 1px;
-        background-color: #ddd;
-        height: auto;
-        margin: 0 1em;
-    }
-
-    .house-rules {
-        list-style: decimal inside;
-        font-size: 1rem;
-        color: #3d3d3d;
-        line-height: 1.8;
-        margin: 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-rules li {
-        margin-bottom: 0.5em;
-    }
-
-    .card {
-        flex: 0 0 35em;
-        align-items: center;
-        flex-direction: row;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        border-style: none;
-        margin: 0.75em;
-        background-color: white;
-        color: #3d3d3d;
-        width: 35em;
-    }
-
-    .card-text{
-        font-size: 1em;
-        margin-bottom: 0;
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .card-img-container{
-        flex: 0 0 200px;
-        height: 200px;
-        margin: 1em;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-img-container img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card-text{
-        margin-bottom: 0.15em;
-    }
-
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-
-    }
-
-    .title-rating h5 {
-        margin-bottom: 0;
-    }
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
-
-    .fa-star {
-        font-size: 1em;
-    }
-
-    .fa-star-half-alt {
-        font-size: 1em;
-        align-self: center;
-    }
-
-    .fa-star-o {
-        font-size: 1em;
-        color: lightgray;
-    }
-
-    .reviews-section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2rem 0;
-        /*overflow: hidden; !* Keeps the section neat *!*/
-    }
-
-    .reviews-container {
-        display: flex;
-        gap: 1rem; /* Adds space between cards */
-        overflow-x: auto; /* Enables horizontal scrolling */
-        scroll-behavior: smooth; /* Smooth scrolling */
-        padding: 1rem;
-        scrollbar-width: thin; /* For Firefox */
-        scrollbar-color: #ff7e5f transparent; /* For Firefox */
-    }
-    .reviews-container::-webkit-scrollbar {
-        width: 8px;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-thumb {
-        background: #ff7e5f;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-thumb:hover {
-        background: #feb47b;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 4px;
-    }
-
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 500px;
-        align-items: center;
-        font-family: 'FuturaFont', sans-serif;
-    }
-    
-    .modal-content button {
-        margin: 10px;
-    }
-    
-    h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #3d3d3d;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
-    .alert {
-        padding: 1em;
-        margin-bottom: 1em;
-        border: 1px solid transparent;
-        border-radius: 0.375em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .alert-danger {
-        color: #721c24;
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-    }
-    .house-average {
-        text-align: center;
-        font-family: 'FuturaFont', sans-serif;
-        font-size: 1em;
-    }
-
-    .average-stars {
-        display: inline-flex;
-        gap: 0.2em;
-        margin-top: 0.1em;
-        font-size: 2rem;
-        color: #ff7e5f;
-    }
-
-
 </style>
 
 @code {
