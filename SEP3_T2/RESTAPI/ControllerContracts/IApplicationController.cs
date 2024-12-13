@@ -12,6 +12,12 @@ public interface IApplicationController
             [FromServices] IHouseSitterRepository sitterRepo,
             [FromQuery] bool includeListing,
             [FromQuery] bool includeSitter);
+        
+        Task<IActionResult> GetMyApplicationsSitter(
+            [FromServices] IHouseListingRepository listingRepo,
+            [FromServices] IHouseProfileRepository profileRepo,
+            [FromServices] IHouseReviewRepository reviewRepo,
+            [FromRoute] int sitterId);
 
     // GET: api/Application/{id}?includeListing=true&includeSitter=true
     Task<IActionResult> GetApplication(int listingId, int sitterId,

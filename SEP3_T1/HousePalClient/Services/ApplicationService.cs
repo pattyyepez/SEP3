@@ -103,6 +103,25 @@ public class ApplicationService : IApplicationService
             return application.AsQueryable();
         }
 
+        public IQueryable<ApplicationDto> GetMyApplicationsSitter(int sitterId)
+        {
+            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetMyApplicationsSitter/{sitterId}").Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting MyApplications for HouseSitter by sitter id: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+
+            var jsonResponse = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine($"{jsonResponse}\n");
+
+            var application = JsonConvert.DeserializeObject<List<ApplicationDto>>(jsonResponse);
+
+            return application.AsQueryable();
+        }
+
         public IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, string status, bool includeSitter)
         {
             HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationByListing/{listingId}/{status}?includeSitter={includeSitter}").Result;

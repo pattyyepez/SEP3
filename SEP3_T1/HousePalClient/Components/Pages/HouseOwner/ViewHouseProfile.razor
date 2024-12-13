@@ -566,8 +566,8 @@
     [Parameter] public int ProfileId { get; set; }
 
     private HouseProfileDto? _houseProfile;
-    private bool _showConfirmationModal = false;
-    private bool _showSuccessMessage = false;
+    private bool _showConfirmationModal;
+    private bool _showSuccessMessage;
 
     private (double Average, List<string> Stars) GetHouseAverage()
     {

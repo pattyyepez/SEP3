@@ -1,18 +1,13 @@
 ﻿@page "/view-confirmed-stays-hs"
 @using System.Security.Claims
-@using DTOs.Application
 @using DTOs.HouseListing
-@using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-@inject IApplicationService ApplicationService
 @inject IHouseListingService ListingService
-@inject IHouseOwnerService HouseOwnerService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <CascadingAuthenticationState>
@@ -22,45 +17,45 @@
                 <div class="signup-page-container">
                     <h1>Your Confirmed Stays:</h1>
 
-                    @if (_applications == null || !_applications.Any())
+                    @if (_listings == null || !_listings.Any())
                     {
                         <p>No stays found.</p>
                     }
                     else
                     { 
                         <div class="applications-section">
-                            @foreach (var application in _applications)
+                            @foreach (var listing in _listings)
                             {
                                 <div class="card">
 
                                     <div class="card-img-container">
-                                        <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
+                                        <img src="https://localhost:7134/Filesave/@listing.Profile!.Pictures![0].Split('.')[0]/@listing.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
                                     </div>
 
                                     <div class="card-body">
                                         <div class="title-rating">
-                                            <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank"><h5>@application.Listing.Profile.Title</h5></a>
+                                            <a href="https://localhost:7262/view-listing/@listing.Id" target="_blank"><h5>@listing.Profile.Title</h5></a>
                                             <h5 class="card-text">
-                                                <i class="fa-solid fa-location-dot"></i> @application.Listing.Profile.Address, @application.Listing.Profile.City, @application.Listing.Profile.Region
+                                                <i class="fa-solid fa-location-dot"></i> @listing.Profile.Address, @listing.Profile.City, @listing.Profile.Region
                                             </h5>
                                         </div>
                                         
                                         <p class="card-text" style="margin-top: 0.2em; font-style: italic">
-                                            Your stay will take place from the @application.Listing.StartDate until the @application.Listing.EndDate
+                                            Your stay will take place from the @listing.StartDate until the @listing.EndDate
                                         </p>
                                         
                                         <br/>
                                         
                                         <p class="card-text" style="text-indent: 1em;">
-                                            Contact @application.Listing.Profile.Owner.Name to organize your stay:
+                                            Contact @listing.Profile!.Owner!.Name to organize your stay:
                                         </p>
 
                                         <p class="card-text" style="text-indent: 1em;">
-                                            <i class="fa-solid fa-envelope"></i>   @application.Listing.Profile.Owner.Email
+                                            <i class="fa-solid fa-envelope"></i>   @listing.Profile!.Owner!.Email
                                         </p>
 
                                         <p class="card-text" style="text-indent: 1em;">
-                                            <i class="fa-solid fa-phone"></i>   @application.Listing.Profile.Owner.Phone
+                                            <i class="fa-solid fa-phone"></i>   @listing.Profile.Owner.Phone
                                         </p>
                                         
 
@@ -113,23 +108,6 @@
         font-family: 'FuturaFont', sans-serif;
     }
 
-    .house-profile-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5em;
-        justify-content: center;
-    }
-
-    .house-profile-item {
-        width: 15em;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        padding: 0 0 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
     .house-profile-item div {
         display: flex;
         justify-content: center;
@@ -138,20 +116,10 @@
         height: 95%;
     }
 
-    .house-profile-img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px 10px 0 0;
-    }
-
     p {
         font-family: 'FuturaFont', sans-serif;
         color: #3d3d3d;
         margin: 1em;
-    }
-
-    .plus {
-        cursor: pointer;
     }
 
     .applications-section{
@@ -159,14 +127,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-
-    .card-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 1.5em;
-        margin-top: 0.5em;
-        font-size: 1.15em;
     }
 
     .card {
@@ -182,15 +142,6 @@
         width: 60em;
         background-color: white;
         color: #3d3d3d;
-    }
-
-    .card.application{
-        width: 40em;
-        margin-bottom: 0;
-    }
-
-    .card-title {
-        font-size: 1.3em;
     }
 
     .card-text{
@@ -326,8 +277,10 @@
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
-    private List<ApplicationDto>? _applications;
+    private List<HouseListingDto>? _listings;
     private int _userId;
+    
+    
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
@@ -350,67 +303,13 @@
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _userId = int.Parse(userIdAsString);
 
-        await LoadAllApplications();
+        await LoadAllListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private async Task LoadAllApplications()
+    private async Task LoadAllListings()
     {
-        Console.WriteLine(_userId);
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        
-        _applications = new List<ApplicationDto>();
-        _applications!.AddRange(
-            await Task.Run(() => 
-                ApplicationService.GetApplicationsByUserStatus(_userId, "Confirmed", true, true)
-                    .Where(a => a.Listing.EndDate > today)
-                    .ToList()));
-
-        foreach (var application in _applications)
-        {
-            application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
-        }
-    }
-
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-listing/{listingId}");
-    }
-    
-
-    private async Task ConfirmApplication(ApplicationDto application)
-    {
-        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
-        {
-            ListingId = application.ListingId,
-            SitterId = application.SitterId,
-            Status = "Confirmed"
-        };
-
-        UpdateHouseListingDto updatedListing = new UpdateHouseListingDto
-        {
-            Id = application.ListingId,
-            Status = "Closed"
-        };
-
-        await ApplicationService.UpdateAsync(updatedApplication);
-        await ListingService.UpdateAsync(updatedListing);
-        await LoadAllApplications();
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private async Task CancelApplication(ApplicationDto application)
-    {
-        UpdateApplicationDto updatedApplication = new UpdateApplicationDto
-        {
-            ListingId = application.ListingId,
-            SitterId = application.SitterId,
-            Status = "Canceled"
-        };
-        
-        await ApplicationService.UpdateAsync(updatedApplication);
-        await LoadAllApplications();
-        await InvokeAsync(StateHasChanged);
+        _listings = await Task.Run(() => ListingService.GetConfirmedStaysHs(_userId).ToList());
     }
 }

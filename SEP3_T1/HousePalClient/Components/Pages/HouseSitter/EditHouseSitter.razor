@@ -1,4 +1,5 @@
 ﻿@using System.Net.Http.Headers
+@using System.Security.Claims
 @using DTOs
 @using DTOs.HouseSitter
 @using HousePalClient.Components.Layout
@@ -6,6 +7,8 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@using Newtonsoft.Json
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -49,7 +52,7 @@
                             <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
                             <label>Upload a Profile Picture:</label>
-                            <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
+                            <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
                             @if (!string.IsNullOrEmpty(_profilePictureUrl))
                             {
@@ -102,7 +105,7 @@
 
                         <!-- Submit Button -->
                         <div class="button-group">
-                            <button type="submit" @onclick="EditSitter" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                             <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
                         </div>
                     </form>
@@ -437,7 +440,7 @@
 
     private void RedirectToHome()
     {
-        Navigation.NavigateTo("/view-all-house-profiles");
+        Navigation.NavigateTo("/browse-listings");
     }
 
     private void NavigateToLogin()
@@ -480,8 +483,6 @@
         {
             UserId = _userId,
             Name = _name,
-            Email = houseSitterProfile.Email,
-            Password = houseSitterProfile.Password,
             ProfilePicture = _profilePictureUrl,
             CPR = _cpr,
             Phone = _phone,

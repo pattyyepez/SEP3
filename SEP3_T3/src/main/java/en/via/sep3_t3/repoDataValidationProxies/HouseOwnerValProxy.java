@@ -82,6 +82,7 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     try{
       for (Field field : fields){
         if(field.getType().isAssignableFrom(String.class) &&
+            (!field.getName().equals("email") && !field.getName().equals("password")) &&
             ((String) field.get(houseOwner)).isBlank()
         ){
           throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new account.");

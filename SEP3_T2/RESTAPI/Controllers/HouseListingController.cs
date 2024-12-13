@@ -1,6 +1,8 @@
 ﻿using DTOs.Application;
 using DTOs.HouseListing;
+using DTOs.HouseOwner;
 using DTOs.HouseProfile;
+using DTOs.HouseReview;
 using DTOs.HouseSitter;
 using DTOs.SitterReview;
 using Microsoft.AspNetCore.Mvc;
@@ -188,15 +190,167 @@ public class HouseListingController : ControllerBase, IHouseListingController
                         tempReview
                     };
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine($"Did not find review for composite id {tempProfile.OwnerId}, {app.SitterId} when trying to GetPastStaysHo for owner {ownerId}");
+                    Console.WriteLine($"Did not find SitterReview for composite id {tempProfile.OwnerId}, {app.SitterId} when trying to GetPastStaysHo for owner {ownerId}");
                 }
             }
 
             toReturn.Add(listing);
         }
         return Ok(toReturn.Where(l => l.Profile.OwnerId == ownerId).AsQueryable());
+    }
+
+    [HttpGet ("{sitterId}")]
+    public async Task<IActionResult> GetConfirmedStaysHs(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo, 
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        int? sitterId)
+    {
+        var response = _repo.GetAll().Where(l => l.Status == "Closed" && l.EndDate > DateOnly.FromDateTime(DateTime.Today));
+
+        var toReturn = new List<HouseListingDto>();
+
+        foreach (var listing in response)
+        {
+            var tempProfile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            listing.Profile = new HouseProfileDto
+            {
+                OwnerId = tempProfile.OwnerId,
+                Title = tempProfile.Title,
+                Pictures = new List<string>(){tempProfile.Pictures[0]},
+                Address = tempProfile.Address,
+                Region = tempProfile.Region,
+                City = tempProfile.City,
+            };
+
+            listing.Applications = appRepo.GetAll()
+                .Where(a => a.ListingId == listing.Id && a.Status == "Confirmed").ToList();
+
+            var tempOwner = await ownerRepo.GetSingleAsync(listing.Profile.OwnerId);
+            listing.Profile.Owner = new HouseOwnerDto
+            {
+                Name = tempOwner.Name,
+                Email = tempOwner.Email,
+                Phone = tempOwner.Phone,
+            };
+
+            toReturn.Add(listing);
+        }
+        return Ok(toReturn.Where(l => l.Applications.First().SitterId == sitterId).AsQueryable());
+    }
+
+    [HttpGet ("{sitterId}")]
+    public async Task<IActionResult> GetPastStaysHs(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo, 
+        [FromServices] IHouseReviewRepository reviewRepo,
+        [FromRoute] int? sitterId)
+    {
+        var tempApps = appRepo.GetAll()
+            .Where(a => a.SitterId == sitterId && a.Status == "Confirmed")
+            .Select(a => a.ListingId );
+        foreach (var app in tempApps) Console.WriteLine("gotten application ids: "+app);
+        var response = _repo.GetAll()
+            .Where(l => l.Status == "Closed" && 
+                        l.EndDate < DateOnly.FromDateTime(DateTime.Today) &&
+                        tempApps.Contains(l.Id));
+        foreach (var app in response)
+        {
+            Console.WriteLine($"gotten listing ids: {app.Id}, status: {app.Status}, end date : {app.EndDate}");
+        }
+
+        foreach (var listing in response)
+        {
+            var tempProfile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            listing.Profile = new HouseProfileDto
+            {
+                Id = tempProfile.Id,
+                Title = tempProfile.Title,
+                Pictures = new List<string>(){tempProfile.Pictures[0]},
+                Address = tempProfile.Address,
+                Region = tempProfile.Region,
+                City = tempProfile.City,
+            };
+
+            try
+            {
+                var tempReview = await reviewRepo.GetSingleAsync(tempProfile.Id, sitterId.Value);
+                tempReview.Editable = DateOnly.FromDateTime(tempReview.Date) < listing.EndDate;
+                listing.Profile.Reviews = new List<HouseReviewDto>()
+                {
+                    tempReview
+                };
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Did not find HouseReview for composite id {tempProfile.Id}, {sitterId} when trying to GetPastStaysHs for sitter {sitterId}");
+            }
+        }
+        return Ok(response.AsQueryable());
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetBrowseListingsHs(
+        [FromServices] IHouseProfileRepository profileRepo, 
+        [FromServices] IHouseReviewRepository reviewRepo, 
+        [FromQuery] FilteredHouseListingsDto filter)
+    {
+        var response = _repo.GetAll()
+            .Where(l => l.Status == "Open" && l.StartDate > DateOnly.FromDateTime(DateTime.Today));
+
+        foreach (var listing in response)
+        {
+            var tempProfile = await profileRepo.GetSingleAsync(listing.ProfileId);
+            listing.Profile = new HouseProfileDto
+            {
+                Title = tempProfile.Title,
+                Region = tempProfile.Region,
+                City = tempProfile.City,
+                Pictures = new List<string>(){ tempProfile.Pictures[0] }
+            };
+
+            listing.Profile.Reviews = reviewRepo.GetAll()
+                .Where(r => r.ProfileId == listing.ProfileId)
+                .Select(r => new HouseReviewDto { Rating = r.Rating })
+                .ToList();
+        }
+        
+        if (!string.IsNullOrWhiteSpace(filter.Region))
+            response = response
+                .Where(l => l.Profile.Region == filter.Region);
+
+        if (!string.IsNullOrWhiteSpace(filter.City))
+            response = response
+                .Where(l => l.Profile.City == filter.City);
+
+        if (filter.StartDay.HasValue)
+            response = response
+                .Where(l => Math.Abs(
+                    l.StartDate.ToDateTime(new TimeOnly())
+                        .Subtract(new DateTime(filter.StartYear.Value,
+                            filter.StartMonth.Value, filter.StartDay.Value))
+                        .TotalDays) < 6);
+
+        if (filter.EndDay.HasValue)
+            response = response
+                .Where(l => Math.Abs(
+                    l.EndDate.ToDateTime(new TimeOnly())
+                        .Subtract(new DateTime(filter.EndYear.Value,
+                            filter.EndMonth.Value, filter.EndDay.Value))
+                        .TotalDays) < 6);
+
+        if (filter.Amenities.Any())
+            response = response
+                .Where(l =>
+                    l.Profile.Amenities.Intersect(filter.Amenities).Any());
+
+        if (filter.Chores.Any())
+            response = response
+                .Where(l => l.Profile.Chores.Intersect(filter.Chores).Any());
+
+        return Ok(response);
     }
 
     [HttpGet("ProfileId")]

@@ -1,22 +1,17 @@
 ﻿@page "/view-my-account"
 @layout MainLayout
-@using System.Security.Claims
 @using DTOs.HouseOwner
 @using DTOs.HouseSitter
 @using HousePalClient.Auth
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Components.Authorization
-@using Services
 @rendermode InteractiveServer
 
-@inject HttpClient Http
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHouseOwnerService HouseOwnerService
 @inject IHouseSitterService HouseSitterService
-@inject ISitterReviewService SitterReviewService
 @inject AuthenticationStateProvider AuthProvider
 
 
@@ -416,8 +411,8 @@
 @code {
     private HouseOwnerDto? _houseOwnerProfile;
     private HouseSitterDto? _houseSitterProfile;
-    private bool _showConfirmationMessage = false;
-    private bool _showSuccessMessage = false;
+    private bool _showConfirmationMessage;
+    private bool _showSuccessMessage;
 
     private void NavigateToLogin()
     {
@@ -445,7 +440,6 @@
                 if (sitterIdClaim != null && int.TryParse(sitterIdClaim, out var sitterId))
                 {
                     _houseSitterProfile = await HouseSitterService.GetSingleAsync(sitterId);
-                    _houseSitterProfile.Reviews = SitterReviewService.GetAllReviewsForSitter(sitterId).ToList();
                 }
             }
         }

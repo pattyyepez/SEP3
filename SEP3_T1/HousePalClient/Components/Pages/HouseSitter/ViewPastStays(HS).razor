@@ -10,6 +10,7 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseOwnerService HouseOwnerService
+@inject IHouseListingService HouseListingService
 @inject IHouseReviewService HouseReviewService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <CascadingAuthenticationState>
@@ -20,61 +21,61 @@
                     <h1>My Past Stays</h1>
                     <div class="house-profile-list">
 
-                        @if (_applications == null || !_applications.Any())
+                        @if (_listings == null || !_listings.Any())
                         {
                             <p>No listings found.</p>
                         }
                         else
                         {
                             <div class="applications-section">
-                                @foreach (var application in _applications)
+                                @foreach (var listing in _listings)
                                 {
                                     <div class="card">
 
                                         <div class="card-img-container">
-                                            <img src="https://localhost:7134/Filesave/@application.Listing!.Profile!.Pictures![0].Split('.')[0]/@application.Listing!.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
+                                            <img src="https://localhost:7134/Filesave/@listing.Profile!.Pictures![0].Split('.')[0]/@listing.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
                                         </div>
 
                                         <div class="card-body">
                                             <div class="title-rating">
-                                                <a href="https://localhost:7262/view-listing/@application.ListingId" target="_blank">
-                                                    <h5>@application.Listing.Profile.Title</h5>
+                                                <a href="https://localhost:7262/view-listing/@listing.Id" target="_blank">
+                                                    <h5>@listing.Profile.Title</h5>
                                                 </a>
                                                 <h5 class="card-text">
-                                                    <i class="fa-solid fa-location-dot"></i> @application.Listing.Profile.Address, @application.Listing.Profile.City, @application.Listing.Profile.Region
+                                                    <i class="fa-solid fa-location-dot"></i> @listing.Profile.Address, @listing.Profile.City, @listing.Profile.Region
                                                 </h5>
                                             </div>
 
 
                                             <div class="button-container">
-                                                @if (application.Listing.Profile.Reviews.Any())
+                                                @if (listing.Profile.Reviews != null && listing.Profile.Reviews.Any())
                                                 {
                                                     <p class="card-text contact" style="font-style: italic">
-                                                        Your past review of @application.Listing.Profile.Title:
+                                                        Your past review of @listing.Profile.Title:
                                                     </p>
 
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div class="stars">
-                                                                @foreach (var star in GetStars(application.Listing.Profile.Reviews.Single()))
+                                                                @foreach (var star in GetStars(listing.Profile.Reviews.Single()))
                                                                 {
                                                                     <span class="@star"></span>
                                                                 }
                                                             </div>
-                                                            <p>@application.Listing.Profile.Reviews.Single().Comment</p>
-                                                            <p>@application.Listing.Profile.Reviews.Single().Date</p>
+                                                            <p>@listing.Profile.Reviews.Single().Comment</p>
+                                                            <p>@listing.Profile.Reviews.Single().Date</p>
                                                         </div>
                                                     </div>
 
-                                                    <button class="btn" @onclick="() => ShowEditReview(application.Listing.Profile.Id)">Edit Review</button>
+                                                    <button class="btn" disabled="@(!listing.Profile.Reviews.First().Editable.Value)" @onclick="() => ShowEditReview(listing.Profile.Id)">Edit Review</button>
                                                 }
                                                 else
                                                 {
                                                     <p class="card-text contact" style="font-style: italic">
-                                                        You have finished your stay at @application.Listing.Profile.Title
+                                                        You have finished your stay at @listing.Profile.Title
                                                     </p>
 
-                                                    <button class="btn" @onclick="() => ShowCreateReview(application.Listing.Profile.Id)">Create Review</button>
+                                                    <button class="btn" @onclick="() => ShowCreateReview(listing.Profile.Id)">Create Review</button>
                                                 }
                                             </div>
 
@@ -368,11 +369,10 @@
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
-    [Inject] private IApplicationService ApplicationService { get; set; } = default!;
 
     private int _sitterId;
-    private List<ApplicationDto>? _applications;
-    private List<HouseListingDto>? _listingsWaitingForReview;
+    // private List<ApplicationDto>? _applications;
+    private List<HouseListingDto>? _listings;
 
     private int _profileIdForReview;
     private string? _reviewComment = string.Empty;
@@ -388,9 +388,7 @@
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
-
-        _applications = new List<ApplicationDto>();
-
+        
         if (user.Identity is null || !user.Identity.IsAuthenticated)
         {
             Console.WriteLine("Not authenticated");
@@ -401,36 +399,38 @@
         string userIdAsString = claims.Single(c => c.Type == "Id").Value;
         _sitterId = int.Parse(userIdAsString);
 
-        await LoadAllApplications();
+        await LoadListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private async Task LoadAllApplications()
+    private async Task LoadListings()
     {
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _applications = new List<ApplicationDto>();
-        _applications!.AddRange(
-            await Task.Run(() =>
-                ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", true, true)
-                    .Where(a => a.Listing.EndDate < today)
-                    .ToList()));
-
-        foreach (var application in _applications)
-        {
-            application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
-            application.Listing.Profile.Reviews = new();
-            try
-            {
-                Console.WriteLine(application.Listing.Profile.Id + " " + application.SitterId);
-                application.Listing.Profile.Reviews.Add(await HouseReviewService.GetSingleAsync(application.Listing.Profile.Id, application.SitterId, false, false));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("No review");
-            }
-        }
+        _listings = new List<HouseListingDto>();
+        _listings = HouseListingService.GetPastStaysHs(_sitterId).ToList();
+        // var today = DateOnly.FromDateTime(DateTime.Today);
+        //
+        // _applications = new List<ApplicationDto>();
+        // _applications!.AddRange(
+        //     await Task.Run(() =>
+        //         ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", true, true)
+        //             .Where(a => a.Listing.EndDate < today)
+        //             .ToList()));
+        //
+        // foreach (var application in _applications)
+        // {
+        //     application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
+        //     application.Listing.Profile.Reviews = new();
+        //     try
+        //     {
+        //         Console.WriteLine(application.Listing.Profile.Id + " " + application.SitterId);
+        //         application.Listing.Profile.Reviews.Add(await HouseReviewService.GetSingleAsync(application.Listing.Profile.Id, application.SitterId, false, false));
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine("No review");
+        //     }
+        // }
     }
 
     private void ShowCreateReview(int profileId)
@@ -451,8 +451,10 @@
     private void ShowEditReview(int profileId)
     {
         _profileIdForReview = profileId;
-        var existingReview = _applications
-            .FirstOrDefault(app => app.SitterId == _sitterId)?.Sitter?.Reviews.SingleOrDefault();
+        var existingReview = _listings
+            .Select(l => l.Profile)
+            .FirstOrDefault(p => p.Id == profileId)?
+            .Reviews.SingleOrDefault();
 
         if (existingReview != null)
         {
@@ -486,7 +488,7 @@
         };
 
         await HouseReviewService.AddAsync(review);
-        await LoadAllApplications();
+        await LoadListings();
         _showModal = false;
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -504,7 +506,7 @@
         };
 
         await HouseReviewService.UpdateAsync(review);
-        await LoadAllApplications();
+        await LoadListings();
         _showModal = false;
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();

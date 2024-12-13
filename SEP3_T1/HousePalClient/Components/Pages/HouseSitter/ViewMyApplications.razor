@@ -59,24 +59,7 @@
                                         </div>
                                         
                                         <p class="card-text">@application.Listing.StartDate - @application.Listing.EndDate</p>
-
-                                        @if (application.Status is "Pending")
-                                        {
-                                            <p class="card-title" style="font-style: italic">The owner of this listing is reviewing your application:</p>
-                                        }
-                                        else if (application.Status == "Approved")
-                                        {
-                                            <p class="card-title" style="font-style: italic">Your application for this listing was approved: </p>
-                                        }
-                                        else if (application.Status == "Rejected")
-                                            
-                                        {
-                                            <p class="card-title" style="font-style: italic">Your application for this listing has been rejected: </p>
-                                        }
-                                        else if (application.Status == "Canceled")
-                                        {
-                                            <p class="card-title" style="font-style: italic">You have canceled this stay. </p>
-                                        }
+                                        <p class="card-title" style="font-style: italic">@GetApplicationStatusText(application)</p>
 
                                         <div class="card @(application.Status is "Rejected" or "Canceled" ? "rejected" : (application.Status is "Approved" ? "green" : "")) application">
                                             <div class="card-body">
@@ -421,16 +404,12 @@
     }
     private async Task LoadAllApplications()
     {
-        _applications = new List<ApplicationDto>();
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Pending", true, true).ToList()));
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Approved", true, true).ToList()));
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Rejected", true, true).ToList()));
-        _applications!.AddRange(await Task.Run(() => ApplicationService.GetApplicationsByUserStatus(_userId, "Canceled", true, true).ToList()));
-
-        foreach (var application in _applications)
-        {
-            application.Listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(application.Listing.Profile.Id).ToList();
-        }
+        _applications = ApplicationService.GetMyApplicationsSitter(_userId).ToList();
+        //
+        // foreach (var application in _applications)
+        // {
+        //     application.Listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(application.Listing.Profile.Id).ToList();
+        // }
     }
 
     private async Task ConfirmApplication(ApplicationDto application)
@@ -466,5 +445,17 @@
         await ApplicationService.UpdateAsync(updatedApplication);
         await LoadAllApplications();
         await InvokeAsync(StateHasChanged);
+    }
+    
+    private string GetApplicationStatusText(ApplicationDto application)
+    {
+        return application.Status switch
+        {
+            "Pending" => "The owner of this listing is reviewing your application:",
+            "Approved" => "Your application for this listing was approved: ",
+            "Rejected" => "Your application for this listing has been rejected: ",
+            "Canceled" => "You have canceled this stay. ",
+            _ => string.Empty
+        };
     }
 }

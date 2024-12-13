@@ -57,7 +57,7 @@
                 <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
                 <label>Upload a Profile Picture:</label>
-                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
+                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
                 @if (!string.IsNullOrEmpty(_profilePictureUrl))
                 {
@@ -480,7 +480,7 @@
 
         using var content = new MultipartFormDataContent();
 
-        var file = e.GetMultipleFiles(25).FirstOrDefault();
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
         if (_uploadResults.SingleOrDefault(
                 f => f.FileName == file.Name) is null)
         {

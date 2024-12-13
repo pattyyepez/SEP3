@@ -27,15 +27,32 @@ public interface IHouseListingController
         [FromServices] IApplicationRepository appRepo,
         [FromServices] IHouseProfileRepository profileRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
-        [FromRoute] int? profileId);
+        [FromRoute] int? onwerId);
     
     Task<IActionResult> GetPastStaysHo(
         [FromServices] IApplicationRepository appRepo,
         [FromServices] IHouseProfileRepository profileRepo,
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromServices] ISitterReviewRepository reviewRepo, 
-        [FromRoute] int? profileId);
+        [FromRoute] int? onwerId);
+    
+    Task<IActionResult> GetConfirmedStaysHs(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromRoute] int? sitterId);
+    
+    Task<IActionResult> GetPastStaysHs(
+        [FromServices] IApplicationRepository appRepo,
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseReviewRepository reviewRepo, 
+        [FromRoute] int? sitterId);
 
+    Task<IActionResult> GetBrowseListingsHs(
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseReviewRepository reviewRepo, 
+        [FromQuery] FilteredHouseListingsDto filter);
+    
     Task<IActionResult> GetListingsByProfile([FromQuery] int? profileId);
 
 

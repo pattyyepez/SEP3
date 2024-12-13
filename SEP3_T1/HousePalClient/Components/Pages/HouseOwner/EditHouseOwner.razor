@@ -66,7 +66,7 @@
 
                         <!-- Submit Button -->
                         <div class="button-group">
-                            <button type="submit" @onclick="EditOwner" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                             <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
                         </div>
                     </form>
@@ -364,7 +364,7 @@
     
     private void RedirectToHome()
     {
-        Navigation.NavigateTo("/view-all-house-profiles");
+        Navigation.NavigateTo("/view-my-houses");
     }
 
     private void NavigateToLogin()
@@ -496,12 +496,13 @@
                 var ownerIdClaim = user.FindFirst("Id")?.Value;
                 if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
                 {
-                    _cpr = user.FindFirst("CPR")!.Value;
-                    _phone = user.FindFirst(ClaimTypes.MobilePhone)!.Value;
-                    _name = user.FindFirst(ClaimTypes.Name)!.Value;
-                    _biography = user.FindFirst("Biography")!.Value;
-                    _profilePictureUrl = user.FindFirst("ProfilePicture")!.Value;
-                    _address = user.FindFirst("Address")!.Value;
+                    var owner = await HouseOwnerService.GetSingleAsync(ownerId);
+                    _cpr = owner.CPR;
+                    _phone = owner.Phone;
+                    _name = owner.Name;
+                    _biography = owner.Biography;
+                    _profilePictureUrl = owner.ProfilePicture;
+                    _address = owner.Address;
                     _userId = ownerId;
                 }
             }

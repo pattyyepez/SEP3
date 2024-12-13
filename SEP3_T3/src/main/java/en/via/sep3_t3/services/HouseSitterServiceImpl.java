@@ -77,8 +77,8 @@ public class HouseSitterServiceImpl extends HouseSitterServiceGrpc.HouseSitterSe
   public void updateHouseSitter(UpdateHouseSitterRequest request, StreamObserver<HouseSitterResponse> responseObserver) {
     try {
       HouseSitter houseSitter = getHouseSitter(
-          request.getName(), request.getEmail(),
-          request.getPassword(), request.getProfilePicture(),
+          request.getName(), "email",
+          "password", request.getProfilePicture(),
           request.getCPR(), request.getPhone(),
           request.getIsVerified(), request.getAdminId(),
           request.getExperience(), request.getBiography(),

@@ -13,4 +13,5 @@ public class HouseReviewDto
     
     public HouseProfileDto? Profile { get; set; }
     public HouseSitterDto? Sitter { get; set; }
+    public bool Editable  { get; set; }
 }

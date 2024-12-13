@@ -61,8 +61,6 @@ public class HouseSitterRepository : IHouseSitterRepository
         {
             Id = id,
             Name = houseSitter.Name,
-            Email = houseSitter.Email,
-            Password = houseSitter.Password,
             ProfilePicture = houseSitter.ProfilePicture,
             CPR = houseSitter.CPR,
             Phone = houseSitter.Phone,

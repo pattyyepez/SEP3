@@ -1,19 +1,15 @@
 ﻿@page "/browse-listings"
-@using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
-@inject IHouseReviewService HouseReviewService
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -308,7 +304,7 @@
     {
         color: blue;
     }
-    
+
     /*.house-profile-item div*/
     /*{*/
     /*    display: flex;*/
@@ -317,7 +313,7 @@
     /*    width: 95%;*/
     /*    height: 95%;*/
     /*}*/
-    
+
     p
     {
         font-family: 'FuturaFont', sans-serif;
@@ -544,7 +540,7 @@
 
     private List<HouseListingDto>? _houseListings;
 
-    // Property for Start Date
+// Property for Start Date
     private DateTime? StartDate
     {
         get => _gottenStart;
@@ -566,7 +562,7 @@
         Navigation.NavigateTo("/login");
     }
 
-    // Property for End Date
+// Property for End Date
     private DateTime? EndDate
     {
         get => _gottenEnd;
@@ -591,20 +587,6 @@
     {
         PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
-        // var authState = await AuthenticationStateProvider
-        //     .GetAuthenticationStateAsync();
-        // var user = authState.User;
-        //
-        // if (user.Identity is null || !user.Identity.IsAuthenticated)
-        // {
-        //     Console.WriteLine("Not authenticated");
-        //     return;
-        // }
-        //
-        // IEnumerable<Claim> claims = user.Claims;
-        // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -612,17 +594,7 @@
 
     private async Task LoadAllHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _houseListings = allListings
-            .Where(listing => listing.StartDate > today)
-            .ToList();
-
-        foreach (var listing in _houseListings)
-        {
-            listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(listing.Profile.Id).ToList();
-        }
+        _houseListings = await Task.Run(() => HouseListingService.GetBrowseListings(null).ToList());
     }
 
 
@@ -634,6 +606,8 @@
     private async void Filter()
     {
         PreloadService.Show();
+        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         FilteredHouseListingsDto filter = new FilteredHouseListingsDto
         {
             City = _city,
@@ -665,13 +639,7 @@
             }
         }
 
-        _houseListings = HouseListingService.GetFilteredListings(filter).ToList();
-        foreach (var listing in _houseListings)
-        {
-            listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(listing.Profile.Id).ToList();
-        }
-        await InvokeAsync(StateHasChanged);
-        _showModal = false;
+        _houseListings = HouseListingService.GetBrowseListings(filter).ToList();
         PreloadService.Hide();
     }
 

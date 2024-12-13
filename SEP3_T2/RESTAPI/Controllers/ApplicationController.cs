@@ -1,6 +1,7 @@
 ﻿using DTOs.Application;
 using DTOs.HouseListing;
 using DTOs.HouseProfile;
+using DTOs.HouseReview;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 using RESTAPI.ControllerContracts;
@@ -44,6 +45,36 @@ public class ApplicationController : ControllerBase, IApplicationController
         }
 
         return Ok(toReturn.AsQueryable());
+    }
+
+    [HttpGet("{sitterId}")]
+    public async Task<IActionResult> GetMyApplicationsSitter(
+        [FromServices] IHouseListingRepository listingRepo,
+        [FromServices] IHouseProfileRepository profileRepo, 
+        [FromServices] IHouseReviewRepository reviewRepo,
+        [FromRoute] int sitterId)
+    {
+        var response = _repo.GetAll().Where(a => a.SitterId == sitterId && a.Status != "Confirmed");
+
+        foreach (var application in response)
+        {
+            application.Listing = await listingRepo.GetSingleAsync(application.ListingId);
+            
+            var tempProfile = await profileRepo.GetSingleAsync(application.SitterId);
+            application.Listing.Profile = new HouseProfileDto
+            {
+                Title = tempProfile.Title,
+                Pictures = new List<string>{tempProfile.Pictures[0]}
+            };
+
+            var tempReviews = reviewRepo.GetAll();
+            application.Listing.Profile.Reviews = tempReviews
+                .Where(r => r.ProfileId == tempProfile.Id)
+                .Select(r => new HouseReviewDto{ Rating = r.Rating })
+                .ToList();
+        }
+
+        return Ok(response);
     }
 
     // GET: api/Application/{id}?includeListing=true&includeSitter=true

@@ -561,7 +561,7 @@
 
     private async Task LoadUpcomingHouseListings()
     {
-        _houseListings = HouseListingService.GetAllDetailedByOwner(_userId).ToList();
+        _houseListings = await Task.Run(() => HouseListingService.GetAllDetailedByOwner(_userId).ToList());
     }
 
     private void NavigateToLogin()
