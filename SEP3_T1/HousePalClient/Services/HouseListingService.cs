@@ -92,6 +92,23 @@ public class HouseListingService : IHouseListingService
             return JsonConvert.DeserializeObject<HouseListingDto>(jsonResponse);
         }
 
+        public async Task<HouseListingDto> GetViewListing(int id, int? sitterId)
+        {
+            
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseListing/GetViewListing/{id}{(sitterId.HasValue ? $"?sitterId={sitterId}" : "")}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting single detailed HouseListing: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+    
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"{jsonResponse}\n");
+            return JsonConvert.DeserializeObject<HouseListingDto>(jsonResponse);
+        }
+
         public IQueryable<HouseListingDto> GetAll()
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseListing/GetAllHouseListings?IncludeProfile=true").Result;

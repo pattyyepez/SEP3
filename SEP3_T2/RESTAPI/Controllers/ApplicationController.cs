@@ -60,7 +60,7 @@ public class ApplicationController : ControllerBase, IApplicationController
         {
             application.Listing = await listingRepo.GetSingleAsync(application.ListingId);
             
-            var tempProfile = await profileRepo.GetSingleAsync(application.SitterId);
+            var tempProfile = await profileRepo.GetSingleAsync(application.Listing.ProfileId);
             application.Listing.Profile = new HouseProfileDto
             {
                 Title = tempProfile.Title,

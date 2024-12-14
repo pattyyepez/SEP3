@@ -399,8 +399,7 @@
 
     private async Task LoadHouseSitter()
     {
-        _houseSitter = await HouseSitterService.GetSingleAsync(ProfileId);
-        _houseSitter.Reviews = SitterReviewService.GetAllReviewsForSitter(ProfileId).ToList();
+        _houseSitter = await HouseSitterService.GetViewSitterProfile(ProfileId);
     }
     
     private void NavigateToLogin()

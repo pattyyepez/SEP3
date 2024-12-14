@@ -46,7 +46,7 @@
                                             <div class="average-stars">
                                                 @if (application.Listing.Profile.Reviews != null && application.Listing.Profile.Reviews.Any())
                                                 {
-                                                    @foreach (var star in GetHouseAverage(application.Listing.Profile).Stars)
+                                                    @foreach (var star in GetStars(application.Listing.Profile))
                                                     {
                                                         <span class="@star"></span>
                                                     }
@@ -57,7 +57,7 @@
                                                 }
                                             </div>
                                         </div>
-                                        
+
                                         <p class="card-text">@application.Listing.StartDate - @application.Listing.EndDate</p>
                                         <p class="card-title" style="font-style: italic">@GetApplicationStatusText(application)</p>
 
@@ -69,15 +69,15 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        
-                                        @if(application.Status == "Approved")
+
+                                        @if (application.Status == "Approved")
                                         {
                                             <div class="card-buttons">
                                                 <Button Color="ButtonColor.None" class="approve-button" @onclick="() => ConfirmApplication(application)">Confirm Stay</Button>
                                                 <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel Stay</Button>
                                             </div>
                                         }
-                                        
+
                                     </div>
                                 </div>
                             }
@@ -352,6 +352,7 @@
     [Inject] private PreloadService PreloadService { get; set; } = default!;
     private List<ApplicationDto>? _applications;
     private int _userId;
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
@@ -378,14 +379,9 @@
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
-    
-    private (double Average, List<string> Stars) GetHouseAverage(HouseProfileDto profile)
-    {
-        if (profile.Reviews == null || !profile.Reviews.Any())
-        {
-            return (0, new List<string> { "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star", "fa-regular fa-star" });
-        }
 
+    private List<string> GetStars(HouseProfileDto profile)
+    {
         double averageRating = profile.Reviews.Average(r => r.Rating);
 
         int fullStars = (int)Math.Floor(averageRating);
@@ -398,18 +394,15 @@
         {
             stars.Add("fa-solid fa-star-half-alt");
         }
+
         stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
 
-        return (averageRating, stars);
+        return stars;
     }
+
     private async Task LoadAllApplications()
     {
         _applications = ApplicationService.GetMyApplicationsSitter(_userId).ToList();
-        //
-        // foreach (var application in _applications)
-        // {
-        //     application.Listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(application.Listing.Profile.Id).ToList();
-        // }
     }
 
     private async Task ConfirmApplication(ApplicationDto application)
@@ -441,12 +434,12 @@
             SitterId = application.SitterId,
             Status = "Canceled"
         };
-        
+
         await ApplicationService.UpdateAsync(updatedApplication);
         await LoadAllApplications();
         await InvokeAsync(StateHasChanged);
     }
-    
+
     private string GetApplicationStatusText(ApplicationDto application)
     {
         return application.Status switch
@@ -458,4 +451,5 @@
             _ => string.Empty
         };
     }
+
 }

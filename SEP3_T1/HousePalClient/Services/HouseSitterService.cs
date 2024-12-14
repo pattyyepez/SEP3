@@ -84,6 +84,22 @@ public class HouseSitterService : IHouseSitterService
             return JsonConvert.DeserializeObject<HouseSitterDto>(jsonResponse);
         }
 
+        public async Task<HouseSitterDto> GetViewSitterProfile(int id)
+        {
+            using HttpResponseMessage response = await _httpClient.GetAsync($"https://localhost:7134/api/HouseSitter/GetViewSitterProfile/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = response.Content.ReadAsStringAsync().Result;
+                Console.WriteLine($"Error getting single HouseSitter: {errorContent}");
+                throw new HttpRequestException($"API error: {errorContent}");
+            }
+    
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"{jsonResponse}\n");
+            return JsonConvert.DeserializeObject<HouseSitterDto>(jsonResponse);
+        }
+
         public IQueryable<HouseSitterDto> GetAll()
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseSitter/GetAllHouseSitters").Result;

@@ -152,6 +152,15 @@
         </Authorized>
     </AuthorizeView>
 
+    <AuthorizeView Roles="HouseSitter">
+        <NotAuthorized>
+            <div class="not-authorized-container">
+                <h2>You must be a House Owner to view this page.</h2>
+                <button class="btn btn-primary" @onclick="RedirectToHome">Log In</button>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
     <AuthorizeView>
         <NotAuthorized>
             <div class="not-authorized-container">
@@ -580,6 +589,11 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
+    }
+    
+    private void RedirectToHome()
+    {
+        Navigation.NavigateTo("/browse-listings");
     }
 
     private List<string> GetStars(SitterReviewDto? review)

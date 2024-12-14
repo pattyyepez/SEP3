@@ -53,6 +53,15 @@ public interface IHouseListingController
         [FromServices] IHouseReviewRepository reviewRepo, 
         [FromQuery] FilteredHouseListingsDto filter);
     
+    Task<IActionResult> GetViewListing(
+        [FromServices] IHouseProfileRepository profileRepo,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromServices] IHouseReviewRepository reviewRepo, 
+        [FromServices] IHouseSitterRepository sitterRepo, 
+        [FromServices] IApplicationRepository appRepo,
+        [FromRoute] int listingId,
+        [FromQuery] int? sitterId);
+    
     Task<IActionResult> GetListingsByProfile([FromQuery] int? profileId);
 
 

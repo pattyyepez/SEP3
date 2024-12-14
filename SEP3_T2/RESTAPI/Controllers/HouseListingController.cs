@@ -353,6 +353,55 @@ public class HouseListingController : ControllerBase, IHouseListingController
         return Ok(response);
     }
 
+    [HttpGet("{listingId}")]
+    public async Task<IActionResult> GetViewListing(
+    [FromServices] IHouseProfileRepository profileRepo,
+    [FromServices] IHouseOwnerRepository ownerRepo,
+    [FromServices] IHouseReviewRepository reviewRepo, 
+    [FromServices] IHouseSitterRepository sitterRepo, 
+    [FromServices] IApplicationRepository appRepo,
+    [FromRoute] int listingId, [FromQuery] int? sitterId)
+    {
+        var listing = await _repo.GetSingleAsync(listingId);
+        listing.Profile = await profileRepo.GetSingleAsync(listing.ProfileId);
+
+        var tempOwner = await ownerRepo.GetSingleAsync(listing.Profile.OwnerId);
+        listing.Profile.Owner = new HouseOwnerDto
+        {
+            ProfilePicture = tempOwner.ProfilePicture,
+            Biography = tempOwner.Biography,
+            Name = tempOwner.Name,
+        };
+
+        var tempReviews = reviewRepo.GetAll().Where(r => r.ProfileId == listing.ProfileId);
+        foreach (var review in tempReviews)
+        {
+            var tempSitter = await sitterRepo.GetSingleAsync(review.SitterId);
+            review.Sitter = new HouseSitterDto
+            {
+                ProfilePicture = tempSitter.ProfilePicture,
+                Name = tempSitter.Name,
+            };
+        }
+
+        listing.Profile.Reviews = tempReviews.ToList();
+
+        if (!sitterId.HasValue) return Ok(listing);
+        
+        try
+        {
+            var tempApp =
+                await appRepo.GetSingleAsync(listingId, sitterId.Value);
+            listing.Applications = new List<ApplicationDto> { new() {Status = tempApp.Status} };
+        }
+        catch (Exception)
+        {
+            Console.WriteLine($"Did not find application for listing id: {listingId} and sitter id: {sitterId}");
+        }
+
+        return Ok(listing);
+    }
+
     [HttpGet("ProfileId")]
     public async Task<IActionResult> GetListingsByProfile(
         [FromQuery] int? profileId)

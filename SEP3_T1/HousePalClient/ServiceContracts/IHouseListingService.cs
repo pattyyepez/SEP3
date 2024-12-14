@@ -8,6 +8,7 @@ public interface IHouseListingService
     Task DeleteAsync(int id);
     Task<HouseListingDto> UpdateAsync(UpdateHouseListingDto houseListing);
     Task<HouseListingDto> GetSingleAsync(int id, bool details);
+    Task<HouseListingDto> GetViewListing(int id, int? sitterId);
     IQueryable<HouseListingDto> GetAll();
     IQueryable<HouseListingDto> GetAllDetailedByOwner(int ownerId);
     IQueryable<HouseListingDto> GetConfirmedStaysHo(int ownerId);

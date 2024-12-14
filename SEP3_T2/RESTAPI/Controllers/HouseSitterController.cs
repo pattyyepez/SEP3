@@ -1,4 +1,4 @@
-﻿using DTOs;
+﻿using DTOs.HouseOwner;
 using DTOs.HouseSitter;
 using RepositoryContracts;
 using RESTAPI.ControllerContracts;
@@ -40,6 +40,36 @@ public class HouseSitterController : ControllerBase, IHouseSitterController
     public async Task<IActionResult> GetHouseSitter(int id)
     {
         var response = await _repo.GetSingleAsync(id);
+        return Ok(response);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetViewSitterProfile(
+        [FromServices] ISitterReviewRepository reviewRepo,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromRoute] int id)
+    {
+        var response = await _repo.GetSingleAsync(id);
+        response = new HouseSitterDto
+        {
+            Name = response.Name,
+            Biography = response.Biography,
+            Experience = response.Experience,
+            Pictures = response.Pictures,
+            Skills = response.Skills,
+        };
+        
+        response.Reviews = reviewRepo.GetAll().Where(r => r.SitterId == id).ToList();
+        foreach (var review in response.Reviews)
+        {
+            var tempOwner = await ownerRepo.GetSingleAsync(review.OwnerId);
+            review.Owner = new HouseOwnerDto
+            {
+                Name = tempOwner.Name,
+                ProfilePicture = tempOwner.ProfilePicture
+            };
+        }
+        
         return Ok(response);
     }
 

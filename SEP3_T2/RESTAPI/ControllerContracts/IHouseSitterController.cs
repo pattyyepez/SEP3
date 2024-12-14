@@ -16,6 +16,10 @@ public interface IHouseSitterController
 
     // GET: api/HouseSitter/{id}
     Task<IActionResult> GetHouseSitter(int id);
+    Task<IActionResult> GetViewSitterProfile(
+        [FromServices] ISitterReviewRepository reviewRepo,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromRoute] int id);
 
     // POST: api/HouseSitter
     Task<IActionResult> CreateHouseSitter(

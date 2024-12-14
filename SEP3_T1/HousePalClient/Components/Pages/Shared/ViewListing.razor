@@ -3,6 +3,7 @@
 @using System.Security.Claims
 @using DTOs.Application
 @using DTOs.HouseListing
+@using DTOs.HouseProfile
 @using DTOs.HouseReview
 @using DTOs.SitterReview
 @using HousePalClient.Components.Layout
@@ -158,7 +159,7 @@
                         <div class="house-average">
                             <h3>House Rating:</h3>
                             <div class="average-stars">
-                                @foreach (var star in GetHouseAverage().Stars)
+                                @foreach (var star in GetAverageStars(_houseListing.Profile))
                                 {
                                 <span class="@star"></span>
                                 }
@@ -225,7 +226,7 @@
                                 {
                                 <div class="alert alert-danger">@_errorMessage</div>
                                 }
-                                <button class="btn btn-secondary" @onclick="OnHideModalClick">Close</button>
+                                <button type="button" class="btn btn-secondary" @onclick="OnHideModalClick">Close</button>
                                 <button type="submit" class="btn btn-primary">Send</button>
                             </form>
                         </div>
@@ -647,7 +648,7 @@
     private bool _showConfirmationMessage;
     private bool _showSuccessMessage;
     private HouseListingDto? _houseListing;
-    private ApplicationDto? _sitterApplication;
+    // private ApplicationDto? _sitterApplication;
     private bool _houseSitter;
     private bool _hasApplied;
     private bool _showModal;
@@ -711,30 +712,33 @@
         }
 
         await LoadHouseListingDetails();
-        if (_houseSitter)
-            LoadApplication();
+        // if (_houseSitter)
+        //     LoadApplication();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
     }
 
-    private void LoadApplication()
-    {
-        _sitterApplication = ApplicationService
-            .GetApplicationsByUserStatus(_sitterId, " ", false, false)
-            .SingleOrDefault(a => a.ListingId == ListingId);
-        if (_sitterApplication != null) _hasApplied = true;
-    }
+    // private void LoadApplication()
+    // {
+    //     _sitterApplication = ApplicationService
+    //         .GetApplicationsByUserStatus(_sitterId, " ", false, false)
+    //         .SingleOrDefault(a => a.ListingId == ListingId);
+    //     if (_sitterApplication != null) _hasApplied = true;
+    // }
 
     private async Task LoadHouseListingDetails()
     {
-        _houseListing = await HouseListingService.GetSingleAsync(ListingId, true);
-        _houseListing.Profile.Owner = await HouseOwnerService.GetSingleAsync(_houseListing.Profile.OwnerId);
-        _houseListing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(_houseListing.ProfileId).ToList();
+        if (_houseSitter)
+        {
+            _houseListing = await HouseListingService.GetViewListing(ListingId, _sitterId);
+            _hasApplied = _houseListing.Applications != null && _houseListing.Applications.Count != 0;
+        }
+        else
+            _houseListing = await HouseListingService.GetViewListing(ListingId, null);
     }
 
     private void OnShowModalClick()
     {
-        //  Navigation.NavigateTo($"/application/{ListingId}");
         _showModal = true;
     }
 
@@ -761,6 +765,25 @@
         _showModal = false;
         _hasApplied = true;
         Navigation.NavigateTo("/view-my-applications");
+    }
+    
+    private List<string> GetAverageStars(HouseProfileDto profile)
+    {
+        double averageRating = profile.Reviews.Average(r => r.Rating);
+
+        int fullStars = (int)Math.Floor(averageRating);
+        bool hasHalfStar = (averageRating % 1 >= 0.5);
+        int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        var stars = new List<string>();
+        stars.AddRange(Enumerable.Repeat("fa-solid fa-star", fullStars));
+        if (hasHalfStar)
+        {
+            stars.Add("fa-solid fa-star-half-alt");
+        }
+        stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
+
+        return stars;
     }
     
     private List<string> GetStars(HouseReviewDto? review)
