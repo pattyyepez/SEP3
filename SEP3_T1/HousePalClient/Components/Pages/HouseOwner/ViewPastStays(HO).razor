@@ -152,15 +152,6 @@
         </Authorized>
     </AuthorizeView>
 
-    <AuthorizeView Roles="HouseSitter">
-        <NotAuthorized>
-            <div class="not-authorized-container">
-                <h2>You must be a House Owner to view this page.</h2>
-                <button class="btn btn-primary" @onclick="RedirectToHome">Log In</button>
-            </div>
-        </NotAuthorized>
-    </AuthorizeView>
-
     <AuthorizeView>
         <NotAuthorized>
             <div class="not-authorized-container">
@@ -480,7 +471,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -499,12 +489,13 @@
         await LoadUpcomingHouseListings();
         // await LoadApplications();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadUpcomingHouseListings()
     {
+        PreloadService.Show();
         _houseListings = await Task.Run(() => HouseListingService.GetPastStaysHo(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private void ShowCreateReview(int sitterId)
@@ -589,11 +580,6 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
-    }
-    
-    private void RedirectToHome()
-    {
-        Navigation.NavigateTo("/browse-listings");
     }
 
     private List<string> GetStars(SitterReviewDto? review)

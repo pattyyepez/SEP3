@@ -74,7 +74,7 @@
                                         {
                                             <div class="card-buttons">
                                                 <Button Color="ButtonColor.None" class="approve-button" @onclick="() => ConfirmApplication(application)">Confirm Stay</Button>
-                                                <Button Color="ButtonColor.Danger" @onclick="() => CancelApplication(application)">Cancel Stay</Button>
+                                                <Button Color="ButtonColor.Danger" @onclick="async () => await CancelApplication(application)">Cancel Stay</Button>
                                             </div>
                                         }
 
@@ -360,7 +360,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -377,7 +376,6 @@
 
         await LoadAllApplications();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private List<string> GetStars(HouseProfileDto profile)
@@ -402,7 +400,9 @@
 
     private async Task LoadAllApplications()
     {
-        _applications = ApplicationService.GetMyApplicationsSitter(_userId).ToList();
+        PreloadService.Show();
+        _applications = await Task.Run(() => ApplicationService.GetMyApplicationsSitter(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private async Task ConfirmApplication(ApplicationDto application)
@@ -435,8 +435,10 @@
             Status = "Canceled"
         };
 
-        await ApplicationService.UpdateAsync(updatedApplication);
-        await LoadAllApplications();
+        var response = await ApplicationService.UpdateAsync(updatedApplication);
+        response.Listing = application.Listing;
+        await Task.Run(() => _applications.Remove(application));
+        await Task.Run(() => _applications.Add(response));
         await InvokeAsync(StateHasChanged);
     }
 

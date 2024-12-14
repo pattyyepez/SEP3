@@ -64,34 +64,6 @@ public class SitterReviewController : ControllerBase, ISitterReviewController
         return Ok(response);
     }
 
-    // GET: api/SitterReview/GetAllForSitter/{sitterId}
-    [HttpGet("{sitterId}")]
-    public async Task<IActionResult> GetAllForSitter(
-        [FromServices] IHouseOwnerRepository ownerRepo, int sitterId)
-    {
-        var response = _repo.GetAll().Where(r => r.SitterId == sitterId);
-
-        foreach (var review in response)
-        {
-            var temp = await ownerRepo.GetSingleAsync(review.OwnerId);
-            review.Owner = new HouseOwnerDto
-            {
-                ProfilePicture = temp.ProfilePicture,
-                Name = temp.Name,
-            };
-        }
-
-        return Ok(response);
-    }
-
-    [HttpGet("{sitterId}")]
-    public IActionResult GetAverageForSitter(int sitterId)
-    {
-        var response = _repo.GetAll().Where(r => r.SitterId == sitterId)
-            .Select(r => r.Rating).Average();
-        return Ok(response);
-    }
-
     // POST: api/SitterReview/Create
     [HttpPost]
     public async Task<IActionResult> Create(

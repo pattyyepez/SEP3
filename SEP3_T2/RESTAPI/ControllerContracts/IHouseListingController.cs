@@ -18,11 +18,6 @@ public interface IHouseListingController
         [FromServices] ISitterReviewRepository reviewRepo,
         [FromRoute] int ownerId);
 
-    // GET: api/HouseListing/{id}?includeProfile=true
-    Task<IActionResult> GetHouseListing(int id,
-        [FromServices] IHouseProfileRepository profileRepo,
-        [FromQuery] bool includeProfile);
-
     Task<IActionResult> GetConfirmedStaysHo(
         [FromServices] IApplicationRepository appRepo,
         [FromServices] IHouseProfileRepository profileRepo,
@@ -61,29 +56,6 @@ public interface IHouseListingController
         [FromServices] IApplicationRepository appRepo,
         [FromRoute] int listingId,
         [FromQuery] int? sitterId);
-    
-    Task<IActionResult> GetListingsByProfile([FromQuery] int? profileId);
-
-
-    Task<IActionResult> GetListingsByOwner(int ownerId,
-        [FromServices] IHouseProfileRepository profileRepo);
-
-    // GET api/HouseListing/GetListingsByOwnerStatus/{ownerId}/{status}?includeApplications=true&includeProfiles=true
-
-    Task<IActionResult> GetListingsByOwnerStatus(
-        [FromServices] IHouseProfileRepository profileRepo,
-        [FromServices] IApplicationRepository applicationRepo,
-        [FromServices] IHouseSitterRepository sitterRepo,
-        [FromQuery] bool includeApplications,
-        [FromQuery] bool includeProfiles,
-        int ownerId, string status);
-
-    Task<IActionResult> GetWaitingForReviewBySitter(
-        [FromServices] IHouseReviewRepository reviewRepo,
-        [FromServices] IApplicationRepository applicationRepo,
-        [FromServices] IHouseProfileRepository profileRepo,
-        [FromQuery] bool includeProfiles,
-        int sitterId);
 
     // POST: api/HouseListing
     Task<IActionResult> CreateHouseListing(
@@ -95,8 +67,4 @@ public interface IHouseListingController
 
     // DELETE: api/HouseListing/{id}
     Task<IActionResult> DeleteHouseListing(int id);
-
-    Task<IActionResult> GetFilteredListings(
-        [FromServices] IHouseProfileRepository profileRepo,
-        [FromQuery] FilteredHouseListingsDto filter);
 }

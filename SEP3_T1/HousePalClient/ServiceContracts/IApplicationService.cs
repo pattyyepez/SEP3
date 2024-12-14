@@ -10,6 +10,4 @@ public interface IApplicationService
     Task<ApplicationDto> GetSingleAsync(int listingId, int sitterId);
     IQueryable<ApplicationDto> GetAll();
     IQueryable<ApplicationDto> GetMyApplicationsSitter(int sitterId);
-    IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, string status, bool includeSitter);
-    IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status, bool includeListings, bool includeProfiles);
 }

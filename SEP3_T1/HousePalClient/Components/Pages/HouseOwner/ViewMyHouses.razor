@@ -387,7 +387,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -404,12 +403,13 @@
 
         await LoadAllHouseProfiles();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadAllHouseProfiles()
     {
+        PreloadService.Show();
         houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private void ShowCreateListingConfirmation(int profileId)

@@ -383,8 +383,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
-
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -401,41 +399,17 @@
 
         await LoadListings();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadListings()
     {
-        _listings = new List<HouseListingDto>();
+        PreloadService.Show();
         _listings = HouseListingService.GetPastStaysHs(_sitterId).ToList();
-        // var today = DateOnly.FromDateTime(DateTime.Today);
-        //
-        // _applications = new List<ApplicationDto>();
-        // _applications!.AddRange(
-        //     await Task.Run(() =>
-        //         ApplicationService.GetApplicationsByUserStatus(_sitterId, "Confirmed", true, true)
-        //             .Where(a => a.Listing.EndDate < today)
-        //             .ToList()));
-        //
-        // foreach (var application in _applications)
-        // {
-        //     application.Listing.Profile.Owner = await HouseOwnerService.GetSingleAsync(application.Listing.Profile.OwnerId);
-        //     application.Listing.Profile.Reviews = new();
-        //     try
-        //     {
-        //         Console.WriteLine(application.Listing.Profile.Id + " " + application.SitterId);
-        //         application.Listing.Profile.Reviews.Add(await HouseReviewService.GetSingleAsync(application.Listing.Profile.Id, application.SitterId, false, false));
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         Console.WriteLine("No review");
-        //     }
-        // }
+        PreloadService.Hide();
     }
 
     private void ShowCreateReview(int profileId)
     {
-        Console.WriteLine(profileId);
         _profileIdForReview = profileId;
         _reviewComment = string.Empty;
         _reviewRating = null;
@@ -510,11 +484,6 @@
         _showModal = false;
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
-    }
-
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-listing/{listingId}");
     }
 
     private List<string> GetStars(HouseReviewDto? review)

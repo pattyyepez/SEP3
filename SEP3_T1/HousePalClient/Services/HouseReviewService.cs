@@ -84,25 +84,6 @@ public class HouseReviewService : IHouseReviewService
             return JsonConvert.DeserializeObject<HouseReviewDto>(jsonResponse);
         }
 
-        public IQueryable<HouseReviewDto> GetAllReviewsForProfile(int profileId)
-        { 
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/HouseReview/GetAllForProfile/{profileId}").Result;
-
-                        if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine($"Error getting all HouseReviews for profile id: {errorContent}");
-                throw new HttpRequestException($"API error: {errorContent}");
-            }
-
-            var jsonResponse = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine($"{jsonResponse}\n");
-
-            var houseReview = JsonConvert.DeserializeObject<List<HouseReviewDto>>(jsonResponse);
-
-            return houseReview.AsQueryable();
-        }
-
         public IQueryable<HouseReviewDto> GetAll()
         {
             HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7134/api/HouseReview/GetAll").Result;

@@ -16,9 +16,4 @@ public interface IHouseListingService
     IQueryable<HouseListingDto> GetConfirmedStaysHs(int sitterId);
     IQueryable<HouseListingDto> GetPastStaysHs(int sitterId);
     IQueryable<HouseListingDto> GetBrowseListings(FilteredHouseListingsDto? filter);
-    IQueryable<HouseListingDto> GetAllByProfile(int profileId);
-    IQueryable<HouseListingDto> GetAllByOwner(int ownerId);
-    IQueryable<HouseListingDto> GetAllByOwnerStatus(int ownerId, string status, bool includeApplications, bool includeProfiles);
-    IQueryable<HouseListingDto> GetWaitingForReviewSitter(int sitterId, bool includeProfiles);
-    IQueryable<HouseListingDto> GetFilteredListings(FilteredHouseListingsDto filter);
 }

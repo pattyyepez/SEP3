@@ -636,7 +636,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
 
         var authState = await AuthState
             .GetAuthenticationStateAsync();
@@ -654,12 +653,13 @@
         if (userId != _houseProfile.OwnerId)
             Navigation.NavigateTo("/view-my-houses");
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadHouseProfile()
     {
+        PreloadService.Show();
         _houseProfile = await HouseProfileService.GetDetailed(ProfileId);
+        PreloadService.Hide();
     }
 
     private void NavigateToLogin()

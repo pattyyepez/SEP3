@@ -538,7 +538,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -556,12 +555,13 @@
 
         await LoadUpcomingHouseListings();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadUpcomingHouseListings()
     {
+        PreloadService.Show();
         _houseListings = await Task.Run(() => HouseListingService.GetAllDetailedByOwner(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private void NavigateToLogin()

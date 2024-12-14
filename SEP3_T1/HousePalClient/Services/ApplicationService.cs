@@ -42,7 +42,7 @@ public class ApplicationService : IApplicationService
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/UpdateApplication/{application.ListingId}/{application.SitterId}", byteContent);
+            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/UpdateApplication", byteContent);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -111,45 +111,6 @@ public class ApplicationService : IApplicationService
             {
                 var errorContent = response.Content.ReadAsStringAsync().Result;
                 Console.WriteLine($"Error getting MyApplications for HouseSitter by sitter id: {errorContent}");
-                throw new HttpRequestException($"API error: {errorContent}");
-            }
-
-            var jsonResponse = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine($"{jsonResponse}\n");
-
-            var application = JsonConvert.DeserializeObject<List<ApplicationDto>>(jsonResponse);
-
-            return application.AsQueryable();
-        }
-
-        public IQueryable<ApplicationDto> GetApplicationsByListing(int listingId, string status, bool includeSitter)
-        {
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationByListing/{listingId}/{status}?includeSitter={includeSitter}").Result;
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine($"Error getting Applications by listing id, status: {errorContent}");
-                throw new HttpRequestException($"API error: {errorContent}");
-            }
-
-            var jsonResponse = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine($"{jsonResponse}\n");
-
-            var application = JsonConvert.DeserializeObject<List<ApplicationDto>>(jsonResponse);
-
-            return application.AsQueryable();
-        }
-
-        //https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}
-        public IQueryable<ApplicationDto> GetApplicationsByUserStatus(int userId, string status, bool includeListings, bool includeProfiles)
-        {
-            HttpResponseMessage response = _httpClient.GetAsync($"https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}?includeListings={includeListings}&includeProfiles={includeProfiles}").Result;
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine($"Error getting all Applications by user id, status: {errorContent}");
                 throw new HttpRequestException($"API error: {errorContent}");
             }
 

@@ -73,6 +73,15 @@ public class ApplicationController : ControllerBase, IApplicationController
                 .Select(r => new HouseReviewDto{ Rating = r.Rating })
                 .ToList();
         }
+        
+        var sortOrder = new Dictionary<string, byte>() {
+            { "Approved", 0 },
+            { "Pending", 1 },
+            { "Rejected", 2 },
+            { "Canceled", 3 } 
+        };
+
+        response = response.OrderBy(x => sortOrder[x.Status]);
 
         return Ok(response);
     }
@@ -96,108 +105,6 @@ public class ApplicationController : ControllerBase, IApplicationController
         return Ok(response);
     }
 
-    // GET: https://localhost:7134/api/Application/GetApplication/{listingId}
-    [HttpGet("{listingId:int}/{status}")]
-    public async Task<IActionResult> GetApplicationByListing(
-        int listingId, string status,
-        [FromServices] IHouseSitterRepository sitterRepo,
-        [FromQuery] bool includeSitter)
-    {
-        var response = _repo.GetAll().Where(a => a.ListingId == listingId);
-
-        if (!string.IsNullOrWhiteSpace(status))
-            response = response.Where(a => a.Status == status);
-
-        foreach (var application in response)
-        {
-            if (includeSitter)
-                application.Sitter =
-                    await sitterRepo.GetSingleAsync(application.SitterId);
-        }
-
-        return Ok(response);
-    }
-
-// GET https://localhost:7134/api/Application/GetApplicationsByUser/{userId}/{status}
-    [HttpGet("{userId}/{status}")]
-    public async Task<IActionResult> GetApplicationsByUser(
-        [FromServices] IHouseListingRepository listingRepo,
-        [FromServices] IHouseProfileRepository profileRepo,
-        [FromServices] IHouseSitterRepository sitterRepo,
-        [FromQuery] bool includeListings,
-        [FromQuery] bool includeProfiles,
-        int? userId, string? status)
-    {
-        IQueryable<ApplicationDto> applications = _repo.GetAll();
-
-        if (!string.IsNullOrWhiteSpace(status))
-        {
-            applications = applications.Where(a => a.Status == status);
-        }
-
-        switch (userId)
-        {
-            case null:
-                return NotFound();
-            case 0:
-                return Ok(applications);
-            default:
-                if (sitterRepo.GetAll().Any(s => s.UserId == userId.Value))
-                {
-                    applications =
-                        applications.Where(a => a.SitterId == userId.Value);
-
-                    foreach (var application in applications)
-                    {
-                        if (includeListings)
-                        {
-                            var listing = await listingRepo.GetSingleAsync(
-                                application.ListingId);
-                            application.Listing = new HouseListingDto
-                            {
-                                StartDate = listing.StartDate,
-                                EndDate = listing.EndDate,
-                            };
-                        }
-
-                        if (includeProfiles)
-                        {
-                            var profile = await profileRepo.GetSingleAsync(
-                                (await listingRepo.GetSingleAsync(
-                                    application.ListingId)).ProfileId);
-                            application.Listing ??= new HouseListingDto();
-                            application.Listing.Profile =
-                                new HouseProfileDto
-                                {
-                                    Id = profile.Id,
-                                    Title = profile.Title,
-                                    Address = profile.Address,
-                                    Pictures = profile.Pictures,
-                                    OwnerId = profile.OwnerId,
-                                    City = profile.City,
-                                    Region = profile.Region
-                                };
-                        }
-                    }
-
-                    return Ok(applications);
-                }
-
-                var listings = listingRepo.GetAll();
-
-                listings = listings.Except(listings
-                    .ExceptBy(profileRepo.GetAll()
-                            .Where(p => p.OwnerId == userId)
-                            .Select(p => p.Id),
-                        l => l.ProfileId));
-
-                applications = applications.Except(applications.ExceptBy(
-                    listings.Select(l => l.Id), a => a.ListingId));
-
-                return Ok(applications);
-        }
-    }
-
     // POST: api/Application
     [HttpPost]
     public async Task<IActionResult> CreateApplication(
@@ -208,13 +115,11 @@ public class ApplicationController : ControllerBase, IApplicationController
     }
 
     // PUT: api/Application/{id}
-    [HttpPut("{listingId}/{sitterId}")]
-    public async Task<IActionResult> UpdateApplication(int listingId,
-        int sitterId,
-        [FromBody] UpdateApplicationDto updateDto)
+    [HttpPut]
+    public async Task<IActionResult> UpdateApplication([FromBody] UpdateApplicationDto updateDto)
     {
         var response =
-            await _repo.UpdateAsync(listingId, sitterId, updateDto);
+            await _repo.UpdateAsync(updateDto);
         return Ok(response);
     }
 

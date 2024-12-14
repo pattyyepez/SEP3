@@ -288,7 +288,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -305,11 +304,12 @@
 
         await LoadAllListings();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadAllListings()
     {
+        PreloadService.Show();
         _listings = await Task.Run(() => ListingService.GetConfirmedStaysHs(_userId).ToList());
+        PreloadService.Hide();
     }
 }

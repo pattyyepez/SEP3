@@ -66,27 +66,6 @@ public class HouseReviewController : ControllerBase, IHouseReviewController
         return Ok(response);
     }
 
-    // GET: api/SitterReview/{sitterId}
-    [HttpGet("{profileId}")]
-    public async Task<IActionResult> GetAllForProfile(
-        [FromServices] IHouseSitterRepository sitterRepo,
-        int profileId)
-    {
-        var response = _repo.GetAll().Where(r => r.ProfileId == profileId);
-
-        foreach (var review in response)
-        {
-            var temp = await sitterRepo.GetSingleAsync(review.SitterId);
-            review.Sitter = new HouseSitterDto
-            {
-                ProfilePicture = temp.ProfilePicture,
-                Name = temp.Name,
-            };
-        }
-
-        return Ok(response);
-    }
-
     // POST: api/HouseReview
     [HttpPost]
     public async Task<IActionResult> Create(
