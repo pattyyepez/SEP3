@@ -1,5 +1,4 @@
 ﻿using DTOs.Application;
-using DTOs.HouseListing;
 using DTOs.HouseProfile;
 using DTOs.HouseReview;
 using Microsoft.AspNetCore.Mvc;
@@ -115,7 +114,7 @@ public class ApplicationController : ControllerBase, IApplicationController
     }
 
     // PUT: api/Application/{id}
-    [HttpPut]
+    [HttpPatch]
     public async Task<IActionResult> UpdateApplication([FromBody] UpdateApplicationDto updateDto)
     {
         var response =

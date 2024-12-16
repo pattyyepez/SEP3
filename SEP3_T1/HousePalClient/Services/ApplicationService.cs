@@ -42,7 +42,7 @@ public class ApplicationService : IApplicationService
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             
-            using HttpResponseMessage response = await _httpClient.PutAsync($"https://localhost:7134/api/Application/UpdateApplication", byteContent);
+            using HttpResponseMessage response = await _httpClient.PatchAsync($"https://localhost:7134/api/Application/UpdateApplication", byteContent);
             
             if (!response.IsSuccessStatusCode)
             {
