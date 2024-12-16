@@ -76,6 +76,7 @@ import java.util.List;
       houseReview.setRating(request.getRating());
       houseReview.setComment(request.getComment());
       houseReview.setDate(LocalDateTime.now());
+      houseReviewRepository.save(houseReview);
 
       HouseReviewResponse response = buildHouseReviewResponse(houseReview);
       responseObserver.onNext(response);
