@@ -218,9 +218,8 @@
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            var message = e.Message.Split('"')[4];
-            _message = message.Remove(message.Length-1);
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 

@@ -70,14 +70,14 @@ public class HouseProfileValProxy implements IHouseProfileRepository
         }
       }
 
-      if(houseProfile.getRules().size() < 3)
-        throw getException("", "You pick at least 1 rule when creating a house profile.");
+      if(houseProfile.getRules().isEmpty())
+        throw getException("", "You must pick at least 1 rule when creating a house profile.");
 
-      if(houseProfile.getChores().size() < 3)
-        throw getException("", "You pick at least 1 chore when creating a house profile.");
+      if(houseProfile.getChores().isEmpty())
+        throw getException("", "You must pick at least 1 chore when creating a house profile.");
 
-      if(houseProfile.getAmenities().size() < 3)
-        throw getException("", "You pick at least 1 amenity when creating a house profile.");
+      if(houseProfile.getAmenities().isEmpty())
+        throw getException("", "You must pick at least 1 amenity when creating a house profile.");
 
       if(houseProfile.getPictures().size() < 3)
         throw getException("", "You must upload at least 3 pictures when creating a house profile.");
@@ -91,6 +91,10 @@ public class HouseProfileValProxy implements IHouseProfileRepository
     catch (DataIntegrityViolationException e)
     {
       throw getException(e.getMessage(), "One of the entered values contains too many characters.");
+    }
+    catch (EmptyResultDataAccessException e)
+    {
+      throw getException(e.getMessage(), "A given Rule, Chore or Amenity is not present in the database.");
     }
   }
 

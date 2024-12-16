@@ -18,12 +18,16 @@ public interface IHouseProfileController
     Task<IActionResult> GetAllAmenities();
 
     // GET: api/HouseProfile/{id}?includeOwner=true
-    Task<IActionResult> GetHouseProfile(int id,
+    Task<IActionResult> Get([FromRoute] int id);
+    
+    Task<IActionResult> GetDetailed(
         [FromServices] IHouseOwnerRepository ownerRepo,
-        [FromQuery] bool includeOwner);
+        [FromServices] IHouseSitterRepository sitterRepo,
+        [FromServices] IHouseReviewRepository reviewRepo,
+        [FromRoute] int id);
 
-    Task<IActionResult> GetProfilesByOwner(
-        [FromQuery] int? ownerId);
+    Task<IActionResult> GetByOwner(
+        [FromRoute] int ownerId);
 
     // POST: api/HouseProfile
     Task<IActionResult> CreateHouseProfile(

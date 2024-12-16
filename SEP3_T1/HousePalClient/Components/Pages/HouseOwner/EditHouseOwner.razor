@@ -1,10 +1,10 @@
 ﻿@using System.Net.Http.Headers
+@using System.Security.Claims
 @using DTOs
 @using DTOs.HouseOwner
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject IHouseOwnerService HouseOwnerService
@@ -65,7 +65,10 @@
                         }
 
                         <!-- Submit Button -->
-                        <button type="button" @onclick="EditOwner" class="create-button">Update</button>
+                        <div class="button-group">
+                            <button type="submit" class="create-button">Update</button>
+                            <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -78,6 +81,24 @@
                         <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
                     </div>
                 </div>
+            }
+
+            @if (_showCancelConfirmation)
+            {
+            <div class="modal-background">
+                <div class="modal-content">
+                    <h2>Confirmation</h2>
+                    <p>Are you sure you want to cancel? All changes will be lost.</p>
+                    <div class="modal-actions">
+                        <button @onclick="ConfirmCancel" class="btn btn-primary">
+                            Yes
+                        </button>
+                        <button @onclick="CloseCancelModal" class="btn btn-secondary">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
             }
         </Authorized>
     </AuthorizeView>
@@ -95,7 +116,6 @@
 </style>
 
 @code {
-    private HouseOwnerDto houseOwner;
     private int _userId;
 
     private string _name = string.Empty;
@@ -107,66 +127,55 @@
 
     private string _message = string.Empty;
     private string _profilePictureUrl = string.Empty;
-    private bool _showSuccessMessage = false;
+    private bool _showSuccessMessage;
 
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
-
+    private bool _showCancelConfirmation;
+    
     private void RedirectToHome()
     {
-        Navigation.NavigateTo("/view-all-house-profiles");
+        Navigation.NavigateTo("/view-my-houses");
     }
 
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
     }
+    
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
+
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
+
+    private void ConfirmCancel()
+    {
+        _name = string.Empty;
+        _cpr = string.Empty;
+        _phone = string.Empty;
+        _address = string.Empty;
+        _biography = string.Empty;
+        _message = string.Empty;
+        _profilePictureUrl = string.Empty;
+
+        _showSuccessMessage = false;
+
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo("/view-my-account");
+    }
 
     private async Task EditOwner()
     {
         _message = string.Empty;
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_address))
-        {
-            _message = "Address is required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
 
         var updateHouseOwnerDto = new UpdateHouseOwnerDto()
         {
             UserId = _userId,
-            Name = houseOwner.Name,
-            Email = houseOwner.Email,
-            Password = houseOwner.Password,
+            Name = _name,
             ProfilePicture = _profilePictureUrl,
             CPR = _cpr,
             Phone = _phone,
@@ -176,14 +185,14 @@
 
         try
         {
-            HouseOwnerDto created = await HouseOwnerService.UpdateAsync(updateHouseOwnerDto);
+            await HouseOwnerService.UpdateAsync(updateHouseOwnerDto);
             _showSuccessMessage = true;
             _message = $"House Owner updated successfully!";
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 
@@ -197,7 +206,7 @@
 
         using var content = new MultipartFormDataContent();
 
-        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
         if (_uploadResults.SingleOrDefault(
                 f => f.FileName == file.Name) is null)
         {
@@ -248,7 +257,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState?.User;
+        var user = authState.User;
 
         if (user?.Identity != null && user.Identity.IsAuthenticated)
         {
@@ -257,13 +266,13 @@
                 var ownerIdClaim = user.FindFirst("Id")?.Value;
                 if (ownerIdClaim != null && int.TryParse(ownerIdClaim, out var ownerId))
                 {
-                    houseOwner = await HouseOwnerService.GetSingleAsync(ownerId);
-                    _cpr = houseOwner.CPR;
-                    _phone = houseOwner.Phone;
-                    _name = houseOwner.Name;
-                    _biography = houseOwner.Biography;
-                    _profilePictureUrl = houseOwner.ProfilePicture;
-                    _address = houseOwner.Address;
+                    var owner = await HouseOwnerService.GetSingleAsync(ownerId);
+                    _cpr = owner.CPR;
+                    _phone = owner.Phone;
+                    _name = owner.Name;
+                    _biography = owner.Biography;
+                    _profilePictureUrl = owner.ProfilePicture;
+                    _address = owner.Address;
                     _userId = ownerId;
                 }
             }

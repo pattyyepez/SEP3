@@ -60,8 +60,9 @@ public class SimpleAuthProvider : AuthenticationStateProvider
     
         else
         {
-            claims.Add(new Claim("Pictures", userDto.Pictures.ToString()));
-            claims.Add(new Claim("Skills", userDto.Skills.ToString()));
+            claims.Add(new Claim("Experiences", userDto.Experience));
+            claims.Add(new Claim("Pictures", JsonSerializer.Serialize(userDto.Pictures)));
+            claims.Add(new Claim("Skills", JsonSerializer.Serialize(userDto.Skills)));
             claims.Add(new Claim(ClaimTypes.Role, "HouseSitter"));
         }
         ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth");
@@ -90,8 +91,6 @@ public class SimpleAuthProvider : AuthenticationStateProvider
 
         string serialisedData = JsonSerializer.Serialize(userDto);
         await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "currentUser", serialisedData);
-
-        // (The rest of the code remains unchanged)
     }
 
     public async void Logout()

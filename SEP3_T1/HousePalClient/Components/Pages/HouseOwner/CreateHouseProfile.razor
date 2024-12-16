@@ -6,7 +6,6 @@
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @using Microsoft.AspNetCore.Mvc.Rendering
 @layout MainLayout
 @inject NavigationManager Navigation
@@ -119,7 +118,10 @@
 
 
                         <!-- Submit Button -->
-                        <button type="button" @onclick="CreateProfile" class="create-button">Create House Profile</button>
+                        <div class="button-group">
+                            <button type="submit" class="create-button">Create House Profile</button>
+                            <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -133,6 +135,24 @@
                         <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
                     </div>
                 </div>
+            }
+
+            @if (_showCancelConfirmation)
+            {
+            <div class="modal-background">
+                <div class="modal-content">
+                    <h2>Confirmation</h2>
+                    <p>Are you sure you want to cancel? All changes will be lost.</p>
+                    <div class="modal-actions">
+                        <button @onclick="ConfirmCancel" class="btn btn-primary">
+                            Yes
+                        </button>
+                        <button @onclick="CloseCancelModal" class="btn btn-secondary">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
             }
         </Authorized>
         <NotAuthorized>
@@ -149,22 +169,20 @@
 </style>
 
 @code {
-    private string _title = "poop"; //string.Empty;
-    private string _description = "poop"; //string.Empty;
-    private string _city = "poop"; //string.Empty;
-    private string _region = "poop"; //string.Empty;
-    private string _address = "poop"; //string.Empty;
+    private string _title = string.Empty;
+    private string _description = string.Empty;
+    private string _city = string.Empty;
+    private string _region = string.Empty;
+    private string _address = string.Empty;
     private List<string> _pictures = [];
     private string _message = string.Empty;
-    private bool _showSuccessMessage = false;
+    private bool _showSuccessMessage;
+    private bool _showCancelConfirmation;
     private string _name = "";
-    private int _houseOwnerId = 0;
-    private MultiSelectList? _amenities = null;
-    private MultiSelectList? _chores = null;
-    private MultiSelectList? _rules = null;
-
-    private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
+    private int _houseOwnerId;
+    private MultiSelectList? _amenities;
+    private MultiSelectList? _chores;
+    private MultiSelectList? _rules;
 
     private void RedirectToHome()
     {
@@ -174,6 +192,31 @@
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
+    }
+    
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
+
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
+
+    private void ConfirmCancel()
+    {
+        _title = string.Empty;
+        _description = string.Empty;
+        _city = string.Empty;
+        _region = string.Empty;
+        _address = string.Empty;
+        _pictures = [];
+
+        _showSuccessMessage = false;
+
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo("/view-my-houses");
     }
 
     private async Task CreateProfile()
@@ -218,20 +261,6 @@
             }
         }
 
-        // if (string.IsNullOrWhiteSpace(_title) || string.IsNullOrWhiteSpace(_description) ||
-        //     string.IsNullOrWhiteSpace(_city) || string.IsNullOrWhiteSpace(_region) ||
-        //     string.IsNullOrWhiteSpace(_address))
-        // {
-        //     _message = "All fields are required. Please fill in all the details.";
-        //     return;
-        // }
-        //
-        // if (_pictures.Count < 3)
-        // {
-        //     _message = "Please upload at least 3 pictures.";
-        //     return;
-        // }
-
         try
         {
             await HouseProfileService.AddAsync(createHouseProfileDto);
@@ -240,10 +269,10 @@
         }
         catch (Exception e)
         {
-            _message = e.Message;
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
-
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
@@ -254,7 +283,7 @@
         }
 
         _pictures = [];
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        foreach (var file in e.GetMultipleFiles(25))
         {
             using var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file

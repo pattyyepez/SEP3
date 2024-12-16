@@ -19,11 +19,6 @@ public interface IHouseReviewController
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeProfile,
         [FromQuery] bool includeSitter);
-    
-    // GET: api/SitterReview/{sitterId}
-    Task<IActionResult> GetAllForProfile(
-        [FromServices] IHouseSitterRepository sitterRepo,
-        int profileId);
 
     // POST: api/HouseReview
     Task<IActionResult> Create(

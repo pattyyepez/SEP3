@@ -154,7 +154,6 @@
             _listingToDelete = null;
             _showConfirmationModal = false;
             await LoadUpcomingHouseListings();
-            await LoadApplications();
             await InvokeAsync(StateHasChanged);
             PreloadService.Hide();
         }
@@ -181,7 +180,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -198,36 +196,14 @@
         _userId = int.Parse(userIdAsString);
 
         await LoadUpcomingHouseListings();
-        await LoadApplications();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadUpcomingHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Open", true, true));
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _houseListings = allListings
-            .Where(listing => listing.StartDate >= today)
-            .ToList();
-    }
-
-    private async Task LoadApplications()
-    {
-        foreach (var listing in _houseListings)
-        {
-            listing.Applications = new();
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Approved", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Pending", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Rejected", true).ToList());
-
-            foreach (var application in listing.Applications)
-            {
-                application.Sitter!.Reviews = SitterReviewService.GetAllReviewsForSitter(application.SitterId).ToList();
-            }
-        }
+        PreloadService.Show();
+        _houseListings = await Task.Run(() => HouseListingService.GetAllDetailedByOwner(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private void NavigateToLogin()
@@ -246,7 +222,7 @@
         };
 
         await ApplicationService.UpdateAsync(updatedApplication);
-        await LoadApplications();
+        await LoadUpcomingHouseListings();
         await InvokeAsync(StateHasChanged);
     }
 
@@ -260,7 +236,7 @@
         };
 
         await ApplicationService.UpdateAsync(update);
-        await LoadApplications();
+        await LoadUpcomingHouseListings();
         await InvokeAsync(StateHasChanged);
     }
 

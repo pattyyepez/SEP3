@@ -38,12 +38,12 @@ public class ApplicationRepository : IApplicationRepository
         });
     }
 
-    public Task<ApplicationDto> UpdateAsync(int listingId, int sitterId, UpdateApplicationDto application)
+    public Task<ApplicationDto> UpdateAsync(UpdateApplicationDto application)
     {
         ApplicationResponse reply = _client.UpdateApplication(new UpdateApplicationRequest()
         {
-            ListingId = listingId,
-            SitterId = sitterId,
+            ListingId = application.ListingId,
+            SitterId = application.SitterId,
             Status = application.Status
         });
         

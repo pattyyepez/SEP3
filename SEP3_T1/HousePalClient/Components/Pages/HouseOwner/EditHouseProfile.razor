@@ -5,7 +5,6 @@
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
-@using Services
 @using Microsoft.AspNetCore.Mvc.Rendering
 @layout MainLayout
 @inject NavigationManager Navigation
@@ -120,10 +119,42 @@
                         }
 
                         <!-- Submit Button -->
-                        <button type="button" @onclick="CreateProfile" class="create-button">Update</button>
+                        <div class="button-group">
+                            <button type="submit" class="create-button">Update</button>
+                            <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
+
+            @if (_showSuccessMessage)
+            {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h2>Profile Updated!</h2>
+                        <p> Your house profile has been updated successfully.</p>
+                        <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
+                    </div>
+                </div>
+            }
+
+            @if (_showCancelConfirmation)
+            {
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <h2>Confirmation</h2>
+                        <p>Are you sure you want to cancel? All changes will be lost.</p>
+                        <div class="modal-actions">
+                            <button @onclick="ConfirmCancel" class="btn btn-primary">
+                                Yes
+                            </button>
+                            <button @onclick="CloseCancelModal" class="btn btn-secondary">
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
         </Authorized>
     </AuthorizeView>
     <AuthorizeView>
@@ -140,23 +171,9 @@
 <style>
 </style>
 
-@if (_showSuccessMessage)
-{
-    <div class="modal-background">
-        <div class="modal-content">
-            <h2>Profile Updated!</h2>
-            <p> Your house profile has been updated successfully.</p>
-            <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
-        </div>
-    </div>
-}
-
-@functions
-{
-    [Parameter] public string? profileId { get; set; }
-}
-
 @code {
+    [Parameter] public string? ProfileId { get; set; }
+    
     private string _title = string.Empty;
     private string _description = string.Empty;
     private string _city = string.Empty;
@@ -164,15 +181,12 @@
     private string _address = string.Empty;
     private List<string> _pictures = [];
     private string _message = string.Empty;
-    private bool _showSuccessMessage = false;
-    private string _name = string.Empty;
-    private int _houseOwnerId = 0;
-    private MultiSelectList? _amenities = null;
-    private MultiSelectList? _chores = null;
-    private MultiSelectList? _rules = null;
+    private bool _showSuccessMessage;
+    private bool _showCancelConfirmation;
 
-    private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 3;
+    private MultiSelectList? _amenities;
+    private MultiSelectList? _chores;
+    private MultiSelectList? _rules;
 
     private void RedirectToHome()
     {
@@ -184,13 +198,39 @@
         Navigation.NavigateTo("/login");
     }
 
+
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
+
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
+
+    private void ConfirmCancel()
+    {
+        _title = string.Empty;
+        _description = string.Empty;
+        _city = string.Empty;
+        _region = string.Empty;
+        _address = string.Empty;
+        _pictures = [];
+
+        _showSuccessMessage = false;
+
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo($"/view-house-profile/{ProfileId}");
+    }
+
     private async Task CreateProfile()
     {
         _message = string.Empty;
 
         var updateProfile = new UpdateHouseProfileDto()
         {
-            Id = int.Parse(profileId),
+            Id = int.Parse(ProfileId),
             Title = _title,
             Description = _description,
             City = _city,
@@ -234,7 +274,8 @@
         }
         catch (Exception e)
         {
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 
@@ -246,7 +287,7 @@
         }
 
         _pictures = [];
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        foreach (var file in e.GetMultipleFiles(25))
         {
             using var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file
@@ -276,15 +317,14 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState?.User;
 
-        if (user?.Identity != null && user.Identity.IsAuthenticated && profileId != null)
+        if (user?.Identity != null && user.Identity.IsAuthenticated && ProfileId != null)
         {
-            var profile = await HouseProfileService.GetSingleAsync(int.Parse(profileId), false);
+            var profile = await HouseProfileService.Get(int.Parse(ProfileId));
 
             var userId = int.Parse(user.Claims.Single(c => c.Type == "Id").Value);
             if (userId != profile.OwnerId)
                 Navigation.NavigateTo("/view-all-house-profiles");
 
-            _houseOwnerId = profile.OwnerId;
             _title = profile.Title;
             _description = profile.Description;
             _city = profile.City;

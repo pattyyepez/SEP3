@@ -1,19 +1,15 @@
 ﻿@page "/browse-listings"
-@using System.Security.Claims
 @using DTOs.HouseListing
 @using DTOs.HouseReview
 @using HousePalClient.Components.Layout
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout MainLayout
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @inject IHouseListingService HouseListingService
 @inject IHouseProfileService HouseProfileService
-@inject IHouseReviewService HouseReviewService
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -54,21 +50,21 @@
                                 <h3>
                                     <a href="https://localhost:7262/view-listing/@listing.Id" target="_blank"> @listing.Profile.Title</a>
                                 </h3>
-                                    <div class="stars">
-                                        @if (listing.Profile.Reviews != null && listing.Profile.Reviews.Any())
+                                <div class="stars">
+                                    @if (listing.Profile.Reviews != null && listing.Profile.Reviews.Any())
+                                    {
+                                        @foreach (var star in GetStars(listing.Profile.Reviews))
                                         {
-                                            @foreach (var star in GetStars(listing.Profile.Reviews))
-                                            {
-                                                <span class="@star"></span>
-                                            }
+                                            <span class="@star"></span>
                                         }
-                                        else
-                                        {
-                                            <div>
-                                                <span>No reviews</span>
-                                            </div>
-                                        }
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <span>No reviews</span>
+                                        </div>
+                                    }
+                                </div>
 
                                 <p>@listing.StartDate.ToString("dd/M/yyyy") - @listing.EndDate.ToString("dd/M/yyyy")</p>
                                 <p>@listing.Profile.Region, @listing.Profile.City</p>
@@ -90,89 +86,94 @@
                         </button>
 
                         <h2>Filter Listings</h2>
+                        <form @onsubmit="Filter">
 
-                        <div class="form-group">
-                            <label for="region">Region</label>
-                            <input id="region" class="form-control" @bind="_region"
-                                   placeholder="Enter Region"/>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="city">City</label>
-                            <input id="city" class="form-control" @bind="_city"
-                                   placeholder="Enter City"/>
-                        </div>
+                            <div class="form-group">
+                                <label for="region">Region</label>
+                                <input id="region" class="form-control" @bind="_region"
+                                       placeholder="Enter Region"/>
+                            </div>
 
-                        <hr class="section-divider"/>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input id="city" class="form-control" @bind="_city"
+                                       placeholder="Enter City"/>
+                            </div>
 
-                        <div class="form-group date-group">
-                            <label for="startDate">Start Date</label>
-                            <input
-                                type="date"
-                                id="startDate"
-                                name="listing-start"
-                                placeholder="dd-mm-yyyy"
-                                class="form-control"
-                                @bind-value="@StartDate"
-                                min="@_minDateStart.ToString("yyyy-MM-dd")"
-                                max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
-                        </div>
+                            <hr class="section-divider"/>
 
-                        <div class="form-group date-group">
-                            <label for="endDate">End Date</label>
-                            <input
-                                type="date"
-                                id="endDate"
-                                name="listing-end"
-                                placeholder="dd-mm-yyyy"
-                                class="form-control"
-                                @bind-value="@EndDate"
-                                min="@_minDateEnd.ToString("yyyy-MM-dd")"
-                                max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
-                        </div>
+                            <div class="form-group date-group">
+                                <label for="startDate">Start Date</label>
+                                <input
+                                    type="date"
+                                    id="startDate"
+                                    name="listing-start"
+                                    placeholder="dd-mm-yyyy"
+                                    class="form-control"
+                                    @bind-value="@StartDate"
+                                    min="@_minDateStart.ToString("yyyy-MM-dd")"
+                                    max="@_maxDateStart.ToString("yyyy-MM-dd")"/>
+                            </div>
 
-                        <hr class="section-divider"/>
+                            <div class="form-group date-group">
+                                <label for="endDate">End Date</label>
+                                <input
+                                    type="date"
+                                    id="endDate"
+                                    name="listing-end"
+                                    placeholder="dd-mm-yyyy"
+                                    class="form-control"
+                                    @bind-value="@EndDate"
+                                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                                    max="@_maxDateEnd.ToString("yyyy-MM-dd")"/>
+                            </div>
 
-                        <h3>Amenities</h3>
-                        <div class="form-group checkbox">
-                            @if (_amenities is not null)
-                            {
-                                <div class="amenities-container">
-                                    @foreach (var amenity in _amenities)
-                                    {
-                                        <div class="pill">
-                                            <input type="checkbox" id="@amenity"
-                                                   @bind="amenity.Selected"/>
-                                            <label for="@amenity">@amenity.Text</label>
-                                        </div>
-                                    }
-                                </div>
-                            }
-                        </div>
+                            <hr class="section-divider"/>
 
-                        <h3>Chores</h3>
-                        <div class="form-group checkbox">
-                            @if (_chores is not null)
-                            {
-                                <div class="amenities-container">
-                                    @foreach (var chore in _chores)
-                                    {
-                                        <div class="pill">
-                                            <input type="checkbox" id="@chore"
-                                                   @bind="chore.Selected"/>
-                                            <label for="@chore">@chore.Text</label>
-                                        </div>
-                                    }
-                                </div>
-                            }
-                        </div>
+                            <h3>Amenities</h3>
+                            <div class="form-group checkbox">
+                                @if (_amenities is not null)
+                                {
+                                    <div class="amenities-container">
+                                        @foreach (var amenity in _amenities)
+                                        {
+                                            <div class="pill">
+                                                <input type="checkbox" id="@amenity"
+                                                       @bind="amenity.Selected"/>
+                                                <label for="@amenity">@amenity.Text</label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
 
-                        <hr class="section-divider"/>
+                            <h3>Chores</h3>
+                            <div class="form-group checkbox">
+                                @if (_chores is not null)
+                                {
+                                    <div class="amenities-container">
+                                        @foreach (var chore in _chores)
+                                        {
+                                            <div class="pill">
+                                                <input type="checkbox" id="@chore"
+                                                       @bind="chore.Selected"/>
+                                                <label for="@chore">@chore.Text</label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
 
-                        <Button Color="ButtonColor.Primary" @onclick="Filter">
-                            Find
-                            listings
-                        </Button>
+                            <hr class="section-divider"/>
+
+                            <button class="btn btn-success">
+                                Find
+                                listings
+                            </button>
+
+                        </form>
+
 
                     </div>
                 </div>
@@ -303,7 +304,7 @@
     {
         color: blue;
     }
-    
+
     /*.house-profile-item div*/
     /*{*/
     /*    display: flex;*/
@@ -312,7 +313,7 @@
     /*    width: 95%;*/
     /*    height: 95%;*/
     /*}*/
-    
+
     p
     {
         font-family: 'FuturaFont', sans-serif;
@@ -539,7 +540,7 @@
 
     private List<HouseListingDto>? _houseListings;
 
-    // Property for Start Date
+// Property for Start Date
     private DateTime? StartDate
     {
         get => _gottenStart;
@@ -561,7 +562,7 @@
         Navigation.NavigateTo("/login");
     }
 
-    // Property for End Date
+// Property for End Date
     private DateTime? EndDate
     {
         get => _gottenEnd;
@@ -586,20 +587,6 @@
     {
         PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
-        // var authState = await AuthenticationStateProvider
-        //     .GetAuthenticationStateAsync();
-        // var user = authState.User;
-        //
-        // if (user.Identity is null || !user.Identity.IsAuthenticated)
-        // {
-        //     Console.WriteLine("Not authenticated");
-        //     return;
-        // }
-        //
-        // IEnumerable<Claim> claims = user.Claims;
-        // string userIdAsString = claims.Single(c => c.Type == "Id").Value;
-        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -607,17 +594,7 @@
 
     private async Task LoadAllHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(0, "Open", false, true).ToList());
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _houseListings = allListings
-            .Where(listing => listing.StartDate > today)
-            .ToList();
-
-        foreach (var listing in _houseListings)
-        {
-            listing.Profile.Reviews = HouseReviewService.GetAllReviewsForProfile(listing.Profile.Id).ToList();
-        }
+        _houseListings = await Task.Run(() => HouseListingService.GetBrowseListings(null).ToList());
     }
 
 
@@ -628,6 +605,9 @@
 
     private async void Filter()
     {
+        PreloadService.Show();
+        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         FilteredHouseListingsDto filter = new FilteredHouseListingsDto
         {
             City = _city,
@@ -659,9 +639,8 @@
             }
         }
 
-        _houseListings = HouseListingService.GetFilteredListings(filter).ToList();
-        await InvokeAsync(StateHasChanged);
-        _showModal = false;
+        _houseListings = HouseListingService.GetBrowseListings(filter).ToList();
+        PreloadService.Hide();
     }
 
     private List<string> GetStars(List<HouseReviewDto>? reviews)

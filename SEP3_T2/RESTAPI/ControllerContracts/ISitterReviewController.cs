@@ -20,10 +20,6 @@ public interface ISitterReviewController
         [FromServices] IHouseSitterRepository sitterRepo,
         [FromQuery] bool includeOwner,
         [FromQuery] bool includeSitter);
-    
-    // GET: api/SitterReview/GetAllForSitter/{sitterId}
-    Task<IActionResult> GetAllForSitter(
-        [FromServices] IHouseOwnerRepository ownerRepo, int sitterId);
 
     // POST: api/SitterReview/Create
     Task<IActionResult> Create(

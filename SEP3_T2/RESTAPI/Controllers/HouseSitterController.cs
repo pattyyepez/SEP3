@@ -1,4 +1,4 @@
-﻿using DTOs;
+﻿using DTOs.HouseOwner;
 using DTOs.HouseSitter;
 using RepositoryContracts;
 using RESTAPI.ControllerContracts;
@@ -14,7 +14,7 @@ public class HouseSitterController : ControllerBase, IHouseSitterController
 {
     private readonly IHouseSitterRepository _repo;
 
-    public HouseSitterController(IHouseSitterRepository repo)    
+    public HouseSitterController(IHouseSitterRepository repo)
     {
         _repo = repo;
     }
@@ -23,48 +23,54 @@ public class HouseSitterController : ControllerBase, IHouseSitterController
     [HttpGet]
     public async Task<IActionResult> GetAllHouseSitters()
     {
-        try
-        {
-            var response = _repo.GetAll();
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error fetching all HouseSitters:" +
-                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+        var response = _repo.GetAll();
+        return Ok(response);
     }
-    
+
     // GET: api/HouseSitter
     [HttpGet]
     public async Task<IActionResult> GetAllSkills()
     {
-        try
-        {
-            var response = _repo.GetAllSkills();
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error fetching all HouseSitters Skills:" +
-                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+        var response = _repo.GetAllSkills();
+        return Ok(response);
     }
 
     // GET: api/HouseSitter/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetHouseSitter(int id)
     {
-        try
+        var response = await _repo.GetSingleAsync(id);
+        return Ok(response);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetViewSitterProfile(
+        [FromServices] ISitterReviewRepository reviewRepo,
+        [FromServices] IHouseOwnerRepository ownerRepo,
+        [FromRoute] int id)
+    {
+        var response = await _repo.GetSingleAsync(id);
+        response = new HouseSitterDto
         {
-            var response = await _repo.GetSingleAsync(id);
-            return Ok(response);
-        }
-        catch (Exception ex)
+            Name = response.Name,
+            Biography = response.Biography,
+            Experience = response.Experience,
+            Pictures = response.Pictures,
+            Skills = response.Skills,
+        };
+        
+        response.Reviews = reviewRepo.GetAll().Where(r => r.SitterId == id).ToList();
+        foreach (var review in response.Reviews)
         {
-            return StatusCode(500,
-                $"Error fetching HouseSitter: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+            var tempOwner = await ownerRepo.GetSingleAsync(review.OwnerId);
+            review.Owner = new HouseOwnerDto
+            {
+                Name = tempOwner.Name,
+                ProfilePicture = tempOwner.ProfilePicture
+            };
         }
+        
+        return Ok(response);
     }
 
     // POST: api/HouseSitter
@@ -72,16 +78,16 @@ public class HouseSitterController : ControllerBase, IHouseSitterController
     public async Task<IActionResult> CreateHouseSitter(
         [FromBody] CreateHouseSitterDto createDto)
     {
-        try
-        {
-            var response = await _repo.AddAsync(createDto);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error creating HouseSitter: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
-        }
+        if (createDto.Pictures == null || createDto.Pictures.Count < 3)
+            throw new Exception(
+                "You need to upload at least 3 images when creating an account.");
+
+        if (createDto.Skills == null || createDto.Skills!.Count == 0)
+            throw new Exception(
+                "You need to select at least 1 skill when creating an account.");
+
+        var response = await _repo.AddAsync(createDto);
+        return Ok(response);
     }
 
     // PUT: api/HouseSitter/{id}
@@ -89,30 +95,23 @@ public class HouseSitterController : ControllerBase, IHouseSitterController
     public async Task<IActionResult> UpdateHouseSitter(int id,
         [FromBody] UpdateHouseSitterDto updateDto)
     {
-        try
-        {
-            var response = await _repo.UpdateAsync(id, updateDto);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error updating HouseSitter: {ex.Message}, {ex.InnerException}, {ex.StackTrace}");
-        }
+        if (updateDto.Pictures == null || updateDto.Pictures.Count < 3)
+            throw new Exception(
+                "You need to upload at least 3 images when updating an account.");
+
+        if (updateDto.Skills == null || updateDto.Skills!.Count == 0)
+            throw new Exception(
+                "You need to select at least 1 skill when updating an account.");
+
+        var response = await _repo.UpdateAsync(id, updateDto);
+        return Ok(response);
     }
 
     // DELETE: api/HouseSitter/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHouseSitter(int id)
     {
-        try
-        {
-            await _repo.DeleteAsync(id);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error deleting HouseSitter: {ex.Message}");
-        }
+        await _repo.DeleteAsync(id);
+        return Ok();
     }
 }

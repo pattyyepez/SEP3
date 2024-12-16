@@ -5,7 +5,6 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
 @inject IHouseSitterService Service
@@ -58,7 +57,7 @@
                 <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
                 <label>Upload a Profile Picture:</label>
-                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
+                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
                 @if (!string.IsNullOrEmpty(_profilePictureUrl))
                 {
@@ -89,13 +88,17 @@
                 <h2>Skills</h2>
 
                 <ul>
-                    @foreach (var item in skills)
+                    @if (_skills != null && _skills.Any())
                     {
-                        <li>
-                            <input type="checkbox" @bind="item.Selected"/>
-                            <label>@item.Text</label>
-                        </li>
+                        @foreach (var item in _skills)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="item.Selected"/>
+                                <label>@item.Text</label>
+                            </li>
+                        }
                     }
+
                 </ul>
 
 
@@ -109,7 +112,7 @@
 
             <!-- Submit Button -->
             <div class="button-group">
-                <button type="button" @onclick="CreateSitter" class="create-button">Create Account</button>
+                <button type="submit" class="create-button">Create Account</button>
                 <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
@@ -152,13 +155,12 @@
     private string _experiences = string.Empty;
     private string _message = string.Empty;
     private string _profilePictureUrl = string.Empty;
-    private bool _showSuccessMessage = false;
-    private bool _showCancelConfirmation = false;
+    private bool _showSuccessMessage;
+    private bool _showCancelConfirmation;
 
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 25;
 
-    MultiSelectList skills;
+    private MultiSelectList? _skills;
     List<string> _pictures = [];
 
     private void OpenCancelModal()
@@ -201,72 +203,6 @@
     {
         _message = string.Empty;
 
-        if (string.IsNullOrWhiteSpace(_email))
-        {
-            _message = "Email is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_password))
-        {
-            _message = "Password is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_confirmPassword))
-        {
-            _message = "Please confirm your password.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_experiences))
-        {
-            _message = "Relevant experiences are required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
-
-        if (_pictures.Count < 3)
-        {
-            _message = "You must upload at least 3 pictures.";
-            return;
-        }
-
-        if (skills.All(s => !s.Selected))
-        {
-            _message = "You must select at least one skill.";
-            return;
-        }
-
         if (_password != _confirmPassword)
         {
             _message = "Passwords do not match.";
@@ -286,7 +222,7 @@
         };
 
         createHouseSitterDto.Skills = [];
-        foreach (var skill in skills)
+        foreach (var skill in _skills)
         {
             if (skill.Selected)
             {
@@ -298,14 +234,14 @@
 
         try
         {
-            HouseSitterDto created = await Service.AddAsync(createHouseSitterDto);
+            await Service.AddAsync(createHouseSitterDto);
             _showSuccessMessage = true;
             _message = $"House Sitter created successfully!";
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 
@@ -318,7 +254,7 @@
 
         using var content = new MultipartFormDataContent();
 
-        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
         if (_uploadResults.SingleOrDefault(
                 f => f.FileName == file.Name) is null)
         {
@@ -378,7 +314,7 @@
         }
 
         _pictures = [];
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        foreach (var file in e.GetMultipleFiles(25))
         {
             using var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file
@@ -401,7 +337,7 @@
 
     protected override async void OnInitialized()
     {
-        skills = new MultiSelectList(Service.GetAllSkills());
+        _skills = new MultiSelectList(Service.GetAllSkills());
         await InvokeAsync(StateHasChanged);
     }
 

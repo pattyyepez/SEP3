@@ -35,7 +35,7 @@
                                     {
                                         <img src="https://localhost:7134/Filesave/@profile.Pictures[0].Split('.')[0]/@profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-profile-img"/>
                                     }
-                                    <p><a class="link-title" href="https://localhost:7262/view-house-profile/@profile.Id">@profile.Title</a></p>
+                                    <p><a class="link-title" href="https://localhost:7262/view-house-profile/@profile.Id" target="_blank">@profile.Title</a></p>
                                     <button type="button" class="orange-button" @onclick="() => ShowCreateListingConfirmation(profile.Id)">Create listing</button>
                                 </div>
                             }
@@ -57,31 +57,37 @@
 
                             <h2 class="subtitle">Create Listing</h2>
 
-                            <div class="form-group date-group">
-                                <label for="startDate">Start Date</label>
-                                <input
-                                    type="date"
-                                    id="startDate"
-                                    class="form-control"
-                                    @bind-value="@StartDate"
-                                    min="@_minDateStart.ToString("yyyy-MM-dd")"
-                                    max="@_maxDateStart.ToString("yyyy-MM-dd")" />
-                            </div>
-
-                            <div class="form-group date-group">
-                                <label for="endDate">End Date</label>
-                                <input
-                                    type="date"
-                                    id="endDate"
-                                    class="form-control"
-                                    @bind-value="@EndDate"
-                                    min="@_minDateEnd.ToString("yyyy-MM-dd")"
-                                    max="@_maxDateEnd.ToString("yyyy-MM-dd")" />
-                            </div>
-
-                            <button class="orange-button" @onclick="CreateListingForProfile">Create</button>
+                        <form @onsubmit="CreateListingForProfile">
+                        <div class="form-group date-group">
+                            <label for="startDate">Start Date</label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                class="form-control"
+                                @bind-value="@StartDate"
+                                min="@_minDateStart.ToString("yyyy-MM-dd")"
+                                max="@_maxDateStart.ToString("yyyy-MM-dd")" 
+                                required
+                                />
                         </div>
+
+                        <div class="form-group date-group">
+                            <label for="endDate">End Date</label>
+                            <input
+                                type="date"
+                                id="endDate"
+                                class="form-control"
+                                @bind-value="@EndDate"
+                                min="@_minDateEnd.ToString("yyyy-MM-dd")"
+                                max="@_maxDateEnd.ToString("yyyy-MM-dd")"
+                                required
+                                />
+                        </div>
+
+                        <button type="submit" class="orange-button">Create</button>
+                        </form>
                     </div>
+                </div>
                 }
 
 
@@ -152,7 +158,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         var authState = await AuthenticationStateProvider
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -169,12 +174,13 @@
 
         await LoadAllHouseProfiles();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadAllHouseProfiles()
     {
+        PreloadService.Show();
         houseProfiles = await Task.Run(() => HouseProfileService.GetAllByOwner(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private void ShowCreateListingConfirmation(int profileId)
