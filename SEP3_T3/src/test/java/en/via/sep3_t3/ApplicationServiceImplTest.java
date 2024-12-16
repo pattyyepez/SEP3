@@ -139,13 +139,15 @@ class ApplicationServiceImplTest {
     UpdateApplicationRequest request = UpdateApplicationRequest.newBuilder()
         .setListingId(1)
         .setSitterId(2)
-        .setStatus("Pending")
+        .setStatus("Approved")
         .build();
 
     Application updatedApplication = new Application();
     updatedApplication.setListing_id(1);
     updatedApplication.setSitter_id(2);
-    updatedApplication.setStatus("Pending");
+    updatedApplication.setStatus("Approved");
+    updatedApplication.setMessage("Test message");
+    updatedApplication.setDate(LocalDateTime.now());
 
     when(applicationRepository.update(any(Application.class))).thenReturn(updatedApplication);
 
@@ -160,7 +162,7 @@ class ApplicationServiceImplTest {
     verify(responseObserver).onCompleted();
 
     ApplicationResponse response = responseCaptor.getValue();
-    assertEquals("Pending", response.getStatus());
+    assertEquals("Approved", response.getStatus());
   }
 
   @Test
