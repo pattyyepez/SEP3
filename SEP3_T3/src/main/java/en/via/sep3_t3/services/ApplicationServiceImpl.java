@@ -67,7 +67,6 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -84,7 +83,6 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(buildApplicationResponse(application));
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
       responseObserver.onError(e);
     }
   }
@@ -96,8 +94,6 @@ public class ApplicationServiceImpl extends ApplicationServiceGrpc.ApplicationSe
       responseObserver.onNext(ApplicationResponse.newBuilder().build());
       responseObserver.onCompleted();
     } catch (Exception e) {
-      e.printStackTrace();
-
       responseObserver.onError(e);
     }
   }
