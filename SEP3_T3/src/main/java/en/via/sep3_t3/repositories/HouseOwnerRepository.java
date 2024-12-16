@@ -80,13 +80,11 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
   public void update(HouseOwner houseOwner)
   {
     String sql = "UPDATE Users\n"
-        + "SET name = ?, email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
+        + "SET name = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
         + "WHERE id = ?";
 
     jdbcTemplate.update(sql,
         houseOwner.getName(),
-        houseOwner.getEmail(),
-        houseOwner.getPassword(),
         houseOwner.getProfilePicture(),
         houseOwner.getCPR(),
         houseOwner.getPhone(),

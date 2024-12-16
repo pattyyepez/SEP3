@@ -54,7 +54,10 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
         if(field.getType().isAssignableFrom(String.class) &&
             ((String) field.get(houseOwner)).isBlank()
         ){
-          throw getException("", "Value '" + field.getName() + "' cannot be left blank.");
+          if(field.getName().equals("profilePicture"))
+            throw getException("", "Please upload a profile picture before creating an account.");
+
+          throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new account.");
         }
 
       }
@@ -66,7 +69,7 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     }
     catch (DuplicateKeyException e)
     {
-      throw getException(e.getMessage(), "The email '" + houseOwner.getEmail() + "' is already in use.");
+      throw getException(e.getMessage(), "The email '" + houseOwner.getEmail() + "' is already in use. Please use a different email.");
     }
     catch (DataIntegrityViolationException e)
     {
@@ -79,9 +82,10 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     try{
       for (Field field : fields){
         if(field.getType().isAssignableFrom(String.class) &&
+            (!field.getName().equals("email") && !field.getName().equals("password")) &&
             ((String) field.get(houseOwner)).isBlank()
         ){
-          throw getException("", "Value '" + field.getName() + "' cannot be left blank when creating a new HouseOwner.");
+          throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new account.");
         }
 
       }
@@ -121,7 +125,7 @@ public class HouseOwnerValProxy implements IHouseOwnerRepository
     metadata.put(errorKey, messageSpecific);
 
     return Status.INTERNAL
-        .withDescription("An error occurred when using HouseOwner Repository: " + messageSimple)
+        .withDescription(messageSimple)
         .asRuntimeException(metadata);
 
   }

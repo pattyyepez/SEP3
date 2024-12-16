@@ -35,7 +35,7 @@
                                 <img src="https://localhost:7134/Filesave/@listing.Profile.Pictures[0].Split('.')[0]/@listing.Profile.Pictures[0].Split('.')[1]" alt="House Picture" class="house-image"/>
                                 <h2 class="listing-title"><a href="https://localhost:7262/view-listing/@listing.Id" target="_blank">@listing.Profile.Title</a></h2>
                                 <p class="listing-dates">@listing.StartDate.ToShortDateString() - @listing.EndDate.ToShortDateString()</p>
-                                <button @onclick="() => ShowConfirmationModal(listing.Id)" class="btn delete-btn">
+                                <button @onclick="() => ShowConfirmationModal(listing.Id)" class="btn orange-button">
                                     Delete Listing
                                 </button>
                             </div>
@@ -103,7 +103,7 @@
                                     }
                                     else
                                     {
-                                        <h3>You have no applications for this listing</h3>
+                                        <h3 class="">You have no applications for this listing</h3>
                                     }
                                 </div>
                             </div>
@@ -126,365 +126,6 @@
 </CascadingAuthenticationState>
 
 <style>
-    /* Custom Fonts */
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[port]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    /* General Styles */
-    h1 {
-        text-align: center;
-        color: #ff7e5f;
-        margin-bottom: 1em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .btn {
-        font-size: 0.85em;
-        padding: 0.375em 0.75em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    /* Not Authorized Section */
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
-
-    .applications-section{
-        /*padding: 0.85em;*/
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-
-    .card {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        border-style: none;
-        margin: 0.75em;
-        background-color: white;
-        color: #3d3d3d;
-    }
-
-    .card-text{
-        font-size: 1em;
-        margin-bottom: 0;
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .card a{
-        color: #3d3d3d;
-        margin-bottom: 0;
-    }
-
-    .card a:hover{
-        color: blue;
-    }
-
-    .card.green{
-        background-color: green;
-        color: white;
-    }
-
-    .card.green .card-text{
-        color: white;
-    }
-
-    .card.green a{
-        color: white;
-    }
-
-    .card.green a:hover{
-        color: blue;
-    }
-
-    .card.rejected{
-        background-color: #dc3545;
-        color: white;
-    }
-    
-    .card.rejected .card-text{
-        color: white;
-    }
-
-    .card.rejected a{
-        color: white;
-    }
-
-    .card.rejected a:hover{
-        color: blue;
-    }
-
-    .card-img-container{
-        flex: 0 0 200px;
-        height: 200px;
-        margin: 1em;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-img-container img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .card-text{
-        margin-bottom: 0.15em;
-    }
-    
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-        
-    }
-    
-    .title-rating h5 {
-        margin-bottom: 0;
-    }   
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
-
-    .fa-star {
-        font-size: 1em;
-    }
-
-    .fa-star-half-alt {
-        font-size: 1em;
-        align-self: center;
-    }
-
-    .fa-star-o {
-        font-size: 1em;
-        color: lightgray;
-    }
-
-    .card-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 1.5em;
-        margin-top: 0.5em;
-        font-size: 1.15em;
-    }
-
-    /* Listings Page */
-    .listings-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5em;
-        padding: 1em;
-        background-color: white;
-        min-height: 100vh;
-    }
-
-    .listing-container {
-        display: flex;
-        justify-content: space-around;
-        width: 85%;
-        border-radius: 15px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 1.5em;
-    }
-
-    /* Left Side: House Info */
-    .house-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 35%;
-    }
-
-    .house-image {
-        width: 100%;
-        height: auto;
-        border-radius: 12px;
-        margin-bottom: 1em;
-    }
-
-    .listing-title {
-        font-size: 1.5rem;
-        color: #3d3d3d;
-        margin-bottom: 0.5em;
-        text-align: center;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .listing-dates {
-        font-size: 1rem;
-        color: #777;
-        margin-bottom: 1em;
-        text-align: center;
-    }
-
-    .delete-btn {
-        background-color: #ff7e5f;
-        color: #fff;
-        border: none;
-        padding: 0.75em 1.5em;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s ease;
-    }
-
-    .delete-btn:hover {
-        background-color: #feb47b;
-        color: white;
-    }
-
-
-    /* Right Side: Applicants */
-    .applicants-container {
-        flex: 0 0 60%;
-        display: flex;
-        flex-direction: column;
-        border-left: 2px solid #f0f0f0;
-        justify-content: center;
-        padding-left: 1em;
-    }
-
-    .applicants-scroll {
-        max-height: 500px;
-        overflow-y: auto;
-        padding-right: 0.5em;
-    }
-
-    /* Scrollbar Styling */
-    .applicants-scroll::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .applicants-scroll::-webkit-scrollbar-thumb {
-        background: #ff7e5f;
-        border-radius: 4px;
-    }
-
-    .applicants-scroll::-webkit-scrollbar-thumb:hover {
-        background: #feb47b;
-    }
-
-    .applicants-scroll::-webkit-scrollbar-track {
-        background: #f0f0f0;
-        border-radius: 4px;
-    }
-
-    h3 {
-        font-family: 'FuturaFont', sans-serif;
-        color: #ff7e5f;
-        margin-bottom: 0.5em;
-        text-align: center;
-    }
-
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 300px;
-        font-family: 'FuturaFont', sans-serif;
-
-    }
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 300px;
-        font-family: 'FuturaFont', sans-serif;
-    }
-    .modal-content h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #ff7e5f;
-    }
-
-    .modal-content button {
-        margin: 10px;
-        border: none;
-        background-color: #ff7e5f;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
 </style>
 
 @code {
@@ -513,7 +154,6 @@
             _listingToDelete = null;
             _showConfirmationModal = false;
             await LoadUpcomingHouseListings();
-            await LoadApplications();
             await InvokeAsync(StateHasChanged);
             PreloadService.Hide();
         }
@@ -540,7 +180,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -557,36 +196,14 @@
         _userId = int.Parse(userIdAsString);
 
         await LoadUpcomingHouseListings();
-        await LoadApplications();
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadUpcomingHouseListings()
     {
-        var allListings = await Task.Run(() => HouseListingService.GetAllByOwnerStatus(_userId, "Open", true, true));
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        _houseListings = allListings
-            .Where(listing => listing.StartDate >= today)
-            .ToList();
-    }
-
-    private async Task LoadApplications()
-    {
-        foreach (var listing in _houseListings)
-        {
-            listing.Applications = new();
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Confirmed", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Approved", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Pending", true).ToList());
-            listing.Applications.AddRange(ApplicationService.GetApplicationsByListing(listing.Id, "Rejected", true).ToList());
-
-            foreach (var application in listing.Applications)
-            {
-                application.Sitter!.Reviews = SitterReviewService.GetAllReviewsForSitter(application.SitterId).ToList();
-            }
-        }
+        PreloadService.Show();
+        _houseListings = await Task.Run(() => HouseListingService.GetAllDetailedByOwner(_userId).ToList());
+        PreloadService.Hide();
     }
 
     private void NavigateToLogin()
@@ -605,7 +222,7 @@
         };
 
         await ApplicationService.UpdateAsync(updatedApplication);
-        await LoadApplications();
+        await LoadUpcomingHouseListings();
         await InvokeAsync(StateHasChanged);
     }
 
@@ -619,7 +236,7 @@
         };
 
         await ApplicationService.UpdateAsync(update);
-        await LoadApplications();
+        await LoadUpcomingHouseListings();
         await InvokeAsync(StateHasChanged);
     }
 

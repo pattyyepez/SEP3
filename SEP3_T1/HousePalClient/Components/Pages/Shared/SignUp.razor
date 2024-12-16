@@ -1,0 +1,94 @@
+﻿@page "/" 
+@page "/signup" 
+@using HousePalClient.Components.Layout
+@using Microsoft.AspNetCore.Components
+@layout LoginLayout
+@inject NavigationManager Navigation
+
+<div class="banner">
+    <img src="/images/logo.png" alt="HousePal Logo" class="logo"/>
+</div>
+<div class="page-container">
+    <!-- Banner -->
+
+
+    <!-- About -->
+    <div class="about-container">
+        <div class="about-text-box">
+            <h2>Travel more, <br/> worry less! </h2>
+            <p>
+                Discover free & unique homestays around the world, in exchange for caring for adorable pets
+            </p>
+        </div>
+    </div>
+
+    <!-- Features Containers Section -->
+    <div class="features-container">
+        <div class="feature-box">
+            <img src="/images/Better1.png" alt="Pets Icon" class="feature-icon" />
+            <h3>Better for your Pets</h3>
+            <p>Pets stay comfortable in their own home, receiving consistent care from a trusted sitter.<br><br>The quality of our sitters is ensured by our verified review system, through which you will be able to read past performances of a specific House Sitter.<br><br>Throughout your entire experience you will have absolute control over who stays in your house, and communicate with your sitters through private channels.</p>
+        </div>
+        <div class="feature-box">
+            <img src="/images/Better2.png" alt="Environment Icon" class="feature-icon" />
+            <h3>Better for the Earth</h3>
+            <p>House sitting contributes to sustainable living by reducing the need for additional resources and energy consumption.<br><br>When a house sitter stays in an empty home, it eliminates the need for an extra residence to be used or maintained, which would otherwise produce lots of waste.<br><br>Additionally, house sitting prevents the environmental impact of building new homes or relying on hotel accommodations. </p>
+        </div>
+        <div class="feature-box">
+            <img src="/images/Better3.png" alt="Wallet Icon" class="feature-icon" />
+            <h3>Better for Your Wallet</h3>
+            <p>House sitting offers a budget-friendly solution by saving on accommodation and caretaking costs.<br><br>Homeowners avoid paying for a property manager or cleaning services, while house sitters benefit from free lodging in exchange for looking after the property.<br><br>This mutually beneficial arrangement helps both parties save money, making it an affordable option for those seeking temporary housing.</p>
+        </div>
+    </div>
+
+    <!-- Signup Container with Account Options -->
+    <div class="account-options">
+        <div class="option">
+            <img src="/images/HouseOwner.png" alt="House Owner Icon" class="option-image" />
+            <h2 class="subtitle">Become a House Owner</h2>
+            <p>As a house owner, you can manage your property and connect with reliable house sitters. Post your requirements, communicate with sitters, and ensure your property is well-cared for when you’re away.</p>
+            <button class="btn btn-primary" onclick="window.location.href = '/house-owner-signup'">Continue as House Owner</button>
+        </div>
+        <div class="option">
+            <img src="/images/HouseSitter.png" alt="House Sitter Icon" class="option-image" />
+            <h2 class="subtitle">Become a House Sitter</h2>
+            <p>As a house sitter, find opportunities to care for homes, connect with owners, and explore new environments. Help maintain and secure properties while owners are away, and enjoy a unique living experience.</p>
+            <button class="btn btn-primary" onclick="window.location.href = '/house-sitter-signup'">Continue as House Sitter</button>
+        </div>
+    </div>
+
+    <!-- Login message -->
+    <div class="login-message">
+        <p>Already have an account? <a href="/login" class="login-link">Login here.</a></p>
+    </div>
+</div>
+
+<style>
+</style>
+
+@code {
+    private string[] CarouselImages = { "/images/loginBackgrounds/1.jpg", "/images/loginBackgrounds/2.jpg", "/images/loginBackgrounds/3.jpg" };
+    private int CurrentImageIndex = 0;
+    private Timer _carouselTimer;
+
+    protected override void OnInitialized()
+    {
+        _carouselTimer = new Timer(ChangeImage, null, 0, 3000); // Change image every 3 seconds
+    }
+
+    private async void ChangeImage(object state)
+    {
+        CurrentImageIndex = (CurrentImageIndex + 1) % CarouselImages.Length;
+        await InvokeAsync(StateHasChanged); // Ensure UI updates on main thread
+    }
+
+    private void ShowFields(string accountType)
+    {
+        Console.WriteLine($"Continue as {accountType} clicked.");
+    }
+
+    public void Dispose()
+    {
+        _carouselTimer?.Dispose();
+    }
+}

@@ -9,5 +9,4 @@ public interface ISitterReviewService
     Task DeleteAsync(int ownerId, int sitterId);
     Task<SitterReviewDto> GetSingleAsync(int ownerId, int sitterId, bool includeOwner, bool includeSitter);
     IQueryable<SitterReviewDto> GetAll(bool includeOwner, bool includeSitter);
-    IQueryable<SitterReviewDto> GetAllReviewsForSitter(int sitterId);
 }

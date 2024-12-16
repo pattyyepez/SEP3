@@ -59,14 +59,15 @@ public class HouseSitterValProxy implements IHouseSitterRepository
         if(field.getType().isAssignableFrom(String.class) &&
             ((String) field.get(houseSitter)).isBlank()
         ){
-          throw getException("", "Value '" + field.getName() + "' cannot be left blank.");
+          throw getException("", "Field '" + field.getName() + "' cannot be left blank when creating a new account.");
         }
-        if(houseSitter.getSkills().size() == 1 && houseSitter.getSkills().contains(""))
-          throw getException("", "You must select at least 1 skill.");
-        if(houseSitter.getPictures().size() < 3)
-          throw getException("", "You must upload at least 3 pictures");
-
       }
+
+      if(houseSitter.getSkills().size() == 1 && houseSitter.getSkills().contains(""))
+        throw getException("", "You must select at least 1 skill.");
+      if(houseSitter.getPictures().size() < 3)
+        throw getException("", "You must upload at least 3 pictures when creating an account.");
+
       return repo.save(houseSitter);
     }
     catch (IllegalAccessException e)
@@ -75,7 +76,7 @@ public class HouseSitterValProxy implements IHouseSitterRepository
     }
     catch (DuplicateKeyException e)
     {
-      throw getException(e.getMessage(), "The email '" + houseSitter.getEmail() + "' is already in use.");
+      throw getException(e.getMessage(), "The email '" + houseSitter.getEmail() + "' is already in use. Please use a different email.");
     }
     catch (DataIntegrityViolationException e)
     {
@@ -93,9 +94,10 @@ public class HouseSitterValProxy implements IHouseSitterRepository
     try{
       for (Field field : fields){
         if(field.getType().isAssignableFrom(String.class) &&
+            (!field.getName().equals("email") && !field.getName().equals("password")) &&
             ((String) field.get(houseSitter)).isBlank()
         ){
-          throw getException("", "Value '" + field.getName() + "' cannot be left blank when creating a new HouseSitter.");
+          throw getException("", "Field '" + field.getName() + "' cannot be left blank when updating your account.");
         }
 
       }
@@ -135,7 +137,7 @@ public class HouseSitterValProxy implements IHouseSitterRepository
     metadata.put(errorKey, messageSpecific);
 
     return Status.INTERNAL
-        .withDescription("An error occurred when using HouseSitter Repository: " + messageSimple)
+        .withDescription(messageSimple)
         .asRuntimeException(metadata);
 
   }

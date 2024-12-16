@@ -13,4 +13,5 @@ public class SitterReviewDto
     
     public HouseOwnerDto? Owner { get; set; }
     public HouseSitterDto? Sitter { get; set; }
+    public bool? Editable { get; set; }
 }

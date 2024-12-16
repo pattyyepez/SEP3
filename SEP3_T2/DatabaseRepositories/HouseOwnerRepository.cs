@@ -56,8 +56,6 @@ public class HouseOwnerRepository : IHouseOwnerRepository
         {
             Id = id,
             Name = houseOwner.Name,
-            Email = houseOwner.Email,
-            Password = houseOwner.Password,
             ProfilePicture = houseOwner.ProfilePicture,
             CPR = houseOwner.CPR,
             Phone = houseOwner.Phone,

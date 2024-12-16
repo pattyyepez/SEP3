@@ -98,6 +98,7 @@ import java.util.List;
       houseReview.setSitter_id(request.getSitterId());
       houseReview.setRating(request.getRating());
       houseReview.setComment(request.getComment());
+      houseReview.setDate(LocalDateTime.now());
       houseReview = houseReviewRepository.update(houseReview);
       responseObserver.onNext(buildHouseReviewResponse(houseReview));
       responseObserver.onCompleted();

@@ -1,10 +1,14 @@
 ﻿@using System.Net.Http.Headers
+@using System.Security.Claims
 @using DTOs
 @using DTOs.HouseSitter
 @using HousePalClient.Components.Layout
+@using HousePalClient.Components.Pages.HouseOwner
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@using Newtonsoft.Json
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -48,7 +52,7 @@
                             <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
                             <label>Upload a Profile Picture:</label>
-                            <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
+                            <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
                             @if (!string.IsNullOrEmpty(_profilePictureUrl))
                             {
@@ -100,7 +104,10 @@
                         }
 
                         <!-- Submit Button -->
-                        <button type="button" @onclick="EditSitter" class="btn btn-primary">Update</button>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -114,6 +121,20 @@
                         <button @onclick="RedirectToHome" class="btn btn-primary">Go to Home</button>
                     </div>
                 </div>
+            }
+
+            @if (_showCancelConfirmation)
+            {
+            <div class="modal-background">
+                <div class="modal-content">
+                    <h2>Confirmation</h2>
+                    <p>Are you sure you want to cancel? All changes will be lost.</p>
+                    <div class="modal-actions">
+                        <button @onclick="ConfirmCancel" class="btn btn-primary">Yes</button>
+                        <button @onclick="CloseCancelModal" class="btn btn-secondary">No</button>
+                    </div>
+                </div>
+            </div>
             }
         </Authorized>
     </AuthorizeView>
@@ -408,77 +429,60 @@
 
     private string _message = string.Empty;
     private string _profilePictureUrl = string.Empty;
-    private bool _showSuccessMessage = false;
+    private bool _showSuccessMessage;
+    private bool _showCancelConfirmation;
+
 
     MultiSelectList? _skills;
     List<string> _pictures = [];
 
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 25;
 
     private void RedirectToHome()
     {
-        Navigation.NavigateTo("/view-all-house-profiles");
+        Navigation.NavigateTo("/browse-listings");
     }
 
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
     }
+    
+    private void OpenCancelModal()
+    {
+        _showCancelConfirmation = true;
+    }
+
+    private void CloseCancelModal()
+    {
+        _showCancelConfirmation = false;
+    }
+
+    private void ConfirmCancel()
+    {
+        _name = string.Empty;
+        _cpr = string.Empty;
+        _phone = string.Empty;
+        _biography = string.Empty;
+        _experiences = string.Empty;
+        _message = string.Empty;
+        _profilePictureUrl = string.Empty;
+        _pictures.Clear();
+
+
+        _showSuccessMessage = false;
+        _showCancelConfirmation = false;
+        Navigation.NavigateTo("/");
+    }
 
     private async Task EditSitter()
     {
         _message = string.Empty;
 
-
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_experiences))
-        {
-            _message = "Relevant experiences are required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
-
-        if (_pictures.Count < 3)
-        {
-            _message = "You must upload at least 3 pictures.";
-            return;
-        }
-
         var updateHouseSitterDto = new UpdateHouseSitterDto()
         {
             UserId = _userId,
             Name = _name,
-            Email = houseSitterProfile.Email,
-            Password = houseSitterProfile.Password,
             ProfilePicture = _profilePictureUrl,
             CPR = _cpr,
             Phone = _phone,
@@ -492,20 +496,19 @@
         {
             if (skill.Selected)
             {
-                Console.WriteLine(skill.Text);
                 updateHouseSitterDto.Skills.Add(skill.Text);
             }
         }
 
         try
         {
-            HouseSitterDto created = await HouseSitterService.UpdateAsync(updateHouseSitterDto);
+            await HouseSitterService.UpdateAsync(updateHouseSitterDto);
             _showSuccessMessage = true;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 
@@ -520,7 +523,7 @@
 
         using var content = new MultipartFormDataContent();
 
-        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
         if (_uploadResults.SingleOrDefault(
                 f => f.FileName == file.Name) is null)
         {
@@ -579,7 +582,7 @@
         }
 
         _pictures = [];
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        foreach (var file in e.GetMultipleFiles(25))
         {
             using var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file

@@ -3,12 +3,13 @@ using DTOs.HouseSitter;
 using DTOs.Report;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReportController : ControllerBase
+public class ReportController : ControllerBase, IReportController
 {
     private readonly IReportRepository _repo;
 

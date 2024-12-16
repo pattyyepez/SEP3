@@ -65,13 +65,13 @@
 
                         <hr class="section-divider"/>
 
-                        <h3>Past experience</h3>
+                        <h3 class="house-sections">Past experience</h3>
                         <p class="house-description">@_houseSitter.Experience</p>
 
                         <hr class="section-divider"/>
 
                         <div class="skills-section">
-                            <h3>Skills</h3>
+                            <h3 class="house-sections">Skills</h3>
                             <div class="skills-container">
                                 @foreach (var skill in _houseSitter.Skills)
                                 {
@@ -135,253 +135,6 @@
 
 
 <style>
-
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-    
-    h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .carousel-inner {
-        border-radius: 15px; 
-        overflow: hidden; 
-        position: relative;
-    }
-
-    .carousel-item img {
-        object-fit: contain; 
-        width: 100%; 
-        max-height: 32em;
-        display: block;
-    }
-
-
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        filter: invert(52%) sepia(100%) saturate(1000%) hue-rotate(360deg) brightness(95%) contrast(90%);
-    }
-
-
-    .profile-container{
-        padding: 0.85em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .house-title {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 0.5em;
-        font-family: 'LogoFont', sans-serif;
-    }
-    
-    .skills-section {
-        flex: 1;
-    }
-
-    .skills-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-top: 1em;
-    }
-
-    .house-description {
-        font-size: 1rem;
-        color: #3d3d3d;
-        margin-bottom: 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .section-divider {
-        margin: 2em 0;
-        border: 0;
-        height: 1px;
-        background-color: #ddd;
-    }
-
-    .pill {
-        background-color: #ff7e5f;
-        color: white;
-        padding: 0.5em 1em;
-        border-radius: 50px;
-        font-size: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-rules li {
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
-
-    .card {
-        flex: 0 0 35em;
-        align-items: center;
-        flex-direction: row;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        border-style: none;
-        margin: 0.75em;
-        background-color: white;
-        color: #3d3d3d;
-        width: 35em;
-    }
-
-    .card-text{
-        font-size: 1em;
-        margin-bottom: 0;
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .card-img-container{
-        flex: 0 0 200px;
-        height: 200px;
-        margin: 1em;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-img-container img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card-text{
-        margin-bottom: 0.15em;
-    }
-
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-
-    }
-
-    .title-rating h5 {
-        margin-bottom: 0;
-    }
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
-
-    .fa-star {
-        font-size: 1em;
-    }
-
-    .fa-star-half-alt {
-        font-size: 1em;
-        align-self: center;
-    }
-
-    .fa-star-o {
-        font-size: 1em;
-        color: lightgray;
-    }
-
-    .reviews-section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2rem 0;
-        /*overflow: hidden; !* Keeps the section neat *!*/
-    }
-
-    .reviews-container {
-        display: flex;
-        gap: 1rem; /* Adds space between cards */
-        overflow-x: auto; /* Enables horizontal scrolling */
-        scroll-behavior: smooth; /* Smooth scrolling */
-        padding: 1rem;
-        scrollbar-width: thin; /* For Firefox */
-        scrollbar-color: #ff7e5f transparent; /* For Firefox */
-    }
-    .reviews-container::-webkit-scrollbar {
-        width: 8px;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-thumb {
-        background: #ff7e5f;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-thumb:hover {
-        background: #feb47b;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 4px;
-    }
-    
 </style>
 
 @code {
@@ -399,8 +152,7 @@
 
     private async Task LoadHouseSitter()
     {
-        _houseSitter = await HouseSitterService.GetSingleAsync(ProfileId);
-        _houseSitter.Reviews = SitterReviewService.GetAllReviewsForSitter(ProfileId).ToList();
+        _houseSitter = await HouseSitterService.GetViewSitterProfile(ProfileId);
     }
     
     private void NavigateToLogin()

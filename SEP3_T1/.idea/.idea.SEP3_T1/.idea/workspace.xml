@@ -9,12 +9,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="stars for house listing">
+    <list default="true" id="f148bbb5-d069-499f-83ee-1191ac0becd6" name="Changes" comment="shine bright like a diamond (browselistings) 💎✨✨✨">
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/DTOs/FileDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IApplicationController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IFilesaveController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IHouseListingController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IHouseOwnerController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IHouseProfileController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IHouseReviewController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IHouseSitterController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/IReportController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ControllerContracts/ISitterReviewController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/ExceptionHandling/GlobalExceptionHandlerMiddleware.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SEP3_T1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewListing.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewListing.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyApplications.razor" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Components/Pages/ViewMyApplications.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HousePalClient/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HousePalClient/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/DTOs/DTOs.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/DTOs/DTOs.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/DTOs/Files/FileDto.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/FilesaveController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseListingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseOwnerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseOwnerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseProfileController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseSitterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseSitterController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ReportController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ReportController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/SitterReviewController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/SitterReviewController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/RESTAPI/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SEP3_T2/SEP3_T2.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../SEP3_T2/SEP3_T2.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +51,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -45,10 +66,31 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/patty/SEP3/SEP3_T1/HousePalClient/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/patty/SEP3/SEP3_T1/HousePalClient/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/24372012c6c94138bf3f496e104366ffc8f918/7d/5325f34e/DefaultInterpolatedStringHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f756609c93104d12b4c2d24605eb00101a6920/da/d439a208/HttpResponseMessage.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/497a7533411fefdadb19a5f233635ae9f3e173098c7a9bf65a37c4d8cab4c1/CascadingAuthenticationState.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7beca651b1af466d51e879c74afac8ebca741c3e99965ead1e70bb60811c3054/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c333538d8f8419e6653f459a98486459a863b8a4b30ff6beb6ead8d7d7ae477/AuthorizeView.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eddc51a49dddbdbde4ba2ca25b90ace5a2b5c63fd7d9ea946adb53ab61da735/AuthenticationStateProvider.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/HouseOwner/ViewPastStays(HO).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewConfirmedStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewConfirmedStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewConfirmedStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewConfirmedStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewConfirmedStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewConfirmedStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewMyApplications.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewMyApplications.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewMyApplications.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewMyApplications.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewMyApplications.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T1/HousePalClient/Components/Pages/ViewPastStays(HS).razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/DatabaseRepositories/obj/Debug/net8.0/DatabaseRepositories.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T2/RESTAPI/Controllers/ApplicationController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/domin/OneDrive/Desktop/SEP3/SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../SEP3_T2/RESTAPI/Controllers/HouseReviewController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/RESTAPI/obj/Debug/net8.0/RESTAPI.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../SEP3_T2/RepositoryContracts/obj/Debug/net8.0/RepositoryContracts.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -472,7 +514,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733850281320</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="ConfirmedStays(HS), ViewPastStays(HS).razor and some minor stuff 🎷🐛">
+      <option name="closed" value="true" />
+      <created>1733936634176</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1733936634176</updated>
+    </task>
+    <task id="LOCAL-00039" summary="shine bright like a diamond (browselistings) 💎✨✨✨">
+      <option name="closed" value="true" />
+      <created>1733939564169</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1733939564169</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -492,6 +550,21 @@
     </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -502,7 +575,15 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/poop" />
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="date">
+                    <value>
+                      <list>
+                        <option value="1733836441411" />
+                        <option value="" />
                       </list>
                     </value>
                   </entry>
@@ -517,8 +598,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="final try" />
-    <MESSAGE value="some funny stuff :}" />
     <MESSAGE value="Sending and deleting pictures, integrating it into all the different classes that require it️⁉️" />
     <MESSAGE value="PICTURES WORK NOW YIPPEE!! " />
     <MESSAGE value="more picture work :-D" />
@@ -542,6 +621,8 @@
     <MESSAGE value="ff" />
     <MESSAGE value="past stays changes" />
     <MESSAGE value="stars for house listing" />
-    <option name="LAST_COMMIT_MESSAGE" value="stars for house listing" />
+    <MESSAGE value="ConfirmedStays(HS), ViewPastStays(HS).razor and some minor stuff " />
+    <MESSAGE value="shine bright like a diamond (browselistings) ✨✨✨" />
+    <option name="LAST_COMMIT_MESSAGE" value="shine bright like a diamond (browselistings) ✨✨✨" />
   </component>
 </project>

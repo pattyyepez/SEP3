@@ -5,7 +5,6 @@
 @using HousePalClient.ServiceContracts
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Services
 @layout LoginLayout
 @inject NavigationManager Navigation
 @inject IHouseSitterService Service
@@ -14,7 +13,7 @@
 @rendermode InteractiveServer
 @page "/house-sitter-signup"
 
-<div class="page-container">
+<div class="page-container-signup">
     <div class="signup-page-container">
         <h1>Create Your House Sitter Account</h1>
 
@@ -58,7 +57,7 @@
                 <textarea class="form-control" rows="4" placeholder="Write a short summary of your past, relevant experiences" @bind="_experiences" required></textarea>
 
                 <label>Upload a Profile Picture:</label>
-                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control" multiple/>
+                <InputFile OnChange="OnInputProfilePictureChange" accept="image/*" class="form-control"/>
 
                 @if (!string.IsNullOrEmpty(_profilePictureUrl))
                 {
@@ -89,13 +88,17 @@
                 <h2>Skills</h2>
 
                 <ul>
-                    @foreach (var item in skills)
+                    @if (_skills != null && _skills.Any())
                     {
-                        <li>
-                            <input type="checkbox" @bind="item.Selected"/>
-                            <label>@item.Text</label>
-                        </li>
+                        @foreach (var item in _skills)
+                        {
+                            <li>
+                                <input type="checkbox" @bind="item.Selected"/>
+                                <label>@item.Text</label>
+                            </li>
+                        }
                     }
+
                 </ul>
 
 
@@ -109,7 +112,7 @@
 
             <!-- Submit Button -->
             <div class="button-group">
-                <button type="button" @onclick="CreateSitter" class="btn btn-primary">Create Account</button>
+                <button type="submit" class="create-button">Create Account</button>
                 <button type="button" @onclick="OpenCancelModal" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
@@ -139,232 +142,6 @@
     </div>
 }
 <style>
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url(    'http://localhost:[puerto]/fonts/logo-font.ttf'
-        ) format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    .page-container
-    {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 2em;
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        box-sizing: border-box;
-        background: linear-gradient(150deg, #ff7e5f, #feb47b);
-
-    }
-
-    .signup-page-container {
-        max-width: 50vw;
-        margin: 3em 0 3em 0;
-        padding: 2em 2em;
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .signup-page-container h1 {
-        font-size: 3em;
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        align-self: center;
-        margin-bottom: 0.5em;
-    }
-    
-    .form-section {
-        margin-bottom: 2em;
-        padding: 1em;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-section h2 {
-        text-align: center;
-        font-size: 2rem;
-        color: #3d3d3d;
-        font-family: 'FuturaFont', sans-serif;
-        font-weight: bold;
-        margin: 0;
-    }
-    .btn-secondary {
-        display: inline-block;
-        padding: 0.75em;
-        font-size: 1.2rem;
-        background-color: #ccc;
-        color: #000;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-left: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .btn-secondary:hover {
-        background-color: #aaa;
-    }
-
-    .form-section label
-    {
-        color: #3d3d3d;
-        font-family: 'FuturaFont', sans-serif;
-        margin-bottom: 0.1em;
-    }
-
-    .btn {
-        font-size: 1rem;
-        padding: 0.375em 0.75em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.75em;
-        margin-top: 0.5em;
-        margin-bottom: 1.5em;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1rem;
-    }
-
-    input
-    {
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    textarea .form-control {
-        resize: vertical;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .btn-primary {
-        display: block;
-        width: 100%;
-        padding: 0.75em;
-        font-size: 1.2rem;
-        background-color: #ff7e5f;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .btn-primary:hover {
-        background-color: #feb47b;
-    }
-
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        overflow: hidden;
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-    }
-    .uploaded-images-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    .profile-picture {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .button-group {
-        display: flex;
-        justify-content: flex-end;
-        gap: 1rem;
-    }
-
-
-    .uploaded-images-container img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 400px;
-        width: 100%;
-        font-family: 'FuturaFont', sans-serif;
-
-    }
-
-    .modal-actions {
-        margin-top: 1em;
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .modal-actions .btn {
-        min-width: 120px;
-    }
-
-    .alert {
-        padding: 1em;
-        margin-bottom: 1em;
-        border: 1px solid transparent;
-        border-radius: 0.375em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .alert-danger {
-        color: #721c24;
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-    }
 </style>
 
 @code {
@@ -378,13 +155,12 @@
     private string _experiences = string.Empty;
     private string _message = string.Empty;
     private string _profilePictureUrl = string.Empty;
-    private bool _showSuccessMessage = false;
-    private bool _showCancelConfirmation = false;
+    private bool _showSuccessMessage;
+    private bool _showCancelConfirmation;
 
     private List<FileDto> _uploadResults = new();
-    private int maxAllowedFiles = 25;
 
-    MultiSelectList skills;
+    private MultiSelectList? _skills;
     List<string> _pictures = [];
 
     private void OpenCancelModal()
@@ -427,72 +203,6 @@
     {
         _message = string.Empty;
 
-        if (string.IsNullOrWhiteSpace(_email))
-        {
-            _message = "Email is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_password))
-        {
-            _message = "Password is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_confirmPassword))
-        {
-            _message = "Please confirm your password.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_name))
-        {
-            _message = "Name is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_cpr))
-        {
-            _message = "CPR number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_phone))
-        {
-            _message = "Phone number is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_biography))
-        {
-            _message = "Biography is required.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(_experiences))
-        {
-            _message = "Relevant experiences are required.";
-            return;
-        }
-
-        if (string.IsNullOrEmpty(_profilePictureUrl))
-        {
-            _message = "You must upload a profile picture.";
-            return;
-        }
-
-        if (_pictures.Count < 3)
-        {
-            _message = "You must upload at least 3 pictures.";
-            return;
-        }
-
-        if (skills.All(s => !s.Selected))
-        {
-            _message = "You must select at least one skill.";
-            return;
-        }
-
         if (_password != _confirmPassword)
         {
             _message = "Passwords do not match.";
@@ -512,7 +222,7 @@
         };
 
         createHouseSitterDto.Skills = [];
-        foreach (var skill in skills)
+        foreach (var skill in _skills)
         {
             if (skill.Selected)
             {
@@ -524,14 +234,14 @@
 
         try
         {
-            HouseSitterDto created = await Service.AddAsync(createHouseSitterDto);
+            await Service.AddAsync(createHouseSitterDto);
             _showSuccessMessage = true;
             _message = $"House Sitter created successfully!";
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            _message = $"Error: {e.Message}";
+            var message = e.Message.Split('"').Length == 3 ? e.Message.Split('"')[1] : e.Message.Split('"')[4];
+            _message = message.Remove(message.Length);
         }
     }
 
@@ -544,7 +254,7 @@
 
         using var content = new MultipartFormDataContent();
 
-        var file = e.GetMultipleFiles(maxAllowedFiles).FirstOrDefault();
+        var file = e.GetMultipleFiles(1).FirstOrDefault();
         if (_uploadResults.SingleOrDefault(
                 f => f.FileName == file.Name) is null)
         {
@@ -604,7 +314,7 @@
         }
 
         _pictures = [];
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        foreach (var file in e.GetMultipleFiles(25))
         {
             using var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10)); // 10MB max per file
@@ -627,7 +337,7 @@
 
     protected override async void OnInitialized()
     {
-        skills = new MultiSelectList(Service.GetAllSkills());
+        _skills = new MultiSelectList(Service.GetAllSkills());
         await InvokeAsync(StateHasChanged);
     }
 

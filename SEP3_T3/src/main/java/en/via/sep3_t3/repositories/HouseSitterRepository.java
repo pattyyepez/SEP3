@@ -85,10 +85,9 @@ public class HouseSitterRepository implements IHouseSitterRepository
 
   public void update(HouseSitter houseSitter)
   {
-    String sql = "UPDATE Users SET name = ?, email = ?, password = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
+    String sql = "UPDATE Users SET name = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
     jdbcTemplate.update(sql,
-        houseSitter.getName(), houseSitter.getEmail(),
-        houseSitter.getPassword(), houseSitter.getProfilePicture(),
+        houseSitter.getName(), houseSitter.getProfilePicture(),
         houseSitter.getCPR(), houseSitter.getPhone(),
         houseSitter.isVerified(),
         houseSitter.getAdminId() != 0 ? houseSitter.getAdminId() : null,

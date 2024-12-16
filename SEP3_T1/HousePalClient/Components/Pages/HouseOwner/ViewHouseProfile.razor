@@ -23,539 +23,199 @@
 <CascadingAuthenticationState>
     <AuthorizeView Roles="HouseOwner">
         <Authorized>
-<div class="profile-container">
-    @if (_houseProfile == null)
-    {
-        <p>Loading house profile details...</p>
-    }
-    else
-    {
-    <!-- Confirmation Modal -->
-    @if (_showConfirmationModal)
-    {
-    <div class="modal-background">
-        <div class="modal-content">
-            <h3>Confirm Deletion</h3>
-            <p>Are you sure you want to delete this house profile? This action cannot be undone.</p>
-            <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
-            <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
-        </div>
-    </div>
-    }
-
-    <!-- Success Message -->
-    @if (_showSuccessMessage)
-    {
-    <div class="alert alert-success" role="alert">
-        <strong>Success!</strong> The house profile has been deleted.
-        <button type="button" class="btn-close" aria-label="Close" @onclick="HideSuccessMessage"></button>
-    </div>
-    }
-
-    <!-- Top Buttons -->
-    <div class="top-buttons">
-        <button type="button" class="btn btn-primary" @onclick="() => EditHouseProfile(_houseProfile.Id)">
-            <i class="fa-solid fa-pen"></i> Edit
-        </button>
-        <button type="button" class="btn btn-danger" @onclick="ShowConfirmationModal">
-            <i class="fa-solid fa-trash"></i> Delete
-        </button>
-    </div>
-    
-    <hr class="section-divider"/>
-
-        <div class="container house-profile">
-            <!-- Carousel Section -->
-            <div class="carousel-container">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        @for (int i = 0; i < _houseProfile.Pictures!.Count; i++)
-                        {
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
-                                    class="@(i == 0 ? "active" : "")"
-                                    aria-current="@(i == 0 ? "true" : "false")"
-                                    aria-label="Slide @i">
-                            </button>
-                        }
-                    </div>
-                    <div class="carousel-inner">
-                        @foreach (var image in _houseProfile.Pictures!)
-                        {
-                            <div class="carousel-item @(_houseProfile.Pictures!.IndexOf(image) == 0 ? "active" : "")">
-                                <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
-                            </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- House Title and Location -->
-            <h1 class="house-title">@_houseProfile.Title</h1>
-            <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
-            <p class="house-description">@_houseProfile.Description</p>
-
-            <hr class="section-divider"/>
-
-            <!-- House Chores & Amenities Section -->
-            <div class="chores-amenities-row">
-                <div class="chores-column">
-                    <h3>House Chores</h3>
-                    <div class="chores-container">
-                        @foreach (var chore in _houseProfile.Chores)
-                        {
-                            <div class="pill">@chore</div>
-                        }
-                    </div>
-                </div>
-                <div class="vertical-divider"></div>
-                <div class="amenities-column">
-                    <h3>House Amenities</h3>
-                    <div class="amenities-container">
-                        @foreach (var amenity in _houseProfile.Amenities)
-                        {
-                            <div class="pill">@amenity</div>
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <hr class="section-divider"/>
-
-            <!-- House Rules Section -->
-            <h3>House Rules</h3>
-            <ol class="house-rules">
-                @foreach (var rule in _houseProfile.Rules)
+            <div class="profile-container">
+                @if (_houseProfile == null)
                 {
-                    <li>@rule</li>
+                    <p>Loading house profile details...</p>
                 }
-            </ol>
-
-            <hr class="section-divider"/>
-
-            <!-- Meet the Host Section -->
-            <h3>Meet the Host</h3>
-            <div class="host-section">
-                <img src="https://localhost:7134/Filesave/@_houseProfile.Owner.ProfilePicture.Split('.')[0]/@_houseProfile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
-                <p class="host-bio">@_houseProfile.Owner.Biography</p>
-            </div>
-
-            <hr class="section-divider"/>
-
-
-            <!-- Review section -->
-
-            <div class="house-average">
-                <h3>House Rating:</h3>
-                <div class="average-stars">
-                    @foreach (var star in GetHouseAverage().Stars)
-                    {
-                    <span class="@star"></span>
-                    }
-                </div>
-            </div>
-
-
-            <div>
-                @if (_houseProfile.Reviews != null && _houseProfile.Reviews.Any())
+                else
                 {
-                <div class="reviews-section">
-                    <div class="reviews-container">
-                        @foreach (var review in _houseProfile.Reviews)
-                        {
-                        <div class="card">
-                            <div class="card-img-container">
-                                <img src="https://localhost:7134/Filesave/@review.Sitter!.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]"
-                                     class="card-img" alt="Reviewer Profile Picture">
+                    <!-- Confirmation Modal -->
+                    @if (_showConfirmationModal)
+                    {
+                        <div class="modal-background">
+                            <div class="modal-content">
+                                <h3 class="house-sections">Confirm Deletion</h3>
+                                <p>Are you sure you want to delete this house profile? This action cannot be undone.</p>
+                                <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+                                <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
                             </div>
+                        </div>
+                    }
 
-                            <div class="card-body">
-                                <div class="title-rating">
-                                    <h5>@review.Sitter.Name</h5>
-                                    <div class="stars">
-                                        @foreach (var star in GetStars(review))
+                    <!-- Success Message -->
+                    @if (_showSuccessMessage)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <strong>Success!</strong> The house profile has been deleted.
+                            <button type="button" class="btn-close" aria-label="Close" @onclick="HideSuccessMessage"></button>
+                        </div>
+                    }
+
+                    <!-- Top Buttons -->
+                    <div class="top-buttons">
+                        <button type="button" class="orange-button" @onclick="() => EditHouseProfile(_houseProfile.Id)">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button type="button" class="orange-button" @onclick="ShowConfirmationModal">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+
+                    <hr class="section-divider"/>
+
+                    <div class="container house-profile">
+                        <!-- Carousel Section -->
+                        <div class="carousel-container">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    @for (int i = 0; i < _houseProfile.Pictures!.Count; i++)
+                                    {
+                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                                                class="@(i == 0 ? "active" : "")"
+                                                aria-current="@(i == 0 ? "true" : "false")"
+                                                aria-label="Slide @i">
+                                        </button>
+                                    }
+                                </div>
+                                <div class="carousel-inner">
+                                    @foreach (var image in _houseProfile.Pictures!)
+                                    {
+                                        <div class="carousel-item @(_houseProfile.Pictures!.IndexOf(image) == 0 ? "active" : "")">
+                                            <img src="https://localhost:7134/Filesave/@image.Split('.')[0]/@image.Split('.')[1]" class="d-block w-100" alt="House Image">
+                                        </div>
+                                    }
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- House Title and Location -->
+                        <h1 class="house-title">@_houseProfile.Title</h1>
+                        <h2 class="house-location"><i class="fa-solid fa-location-dot" style="color: #ff7e5f;"></i> @_houseProfile.City, @_houseProfile.Region</h2>
+                        <p class="house-description">@_houseProfile.Description</p>
+
+                        <hr class="section-divider"/>
+
+                        <!-- House Chores & Amenities Section -->
+                        <div class="chores-amenities-row">
+                            <div class="chores-column">
+                                <h3 class="house-sections">House Chores</h3>
+                                <div class="chores-container">
+                                    @foreach (var chore in _houseProfile.Chores)
+                                    {
+                                        <div class="pill">@chore</div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="vertical-divider"></div>
+                            <div class="amenities-column">
+                                <h3 class="house-sections">House Amenities</h3>
+                                <div class="amenities-container">
+                                    @foreach (var amenity in _houseProfile.Amenities)
+                                    {
+                                        <div class="pill">@amenity</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+                        <!-- House Rules Section -->
+                        <h3 class="house-sections">House Rules</h3>
+                        <ol class="house-rules">
+                            @foreach (var rule in _houseProfile.Rules)
+                            {
+                                <li>@rule</li>
+                            }
+                        </ol>
+
+                        <hr class="section-divider"/>
+
+                        <!-- Meet the Host Section -->
+                        <h3 class="house-sections">Meet the Host</h3>
+                        <div class="host-section">
+                            <img src="https://localhost:7134/Filesave/@_houseProfile.Owner.ProfilePicture.Split('.')[0]/@_houseProfile.Owner.ProfilePicture.Split('.')[1]" alt="Host Profile Picture" class="host-picture"/>
+                            <p class="host-bio">@_houseProfile.Owner.Biography</p>
+                        </div>
+
+                        <hr class="section-divider"/>
+
+
+                        <!-- Review section -->
+
+                        <div class="house-average">
+                            <h3 class="house-sections">House Rating:</h3>
+                            <div class="average-stars">
+                                @foreach (var star in GetHouseAverage().Stars)
+                                {
+                                    <span class="@star"></span>
+                                }
+                            </div>
+                        </div>
+
+
+                        <div>
+                            @if (_houseProfile.Reviews != null && _houseProfile.Reviews.Any())
+                            {
+                                <div class="reviews-section">
+                                    <div class="reviews-container">
+                                        @foreach (var review in _houseProfile.Reviews)
                                         {
-                                        <span class="@star"></span>
+                                            <div class="card">
+                                                <div class="card-img-container">
+                                                    <img src="https://localhost:7134/Filesave/@review.Sitter!.ProfilePicture.Split('.')[0]/@review.Sitter.ProfilePicture.Split('.')[1]"
+                                                         class="card-img" alt="Reviewer Profile Picture">
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <div class="title-rating">
+                                                        <h5>@review.Sitter.Name</h5>
+                                                        <div class="stars">
+                                                            @foreach (var star in GetStars(review))
+                                                            {
+                                                                <span class="@star"></span>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="card-text">@review.Comment</p>
+                                                    <p class="card-text">
+                                                        <small class="text-muted">@review.Date</small>
+                                                    </p>
+                                                </div>
+                                            </div>
                                         }
                                     </div>
                                 </div>
-
-                                <p class="card-text">@review.Comment</p>
-                                <p class="card-text"><small class="text-muted">@review.Date</small></p>
-                            </div>
+                            }
                         </div>
-                        }
+
                     </div>
-                </div>
                 }
             </div>
-            
-        </div>
-    }
-</div>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView>
         <NotAuthorized>
             <div class="not-authorized-container">
-                <h2>You must be logged in to view this page.</h2>
+                <h2 class="subtitle">You must be logged in to view this page.</h2>
                 <p>Please log in to view this house profile.</p>
-                <button class="btn btn-primary" @onclick="NavigateToLogin">Log In</button>
+                <button class="orange-button" @onclick="NavigateToLogin">Log In</button>
             </div>
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
+
 <style>
-
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-    h2 {
-        font-family: 'LogoFont', sans-serif;
-        color: #ff7e5f;
-    }
-    
-    
-    h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .carousel-container {
-        margin-bottom: 2em;
-    }
-
-    .host-section {
-        display: flex;
-        align-items: center;
-        gap: 1.5em;
-    }
-
-    .host-picture {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .host-bio {
-        flex: 1;
-        font-size: 1rem;
-        color: #333;
-        line-height: 1.6;
-        font-family: 'FuturaFont', sans-serif;
-
-    }
-    
-    .carousel img { 
-        max-height: 32em; 
-        object-fit: cover; 
-        border-radius: 10px; 
-    } 
-    
-    .profile-container{
-        padding: 0.85em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .house-title {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 0.5em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .house-location {
-        font-size: 1.25rem;
-        color: #3d3d3d;
-        margin-bottom: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-description {
-        font-size: 1rem;
-        color: #3d3d3d;
-        margin-bottom: 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .section-divider {
-        margin: 2em 0;
-        border: 0;
-        height: 1px;
-        background-color: #ddd;
-    }
-
-    .chores-amenities-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .chores-column, .amenities-column {
-        flex: 1;
-    }
-
-    .chores-container, .amenities-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-top: 1em;
-    }
-
-    .pill {
-        background-color: #ff7e5f;
-        color: white;
-        padding: 0.5em 1em;
-        border-radius: 50px;
-        font-size: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .vertical-divider {
-        width: 1px;
-        background-color: #ddd;
-        height: auto;
-        margin: 0 1em;
-    }
-
-    .house-rules {
-        list-style: decimal inside;
-        font-size: 1rem;
-        color: #3d3d3d;
-        line-height: 1.8;
-        margin: 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-rules li {
-        margin-bottom: 0.5em;
-    }
-    
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 300px;
-        font-family: 'FuturaFont', sans-serif;
-
-    }
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 300px;
-        font-family: 'FuturaFont', sans-serif;
-    }
-    .modal-content h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #ff7e5f;
-    }
-    
-    .modal-content button {
-        margin: 10px; 
-        border: none;
-        background-color: #ff7e5f;
-        font-family: 'FuturaFont', sans-serif;
-    }
-    .btn {
-        border: none;
-        background-color: #ff7e5f;
-        font-family: 'FuturaFont', sans-serif;
-        }
-
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
-
-    .fa-star {
-        font-size: 1em;
-    }
-
-    .fa-star-half-alt {
-        font-size: 1em;
-        align-self: center;
-    }
-
-    .fa-star-o {
-        font-size: 1em;
-        color: lightgray;
-    }
-
-    .card {
-        flex: 0 0 35em;
-        align-items: center;
-        flex-direction: row;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        border-style: none;
-        margin: 0.75em;
-        background-color: white;
-        color: #3d3d3d;
-        width: 35em;
-    }
-
-    .card-text{
-        font-size: 1em;
-        margin-bottom: 0;
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .card-img-container{
-        flex: 0 0 200px;
-        height: 200px;
-        margin: 1em;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-img-container img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card-text{
-        margin-bottom: 0.15em;
-    }
-
-    .reviews-section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2rem 0;
-        /*overflow: hidden; !* Keeps the section neat *!*/
-    }
-
-    .reviews-container {
-        display: flex;
-        gap: 1rem; /* Adds space between cards */
-        overflow-x: auto; /* Enables horizontal scrolling */
-        scroll-behavior: smooth; /* Smooth scrolling */
-        padding: 1rem;
-        scrollbar-width: thin; /* For Firefox */
-        scrollbar-color: #ff7e5f transparent; /* For Firefox */
-    }
-    .reviews-container::-webkit-scrollbar {
-        width: 8px;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-thumb {
-        background: #ff7e5f;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-thumb:hover {
-        background: #feb47b;
-        border-radius: 4px;
-    }
-
-    .reviews-container::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 4px;
-    }
-
-    .house-average {
-        text-align: center;
-        font-family: 'FuturaFont', sans-serif;
-        font-size: 1em;
-    }
-
-    .average-stars {
-        display: inline-flex;
-        gap: 0.2em;
-        margin-top: 0.1em;
-        font-size: 2rem;
-        color: #ff7e5f;
-    }
 </style>
 
 @code {
@@ -564,8 +224,8 @@
     [Parameter] public int ProfileId { get; set; }
 
     private HouseProfileDto? _houseProfile;
-    private bool _showConfirmationModal = false;
-    private bool _showSuccessMessage = false;
+    private bool _showConfirmationModal;
+    private bool _showSuccessMessage;
 
     private (double Average, List<string> Stars) GetHouseAverage()
     {
@@ -586,6 +246,7 @@
         {
             stars.Add("fa-solid fa-star-half-alt");
         }
+
         stars.AddRange(Enumerable.Repeat("fa-regular fa-star", emptyStars));
 
         return (averageRating, stars);
@@ -611,7 +272,6 @@
                 _showConfirmationModal = false;
                 _showSuccessMessage = true;
                 Navigation.NavigateTo("/view-my-houses");
-
             }
             catch (Exception ex)
             {
@@ -631,10 +291,10 @@
     {
         Navigation.NavigateTo($"/edit-house-profile/{profileId}");
     }
+
     protected override async Task OnInitializedAsync()
     {
-        PreloadService.Show();
-        
+
         var authState = await AuthState
             .GetAuthenticationStateAsync();
         var user = authState.User;
@@ -651,19 +311,20 @@
         if (userId != _houseProfile.OwnerId)
             Navigation.NavigateTo("/view-my-houses");
         await InvokeAsync(StateHasChanged);
-        PreloadService.Hide();
     }
 
     private async Task LoadHouseProfile()
     {
-        _houseProfile = await HouseProfileService.GetSingleAsync(ProfileId, true);
-        _houseProfile.Reviews = HouseReviewService.GetAllReviewsForProfile(ProfileId).ToList();
+        PreloadService.Show();
+        _houseProfile = await HouseProfileService.GetDetailed(ProfileId);
+        PreloadService.Hide();
     }
-    
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
     }
+
     private List<string> GetStars(HouseReviewDto? review)
     {
         var stars = new List<string>();
@@ -676,4 +337,5 @@
 
         return stars;
     }
+
 }

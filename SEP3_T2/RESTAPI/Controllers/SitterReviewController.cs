@@ -2,12 +2,13 @@
 using DTOs.SitterReview;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
+using RESTAPI.ControllerContracts;
 
 namespace RESTAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class SitterReviewController : ControllerBase
+public class SitterReviewController : ControllerBase, ISitterReviewController
 {
     private readonly ISitterReviewRepository _repo;
 
@@ -15,7 +16,7 @@ public class SitterReviewController : ControllerBase
     {
         _repo = repo;
     }
-    
+
     // GET: api/SitterReview?includeOwner=true&includeSitter=true
     [HttpGet]
     public async Task<IActionResult> GetAll(
@@ -24,30 +25,23 @@ public class SitterReviewController : ControllerBase
         [FromQuery] bool includeOwner,
         [FromQuery] bool includeSitter)
     {
-        try
-        {
-            var response = _repo.GetAll();
-            if(!includeOwner && !includeSitter) return Ok(response);
+        var response = _repo.GetAll();
+        if (!includeOwner && !includeSitter) return Ok(response);
 
-            var toReturn = new List<SitterReviewDto>();
-            foreach (var review in response)
-            {
-                if (includeOwner) 
-                    review.Owner = await ownerRepo.GetSingleAsync(review.OwnerId);
-            
-                if(includeSitter)
-                    review.Sitter = await sitterRepo.GetSingleAsync(review.SitterId);
-                
-                toReturn.Add(review);
-            }
-            
-            return Ok(toReturn.AsQueryable());
-        }
-        catch (Exception ex)
+        var toReturn = new List<SitterReviewDto>();
+        foreach (var review in response)
         {
-            return StatusCode(500, $"Error fetching all SitterReviews:" +
-                                   $" {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+            if (includeOwner)
+                review.Owner = await ownerRepo.GetSingleAsync(review.OwnerId);
+
+            if (includeSitter)
+                review.Sitter =
+                    await sitterRepo.GetSingleAsync(review.SitterId);
+
+            toReturn.Add(review);
         }
+
+        return Ok(toReturn.AsQueryable());
     }
 
     // GET: api/SitterReview/{ownerId}/{sitterId}?includeOwner=true&includeSitter=true
@@ -58,50 +52,16 @@ public class SitterReviewController : ControllerBase
         [FromQuery] bool includeOwner,
         [FromQuery] bool includeSitter)
     {
-        try
-        {
-            var response = await _repo.GetSingleAsync(ownerId, sitterId);
+        var response = await _repo.GetSingleAsync(ownerId, sitterId);
 
-            if (includeOwner) 
-                response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
-            
-            if(includeSitter)
-                response.Sitter = await sitterRepo.GetSingleAsync(response.SitterId);
-            
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error fetching SitterReview: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
-    }
-    
-    // GET: api/SitterReview/GetAllForSitter/{sitterId}
-    [HttpGet("{sitterId}")]
-    public async Task<IActionResult> GetAllForSitter([FromServices] IHouseOwnerRepository ownerRepo, int sitterId)
-    {
-        try
-        {
-            var response = _repo.GetAll().Where(r => r.SitterId == sitterId);
+        if (includeOwner)
+            response.Owner = await ownerRepo.GetSingleAsync(response.OwnerId);
 
-            foreach (var review in response)
-            {
-                var temp = await ownerRepo.GetSingleAsync(review.OwnerId);
-                review.Owner = new HouseOwnerDto
-                {
-                    ProfilePicture = temp.ProfilePicture,
-                    Name = temp.Name,
-                };
-            }
-            
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error fetching SitterReview: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+        if (includeSitter)
+            response.Sitter =
+                await sitterRepo.GetSingleAsync(response.SitterId);
+
+        return Ok(response);
     }
 
     // POST: api/SitterReview/Create
@@ -109,47 +69,25 @@ public class SitterReviewController : ControllerBase
     public async Task<IActionResult> Create(
         [FromBody] CreateSitterReviewDto createDto)
     {
-        try
-        {
-            var response = await _repo.AddAsync(createDto);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error creating SitterReview: {ex.Message} \n{ex.InnerException} \n{ex.StackTrace}");
-        }
+        var response = await _repo.AddAsync(createDto);
+        return Ok(response);
     }
-    
+
     // PUT : api/sitterReview/Update
     [HttpPut]
     public async Task<IActionResult> Update(
         [FromBody] UpdateSitterReviewDto updateDto)
     {
-        try
-        {
-            var response = await _repo.UpdateAsync(updateDto);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Error editing Sitter Review: {ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
-        }
+        var response = await _repo.UpdateAsync(updateDto);
+        return Ok(response);
     }
 
     // DELETE: api/SitterReview/Delete/{ownerId}/{sitterId}
     [HttpDelete("{ownerId}/{sitterId}")]
-    public async Task<IActionResult> DeleteSitterReview(int ownerId, int sitterId)
+    public async Task<IActionResult> DeleteSitterReview(int ownerId,
+        int sitterId)
     {
-        try
-        {
-            await _repo.DeleteAsync(ownerId, sitterId);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                $"Error deleting SitterReview: {ex.Message}");
-        }
+        await _repo.DeleteAsync(ownerId, sitterId);
+        return Ok();
     }
 }
