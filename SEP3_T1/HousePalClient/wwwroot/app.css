@@ -31,8 +31,6 @@ a, .btn-link {
     margin: 0.5em 0;
 }
 
-
-
 /*<-------------------------------------------SHARED------------------------------------------------------------->*/
 
 @font-face {
@@ -72,7 +70,7 @@ a, .btn-link {
 p {
     font-family: 'FuturaFont', sans-serif;
     color: #3d3d3d;
-    margin: 1em;
+    /*margin: 1em;*/
 }
 
 /*<-------------------------------------------SIGN UP PAGE------------------------------------------------------------->*/
@@ -180,6 +178,28 @@ p {
     justify-content: center;
     align-items: flex-start;
     margin-bottom: 2em;
+}
+
+.account-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.account-page .profile-container, .account-page .profile-container {
+    max-width: 50vw;
+    margin: 3em 0 3em 0;
+    padding: 2em 2em;
+    background-color: #fff2ef;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'FuturaFont', sans-serif;
 }
 
 .option {
@@ -293,6 +313,12 @@ p {
     flex-direction: column;
 }
 
+.welcome-message h1 {
+    font-size: 2rem;
+    font-family: 'FuturaFont', sans-serif;
+    margin: 0;
+}
+
 .welcome-image {
     width: 250px;
     height: auto;
@@ -301,6 +327,24 @@ p {
 .form-group {
     margin-bottom: 1em;
     text-align: left;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-items: flex-start;*/
+    /*font-family: 'FuturaFont', sans-serif;*/
+}
+
+.form-group.checkbox
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.date-group
+{
+    display: flex;
+    flex-direction: column;
 }
 
 .form-control {
@@ -322,6 +366,14 @@ p {
     display: flex;
     justify-content: center;
     gap: 1em;
+    margin-top: 15px;
+}
+
+.action-buttons {
+    margin-top: 2em;
+    display: flex;
+    gap: 2em;
+    justify-content: center;
 }
 
 @keyframes rotateBackgroundLogin {
@@ -349,27 +401,6 @@ p {
 
 /*<-------------------------------------------MY HOUSES------------------------------------------------------------->*/
 
-
-.orange-button {
-    background-color: #ff7e5f;
-    color: #fff;
-    border: none;
-    padding: 0.5em 1em;
-    border-radius: 7px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.orange-button:hover {
-    background-color: #feb47b;
-    color: #fff;
-}
-
-.orange-button:focus {
-    background-color: #feb47b;
-}
-
 .link-title {
     font-size: 1.5em;
     color:  #3d3d3d;
@@ -386,6 +417,7 @@ p {
     flex-wrap: wrap;
     gap: 1.5em;
     justify-content: center;
+    padding: 5px;
 }
 
 .house-profile-item {
@@ -402,8 +434,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 95%;
-    height: 95%;
+    margin: 1em;
 }
 
 .house-profile-img {
@@ -412,6 +443,14 @@ p {
     object-fit: cover;
     border-radius: 10px 10px 0 0;
     display: block;
+}
+
+.account-profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5em;
 }
 
 .plus {
@@ -480,9 +519,11 @@ p {
     max-width: 450px;
     width: 100%;
     font-family: 'FuturaFont', sans-serif;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-.modal-content h3,h2 {
+.modal-content h3, .modal-content h2 {
     font-family: 'FuturaFont', sans-serif;
     color: #ff7e5f;
 }
@@ -558,9 +599,11 @@ ul {
     background-color: #fafafa;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
-.signup-page-container h1 {
+.page-container h1,.signup-page-container h1 {
     font-size: 3em;
     color: #ff7e5f;
     font-family: 'LogoFont', sans-serif;
@@ -610,7 +653,7 @@ input
     background-color: #fff2ef;
 }
 
-textarea .form-control {
+.form-control textarea {
     resize: vertical;
     font-family: 'FuturaFont', sans-serif;
 }
@@ -664,8 +707,35 @@ textarea .form-control {
     color: #333;
     line-height: 1.6;
     font-family: 'FuturaFont', sans-serif;
-
 }
+
+.bio-section {
+    text-align: left;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+.info-section h2, .bio-section h2, .skills-container-title {
+    text-align: center;
+    color: #3d3d3d;
+    font-family: 'LogoFont', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5em;
+}
+
+.listing-details h2 {
+    color: #3d3d3d;
+    font-family: 'LogoFont', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5em;
+}
+
+.user-name {
+    font-size: 2rem;
+    color: #ff7e5f;
+    margin: 0;
+}
+
 .carousel img {
     max-height: 32em;
     object-fit: cover;
@@ -704,7 +774,8 @@ textarea .form-control {
     margin: 2em 0;
     border: 0;
     height: 1px;
-    background-color: #ddd;
+    background-color: #777;
+    align-self: stretch;
 }
 
 .chores-amenities-row {
@@ -789,11 +860,49 @@ textarea .form-control {
     width: 35em;
 }
 
+.review-textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    font-family: 'FuturaFont', sans-serif;
+    resize: vertical;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-rating-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    font-family: 'FuturaFont', sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-rating-select:focus {
+    border-color: #ff7e5f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
+}
+
 .card-text{
     font-size: 1em;
     margin-bottom: 0.15em;
     font-family: 'FuturaFont', sans-serif;
     color: #3d3d3d;
+}
+
+.card-text p{
+    line-height: 1.5;
+}
+
+.card-text.contact {
+    margin-top: 0.3em;
+    line-height: 2;
 }
 
 .card-img-container{
@@ -882,15 +991,20 @@ textarea .form-control {
     color: #3d3d3d;
 }
 
+.wide-card {
+    overflow: hidden;
+    width: 60em;
+}
+
 .card a{
     color: #3d3d3d;
     margin-bottom: 0;
     transition: color 0.3s ease;
 }
 
-/*.card a:hover{
-    color: #1B6EC2;;
-}*/
+.card a:hover{
+    color: #1B6EC2;
+}
 
 .card.green{
     background-color: green;
@@ -912,6 +1026,11 @@ textarea .form-control {
 
 .card.green a:hover, .card.rejected a:hover, .card a:hover{
     color: #1B6EC2;
+}
+
+.card.application{
+    width: 40em;
+    margin-bottom: 0;
 }
 
 .title-rating {
@@ -1052,6 +1171,14 @@ textarea .form-control {
     margin-top: 1.5em;
 }
 
+.listing-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2em;
+    margin-top: 1.5em;
+}
+
 .text-content {
     flex: 2;
 }
@@ -1065,6 +1192,22 @@ textarea .form-control {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.orange-button:disabled {
+    background-color: #777;
+    color: #fff;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 7px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.orange-button:disabled:hover {
+    background-color: #777;
+    color: #fff;
 }
 
 .orange-button:hover {
@@ -1119,6 +1262,12 @@ textarea .form-control {
     position: relative;
 }
 
+.carousel-inner img {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+}
+
 .container.sitter-profile .carousel-item img {
     object-fit: contain;
     width: 100%;
@@ -1126,13 +1275,50 @@ textarea .form-control {
     display: block;
 }
 
-
 .container.sitter-profile .carousel-control-prev-icon,
 .container.sitter-profile .carousel-control-next-icon {
     filter: invert(52%) sepia(100%) saturate(1000%) hue-rotate(360deg) brightness(95%) contrast(90%);
 }
 
+.house-profile-item a
+{
+    color: #3d3d3d;
+    margin-bottom: 0;
+    transition: color 0.3s ease;
+}
 
+.house-profile-item a:hover
+{
+    color: #1B6EC2;
+}
 
+.filter-title
+{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 90vw;
+}
 
+.filter-title h2
+{
+    font-family: 'FuturaFont', sans-serif;
+    color: #ff7e5f;
+}
 
+.approve-button {
+    background-color: green;
+    color: white;
+    border: 0;
+    border-radius: .25rem;
+    padding: 0.375em 0.75em;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.approve-button:hover {
+    background-color: #007300;
+    color: white;
+    border: 0;
+    border-radius: .25rem;
+    padding: 0.375em 0.75em;
+}
