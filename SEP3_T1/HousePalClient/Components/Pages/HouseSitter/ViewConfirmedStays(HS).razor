@@ -14,57 +14,57 @@
     <AuthorizeView Roles="HouseSitter">
         <Authorized>
             <div class="page-container">
-                <div class="signup-page-container">
-                    <h1>Your Confirmed Stays:</h1>
+                <h1>Your Confirmed Stays:</h1>
 
-                    @if (_listings == null || !_listings.Any())
-                    {
-                        <p>No stays found.</p>
-                    }
-                    else
-                    { 
-                        <div class="applications-section">
-                            @foreach (var listing in _listings)
-                            {
-                                <div class="card">
+                @if (_listings == null || !_listings.Any())
+                {
+                    <p>No stays found.</p>
+                }
+                else
+                {
+                    <div class="profile-container">
+                        @foreach (var listing in _listings)
+                        {
+                            <div class="card wide-card">
 
-                                    <div class="card-img-container">
-                                        <img src="https://localhost:7134/Filesave/@listing.Profile!.Pictures![0].Split('.')[0]/@listing.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="title-rating">
-                                            <a href="https://localhost:7262/view-listing/@listing.Id" target="_blank"><h5>@listing.Profile.Title</h5></a>
-                                            <h5 class="card-text">
-                                                <i class="fa-solid fa-location-dot"></i> @listing.Profile.Address, @listing.Profile.City, @listing.Profile.Region
-                                            </h5>
-                                        </div>
-                                        
-                                        <p class="card-text" style="margin-top: 0.2em; font-style: italic">
-                                            Your stay will take place from the @listing.StartDate until the @listing.EndDate
-                                        </p>
-                                        
-                                        <br/>
-                                        
-                                        <p class="card-text" style="text-indent: 1em;">
-                                            Contact @listing.Profile!.Owner!.Name to organize your stay:
-                                        </p>
-
-                                        <p class="card-text" style="text-indent: 1em;">
-                                            <i class="fa-solid fa-envelope"></i>   @listing.Profile!.Owner!.Email
-                                        </p>
-
-                                        <p class="card-text" style="text-indent: 1em;">
-                                            <i class="fa-solid fa-phone"></i>   @listing.Profile.Owner.Phone
-                                        </p>
-                                        
-
-                                    </div>
+                                <div class="card-img-container">
+                                    <img src="https://localhost:7134/Filesave/@listing.Profile!.Pictures![0].Split('.')[0]/@listing.Profile!.Pictures![0].Split('.')[1]" class="card-img" alt="...">
                                 </div>
-                            }
-                        </div>
-                    }
-                </div>
+
+                                <div class="card-body">
+                                    <div class="title-rating">
+                                        <a href="https://localhost:7262/view-listing/@listing.Id" target="_blank">
+                                            <h5>@listing.Profile.Title</h5>
+                                        </a>
+                                        <h5 class="card-text">
+                                            <i class="fa-solid fa-location-dot"></i> @listing.Profile.Address, @listing.Profile.City, @listing.Profile.Region
+                                        </h5>
+                                    </div>
+
+                                    <p class="card-text" style="margin-top: 0.2em; font-style: italic">
+                                        Your stay will take place from the @listing.StartDate until the @listing.EndDate
+                                    </p>
+
+                                    <br/>
+
+                                    <p class="card-text" style="text-indent: 1em;">
+                                        Contact @listing.Profile!.Owner!.Name to organize your stay:
+                                    </p>
+
+                                    <p class="card-text" style="text-indent: 1em;">
+                                        <i class="fa-solid fa-envelope"></i> @listing.Profile!.Owner!.Email
+                                    </p>
+
+                                    <p class="card-text" style="text-indent: 1em;">
+                                        <i class="fa-solid fa-phone"></i> @listing.Profile.Owner.Phone
+                                    </p>
+
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </Authorized>
     </AuthorizeView>
@@ -79,208 +79,12 @@
     </AuthorizeView>
 </CascadingAuthenticationState>
 
-<style>
-
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    h1 {
-        text-align: center;
-        color: #ff7e5f;
-        margin-bottom: 0.2em;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .btn {
-        font-size: 0.85em;
-        padding: 0.375em 0.75em;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-profile-item div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 95%;
-        height: 95%;
-    }
-
-    p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-        margin: 1em;
-    }
-
-    .applications-section{
-        padding: 0.85em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .card {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        border-style: none;
-        margin: 0.75em;
-        overflow: hidden;
-        width: 60em;
-        background-color: white;
-        color: #3d3d3d;
-    }
-
-    .card-text{
-        font-size: 1.15em;
-        margin: 0;
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-    }
-
-    .card-text p{
-        line-height: 1.5;
-    }
-
-    .card a{
-        color: #3d3d3d;
-    }
-
-    .card a:hover{
-        color: blue;
-    }
-
-    .card.green a{
-        color: white;
-    }
-
-    .card.green a:hover{
-        color: blue;
-    }
-
-    .card.rejected{
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .card.rejected .card-text{
-        color: white;
-    }
-
-    .card.rejected a{
-        color: white;
-    }
-
-    .card.rejected a:hover{
-        color: blue;
-    }
-
-    .card.green{
-        background-color: green;
-        color: white;
-    }
-
-    .card.green .card-text{
-        color: white;
-    }
-
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-
-    }
-
-    .title-rating h5 {
-        margin-bottom: 0;
-    }
-
-    .card-img-container{
-        flex: 0 0 200px;
-        height: 200px;
-        margin: 1em;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-img-container img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .card-body {
-        margin-bottom: 0em;
-    }
-
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
-</style>
-
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
     private List<HouseListingDto>? _listings;
     private int _userId;
-    
-    
+
+
     private void NavigateToLogin()
     {
         Navigation.NavigateTo("/login");
@@ -312,4 +116,5 @@
         _listings = await Task.Run(() => ListingService.GetConfirmedStaysHs(_userId).ToList());
         PreloadService.Hide();
     }
+
 }

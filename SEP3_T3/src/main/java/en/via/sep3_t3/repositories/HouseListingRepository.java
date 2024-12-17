@@ -24,7 +24,7 @@ public class HouseListingRepository implements IHouseListingRepository
   }
 
   public List<HouseListing> findAll() {
-    String sql = "SELECT * FROM House_listing";
+    String sql = "SELECT * FROM House_listing ORDER BY startDate";
     return jdbcTemplate.query(sql, new HouseListingRowMapper());
   }
 

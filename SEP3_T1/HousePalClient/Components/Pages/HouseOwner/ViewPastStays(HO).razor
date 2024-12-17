@@ -43,58 +43,57 @@
                                     {
                                         @foreach (var application in listing.Applications)
                                         {
-                                                <div class="card">
-                                                    <div class="card-img-container">
-                                                        <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
-                                                    </div>
-
-                                                    <div class="card-body">
-                                                        <div class="title-rating">
-                                                            <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank">
-                                                                <h5>@application.Sitter.Name</h5>
-                                                            </a>
-                                                        </div>
-
-                                                        <div class="button-container">
-                                                            @if (application.Sitter.Reviews != null && application.Sitter.Reviews.Any())
-                                                            {
-                                                                <p class="card-text contact" style="font-style: italic">
-                                                                    Your past review of @application.Sitter.Name:
-                                                                </p>
-
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="stars">
-                                                                            @foreach (var star in GetStars(application.Sitter.Reviews.Single()))
-                                                                            {
-                                                                                <span class="@star"></span>
-                                                                            }
-                                                                        </div>
-                                                                        <p>@application.Sitter.Reviews.Single().Comment</p>
-                                                                        <p>@application.Sitter.Reviews.Single().Date</p>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                <button class="btn" disabled="@(!application.Sitter.Reviews.First().Editable.Value)" @onclick="() => ShowEditReview(application.SitterId)">Edit Review</button>
-                                                            }
-                                                            else
-                                                            {
-                                                                <p class="card-text contact" style="font-style: italic">
-                                                                    @application.Sitter.Name finished their stay at your house.
-                                                                </p>
-
-                                                                <button class="btn" @onclick="() => ShowCreateReview(application.SitterId)">Create Review</button>
-                                                            }
-                                                        </div>
-
-                                                    </div>
+                                            <div class="card">
+                                                <div class="card-img-container">
+                                                    <img src="https://localhost:7134/Filesave/@application.Sitter!.ProfilePicture!.Split('.')[0]/@application.Sitter.ProfilePicture.Split('.')[1]" alt="...">
                                                 </div>
-                                            
+
+                                                <div class="card-body">
+                                                    <div class="title-rating">
+                                                        <a href="https://localhost:7262/view-sitter-profile/@application.SitterId" target="_blank">
+                                                            <h5>@application.Sitter.Name</h5>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="button-container">
+                                                        @if (application.Sitter.Reviews != null && application.Sitter.Reviews.Any())
+                                                        {
+                                                            <p class="card-text contact" style="font-style: italic">
+                                                                Your past review of @application.Sitter.Name:
+                                                            </p>
+
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="stars">
+                                                                        @foreach (var star in GetStars(application.Sitter.Reviews.Single()))
+                                                                        {
+                                                                            <span class="@star"></span>
+                                                                        }
+                                                                    </div>
+                                                                    <p>@application.Sitter.Reviews.Single().Comment</p>
+                                                                    <p>@application.Sitter.Reviews.Single().Date</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <button class="orange-button" disabled="@(!application.Sitter.Reviews.First().Editable.Value)" @onclick="() => ShowEditReview(application.SitterId)">Edit Review</button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="card-text contact" style="font-style: italic">
+                                                                @application.Sitter.Name finished their stay at your house.
+                                                            </p>
+
+                                                            <button class="orange-button" @onclick="() => ShowCreateReview(application.SitterId)">Create Review</button>
+                                                        }
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         }
                                     }
                                     else
                                     {
-                                        <h3>You have no applications for this listing</h3>
+                                        <h3 class="create-titles">You have no applications for this listing</h3>
                                     }
                                 </div>
                             </div>
@@ -111,7 +110,7 @@
                         {
                             <form @onsubmit="CreateReview">
 
-                                <h3>Create review for sitter</h3>
+                                <h3 class="create-titles">Create review for sitter</h3>
                                 <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
                                 <select @bind="_reviewRating" class="review-rating-select" required>
                                     <option value="" disabled selected>Rate the sitter (out of 5)</option>
@@ -122,15 +121,18 @@
                                     <option value="5">5 - Excellent</option>
                                 </select>
 
-                                <button type="submit" class="btn btn-primary">Create Review</button>
-                                <button class="btn btn-secondary" @onclick="CancelCreateReview">Close</button>
+                                <div class="button-group">
+                                    <button type="submit" class="orange-button">Create Review</button>
+                                    <button type="button" class="btn btn-secondary" @onclick="CancelCreateReview">Close</button>
+                                </div>
+
                             </form>
                         }
                         else
                         {
                             <form @onsubmit="EditReview">
 
-                                <h3>Edit review for sitter</h3>
+                                <h3 class="create-titles">Edit review for sitter</h3>
                                 <textarea @bind="_reviewComment" placeholder="Comment on the sitter's performance" class="review-textarea" required></textarea>
                                 <select @bind="_reviewRating" class="review-rating-select" required>
                                     <option value="" disabled selected>Rate the sitter (out of 5)</option>
@@ -141,8 +143,11 @@
                                     <option value="5">5 - Excellent</option>
                                 </select>
 
-                                <button type="submit" class="btn btn-primary">Save Edit</button>
-                                <button class="btn btn-secondary" @onclick="CancelEditReview">Close</button>
+                                <div class="button-group">
+                                    <button type="submit" class="orange-button">Save Edit</button>
+                                    <button type="button" class="btn btn-secondary" @onclick="CancelEditReview">Close</button>
+
+                                </div>
                             </form>
                         }
                     </div>
@@ -162,302 +167,6 @@
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
-
-<style>
-    /* Custom Fonts */
-    @@font-face {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[port]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    /* General Styles */
-    h1 {
-        text-align: center;
-        color: #ff7e5f;
-        margin-bottom: 1em;
-        font-family: 'LogoFont', sans-serif;
-    }
-    h6 {
-        color: #ff7e5f;
-        font-family: 'FuturaFont', sans-serif;
-    }
-   
-    .btn
-    {
-        font-size: 1em;
-        color: white;
-        padding: 0.375em 0.75em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        border: none;
-        margin-top: 1em;
-        width: 50%;
-       
-    }
-    .btn:hover {
-        background-color: #feb47b; 
-        cursor: pointer;          
-    }
-    
-    .not-authorized-container {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2 {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .not-authorized-container .btn:hover {
-        background-color: #feb47b;
-    }
-
-    /* Listings Page */
-    .listings-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5em;
-        padding: 1em;
-        background-color: white;
-        min-height: 100vh;
-    }
-
-    .listing-container {
-        display: flex;
-        justify-content: space-around;
-        width: 85%;
-        border-radius: 15px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 1.5em;
-    }
-
-    /* Left Side: House Info */
-    .house-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 35%;
-    }
-
-    .house-image {
-        width: 100%;
-        height: auto;
-        border-radius: 12px;
-        margin-bottom: 1em;
-    }
-
-    .listing-title {
-        font-size: 1.5rem;
-        color: black;
-        margin-bottom: 0.5em;
-        text-align: center;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .listing-dates {
-        font-size: 1rem;
-        color: #777;
-        margin-bottom: 1em;
-        text-align: center;
-    }
-
-    /* Right Side: Applicants */
-    .applicants-container {
-        flex: 0 0 60%;
-        display: flex;
-        flex-direction: column;
-        border-left: 2px solid #f0f0f0;
-        justify-content: center;
-        padding-left: 1em;
-    }
-
-    .applicants-scroll {
-        max-height: 500px;
-        overflow-y: auto;
-        padding-right: 0.5em;
-    }
-
-    /* Scrollbar Styling */
-    .applicants-scroll::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .applicants-scroll::-webkit-scrollbar-thumb {
-        background: #ff7e5f;
-        border-radius: 4px;
-    }
-
-    .applicants-scroll::-webkit-scrollbar-thumb:hover {
-        background: #feb47b;
-    }
-
-    .applicants-scroll::-webkit-scrollbar-track {
-        background: #f0f0f0;
-        border-radius: 4px;
-    }
-
-    /* Card Styles */
-    .card {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        border-radius: 12px;
-        font-family: 'FuturaFont', sans-serif;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        border-style: none;
-        margin: 0.75em;
-        background-color: white;
-        color: #3d3d3d;
-    }
-
-    .card-text {
-        font-size: 1em;
-        margin-bottom: 0;
-        color: #3d3d3d;
-    }
-
-    .card a {
-        color: black;
-    }
-
-    .card a:hover {
-        color: #3d3d3d;
-    }
-    
-    /* Card Image Styling */
-    .card-img-container {
-        flex: 0 0 200px;
-        height: 200px;
-        margin: 1em;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .card-img-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Title and Rating Section */
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-content: flex-start;
-        gap: 1em;
-    }
-
-    h3 {
-        font-family: 'LogoFont', sans-serif;
-        color: #ff7e5f;
-        margin-bottom: 0.5em;
-        text-align: center;
-    }
-
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        width: 500px;
-        align-items: center;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .modal-content button {
-        margin: 10px;
-    }
-    .review-textarea {
-        width: 100%;
-        height: 100px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        font-size: 1rem;
-        font-family: 'FuturaFont', sans-serif;
-        resize: vertical;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .review-rating-select {
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-        font-family: 'FuturaFont', sans-serif;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .review-rating-select:focus {
-        border-color: #ff7e5f;
-        outline: none;
-        box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
-    }
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
-
-</style>
 
 @code {
     private List<HouseListingDto>? _houseListings;

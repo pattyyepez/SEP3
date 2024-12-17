@@ -20,7 +20,7 @@
 
                 <div class="filter-title">
                     <h2>Find a House to Sit:</h2>
-                    <button type="button" class="btn btn-primary filter"
+                    <button type="button" class="orange-button"
                             @onclick="OnShowModalClick">
                         <i
                             class="fa-solid fa-sliders">
@@ -47,7 +47,7 @@
                                 }
 
                                 @* <div class="title-rating"> *@
-                                <h3>
+                                <h3 class="create-titles">
                                     <a href="https://localhost:7262/view-listing/@listing.Id" target="_blank"> @listing.Profile.Title</a>
                                 </h3>
                                 <div class="stars">
@@ -131,7 +131,7 @@
 
                             <hr class="section-divider"/>
 
-                            <h3>Amenities</h3>
+                            <h3 class="create-titles">Amenities</h3>
                             <div class="form-group checkbox">
                                 @if (_amenities is not null)
                                 {
@@ -148,7 +148,7 @@
                                 }
                             </div>
 
-                            <h3>Chores</h3>
+                            <h3 class="create-titles">Chores</h3>
                             <div class="form-group checkbox">
                                 @if (_chores is not null)
                                 {
@@ -167,7 +167,7 @@
 
                             <hr class="section-divider"/>
 
-                            <button class="btn btn-success">
+                            <button class="orange-button">
                                 Find
                                 listings
                             </button>
@@ -193,334 +193,6 @@
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
-
-<style>
-
-    @@font-face
-    {
-        font-family: 'LogoFont';
-        src: url('http://localhost:[puerto]/fonts/logo-font.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    @@font-face
-    {
-        font-family: 'FuturaFont';
-        src: url('fonts/futura.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    .amenities-container
-    {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-bottom: 0.5em;
-    }
-
-    h3
-    {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-        margin: 0.3em;
-        font-size: 1.5rem;
-    }
-
-    .pill
-    {
-        background-color: #ff7e5f;
-        color: white;
-        padding: 0.5em 1em;
-        border-radius: 50px;
-        font-size: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-profile-img
-    {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 10px 10px 0 0;
-        display: block;
-    }
-
-
-    .filter-title
-    {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-        margin-bottom: 1em;
-    }
-
-
-    h2
-    {
-        color: #ff7e5f;
-        margin-bottom: 1rem;
-        font-family: 'LogoFont', sans-serif;
-    }
-
-    .btn
-    {
-        font-size: 0.85em;
-        padding: 0.375em 0.75em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        border: none;
-    }
-
-    .house-profile-list
-    {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5em;
-        justify-content: center;
-        margin-bottom: 1em;
-    }
-
-    .house-profile-item
-    {
-        width: 20em;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        padding: 0 0 1em 0;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .house-profile-item a
-    {
-        color: #3d3d3d;
-    }
-
-    .house-profile-item a:hover
-    {
-        color: blue;
-    }
-
-    /*.house-profile-item div*/
-    /*{*/
-    /*    display: flex;*/
-    /*    justify-content: start;*/
-    /*    align-items: center;*/
-    /*    width: 95%;*/
-    /*    height: 95%;*/
-    /*}*/
-
-    p
-    {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-        margin: 0.2em;
-    }
-
-    .page-container
-    {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        overflow-y: hidden;
-        margin: 0 auto;
-        height: 100%;
-        position: relative;
-    }
-
-
-    .modal-background
-    {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 4000;
-        overflow: hidden;
-    }
-
-
-    .modal-content
-    {
-        margin-top: 1em;
-        position: relative;
-        background-color: #fff;
-        padding: 2em;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 450px;
-        width: 100%;
-        z-index: 5000;
-
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-
-
-    .btn.btn-primary.filter
-    {
-        background-color: #ff7e5f;
-        font-size: 0.55em;
-        border-style: none;
-    }
-
-    .btn.btn-primary.filter:hover
-    {
-        background-color: #feb47b;
-    }
-
-    .close-button
-    {
-        position: absolute;
-        top: 0.5em;
-        right: 0.5em;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: #333;
-        cursor: pointer;
-    }
-
-    .close-button:hover
-    {
-        color: #ff7e5f;
-    }
-
-    .filter-title
-    {
-        font-size: 2rem;
-        color: #333;
-        text-align: center;
-        margin-bottom: 1.5em;
-    }
-
-    .filter-form
-    {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5em;
-    }
-
-    .form-group
-    {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .form-group.checkbox
-    {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5em;
-    }
-
-    .form-control
-    {
-        padding: 0.5em;
-        font-size: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        outline: none;
-        margin-bottom: 0.5em;
-    }
-
-    .form-control:focus
-    {
-        border-color: #ff7e5f;
-        box-shadow: 0 0 5px rgba(255, 126, 95, 0.5);
-    }
-
-    .date-group
-    {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .not-authorized-container
-    {
-        text-align: center;
-        margin-top: 5em;
-        padding: 2em;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .not-authorized-container h2
-    {
-        color: #ff7e5f;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 2em;
-        margin-bottom: 0.5em;
-    }
-
-    .not-authorized-container p
-    {
-        font-family: 'FuturaFont', sans-serif;
-        color: #333;
-        font-size: 1.2em;
-        margin-bottom: 1.5em;
-    }
-
-    .not-authorized-container .btn
-    {
-        font-size: 1em;
-        padding: 0.75em 1.5em;
-        font-family: 'FuturaFont', sans-serif;
-        background-color: #ff7e5f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .not-authorized-container .btn:hover
-    {
-        background-color: #feb47b;
-    }
-
-    .stars {
-        display: inline-flex;
-        gap: 0.2em;
-    }
-
-    .title-rating {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        align-content: center;
-        gap: 1em;
-        margin-bottom: 0.5em;
-    }
-
-    .fa-star {
-        font-size: 1em;
-    }
-
-    .fa-star-half-alt {
-        font-size: 1em;
-        align-self: center;
-    }
-
-    .fa-star-o {
-        font-size: 1em;
-        color: lightgray;
-    }
-
-</style>
 
 @code {
     [Inject] private PreloadService PreloadService { get; set; } = default!;
@@ -587,6 +259,8 @@
     {
         PreloadService.Show();
         _houseListings = new List<HouseListingDto>();
+        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
+        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         await LoadAllHouseListings();
         await InvokeAsync(StateHasChanged);
         PreloadService.Hide();
@@ -597,17 +271,9 @@
         _houseListings = await Task.Run(() => HouseListingService.GetBrowseListings(null).ToList());
     }
 
-
-    private void NavigateToDetails(int listingId)
-    {
-        Navigation.NavigateTo($"/view-listing/{listingId}");
-    }
-
     private async void Filter()
     {
         PreloadService.Show();
-        _amenities = new MultiSelectList(HouseProfileService.GetAllAmenities());
-        _chores = new MultiSelectList(HouseProfileService.GetAllChores());
         FilteredHouseListingsDto filter = new FilteredHouseListingsDto
         {
             City = _city,
