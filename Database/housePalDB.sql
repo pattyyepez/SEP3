@@ -199,13 +199,13 @@ INSERT INTO Users (email, name, password, profile_picture, CPR, phone, isVerifie
 ('niels.jensen@gmail.com', 'Niels Jensen', '12345', 'owner_niels.jpg', '123456-7890', '+45 22334455', TRUE, 1),
 ('karen.sorensen@gmail.com', 'Karen Sorensen', '12345', 'owner_karen.jpg', '234567-8901', '+45 33445566', TRUE, 1),
 ('henrik.madsen@gmail.com', 'Henrik Madsen', '12345', 'owner_henrik.jpg', '345678-9012', '+45 44556677', TRUE, 1),
-('anne.andersen@gmail.com', 'Lotte Andersen', '12345', 'owner_anne.jpg', '456789-0123', '+45 55667788', TRUE, 2);
+('anne.andersen@gmail.com', 'Anne Andersen', '12345', 'owner_anne.jpg', '456789-0123', '+45 55667788', TRUE, 2);
 
 INSERT INTO HouseOwner (owner_id, address, biography) VALUES
 (8, 'Strandvej 10, Haderslev', 'Hi, I’m Niels. I’m a retired teacher who loves to travel frequently and meet new people. I’m looking for responsible sitters to help while I’m away.'),
 (9, 'Nørrebro 45, Copenhagen', 'Hi, I’m Karen. I’m an architect who often travels for work and needs reliable sitters during my trips.'),
 (10, 'Sønder Allé 12, Aarhus', 'Hi, I’m Henrik. I’m a software developer who travels regularly and values trustworthy sitters to take care of things while I’m gone.'),
-(11, 'Lindevang 34, Ry', 'Hi, I’m Lotte. I’m a nature photographer who frequently embarks on long assignments and seeks dependable sitters to assist during my absences.');
+(11, 'Lindevang 34, Ry', 'Hi, I’m Anne. I’m a nature photographer who frequently embarks on long assignments and seeks dependable sitters to assist during my absences.');
 
 
 INSERT INTO HouseProfile (owner_id, title, description, address, region, city) VALUES
@@ -218,7 +218,7 @@ INSERT INTO HouseProfile (owner_id, title, description, address, region, city) V
 (10, 'Sea Breeze Retreat', 'A beautiful home overlooking the sea in Skagen, perfect for sitters who enjoy coastal living. The house includes three bedrooms, a cozy garden, and a garage. A dog and fish require care during your stay.', 'Strandvej 15', 'Nordjylland', 'Skagen'),
 (10, 'Cozy Aarhus Retreat', 'A charming and bright apartment in Aarhus with one playful cat. The home features one spacious bedroom, modern amenities, and plenty of on-street parking. It is located in a peaceful neighborhood with easy access to parks and public transport.', 'Sønder Allé 12', 'Midtjylland', 'Aarhus'),
 
-(11, 'House with Garden in Nyborg', 'A tranquil home nestled in the countryside of Nyborg, perfect for garden, cat and dog enthusiasts. This cozy property has two bedrooms, a garage, and a large garden filled with flowers and greenery, including hydrangeas. Two pets live here and enjoy daily care.', 'Lindevang 40', 'Fyn', 'Nyborg'),
+(11, 'House with Garden', 'A tranquil home nestled in the countryside of Nyborg, perfect for garden, cat and dog enthusiasts. This cozy property has two bedrooms, a garage, and a large garden filled with flowers and greenery, including hydrangeas. Two pets live here and enjoy daily care.', 'Lindevang 40', 'Fyn', 'Nyborg'),
 (11, 'House in Skagen', 'A house in Skagen with a large patio, a small garden filled with hydrangeas, and two friendly cats. The property has two bedrooms and a warm, inviting atmosphere, making it perfect for cat lovers.', 'Havnegade 20', 'Nordjylland', 'Skagen');
 
 
@@ -283,29 +283,32 @@ INSERT INTO House_pictures (profile_id, picture) VALUES
 ;
 
 INSERT INTO House_listing (profile_id, startDate, endDate, status) VALUES
-(1, '2024-10-01', '2024-10-10', 'Closed'),
-(1, '2025-02-01', '2025-02-10', 'Open'),
+(1, '2024-10-01', '2024-10-10', 'Open'),
+(1, '2025-02-01', '2025-02-10', 'Closed'),
 
-(2, '2024-09-15', '2024-09-25', 'Closed'),
-(2, '2025-02-01', '2025-02-12', 'Open'),
+(2, '2024-09-15', '2024-09-25', 'Open'),
+(2, '2024-02-01', '2024-02-12', 'Closed'),
 
-(3, '2024-08-01', '2024-08-10', 'Closed'),
+(3, '2024-08-01', '2024-08-10', 'Open'),
 (3, '2025-02-05', '2025-02-15', 'Open'),
 
-(4, '2024-07-01', '2024-07-10', 'Closed'),
+(4, '2024-07-01', '2024-07-10', 'Open'),
 (4, '2025-02-10', '2025-02-18', 'Open'),
 
-(5, '2024-06-01', '2024-06-10', 'Closed'),
+(5, '2024-06-01', '2024-06-10', 'Open'),
 (5, '2025-02-01', '2025-02-09', 'Open'),
 
-(6, '2024-11-10', '2024-11-20', 'Closed'),
+(6, '2024-11-10', '2024-11-20', 'Open'),
 (6, '2025-02-05', '2025-02-14', 'Open'),
 
-(7, '2024-10-15', '2024-10-25', 'Closed'),
+(7, '2024-10-15', '2024-10-25', 'Open'),
 (7, '2025-02-01', '2025-02-08', 'Open'),
 
-(8, '2024-09-20', '2024-09-30', 'Closed'),
-(8, '2025-02-10', '2025-02-18', 'Open');
+(8, '2024-09-20', '2024-09-30', 'Open'),
+(8, '2025-02-10', '2025-02-18', 'Open'),
+
+(1, '2025-02-20', '2025-03-01', 'Open'),
+(2, '2025-03-05', '2025-03-15', 'Open');
 
 
 INSERT INTO Chores (type) VALUES
@@ -418,50 +421,61 @@ INSERT INTO Sitter_skills (sitter_id, skill_id) VALUES
 (7, 1),
 (7, 2),
 (7, 3);
+
 INSERT INTO Application (listing_id, sitter_id, message, status, date) VALUES
-(1, 1, 'I am experienced with exotic pets like turtles and would love to care for your home. My attention to detail ensures your pets and property will be in the best hands. I understand the specific needs of turtles and have previously managed similar responsibilities in a coastal home. I would be happy to maintain your property and keep you updated throughout your trip.', 'Confirmed', '2024-09-20'),
-(1, 2, 'I have cared for aquatic pets before and would enjoy staying at your beachside house. I will ensure everything is well-maintained. My prior experience includes caring for fish and amphibians, so I am familiar with the requirements of marine animals. I am also respectful of homeowners’ preferences and always leave properties spotless.', 'Rejected', '2024-09-22'),
+(1, 1, 'I am experienced with exotic pets like turtles and would love to care for your home. My attention to detail ensures your pets and property will be in the best hands.', 'Pending', '2024-09-20 14:23:45'),
+(1, 2, 'I have cared for aquatic pets before and would enjoy staying at your beachside house. I am also respectful of homeowners’ preferences and always leave properties spotless.', 'Pending', '2024-09-22 09:15:32'),
+(1, 3, 'I am experienced with exotic pets like turtles and would love to care for your home. My attention to detail ensures your pets and property will be in the best hands.', 'Pending', '2024-09-22 11:45:20'),
 
-(2, 3, 'I have previous experience with indoor plants and dogs, making me a great fit for your apartment. I enjoy caring for pets and ensuring plants are healthy and thriving. My attention to detail and love for animals make me confident I can provide the best care for your home. I also prioritize communication and will keep you updated on your dog and plants regularly.', 'Confirmed', '2024-09-15'),
-(2, 5, 'I am skilled in managing indoor plants and caring for dogs. Your home matches my expertise. I have cared for similar apartments before and understand the importance of keeping both pets and plants healthy. Additionally, I am very organized and ensure the home is left in pristine condition after the stay.', 'Rejected', '2024-09-17'),
+(2, 3, 'I have previous experience with indoor plants and dogs, making me a great fit for your apartment. I enjoy caring for pets and ensuring plants are healthy and thriving.', 'Pending', '2024-09-15 08:12:18'),
+(2, 5, 'I am skilled in managing indoor plants and caring for dogs. I have cared for similar apartments before and understand the importance of keeping both pets and plants healthy.', 'Confirmed', '2024-09-17 10:30:47'),
 
-(3, 6, 'I specialize in rural properties and enjoy caring for dogs and gardens. Your property aligns perfectly with my skills. I have maintained large outdoor spaces before and can handle any tasks related to gardening or pet care. My prior hosts have praised my dedication and attention to detail, and I would love to bring the same level of care to your home.', 'Confirmed', '2024-08-01'),
-(3, 4, 'I am a responsible sitter with experience maintaining large gardens and caring for pets. I take pride in ensuring pets are comfortable and gardens are well-maintained during homeowners’ absences. I am happy to accommodate any specific requests and am always prompt with updates about the property.', 'Rejected', '2024-08-05'),
+(3, 6, 'I specialize in rural properties and enjoy caring for dogs and gardens. I have maintained large outdoor spaces before and can handle any tasks related to gardening or pet care.', 'Pending', '2024-08-01 13:25:19'),
+(3, 4, 'I am a responsible sitter with experience maintaining large gardens and caring for pets. I take pride in ensuring pets are comfortable and gardens are well-maintained.', 'Pending', '2024-08-05 14:18:36'),
 
-(4, 6, 'I love the vibrant city life and can ensure your pets and plants are well cared for. I have managed similar apartments before and understand the needs of indoor pets and plants. My approach focuses on providing attentive care and maintaining the property’s cleanliness and organization. I am confident I can meet your expectations and make your return stress-free.', 'Confirmed', '2024-07-03'),
-(4, 5, 'I have experience in caring for small dogs and plants, making me an excellent fit for your city apartment. I enjoy staying in urban environments and am familiar with the responsibilities of caring for pets and plants in such settings. I would ensure everything is handled professionally and that your home is left in excellent condition.', 'Rejected', '2024-07-01'),
+(4, 6, 'I love the vibrant city life and can ensure your pets and plants are well cared for. My approach focuses on providing attentive care and maintaining the property’s cleanliness.', 'Pending', '2024-07-03 09:45:12'),
+(4, 5, 'I have experience in caring for small dogs and plants, making me an excellent fit for your apartment. I would ensure everything is handled and that your home is left in good condition.', 'Confirmed', '2024-07-01 11:20:50'),
 
-(5, 3, 'I have previously cared for dogs and fish in coastal homes and would be delighted to assist. My experience includes feeding and maintaining aquariums, as well as handling the daily routines of dogs. I am thorough in my approach and ensure every task is completed to the highest standard. I also prioritize communication to keep homeowners informed during their absence.', 'Confirmed', '2024-06-01'),
-(5, 2, 'I enjoy seaside environments and have experience maintaining gardens and caring for pets. I am familiar with the unique challenges of coastal properties and ensure homes are left in excellent condition. I bring a proactive approach to all my tasks and strive to exceed homeowners’ expectations.', 'Rejected', '2024-06-05'),
+(5, 3, 'I have previously cared for dogs and fish in coastal homes and would be delighted to assist. I am thorough in my approach and ensure every task is completed to the highest standard.', 'Pending', '2024-06-01 17:35:27'),
+(5, 2, 'I enjoy seaside environments and have experience maintaining gardens and caring for pets. I bring a proactive approach to all my tasks and strive to exceed homeowners’ expectations.', 'Pending', '2024-06-05 19:22:48'),
 
-(6, 7, 'I am a cat lover with previous experience in urban apartments. Your property sounds ideal. I am confident I can provide the care and attention your cat deserves, as well as maintain the cleanliness of the apartment. My focus is on ensuring pets are happy and that the home is left exactly as the homeowner expects.', 'Confirmed', '2024-11-10'),
-(6, 4, 'I have cared for cats in Aarhus before and am familiar with the area. I enjoy spending time with animals and always ensure they feel comfortable and loved during their owners’ absences. I also make it a point to respect homeowners’ preferences and keep them updated regularly.', 'Rejected', '2024-11-12'),
+(6, 7, 'I am a cat lover with previous experience in urban apartments. Your property sounds ideal. ', 'Pending', '2024-11-10 16:42:31'),
+(6, 4, 'I have cared for cats in Aarhus before and am familiar with the area. I enjoy spending time with animals and ensure they feel comfortable and loved during their owners’ absences.', 'Pending', '2024-11-12 14:10:59'),
 
-(7, 6, 'I am skilled in maintaining gardens and caring for both dogs and cats. I would enjoy staying at your lovely home. My experience includes handling similar responsibilities in rural homes, and I pride myself on my attention to detail. I ensure pets are cared for and gardens are kept in excellent condition throughout the stay.', 'Confirmed', '2024-10-15'),
-(7, 5, 'I have experience managing properties like yours and can provide excellent care for your pets and garden. I understand the unique requirements of maintaining both indoor and outdoor spaces and am happy to handle all assigned tasks with diligence and care.', 'Rejected', '2024-10-18'),
+(7, 6, 'I am skilled in maintaining gardens and caring for both dogs and cats. I would enjoy staying at your lovely home. My experience includes handling similar responsibilities in rural homes.', 'Pending', '2024-10-15 10:15:45'),
+(7, 5, 'I have experience managing properties like yours and can provide excellent care for your pets and garden.', 'Pending', '2024-10-18 11:45:21'),
 
-(8, 1, 'I have cared for cats and gardens in similar coastal homes before. I would ensure everything is perfect during your absence. I am familiar with the specific needs of cats and enjoy maintaining gardens to keep them vibrant and healthy. I also prioritize clear communication to ensure homeowners feel confident while away.', 'Confirmed', '2024-09-20'),
-(8, 3, 'I am a responsible sitter with experience in maintaining gardens and caring for cats. I understand the importance of providing a safe and loving environment for pets and ensuring properties are well-maintained. I am confident I can exceed your expectations during the stay.', 'Rejected', '2024-09-22');
+(8, 1, 'I have cared for cats and gardens in similar coastal homes before. I would ensure everything is perfect during your absence.', 'Pending', '2024-09-20 08:18:15'),
+(8, 3, 'I am a responsible sitter with experience in maintaining gardens and caring for cats. I understand the importance of providing a safe and loving environment for pets.', 'Pending', '2024-09-22 12:25:50'),
+
+(17, 5, 'I am experienced with mountain properties and can ensure your cabin is well-maintained. I love nature and hiking, making me an excellent fit for your retreat.', 'Pending', '2025-02-15 13:45:20'),
+(17, 2, 'I have previous experience caring for dogs in lakeside properties. I would ensure your pets and property are well taken care of during your absence.', 'Pending', '2025-03-01 16:30:40'),
+(18, 6, 'I am experienced with exotic pets like turtles and would love to care for your home. My attention to detail ensures your pets and property will be in the best hands.', 'Pending', '2025-03-01 18:22:55');
+
 
 INSERT INTO House_review (profile_id, sitter_id, rating, comments, date) VALUES
-(1, 1, 5, 'The turtles were well cared for, and the house was left spotless. Great sitter!', '2024-10-15'),
-(2, 3, 5, 'Emilie was fantastic! The dog and plants were happy and well cared for.', '2024-09-30'),
-(3, 6, 5, 'Line was amazing with the garden and dogs. Everything was in perfect condition.', '2024-08-12'),
-(4, 6, 5, 'Line was excellent and left everything in perfect condition. Great sitter!', '2024-07-18'),
-(5, 3, 5, 'Emilie took wonderful care of the dog and fish. Highly recommend her!', '2024-06-12'),
-(6, 7, 5, 'Mads was perfect with our cat and left the apartment in immaculate condition.', '2024-11-22'),
-(7, 6, 5, 'Line was fantastic with the garden and pets. Everything was flawless.', '2024-10-28'),
-(8, 1, 5, 'Jonas was great with our cats and garden. Highly recommend him!', '2024-09-28');
+(1, 1, 4, 'The house was spacious and well-maintained. Taking care of the turtles was a delightful experience.', '2024-10-15 14:23:45'),
+(1, 3, 4, 'The hosts were incredibly kind and welcoming. Their house was cozy, and the turtles were a joy to care for.', '2024-10-15 09:12:30'),
+(1, 6, 5, 'The hosts were very accommodating and left detailed instructions. The house was clean, and the turtles were easy to care for.', '2024-10-15 16:45:12'),
+(1, 7, 4, 'The hosts were very thoughtful and communicative. The modern house was lovely with incredible views.', '2024-10-15 11:20:50'),
+(2, 3, 4, 'The apartment was cozy and the dog was very friendly. The plants were easy to care for.', '2024-09-30 08:15:37'),
+(3, 6, 4, 'The countryside home was peaceful, and the dogs were a joy to look after. The garden required some effort but was rewarding.', '2024-08-12 13:07:59'),
+(4, 6, 5, 'The urban apartment was modern and conveniently located. The dog was playful and easy to care for.', '2024-07-18 10:32:45'),
+(5, 3, 4, 'The coastal home had a relaxing atmosphere. Taking care of the dog and the fish was straightforward and enjoyable.', '2024-06-12 18:25:18'),
+(6, 7, 4, 'The apartment in Aarhus was clean and comfortable. The cat was independent but enjoyed company.', '2024-11-22 14:42:05'),
+(7, 6, 4, 'The rural house was serene, and the garden was beautiful to work in. The pets were affectionate.', '2024-10-28 09:30:22'),
+(8, 1, 5, 'The house in Nyborg had a lovely garden and the cats were delightful to care for.', '2024-09-28 17:18:33');
 
 INSERT INTO Sitter_review (owner_id, sitter_id, rating, comments, date) VALUES
-(8, 1, 5, 'Jonas was excellent with our turtles and kept the house tidy. Would love to host him again.', '2024-10-15'),
-(9, 3, 5, 'Emilie was wonderful with our dog and plants. She left the apartment spotless!', '2024-09-30'),
-(10, 6, 5, 'Line did an amazing job with our garden and dogs. Everything was perfect.', '2024-08-12'),
-(9, 6, 5, 'Line was fantastic, very attentive to details, and left everything in perfect order.', '2024-07-18'),
-(10, 3, 5, 'Emilie was fantastic, taking great care of the dog and fish. Highly recommend!', '2024-06-12'),
-(10, 7, 5, 'Mads took great care of our cat and was very attentive. Would host him again!', '2024-11-22'),
-(11, 6, 5, 'Line maintained our garden beautifully and took excellent care of our pets.', '2024-10-28'),
-(11, 1, 5, 'Jonas was excellent with our cats and garden. Would highly recommend!', '2024-09-28');
+(8, 1, 5, 'Jonas was excellent with our turtles and kept the house tidy. Would love to host him again.', '2024-10-15 15:24:16'),
+(9, 3, 5, 'Emilie was wonderful with our dog and plants. She left the apartment spotless!', '2024-09-30 11:12:47'),
+(10, 6, 5, 'Line did an amazing job with our garden and dogs. Everything was perfect.', '2024-08-12 13:35:25'),
+(9, 6, 5, 'Line was fantastic, very attentive to details, and left everything in perfect order.', '2024-07-18 16:48:55'),
+(10, 3, 5, 'Emilie was fantastic, taking great care of the dog and fish. Highly recommend!', '2024-06-12 19:20:40'),
+(10, 7, 5, 'Mads took great care of our cat and was very attentive. Would host him again!', '2024-11-22 10:15:32'),
+(11, 6, 5, 'Line maintained our garden beautifully and took excellent care of our pets.', '2024-10-28 12:30:17'),
+(11, 1, 5, 'Jonas was excellent with our cats and garden. Would highly recommend!', '2024-09-28 16:45:55');
+
 
 INSERT INTO Report (reporting_id, reported_id, admin_id, comments, status) VALUES
 -- (1, 5, 1, 'Sitter was not responsive.', 'Pending'),
@@ -469,3 +483,4 @@ INSERT INTO Report (reporting_id, reported_id, admin_id, comments, status) VALUE
 
 INSERT INTO Report (reporting_id, reported_id, admin_id, comments) VALUES
 (1, 5, 1, 'Sitter was not responsive.');
+
