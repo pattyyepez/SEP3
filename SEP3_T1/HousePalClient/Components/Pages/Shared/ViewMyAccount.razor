@@ -20,16 +20,16 @@
         <Authorized>
             @if (_houseOwnerProfile != null)
             {
-                <div class="account-page-owner">
+                <div class="account-page">
                     <div class="profile-container">
                         <div>
-                            <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                            <img src="https://localhost:7134/Filesave/@_houseOwnerProfile.ProfilePicture.Split('.')[0]/@_houseOwnerProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="account-profile-img"/>
                             <h1 class="user-name"> @_houseOwnerProfile.Name</h1>
                         </div>
 
                         <hr class="section-divider"/>
 
-                        <div class="info-section">
+                        <div class="bio-section">
                             <h2>Personal Information</h2>
                             <p>
                                 <strong>Email:</strong> @_houseOwnerProfile.Email
@@ -65,8 +65,11 @@
                             <div class="modal-content">
                                 <h3>Are you sure?</h3>
                                 <p>Do you really want to delete your account? This action cannot be undone.</p>
-                                <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
-                                <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                                <div class="button-group">
+                                    <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
+                                    <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                                </div>
+                                
                             </div>
                         </div>
                     }
@@ -91,16 +94,16 @@
 
             @if (_houseSitterProfile != null)
             {
-                <div class="account-page-sitter">
+                <div class="account-page">
                     <div class="profile-container">
                         <div>
-                            <img src="https://localhost:7134/Filesave/@_houseSitterProfile.ProfilePicture.Split('.')[0]/@_houseSitterProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="profile-img"/>
+                            <img src="https://localhost:7134/Filesave/@_houseSitterProfile.ProfilePicture.Split('.')[0]/@_houseSitterProfile.ProfilePicture.Split('.')[1]" alt="Profile picture" class="account-profile-img"/>
                             <h1 class="user-name"> @_houseSitterProfile.Name</h1>
                         </div>
 
                         <hr class="section-divider"/>
 
-                        <div class="info-section">
+                        <div class="bio-section">
                             <h2>Personal Information</h2>
                             <p>
                                 <strong>Email:</strong> @_houseSitterProfile.Email
@@ -124,7 +127,7 @@
 
                         <hr class="section-divider"/>
 
-                        <h2>Skills</h2>
+                        <h2 class="skills-container-title">Skills</h2>
                         <div class="skills-container">
                             @foreach (var skill in _houseSitterProfile.Skills)
                             {
@@ -187,8 +190,11 @@
                                 <div class="modal-content">
                                     <h3>Are you sure?</h3>
                                     <p>Do you really want to delete your account? This action cannot be undone.</p>
-                                    <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
-                                    <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                                    <div class="button-group">
+                                        <button class="btn btn-danger" @onclick="DeleteAccount">Yes</button>
+                                        <button class="btn btn-secondary" @onclick="CancelDelete">No</button>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         }
@@ -218,96 +224,6 @@
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
-
-<style>
-    
-    .carousel-inner img {
-        width: 100%;
-        height: 550px; 
-        object-fit: cover; 
-    }
-    .account-page-owner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        box-sizing: border-box;
-        background-color: white; 
-    }
-    
-    .account-page-sitter {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-        box-sizing: border-box;
-        background-color: white;
-    }
-    
-    .account-page-owner .profile-container, .account-page-sitter .profile-container {
-        max-width: 50vw;
-        margin: 3em 0 3em 0;
-        padding: 2em 2em;
-        background-color: #fff2ef;
-        border-radius: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        font-family: 'FuturaFont', sans-serif;
-    }
-
-    .profile-img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 0.5em;
-    }
-    
-    .user-name {
-        font-size: 2rem;
-        color: #ff7e5f;
-        margin: 0;
-    }
-    
-    .info-section, .bio-section {
-        text-align: left;
-        margin-bottom: 1em;
-    }
-
-    h2 {
-        text-align: center;
-        color: #3d3d3d;
-        font-family: 'LogoFont', sans-serif;
-        font-size: 1.5rem;
-        margin-bottom: 0.5em;
-    }
-
-    p {
-        font-family: 'FuturaFont', sans-serif;
-        color: #3d3d3d;
-        font-size: 1rem;
-        margin: 0.5em 0;
-    }
-
-    .action-buttons {
-        margin-top: 2em;
-        display: flex;
-        gap: 2em;
-        justify-content: center;
-    }
-    
-    .skills-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-top: 1em;
-    }
-    
-</style>
 
 @code {
     private HouseOwnerDto? _houseOwnerProfile;
