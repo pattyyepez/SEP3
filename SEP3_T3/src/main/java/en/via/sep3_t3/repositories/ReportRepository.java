@@ -14,39 +14,66 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * Repository implementation for managing {@link Report} entities.
+ * Provides database access operations using {@link JdbcTemplate}.
+ *
+ * <p>This repository interacts with the `Report` table to perform CRUD operations on reports, including saving,
+ * updating, deleting, and retrieving report data from the database.</p>
+ */
 @Qualifier("ReportBase")
 @Repository
-public class ReportRepository implements IReportRepository
-{
+public class ReportRepository implements IReportRepository {
+
+  /**
+   * The {@link JdbcTemplate} instance used for executing SQL queries.
+   */
   private final JdbcTemplate jdbcTemplate;
 
-  public ReportRepository(JdbcTemplate jdbcTemplate)
-  {
+  /**
+   * Constructs a new {@code ReportRepository} with the specified {@link JdbcTemplate}.
+   *
+   * @param jdbcTemplate the {@link JdbcTemplate} to use for database queries.
+   */
+  public ReportRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public Report findById(int id)
-  {
+  /**
+   * Retrieves a report by its ID from the database.
+   *
+   * @param id the ID of the report to retrieve.
+   * @return the {@link Report} entity with the specified ID.
+   * @throws org.springframework.dao.EmptyResultDataAccessException if no report is found with the given ID.
+   */
+  public Report findById(int id) {
     String sql = "SELECT * FROM Report WHERE report_id = ?";
     return jdbcTemplate.queryForObject(sql, new ReportRowMapper(), id);
   }
 
-  public List<Report> findAll()
-  {
+  /**
+   * Retrieves all reports from the database.
+   *
+   * @return a list of all {@link Report} entities.
+   */
+  public List<Report> findAll() {
     String sql = "SELECT * FROM Report";
     return jdbcTemplate.query(sql, new ReportRowMapper());
   }
 
-  public int save(Report report)
-  {
+  /**
+   * Saves a new {@link Report} to the database.
+   *
+   * @param report the {@link Report} entity to save.
+   * @return the ID of the newly created report.
+   */
+  public int save(Report report) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
           "INSERT INTO Report (reporting_id, reported_id, admin_id, comments, date)"
-              + " VALUES (?, ?, NULL, ?, ?)"
-          // CHANGE NULL IN ADMIN ID TO LOGIC CHOOSING AN ADMIN
-          , Statement.RETURN_GENERATED_KEYS);
+              + " VALUES (?, ?, NULL, ?, ?)", Statement.RETURN_GENERATED_KEYS);
       ps.setInt(1, report.getReporting_id());
       ps.setInt(2, report.getReported_id());
       ps.setString(3, report.getComment());
@@ -58,22 +85,41 @@ public class ReportRepository implements IReportRepository
     return (int) keyHolder.getKeys().get("report_id");
   }
 
-  public void update(Report report)
-  {
+  /**
+   * Updates the status of an existing report in the database.
+   *
+   * @param report the {@link Report} entity with updated status.
+   */
+  public void update(Report report) {
     String sql = "UPDATE Report SET status = ? WHERE report_id = ?";
     jdbcTemplate.update(sql, report.getStatus(), report.getId());
   }
 
-  public void deleteById(int id)
-  {
+  /**
+   * Deletes a report by its ID from the database.
+   *
+   * @param id the ID of the report to delete.
+   */
+  public void deleteById(int id) {
     String sql = "DELETE FROM Report WHERE report_id = ?";
     jdbcTemplate.update(sql, id);
   }
 
-  private static class ReportRowMapper implements RowMapper<Report>
-  {
-    @Override public Report mapRow(ResultSet rs, int rowNum) throws SQLException
-    {
+  /**
+   * Private static class for mapping rows of the `Report` table to {@link Report} entities.
+   */
+  private static class ReportRowMapper implements RowMapper<Report> {
+
+    /**
+     * Maps a single row of the `Report` table to a {@link Report} object.
+     *
+     * @param rs the {@link ResultSet} containing the row data.
+     * @param rowNum the number of the current row.
+     * @return the mapped {@link Report} entity.
+     * @throws SQLException if an SQL error occurs while reading the row.
+     */
+    @Override
+    public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
       Report report = new Report();
       report.setId(rs.getInt("report_id"));
       report.setReporting_id(rs.getInt("reporting_id"));
@@ -86,3 +132,4 @@ public class ReportRepository implements IReportRepository
     }
   }
 }
+

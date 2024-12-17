@@ -15,42 +15,69 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+/**
+ * Repository implementation for managing {@link HouseOwner} entities.
+ * Provides database access operations using {@link JdbcTemplate}.
+ *
+ * <p>This repository interacts with the `HouseOwner` and `Users` tables to perform CRUD operations.</p>
+ */
 @Qualifier("HouseOwnerBase")
 @Repository
-public class HouseOwnerRepository implements IHouseOwnerRepository
-{
+public class HouseOwnerRepository implements IHouseOwnerRepository {
 
+  /**
+   * The {@link JdbcTemplate} instance used for database interactions.
+   */
   private final JdbcTemplate jdbcTemplate;
 
-  public HouseOwnerRepository(JdbcTemplate jdbcTemplate)
-  {
+  /**
+   * Constructs a new {@code HouseOwnerRepository} with the specified {@link JdbcTemplate}.
+   *
+   * @param jdbcTemplate the {@link JdbcTemplate} for executing SQL queries.
+   */
+  public HouseOwnerRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public List<HouseOwner> findAll()
-  {
-    String sql = "SELECT *\n" + "FROM HouseOwner\n"
-        + "JOIN Users U on U.id = HouseOwner.owner_id";
+  /**
+   * Retrieves all house owners from the database, including their user details.
+   *
+   * @return a list of all {@link HouseOwner} entities.
+   */
+  @Override
+  public List<HouseOwner> findAll() {
+    String sql = "SELECT * FROM HouseOwner JOIN Users U on U.id = HouseOwner.owner_id";
     return jdbcTemplate.query(sql, new HouseOwnerRowMapper());
   }
 
-  public HouseOwner findById(int owner_id)
-  {
-    String sql = "SELECT *\n" + "FROM HouseOwner\n"
-        + "JOIN Users U on U.id = HouseOwner.owner_id\n" + "WHERE owner_id = ?";
+  /**
+   * Retrieves a house owner by their owner ID, including their user details.
+   *
+   * @param owner_id the ID of the house owner.
+   * @return the {@link HouseOwner} entity matching the given owner ID.
+   * @throws org.springframework.dao.EmptyResultDataAccessException if no owner is found with the given ID.
+   */
+  @Override
+  public HouseOwner findById(int owner_id) {
+    String sql = "SELECT * FROM HouseOwner JOIN Users U on U.id = HouseOwner.owner_id WHERE owner_id = ?";
     return jdbcTemplate.queryForObject(sql, new HouseOwnerRowMapper(), owner_id);
   }
 
-  public int save(HouseOwner houseOwner)
-  {
+  /**
+   * Saves a new house owner to the database. This involves inserting records
+   * into both the `Users` and `HouseOwner` tables.
+   *
+   * @param houseOwner the {@link HouseOwner} entity to save.
+   * @return the ID of the newly created house owner.
+   */
+  @Override
+  public int save(HouseOwner houseOwner) {
     KeyHolder keyHolder = new GeneratedKeyHolder();
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
-          "INSERT INTO Users (name, email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES\n"
-              + "(?, ?, ?, ?, ?, ?, FALSE, NULL)"
-
-          , Statement.RETURN_GENERATED_KEYS);
+          "INSERT INTO Users (name, email, password, profile_picture, CPR, phone, isVerified, admin_id) VALUES (?, ?, ?, ?, ?, ?, FALSE, NULL)",
+          Statement.RETURN_GENERATED_KEYS);
       ps.setString(1, houseOwner.getName());
       ps.setString(2, houseOwner.getEmail());
       ps.setString(3, houseOwner.getPassword());
@@ -64,10 +91,8 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(
-          "INSERT INTO HouseOwner (owner_id, address, biography) VALUES\n"
-              + "(?, ?, ?)"
-
-          , Statement.RETURN_GENERATED_KEYS);
+          "INSERT INTO HouseOwner (owner_id, address, biography) VALUES (?, ?, ?)",
+          Statement.RETURN_GENERATED_KEYS);
       ps.setInt(1, id);
       ps.setString(2, houseOwner.getAddress());
       ps.setString(3, houseOwner.getBiography());
@@ -77,12 +102,14 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
     return id;
   }
 
-  public void update(HouseOwner houseOwner)
-  {
-    String sql = "UPDATE Users\n"
-        + "SET name = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ?\n"
-        + "WHERE id = ?";
-
+  /**
+   * Updates an existing house owner in the database. Updates both `Users` and `HouseOwner` tables.
+   *
+   * @param houseOwner the {@link HouseOwner} entity to update.
+   */
+  @Override
+  public void update(HouseOwner houseOwner) {
+    String sql = "UPDATE Users SET name = ?, profile_picture = ?, CPR = ?, phone = ?, isVerified = ?, admin_id = ? WHERE id = ?";
     jdbcTemplate.update(sql,
         houseOwner.getName(),
         houseOwner.getProfilePicture(),
@@ -93,24 +120,37 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
         houseOwner.getUserId());
 
     sql = "UPDATE HouseOwner SET address = ?, biography = ? WHERE owner_id = ?";
-
-    jdbcTemplate.update(sql, houseOwner.getAddress(), houseOwner.getBiography(),
-        houseOwner.getUserId());
+    jdbcTemplate.update(sql, houseOwner.getAddress(), houseOwner.getBiography(), houseOwner.getUserId());
   }
 
-  public void deleteById(int owner_id)
-  {
+  /**
+   * Deletes a house owner by their owner ID. Deletes from both `HouseOwner` and `Users` tables.
+   *
+   * @param owner_id the ID of the house owner to delete.
+   */
+  @Override
+  public void deleteById(int owner_id) {
     String sql = "DELETE FROM HouseOwner WHERE owner_id = ?";
     jdbcTemplate.update(sql, owner_id);
     sql = "DELETE FROM Users WHERE id = ?";
     jdbcTemplate.update(sql, owner_id);
   }
 
-  private static class HouseOwnerRowMapper implements RowMapper<HouseOwner>
-  {
-    @Override public HouseOwner mapRow(ResultSet rs, int rowNum)
-        throws SQLException
-    {
+  /**
+   * Private static class for mapping {@link HouseOwner} rows from the database.
+   */
+  private static class HouseOwnerRowMapper implements RowMapper<HouseOwner> {
+
+    /**
+     * Maps a single row of the `HouseOwner` and `Users` tables to a {@link HouseOwner} object.
+     *
+     * @param rs the {@link ResultSet} containing the row data.
+     * @param rowNum the number of the current row.
+     * @return the mapped {@link HouseOwner} object.
+     * @throws SQLException if an SQL error occurs while reading the row.
+     */
+    @Override
+    public HouseOwner mapRow(ResultSet rs, int rowNum) throws SQLException {
       HouseOwner houseOwner = new HouseOwner();
 
       houseOwner.setUserId(rs.getInt("owner_id"));
@@ -126,8 +166,8 @@ public class HouseOwnerRepository implements IHouseOwnerRepository
       houseOwner.setBiography(rs.getString("biography"));
 
       return houseOwner;
-
     }
   }
 }
+
 
